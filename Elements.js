@@ -219,7 +219,7 @@ function manual(i) {
 	}
 	
 	// Action available - limit clicking
-	/*
+	//*
 	lock = 1;
 	document.getElementById("mouseIndicatorBar").style.transform="scaleY(0)";	
 	setTimeout(function(){
