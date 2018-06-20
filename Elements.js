@@ -457,7 +457,7 @@ function runEvent(eventId) {
 			requestAnimationFrame(loop);
 			break;
 		case "elementBase1":
-			sendMessage(2,"Water Orb's base is complete. Finally I should be able to use full potential of Liquefier. Let's start by fully filling it's reagent tank.");
+			sendMessage(2,"Water Orb's base is complete. Finally I should be able to use full potential of Liquefier. Let's start by fully filling its reagent tank.");
 			break;
 		case "elementBase2":
 			sendMessage(1,"Air Orb's online.");
@@ -503,7 +503,7 @@ function runEvent(eventId) {
 				machineDocks++;
 				machineRotationSpeed++;
 				
-				sendMessage(15,"I realized few things about Liquefier. Once Earth flowed into it's internal tank, whole machine started rotating on track that goes around whole room.<br>On it's way it docks in two places. First let's element flow into it, while other seems to be place where it should actually work. Sadly it seems that lack of reagent hinders it.");
+				sendMessage(15,"I realized few things about Liquefier. Once Earth flowed into its internal tank, whole machine started rotating on track that goes around whole room.<br>On its way it docks in two places. First let's element flow into it, while other seems to be place where it should actually work. Sadly it seems that lack of reagent hinders it.");
 				setTimeout(function(){
 					sendMessage(6,"I think I can manually override functionality of machine. It's going to be inefficient, but I can turn 4 Earth in Liquefier into Water by clicking Water Orb.");
 					document.getElementById("element1").style.display="";
@@ -658,7 +658,7 @@ function runEvent(eventId) {
 			}
 			break;
 		case "intro10":
-			sendMessage(14,"Well, using random debris I should fill Earth Orb with it's Element. Let's try to actually do something. I decided to make all my interactions with Orbs slow and steady. I don't want to destroy them by clicking too fast.");
+			sendMessage(14,"Well, using random debris I should fill Earth Orb with its Element. Let's try to actually do something. I decided to make all my interactions with Orbs slow and steady. I don't want to destroy them by clicking too fast.");
 			document.getElementById("element0").style.display="";
 			document.getElementById("skipButton").remove();
 			
@@ -691,7 +691,7 @@ function runEvent(eventId) {
 					accumulatedTime -= 10000;
 				},50000);
 				setTimeout(function(){
-					sendMessage(10,"Expanded Crystal started generating it's Element by itself. Did I just reverse overflow process?");
+					sendMessage(10,"Expanded Crystal started generating its Element by itself. Did I just reverse overflow process?");
 					elementArray[elementImploded][3]=1;
 				},60000);
 			} else {
@@ -756,7 +756,7 @@ function runEvent(eventId) {
 				accumulatedTime -= 60000;
 				
 				setTimeout(function(){
-					sendMessage(30,"Are those... eyes? Orb started to have gradual changes in it's shape. Now it looks more like a tear, and Element inside swirls in two small orbs.<br>"+
+					sendMessage(30,"Are those... eyes? Orb started to have gradual changes in its shape. Now it looks more like a tear, and Element inside swirls in two small orbs.<br>"+
 					"I feel like they are following my movement. I feel... strange about it. Anyway it seems that insides of Orb are fully connected to another plane. My input pipes coming out of it instantly fill and containers I provide to it. Well, that's certainly helpful.");
 					elementArray[elementImploded][3]=1;
 				},30000);
