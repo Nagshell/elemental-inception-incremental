@@ -503,7 +503,7 @@ function runEvent(eventId) {
 				machineDocks++;
 				machineRotationSpeed++;
 				
-				sendMessage(15,"I realized few things about Liquefier. Once Earth flowed into its internal tank, whole machine started rotating on track that goes around whole room.<br>On its way it docks in two places. First let's element flow into it, while other seems to be place where it should actually work. Sadly it seems that lack of reagent hinders it.");
+				sendMessage(15,"I realized few things about Liquefier. Once Earth flowed into its internal tank, whole machine started rotating on track that goes around whole room.<br>On its way it docks in two places. First lets element flow into it, while other seems to be place where it should actually work. Sadly it seems that lack of reagent hinders it.");
 				setTimeout(function(){
 					sendMessage(6,"I think I can manually override functionality of machine. It's going to be inefficient, but I can turn 4 Earth in Liquefier into Water by clicking Water Orb.");
 					document.getElementById("element1").style.display="";
@@ -573,7 +573,7 @@ function runEvent(eventId) {
 			break;
 		case "upgradeBought24":
 			setTimeout(function(){
-				sendMessage(12,"After breakthrough my supply of elements steadily increases. I noticed that elemental orbs contain small crystals that let's them condense elements into much denser state. It gave me new idea...");
+				sendMessage(12,"After breakthrough my supply of elements steadily increases. I noticed that elemental orbs contain small crystals that lets them condense elements into much denser state. It gave me new idea...");
 				document.getElementById("upgrade25").style.display="";
 			},10000);
 			break;
@@ -677,7 +677,7 @@ function runEvent(eventId) {
 				}
 				elementArray[elementImploded][3]=0;
 				sendMessage(40,"I-I... I think I messed up. Nothing said that there was a capacity limit of Elemental Orb. It was supposed to condense Element and transfer excess to another plane of existence in case of overflow.<br>But something else happened. There was a big implosion inside "+
-				elementArray[elementImploded][4]+" Orb and aftershock send me flying across the room. Aftermath of the situation: Every Element disappeared. Machines seem to be fine, but crystals inside exploded. I guess I need to upgrade machine tanks again.<br>"+
+				elementArray[elementImploded][4]+" Orb and aftershock sent me flying across the room. Aftermath of the situation: Every Element disappeared. Machines seem to be fine, but crystals inside exploded. I guess I need to upgrade machine tanks again.<br>"+
 				"Now for the Orbs themselves. Hm, strange. Bases are left intact, but the compression crystals vibrate at high rate. I need to restart everything and test what are they doing.");
 				setTimeout(function(){
 					sendMessage(10,"Alright, whole setup is back in working order. Let's start again.");
@@ -687,7 +687,7 @@ function runEvent(eventId) {
 				accumulatedTime -= 40000;
 				
 				setTimeout(function(){
-					sendMessage(10,"Another implosion. "+elementArray[elementImploded][4]+" Orb transformed. I never saw anything like that before. It still hold Element like before, but compression crystal expanded ten-fold. I wonder what will happen when I fill it again. I need to do few adjustments and I'll let machines run again.");
+					sendMessage(10,"Another implosion. "+elementArray[elementImploded][4]+" Orb transformed. I never saw anything like that before. It still holds Element like before, but compression crystal expanded ten-fold. I wonder what will happen when I fill it again. I need to do few adjustments and I'll let machines run again.");
 					accumulatedTime -= 10000;
 				},50000);
 				setTimeout(function(){
