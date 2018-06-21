@@ -9,206 +9,233 @@
 <body id="overlord">
 <div class="container" id="containerButton" style="display:none;">
 	<div style="padding : 2px 5px;"><button id="tabButton0" class="tabButton" onclick="switchTab(0)"> Main Setup </button></div>
-	<div style="padding : 2px 5px;"><button id="tabButton1" class="tabButton" onclick="switchTab(1)" style="display: none"> Golems </button></div>
+	<div style="padding : 2px 5px;"><button id="tabButton1" class="tabButton" onclick="switchTab(1)"> Full Scale Preview</button></div>
 	<div style="padding : 2px 5px;"><button id="tabButton2" class="tabButton" onclick="switchTab(2)"> Log </button></div>
 	<div style="padding : 2px 5px;"><button id="tabButton3" class="tabButton" onclick="switchTab(3)"> Number-o-Wall </button></div>
 	<div style="padding : 2px 5px;"><button id="tabButton4" class="tabButton" onclick="switchTab(4)"> Developer's Info </button></div>
 	<div style="padding : 2px 5px;"><button id="tabButton5" class="tabButton" onclick="switchTab(5)"> Tutorial </button></div>
+	<div style="padding : 2px 5px;"><button id="tabButton6" class="tabButton" onclick="switchTab(6)"> Options </button></div>
 </div>
-<div class="chat" id="chat">
-	<div class="chatMessage" id="chatMessageOrgin"></div>
-	<div class="tabButton" id="skipButton" onclick="skipIntro()">Skip Intro</div>
-</div>
-<div class="container" id="containerElement" style="display:none;">
-	<div class="upgradeInfo">
-		<div style="border:0px transparent;">
-			<div style="text-align:center; height: 100%; padding-top:20px; font-size:26px; background-color: #1D1D1D;">Elemental Orbs</div>
+<div class="container" id="chat" style="padding-left: 25px">
+	<div class="chatMessage" id="chatMessage">
+		<div class="chatMessageLore" id="chatMessageLore"></div>
+		<div class="chatMessageProgress">
+			<div class="chatMessageProgressText"id="chatMessageProgressText"></div>
+			<div class="chatMessageProgressBar" id="chatMessageProgressBar" style="transition: transform 1ms"></div>
 		</div>
-	</div>
-	<div class="elementDivTop" id="element0" style="display:none;">
-		<div class="elementDivMid" onclick="manual(0)" style="color: #C5FFB0; border-color: #66C543;">
-			<div class="elementText">Earth</div>
-			<div class="elementTank" id="elementTank0"></div>
-			<div class="elementBase" id="elementBase0" style="background-color: #449625; border-color: #66C543;"></div>
-			<div class="elementBackground" id="elementBackground0" style="background-color: #2F681A;"></div>
-		</div>
-	</div>
-	<div class="elementDivTop" id="element1" style="display:none;">
-		<div class="elementDivMid" onclick="manual(1)" style="color: #B9E3FF; border-color: #75C1F2;">
-			<div class="elementText">Water</div>
-			<div class="elementTank" id="elementTank1"></div>
-			<div class="elementBase" id="elementBase1" style="background-color: #387094; border-color: #75C1F2;"></div>
-			<div class="elementBackground" id="elementBackground1" style="background-color: #39586C;"></div>
-		</div>
-	</div>
-	<div class="elementDivTop" id="element2" style="display:none;">
-		<div class="elementDivMid" onclick="manual(2)" style="color: #FFF6C6; border-color: #FFEB71;">
-			<div class="elementText">Air</div>
-			<div class="elementTank" id="elementTank2"></div>
-			<div class="elementBase" id="elementBase2" style="background-color: #AA9A3B; border-color: #FFEB71;"></div>
-			<div class="elementBackground" id="elementBackground2" style="background-color: #615400;"></div>
-		</div>
-	</div>
-	<div class="elementDivTop" id="element3" style="display:none;">
-		<div class="elementDivMid" onclick="manual(3)" style="color: #FFC6C6; border-color: #E74F4F;">
-			<div class="elementText">Fire</div>
-			<div class="elementTank" id="elementTank3"></div>
-			<div class="elementBase" id="elementBase3" style="background-color: #BD1717; border-color: #E74F4F;"></div>
-			<div class="elementBackground" id="elementBackground3" style="background-color: #780A0A;"></div>
-		</div>
+		<div class="chatMessageButton" id="chatMessageButton" onclick = "chatButton()">Proceed</div>
+		<div class="chatMessageGameplay" id="chatMessageGameplay"></div>
 	</div>
 </div>
-<div class="container" id="containerMouse" style="display:none;">
-	<div class="mouseIndicator">
-		<div class="mouseIndicatorBar" id="mouseIndicatorBar"></div>
+<button class="tabButton" id="skipButton" onclick="skipIntro()">Skip Intro</button>
+<div id="tab0" style="display:none; padding-left: 25px">
+	<div style="text-align:center; height: 100%; padding-top:6px; padding-bottom:6px; font-size:26px; background-color: #1D1D1D;">Elemental Orbs</div>
+	<div class="container" id="containerElement" style="display:none;">
+		<div class="elementDivTop" id="element0" style="display:none;">
+			<div class="elementDivMid" onclick="manual(0)" style="color: #C5FFB0; border-color: #66C543;">
+				<div class="elementText">Earth</div>
+				<div class="elementTank" id="elementTank0"></div>
+				<div class="elementBase" id="elementBase0" style="background-color: #449625; border-color: #66C543;"></div>
+				<div class="elementCost" id="elementCost0" style="color: #C5FFB0;">Manual cost<br>Debris in room</div>
+				<div class="elementBackground" id="elementBackground0" style="background-color: #2F681A;"></div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="golem0" style="display:none;">
+			<div class="golemDivMid" style="color: #C5FFB0; border-color: #66C543; background-color: #2F681A;">
+				<div class="golemText">Earth<br>Golem</div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="element1" style="display:none;">
+			<div class="elementDivMid" onclick="manual(1)" style="color: #B9E3FF; border-color: #75C1F2;">
+				<div class="elementText">Water</div>
+				<div class="elementTank" id="elementTank1"></div>
+				<div class="elementBase" id="elementBase1" style="background-color: #387094; border-color: #75C1F2;"></div>
+				<div class="elementCost" id="elementCost1" style="color: #C5FFB0;">Manual cost<br>4 Earth in Liquefier</div>
+				<div class="elementBackground" id="elementBackground1" style="background-color: #39586C;"></div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="golem1" style="display:none;">
+			<div class="golemDivMid" style="color: #B9E3FF; border-color: #75C1F2; background-color: #39586C;">
+				<div class="golemText">Water<br>Golem</div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="element2" style="display:none;">
+			<div class="elementDivMid" onclick="manual(2)" style="color: #FFF6C6; border-color: #FFEB71;">
+				<div class="elementText">Air</div>
+				<div class="elementTank" id="elementTank2"></div>
+				<div class="elementBase" id="elementBase2" style="background-color: #AA9A3B; border-color: #FFEB71;"></div>
+				<div class="elementCost" id="elementCost2" style="color: #C5FFB0;">Manual cost<br>4 Water in Boiler</div>
+				<div class="elementBackground" id="elementBackground2" style="background-color: #615400;"></div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="golem2" style="display:none;">
+			<div class="golemDivMid" style="color: #FFF6C6; border-color: #FFEB71; background-color: #615400;">
+				<div class="golemText">Air<br>Golem</div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="element3" style="display:none;">
+			<div class="elementDivMid" onclick="manual(3)" style="color: #FFC6C6; border-color: #E74F4F;">
+				<div class="elementText">Fire</div>
+				<div class="elementTank" id="elementTank3"></div>
+				<div class="elementBase" id="elementBase3" style="background-color: #BD1717; border-color: #E74F4F;"></div>
+				<div class="elementCost" id="elementCost3" style="color: #C5FFB0;">Manual cost<br>4 Air in Combustor</div>
+				<div class="elementBackground" id="elementBackground3" style="background-color: #780A0A;"></div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="golem3" style="display:none;">
+			<div class="golemDivMid" style="color: #FFC6C6; border-color: #E74F4F; background-color: #780A0A;">
+				<div class="golemText">Fire<br>Golem</div>
+			</div>
+		</div>
 	</div>
-</div>
-<br>
-<div id="tab0" style="display:none;">
+	<div class="container" id="containerMouse" style="display:none;">
+		<div class="mouseIndicator">
+			<div class="mouseIndicatorBar" id="mouseIndicatorBar"></div>
+		</div>
+	</div>
+	<div style="text-align:center; height: 100%; padding-top:6px; padding-bottom:6px; font-size:26px; background-color: #1D1D1D;">Machines</div>		
 	<div class="container">
-		<div class="upgradeInfo">
-			<div style="border:0px transparent;">
-				<div style="text-align:center; height: 100%; padding-top:20px; font-size:26px; background-color: #1D1D1D;">Machines</div>
-			</div>
-		</div>
-		<div class="machine" id="machine0" style="display:none;">
-			<div class="machineMainPanel">
-				<div class="machineName">Liquefier</div>
-				<div class="machineValves">
-					<div class="machineValveIngredient" onclick="machineIngredientValveTurn(0)">
-						<div class="machineValveBar" id="machineIngredientValve0"></div>
+		<div class="container" style="width:300px;height:370px;float:left">
+			<div class="machine" id="machine1" style="display:none;">
+				<div class="machineMainPanel">
+					<div class="machineName">Boiler</div>
+					<div class="machineValves">
+						<div class="machineValveIngredient" onclick="machineIngredientValveTurn(1)">
+							<div class="machineValveBar" id="machineIngredientValve1"></div>
+						</div>
+						<div class="machineValveReagent" onclick="machineReagentValveTurn(1)">
+							<div class="machineValveBar" id="machineReagentValve1"></div>
+						</div>
 					</div>
-					<div class="machineValveReagent" onclick="machineReagentValveTurn(0)">
-						<div class="machineValveBar" id="machineReagentValve0"></div>
-					</div>
-				</div>
-				<div class="machineTanks">
-					<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank0" style="background-color: #2F681A;"></div></div>
-					<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank0" style="background-color: #39586C;"></div></div>
-				</div>
-			</div>
-			<div class="machineSidePanel">
-				<div class="machineInfo">
-					<div class="machineInfoName">Product</div>
-					<div class="machineInfoElementName" id="machineProductInfo0">4 Water</div>
-				</div>
-				<div class="machineInfo">
-					<div class="machineInfoName">Ingredient</div>
-					<div class="machineInfoElementName">4 Earth</div>
-				</div>
-				<div class="machineInfo">
-					<div class="machineInfoName">Reagent</div>
-					<div class="machineInfoElementName">1 Water</div>
-				</div>
-			</div>
-		</div>
-		<div class="machine" id="machine1" style="display:none;">
-			<div class="machineMainPanel">
-				<div class="machineName">Boiler</div>
-				<div class="machineValves">
-					<div class="machineValveIngredient" onclick="machineIngredientValveTurn(1)">
-						<div class="machineValveBar" id="machineIngredientValve1"></div>
-					</div>
-					<div class="machineValveReagent" onclick="machineReagentValveTurn(1)">
-						<div class="machineValveBar" id="machineReagentValve1"></div>
+					<div class="machineTanks">
+						<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank1" style="background-color: #39586C;"></div></div>
+						<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank1" style="background-color: #780A0A;"></div></div>
 					</div>
 				</div>
-				<div class="machineTanks">
-					<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank1" style="background-color: #39586C;"></div></div>
-					<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank1" style="background-color: #780A0A;"></div></div>
+				<div class="machineSidePanel">
+					<div class="machineInfo">
+						<div class="machineInfoName">Product</div>
+						<div class="machineInfoElementName" id="machineProductInfo1">4 Air</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Ingredient</div>
+						<div class="machineInfoElementName">4 Water</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Reagent</div>
+						<div class="machineInfoElementName">1 Fire</div>
+					</div>
 				</div>
 			</div>
-			<div class="machineSidePanel">
-				<div class="machineInfo">
-					<div class="machineInfoName">Product</div>
-					<div class="machineInfoElementName" id="machineProductInfo1">4 Air</div>
+			<div class="machine" id="machine2" style="display:none;">
+				<div class="machineMainPanel">
+					<div class="machineName">Combustor</div>
+					<div class="machineValves">
+						<div class="machineValveIngredient" onclick="machineIngredientValveTurn(2)">
+							<div class="machineValveBar" id="machineIngredientValve2"></div>
+						</div>
+						<div class="machineValveReagent" onclick="machineReagentValveTurn(2)">
+							<div class="machineValveBar" id="machineReagentValve2"></div>
+						</div>
+					</div>
+					<div class="machineTanks">
+						<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank2" style="background-color: #615400;"></div></div>
+						<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank2" style="background-color: #780A0A;"></div></div>
+					</div>
 				</div>
-				<div class="machineInfo">
-					<div class="machineInfoName">Ingredient</div>
-					<div class="machineInfoElementName">4 Water</div>
-				</div>
-				<div class="machineInfo">
-					<div class="machineInfoName">Reagent</div>
-					<div class="machineInfoElementName">1 Fire</div>
+				<div class="machineSidePanel">
+					<div class="machineInfo">
+						<div class="machineInfoName">Product</div>
+						<div class="machineInfoElementName" id="machineProductInfo2">4 Fire</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Ingredient</div>
+						<div class="machineInfoElementName">4 Air</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Reagent</div>
+						<div class="machineInfoElementName">1 Fire</div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="machine" id="machine2" style="display:none;">
-			<div class="machineMainPanel">
-				<div class="machineName">Combustor</div>
-				<div class="machineValves">
-					<div class="machineValveIngredient" onclick="machineIngredientValveTurn(2)">
-						<div class="machineValveBar" id="machineIngredientValve2"></div>
-					</div>
-					<div class="machineValveReagent" onclick="machineReagentValveTurn(2)">
-						<div class="machineValveBar" id="machineReagentValve2"></div>
-					</div>
-				</div>
-				<div class="machineTanks">
-					<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank2" style="background-color: #615400;"></div></div>
-					<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank2" style="background-color: #780A0A;"></div></div>
-				</div>
-			</div>
-			<div class="machineSidePanel">
-				<div class="machineInfo">
-					<div class="machineInfoName">Product</div>
-					<div class="machineInfoElementName" id="machineProductInfo2">4 Fire</div>
-				</div>
-				<div class="machineInfo">
-					<div class="machineInfoName">Ingredient</div>
-					<div class="machineInfoElementName">4 Air</div>
-				</div>
-				<div class="machineInfo">
-					<div class="machineInfoName">Reagent</div>
-					<div class="machineInfoElementName">1 Fire</div>
-				</div>
-			</div>
+		<div class="container" id="machineHolder" style="width:250px;height:370px;float:left">
+			<div id="cutsceneIndicator" style="text-align:center; padding-top:6px; padding-bottom:6px; font-size:26px; color: #FFC6C6; background-color: #1D1D1D;"></div>	
 		</div>
-		<div class="machine" id="machine3" style="display:none;">
-			<div class="machineMainPanel">
-				<div class="machineName">Volcano</div>
-				<div class="machineValves">
-					<div class="machineValveIngredient" onclick="machineIngredientValveTurn(3)">
-						<div class="machineValveBar" id="machineIngredientValve3"></div>
+		<div class="container" style="width:300px;height:370px;float:left">
+			<div class="machine" id="machine0" style="display:none;">
+				<div class="machineMainPanel">
+					<div class="machineName">Liquefier</div>
+					<div class="machineValves">
+						<div class="machineValveIngredient" onclick="machineIngredientValveTurn(0)">
+							<div class="machineValveBar" id="machineIngredientValve0"></div>
+						</div>
+						<div class="machineValveReagent" onclick="machineReagentValveTurn(0)">
+							<div class="machineValveBar" id="machineReagentValve0"></div>
+						</div>
 					</div>
-					<div class="machineValveReagent" onclick="machineReagentValveTurn(3)">
-						<div class="machineValveBar" id="machineReagentValve3"></div>
+					<div class="machineTanks">
+						<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank0" style="background-color: #2F681A;"></div></div>
+						<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank0" style="background-color: #39586C;"></div></div>
 					</div>
 				</div>
-				<div class="machineTanks">
-					<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank3" style="background-color: #2F681A;"></div></div>
-					<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank3" style="background-color: #780A0A;"></div></div>
+				<div class="machineSidePanel">
+					<div class="machineInfo">
+						<div class="machineInfoName">Product</div>
+						<div class="machineInfoElementName" id="machineProductInfo0">4 Water</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Ingredient</div>
+						<div class="machineInfoElementName">4 Earth</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Reagent</div>
+						<div class="machineInfoElementName">1 Water</div>
+					</div>
 				</div>
 			</div>
-			<div class="machineSidePanel">
-				<div class="machineInfo">
-					<div class="machineInfoName">Product</div>
-					<div class="machineInfoElementName" id="machineProductInfo3">4 Earth</div>
+			<div class="machine" id="machine3" style="display:none;">
+				<div class="machineMainPanel">
+					<div class="machineName">Volcano</div>
+					<div class="machineValves">
+						<div class="machineValveIngredient" onclick="machineIngredientValveTurn(3)">
+							<div class="machineValveBar" id="machineIngredientValve3"></div>
+						</div>
+						<div class="machineValveReagent" onclick="machineReagentValveTurn(3)">
+							<div class="machineValveBar" id="machineReagentValve3"></div>
+						</div>
+					</div>
+					<div class="machineTanks">
+						<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank3" style="background-color: #2F681A;"></div></div>
+						<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank3" style="background-color: #780A0A;"></div></div>
+					</div>
 				</div>
-				<div class="machineInfo">
-					<div class="machineInfoName">Ingredient</div>
-					<div class="machineInfoElementName">4 Earth</div>
-				</div>
-				<div class="machineInfo">
-					<div class="machineInfoName">Reagent</div>
-					<div class="machineInfoElementName">1 Fire</div>
+				<div class="machineSidePanel">
+					<div class="machineInfo">
+						<div class="machineInfoName">Product</div>
+						<div class="machineInfoElementName" id="machineProductInfo3">4 Earth</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Ingredient</div>
+						<div class="machineInfoElementName">4 Earth</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Reagent</div>
+						<div class="machineInfoElementName">1 Fire</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<div style="text-align:center; height: 100%; padding-top:6px; padding-bottom:6px; font-size:26px; background-color: #1D1D1D;">Upgrades</div>
 	<div class="container">
-		<div class="upgradeInfo">
-			<div style="border:0px transparent;">
-				<div style="text-align:center; height: 100%; padding-top:20px; font-size:26px; background-color: #1D1D1D;">Upgrades</div>
-			</div>
-		</div>
 		<div class="upgrade" id="upgrade0" onClick="upgrade(0)" style="display:none;">
 			<div class="upgradeName">My mouse broke</div>
 			<div class="upgradeCost">Cost: 2 Earth</div>
 			<div class="upgradeDescription">Engages Earth autoclicker</div>
 		</div>
 		<div class="upgrade" id="upgrade1" onClick="upgrade(1)" style="display:none;">
-			<div class="upgradeName">Clean liquefier tanks</div>
+			<div class="upgradeName">Repair liquefier tanks</div>
 			<div class="upgradeCost">Cost: 2 Water</div>
 			<div class="upgradeDescription">(I'd suggest accumulating 16 water before clicking this)<br> Liquefier tanks capacity x8</div>
 		</div>
@@ -349,26 +376,32 @@
 		</div>
 	</div>
 </div>
-<div id="tab1" style="display: none; padding-left: 25px;"> Here will be info about stage 2 prestige mechanics
-
-</div>
-<div id="tab2" style="display: none; padding-left: 25px;"> All already bought upgrades will exists over here. For now only past messages display.
-	<div class="chat" id="chatLog">
+<div id="tab1" style="display: none; padding-left: 19px;">
+	<div class="container" id="canvasHolder">
+		<canvas id="canvasPreview" width=600; height=600; style="background-color: #000000; border:1px solid #FFFFFF;"></canvas>
 	</div>
 </div>
-<div id="tab3" style="display: none; padding-left: 25px;"> Imagine that all important numbers are displayed here.
+<div id="tab2" style="display: none; padding-left: 25px;"> I decided to write my thoughts and observations about Elements into this log.
+	<div class="chat" id="chatLog" style="width: 600px;">
+	</div>
+</div>
+<div id="tab3" style="display: none; padding-left: 25px;"> Imagine that all important numbers are displayed here. Will be improved in next public release.
 	<div class="chat">
-		<div class="chatMessage">Mouse Clicks that did something:</div>
-		<div class="chatMessage" id="clicksMade">0</div>
+		<div class="chatMessageGameplay">Mouse Clicks that did something:</div>
+		<div class="chatMessageGameplay" id="clicksMade">0</div>
 	</div>
 </div>
-<div id="tab4" style="display: none; padding-left: 25px;"> Developed by Nagshell. You can contact me using my email: nagshell@gmail.com <br><br>Soon I'll figure out how to make text here selectable.
+<div id="tab4" style="user-select:text; display: none; padding-left: 25px;"> Developed by Nagshell. You can contact me using my email: nagshell@gmail.com<br><br>I appreciate all support/feedback. As this is my first game, you can probably see that I'm very unexperienced with pretty much everything. Let me know how can I improve this child of mine.
 
 </div>
 <div id="tab5" style="display: none; padding-left: 25px;"> Imagine that all mechanics are explained here.
 
 </div>
+<div id="tab6" style="display: none; padding-left: 25px;"> Saving, resets and other options. Scheduled to next public release.
+
+</div>
 <p id="test"></p>
 </body>
-<script type="text/javascript" src="Elements.js"></script>
+<script type="application/javascript" src="Messages.js" ></script>
+<script type="application/javascript" src="Elements.js"></script>
 </html>

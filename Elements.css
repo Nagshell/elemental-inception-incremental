@@ -12,23 +12,6 @@ body {
 * {
 	box-sizing: border-box;
 }
-.chat {
-	padding: 25px;
-	width : 100%;
-	min-height : 250px;
-}
-.chatMessage {
-	padding: 4px 100px 4px 100px;
-	width : 100%;
-	opacity: 1;
-}
-.chatMessageDecay {
-	padding: 4px 100px 4px 100px;
-	width : 100%;
-	opacity: 0;
-	transition-timing-function: ease-in;
-	transition:opacity 5000ms;
-}
 .container {
 	display: flex;
 	flex-wrap: wrap;
@@ -36,11 +19,91 @@ body {
 	padding-left: 5px; 
 	padding-right: 5px;
 }
+.chatMessage {
+	padding: 10px;
+	width : 800px;
+	height : 320px;
+	opacity: 1;
+	border: 1px solid black;
+	border-radius : 10px;
+	background-color: #090909;
+	margin: 8px;
+}
+.chatMessageLore {
+	width : 100%;
+	height: 190px;
+	float : left;
+	border: 1px solid #393939;
+	border-radius : 10px;
+	padding: 10px;
+	overflow:hidden;
+}
+.chatMessageGameplay {
+	float : left;
+	width : 100%;
+	height: 30px;
+	border: 1px solid #393939;
+	border-radius : 6px;
+	padding: 6px;
+	white-space: nowrap;
+	overflow:hidden;
+}
+.chatMessageButton {
+	float : left;
+	width : 100px;
+	height: 30px;
+	margin: 5px;
+	border: 1px solid #393939;
+	border-radius : 15px;
+	background-color: #292929;
+	padding: 6px;
+	text-align: center;
+	transition:transform 500ms;
+	transform:scaleX(0);
+}
+.chatMessageButton:hover {
+	background-color: #393939;
+}
+.chatMessageProgress {
+	float : left;
+	width : 100%;
+	height: 30px;
+	margin: 5px;
+	border: 1px solid #393939;
+	border-radius : 15px;
+	background-color : #090909;
+	position:relative;
+}
+.chatMessageProgressText {
+	z-index:1;
+	width : 100%;
+	height: 100%;
+	position:absolute;
+	padding: 6px 25px 6px 25px;
+}
+.chatMessageProgressBar {
+	z-index:0;
+	width : 100%;
+	height: 100%;
+	position:absolute;
+	border-radius : 15px;
+	background-color : #2B0014;
+	transform:scaleX(0);
+}
+.chatMessageProgressBarActive {
+	z-index:0;
+	width : 100%;
+	height: 100%;
+	position:absolute;
+	border-radius : 15px;
+	background-color : #2B0014;
+	transform:scaleX(1);
+}
 .tabButton {
-    background-color: #292929; /* Green */
+    background-color: #292929;
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 8px 15px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -56,14 +119,14 @@ body {
 	width : 100%;
 	height : 100%;
 	background-color: #81AE86;
-	transition:transform 550ms;
+	transition:transform 510ms linear;
 	transform-origin: center bottom;
 	transform:scaleY(1);
 	
 }
 .elementDivTop {
 	width : 200px;
-	height : 100px;
+	height : 140px;
 	text-align: center;
 	padding : 5px 10px 5px 10px;
 }
@@ -81,25 +144,31 @@ body {
 }
 .elementText {
 	width:100%; 
-	height:40%;
+	height:30%;
 	font-size: 24px;
 	text-align: center;
 	padding : 10px 10px 5px 10px;
 }
 .elementTank {
 	width:100%; 
-	height:30%;
+	height:25%;
 	font-size: 16px;
 	text-align: right;
 	padding : 9px 40px 9px 10px;
 }
 .elementBase {
 	width:100%; 
-	height:30%;
+	height:15%;
 	border: 1px solid;		
 	transition:transform 1000ms;
 	transform:scaleX(0);
 	transform-origin: left center;
+}
+.elementCost {
+	width:100%; 
+	height:35%;
+	font-size: 12px;
+	padding : 8px 10px 4px 10px;
 }
 .elementBackground {
 	z-index:-1;
@@ -112,7 +181,22 @@ body {
 	transform:scaleX(0);
 	transform-origin: right center;
 }
-
+.golemDivMid {
+	width:100%; 
+	height:100%; 
+	text-align: center;
+	border: 2px solid;
+	border-radius: 32px;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	position: relative;
+}
+.golemText {
+	width:100%; 
+	height:100%;
+	font-size: 28px;
+	text-align: center;
+	padding : 30px 10px 5px 10px;
+}
 .machine {
 	width : 290px;
 	height : 180px;
@@ -259,3 +343,6 @@ body {
 	font-size:14px;
 	padding: 5px 6px 5px 6px;
 }
+
+
+
