@@ -35,6 +35,7 @@ machineArray.push([0,0,0,  256,3,0,0, 64,0]);
 
 // Machine stats
 var activeMachineTicks = 0;
+var activeMovementTicks = 0;
 var machineRotationSpeed = 0;
 var activeMachine = 0;
 var unlockedMachines = 0;
@@ -46,6 +47,7 @@ var outputEfficiency = 1;
 
 // Earth
 var autoclickerTicks = 0;
+var autoclickerLimiter = 1;
 
 // Prestige of the year award
 var golemCount = 0;
@@ -54,20 +56,44 @@ var golemCount = 0;
 var lastTimestamp = null;
 var accumulatedTime = 0;
 
-var stopCondition = false;
+var freezeGameplay = false;
+var theEndReached = false;
+
 
 function loop(timestamp) {
+	if(theEndReached) {
+		return;
+	}
 	if(!lastTimestamp) {
 		lastTimestamp = timestamp;
 	}
-	accumulatedTime += timestamp - lastTimestamp;
-	lastTimestamp = timestamp;
-	if(stopCondition) {
+	if(messageAlive > 0) {
+		document.getElementById("cutsceneIndicator").innerHTML = "Gameplay paused<br>Check Chatbox";
+		lastTimestamp = timestamp;
+		requestAnimationFrame(loop);
 		return;
 	}
-	while(accumulatedTime > 50) {
-		tick();
+	accumulatedTime += timestamp - lastTimestamp;
+	lastTimestamp = timestamp;
+	var ticksDoneThisRound = 0;
+	while(accumulatedTime > 50 && ticksDoneThisRound++ < 3) {
 		accumulatedTime-=50;
+		chatTrimmer(50);
+		if(!freezeGameplay) {
+			if(accumulatedTime > 100) {
+				document.getElementById("cutsceneIndicator").innerHTML = "Accumulated time:<br>"+accumulatedTime.toFixed(0) + " ms";
+			} else {
+				document.getElementById("cutsceneIndicator").innerHTML = "";
+			}
+			tick();
+		} else {
+			document.getElementById("cutsceneIndicator").innerHTML = "Gameplay paused<br>Check Chatbox";
+		}
+	}
+	
+	if(!freezeGameplay) {
+		drawPreview();
+		punMaker();
 	}
 	requestAnimationFrame(loop);
 }
@@ -80,16 +106,24 @@ function tick() {
 	if(upgrades[0][2] == 1) {
 		autoclickerTicks++;
 		if(autoclickerTicks > 20) {
-			elementArray[0][0]+=unlockedElements;
+			elementArray[0][0]+=unlockedElements*autoclickerLimiter;
 			autoclickerTicks = 0;
 		}
 	}
 	
 	//rotate setup
-	activeMachineTicks+=machineRotationSpeed;
+	if(activeMovementTicks < 40) {
+		activeMovementTicks+=machineRotationSpeed;
+		if(activeMovementTicks > 40) {
+			activeMovementTicks = 40;
+		}
+	}
+	if(activeMovementTicks == 40){
+		activeMachineTicks+=machineRotationSpeed;
+	}
 	
 	//rotation to next machine
-	if(activeMachineTicks > 80) {
+	if(activeMachineTicks >= 40) {
 		for(var i=0;i<machineDocks;i++) {
 			var tempActive = (activeMachine+i)%unlockedMachines;
 			document.getElementById("machine"+tempActive).style.backgroundColor = '#2E2E2E';
@@ -98,10 +132,11 @@ function tick() {
 		activeMachine=(activeMachine+1)%unlockedMachines;
 		
 		activeMachineTicks=0;
+		activeMovementTicks=0;
 	}
 	
 	//InputValves logic
-	if(upgrades[24][2] == 1 || activeMachineTicks <= 40) {
+	if(upgrades[24][2] == 1 || activeMachineTicks == 0) {
 		for(var i=0;i<unlockedElements;i++) {
 			currentElement = elementArray[i];
 			if(currentElement[2] > 0) {
@@ -129,7 +164,7 @@ function tick() {
 	}
 	
 	//Machines logic
-	if(upgrades[24][2] == 1 || activeMachineTicks > 40) {
+	if(upgrades[24][2] == 1 || activeMovementTicks == 40) {
 		for(var i=0;i<machineDocks;i++) {
 			var tempActive = (activeMachine+i)%unlockedMachines;
 			document.getElementById("machine"+tempActive).style.backgroundColor = '#3A0035';
@@ -155,15 +190,17 @@ function tick() {
 		} else if(currentElement[3] == 2) {
 			currentElement[0] = 1000000000;
 		}
-		if(currentElement[3] == 0 && currentElement[0] > 20000000*(golemCount+1)*(golemCount+1)) {
+		if(elementImploded == i && currentElement[0]>10) {
+			sendMessageJSON("reset3");
+		} else if(currentElement[3] == 0 && currentElement[0] > 20000000*(golemCount+1)*(golemCount/8+1)) {
 			//golem is born
 			golemCount++;
-			currentElement[3] = 1;
-			runEvent("birthOfGolem");			
+			elementImploded = i;
+			runEvent("golemEvent0");			
 		} else if(currentElement[3] == 1 && currentElement[0] > 1000000) {
 			currentElement[3] = 2;
 			
-			runEvent("channeledGolem");
+			runEvent("golemEvent3");
 		}
 	}
 	
@@ -181,8 +218,13 @@ function tick() {
 	}
 	
 	//Display
-	for(var i=0;i<unlockedElements;i++) {
+	for(var i=0;i<4;i++) {
 		document.getElementById("elementTank"+i).innerHTML = elementArray[i][0].toFixed(2);
+		if(i>0 && machineArray[i-1][2] < 4) {
+			document.getElementById("elementCost"+i).style.color = "#FFC6C6";
+		} else {
+			document.getElementById("elementCost"+i).style.color = "#C5FFB0";
+		}
 		document.getElementById("machineIngredientTank"+i).style.transform = "scaleY("+(machineArray[i][2]/machineArray[i][3])+")";
 		document.getElementById("machineReagentTank"+i).style.transform = "scaleY("+(machineArray[i][6]/machineArray[i][7])+")";
 	}
@@ -200,9 +242,12 @@ function tick() {
 
 //Manually clicking on Element's box
 function manual(i) {
+	// Lock actions during cutscenes
+	if(messageAlive > 0) {
+		return;
+	}
 	// If lock is still active do nothing
 	if(lock == 1) return;
-	
 	// Click was made
 	clicksDOM.innerHTML = ++clicks;
 	
@@ -213,21 +258,27 @@ function manual(i) {
 			machineArray[i][2] -= 4;
 			document.getElementById("machineIngredientTank"+i).style.transform = "scaleY("+(machineArray[i][2]/machineArray[i][3])+")";
 			i++;
+			if(machineArray[i-1][2] < 4) {
+				document.getElementById("elementCost"+i).style.color = "#FFC6C6";
+			} else {
+				document.getElementById("elementCost"+i).style.color = "#C5FFB0";
+			}
 		} else {
 			return;
 		}
 	}
 	
 	// Action available - limit clicking
-	//*
-	lock = 1;
-	document.getElementById("mouseIndicatorBar").style.transform="scaleY(0)";	
-	setTimeout(function(){
-		document.getElementById("mouseIndicatorBar").style.transform="scaleY(1)";
+	lock++;
+	if(lock==1) {
+		document.getElementById("mouseIndicatorBar").style.transform="scaleY(0)";	
 		setTimeout(function(){
-			lock = 0;
+			document.getElementById("mouseIndicatorBar").style.transform="scaleY(1)";
+			setTimeout(function(){
+				lock = 0;
+			},500);
 		},500);
-	},500);
+	}
 	//*/
 	
 	var currentElement = elementArray[i];
@@ -259,6 +310,10 @@ function manual(i) {
 
 //Turning of the valves
 function machineIngredientValveTurn(i) {
+	// Lock actions during cutscenes
+	if(messageAlive > 0) {
+		return;
+	}
 	//Click was made
 	clicksDOM.innerHTML = ++clicks;
 	
@@ -271,6 +326,10 @@ function machineIngredientValveTurn(i) {
 	document.getElementById("machineIngredientValve"+i).style.transform = "scaleX("+currentMachine[1]+")";
 }
 function machineReagentValveTurn(i) {
+	// Lock actions during cutscenes
+	if(messageAlive > 0) {
+		return;
+	}
 	//Click was made
 	clicksDOM.innerHTML = ++clicks;
 	
@@ -285,13 +344,21 @@ function machineReagentValveTurn(i) {
 
 // Tab switching
 function switchTab(i) {
-	//Click was made
-	clicksDOM.innerHTML = ++clicks;
-	
-	
 	document.getElementById("tab"+currentTab).style.display = 'none';
 	currentTab = i;
 	document.getElementById("tab"+currentTab).style.display = '';
+	if(i == 0) {
+		var preview = document.getElementById("canvasPreview");
+		preview.style.width="250px";
+		preview.style.height="250px";
+		document.getElementById("machineHolder").appendChild(preview);
+	}
+	if(i == 1) {
+		var preview = document.getElementById("canvasPreview");
+		preview.style.width="600px";
+		preview.style.height="600px";
+		document.getElementById("canvasHolder").appendChild(preview);
+	}
 }
 
 // Upgrade data
@@ -329,6 +396,10 @@ upgrades.push([3,102400,0,false]); // 28
 
 // Clicked on upgrade
 function upgrade(upgradeNum) {
+	// Lock actions during cutscenes
+	if(messageAlive > 0) {
+		return;
+	}
 	var currentUpgrade = upgrades[upgradeNum];
 	var currentElement = elementArray[currentUpgrade[0]];
 	
@@ -363,7 +434,7 @@ function upgrade(upgradeNum) {
 			elementArray[0][0] += 50000;
 			elementArray[1][0] += 20000;
 			elementArray[2][0] += 20000;
-			elementArray[3][0] += 1000000000000;
+			elementArray[3][0] += 100000;
 		//*/
 			break;
 		case 1:
@@ -423,62 +494,31 @@ function upgrade(upgradeNum) {
 			break;
 	}
 }
-
-//Post new message
-function sendMessage(duration,messageText) {
-	var newMessage = orginMessage.cloneNode();
-	newMessage.id = "chatMessage"+messageCount++;
-	newMessage.innerHTML = messageText;
-	//chatBox.insertBefore(newMessage,chatBox.firstChild);
-	chatBox.appendChild(newMessage);
-	//Message fading
-	setTimeout(function(){
-		newMessage.classList.replace("chatMessage","chatMessageDecay");
-		//Message removal
-		setTimeout(function(){
-			newMessage.classList.replace("chatMessageDecay","chatMessage");
-			//chatLogBox.insertBefore(newMessage,chatLogBox.firstChild);
-			chatLogBox.appendChild(newMessage);
-		},5000);
-	},duration*1000);
-}
-
-
+var elementImploded = -1;
 var eventFlags = [];
 for(var z=0;z<16;z++) {
 	eventFlags.push(true);
 }
-//runEvent("machineAmount1-0");
 function runEvent(eventId) {
 	switch(eventId) {
 		case "elementBase0":
-			sendMessage(1,"Base of Earth Orb has been filled. Now I can truly start filling it with Earth.");
+			sendMessageJSON("base0");
 			document.getElementById("upgrade0").style.display="";
-			requestAnimationFrame(loop);
 			break;
 		case "elementBase1":
-			sendMessage(2,"Water Orb's base is complete. Finally I should be able to use full potential of Liquefier. Let's start by fully filling its reagent tank.");
+			sendMessageJSON("base1");
 			break;
 		case "elementBase2":
-			sendMessage(1,"Air Orb's online.");
+			sendMessageJSON("base2");
 			break;
 		case "elementBase3":
-			sendMessage(1,"Fire Orb activated. With power of Fire all machines should be able to work to their full potential.");
-			
-			setTimeout(function(){
-				sendMessage(4,"In the center of the room new piece activated - Reaction Catalyst. It seems to increase efficiency of reactions in machines.");
-				document.getElementById("upgrade13").style.display="";
-			},15000);
+			sendMessageJSON("base3");
 			break;
 		case "elementAmount8-0":
 			if(eventFlags[0]) {
 				eventFlags[0] = false;
 				
-				document.getElementById("machine0").style.display="";
-				transferRate += 0.005;
-				unlockedMachines++;
-				
-				sendMessage(6,"With increasing supply of Earth I should start thinking about activating another Orb. <br>Under rusted sheets I found Liquefier. It's slightly damaged, but should work nonetheless.<br>I should open valves and hopefully Earth should start flowing into it.");
+				sendMessageJSON("elementGathered0");
 			}
 			break;
 		case "elementAmount8-2":
@@ -488,76 +528,85 @@ function runEvent(eventId) {
 				document.getElementById("upgrade5").style.display="";
 				document.getElementById("upgrade17").style.display="";
 				
-				sendMessage(6,"With building up supply of Air few other upgrades became available. I also found parts of another machine. While over half of it is missing, I think I should be able to find replacements for them.");
-				setTimeout(function(){
-					sendMessage(4,"And another machine's ready. I found replacement parts that are good enough in workshop of my father.");
-					document.getElementById("machine2").style.display="";
-					unlockedMachines++;
-				},25000);
+				sendMessageJSON("elementGathered2");
 			}
 			break;
-		case "machineAmount3-0":
+		case "elementAmount8-3":
 			if(eventFlags[2]) {
 				eventFlags[2] = false;
+				
+				sendMessageJSON("elementGathered3");
+				document.getElementById("upgrade13").style.display="";
+			}
+			break;
+		case "unlockMachine0":
+			document.getElementById("machine0").style.display="";
+			transferRate += 0.005;
+			unlockedMachines++;
+			break;
+		case "unlockMachine2":
+			document.getElementById("machine2").style.display="";
+			unlockedMachines++;
+			break;
+		case "unlockElement1":
+			document.getElementById("element1").style.display="";
+			break;
+		case "machineAmount3-0":
+			if(eventFlags[3]) {
+				eventFlags[3] = false;
 				
 				machineDocks++;
 				machineRotationSpeed++;
 				
-				sendMessage(15,"I realized few things about Liquefier. Once Earth flowed into its internal tank, whole machine started rotating on track that goes around whole room.<br>On its way it docks in two places. First lets element flow into it, while other seems to be place where it should actually work. Sadly it seems that lack of reagent hinders it.");
-				setTimeout(function(){
-					sendMessage(6,"I think I can manually override functionality of machine. It's going to be inefficient, but I can turn 4 Earth in Liquefier into Water by clicking Water Orb.");
-					document.getElementById("element1").style.display="";
-				},10000);
+				sendMessageJSON("machineThresholdAmount-0");
 			}
 			break;
 		case "machineAmount3-1":
-			if(eventFlags[3]) {
-				eventFlags[3] = false;
-				
-				document.getElementById("element2").style.display="";
-				
-				sendMessage(4,"Boiler requires Fire to run, but my manual method should still be viable. 4 Water in Boiler will turn into some Air.");
-			}	
-			break;
-		case "machineAmount3-2":
 			if(eventFlags[4]) {
 				eventFlags[4] = false;
 				
+				document.getElementById("element2").style.display="";
+				
+				sendMessageJSON("machineThresholdAmount-1");
+			}	
+			break;
+		case "machineAmount3-2":
+			if(eventFlags[5]) {
+				eventFlags[5] = false;
+				
 				document.getElementById("element3").style.display="";
 				
-				sendMessage(4,"It seems that the end of manual grind is near. 4 Air in Combustor will turn into some Fire.");
+				sendMessageJSON("machineThresholdAmount-2");
 			}	
 			break;
 		case "activeMachine0":
-			if(eventFlags[5]) {
-				eventFlags[5] = false;
+			if(eventFlags[6]) {
+				eventFlags[6] = false;
 				
 				document.getElementById("upgrade1").style.display="";
 				document.getElementById("upgrade2").style.display="";
 				document.getElementById("upgrade9").style.display="";
 				
-				sendMessage(4,"Yes! It works! Now I can accumulate Water with 100% machine's efficiency. 4 Earth and 1 Water => 4 Water,<br>With supply of Water I can start thinking about upgrading Liquefier and working towards next Orb");
-				
+				sendMessageJSON("machineActivated0");
 			}
 			break;
 		case "upgradeBought0":
-			sendMessage(2,"Now I don't need to fill Earth manually. What a relief.");
+			sendMessageJSON("upgradeBought0");
 			break;
 		case "upgradeBought2":
 			document.getElementById("machine1").style.display="";
 			unlockedMachines++;
-			
-			sendMessage(6,"While I was tinkering with reaction regulators I noticed two halves of another machine laying in the corner. After quick assembly I managed to repair it.");
+			sendMessageJSON("upgradeBought2");
 			break;
 		case "upgradeBought13":
-			sendMessage(6,"For the whole time I thought it was a decoration. Volcano made with brass alloys. It's machine.<br>If I upgrade Reaction Catalyst once more I should be able to make positive feedback loop to multiply my Earth supply.");
+			sendMessageJSON("upgradeBought13");
 			document.getElementById("machine3").style.display="";
+			unlockedMachines++;
 			
 			document.getElementById("machineProductInfo0").innerHTML="5 Water";
 			document.getElementById("machineProductInfo1").innerHTML="5 Air";
 			document.getElementById("machineProductInfo2").innerHTML="5 Fire";
 			document.getElementById("machineProductInfo3").innerHTML="5 Earth";
-			unlockedMachines++;
 			break;
 		case "upgradeBought14":
 			document.getElementById("machineProductInfo0").innerHTML="6 Water";
@@ -572,142 +621,15 @@ function runEvent(eventId) {
 			document.getElementById("machineProductInfo3").innerHTML="8 Earth";
 			break;
 		case "upgradeBought24":
-			setTimeout(function(){
-				sendMessage(12,"After breakthrough my supply of elements steadily increases. I noticed that elemental orbs contain small crystals that lets them condense elements into much denser state. It gave me new idea...");
-				document.getElementById("upgrade25").style.display="";
-			},10000);
+			sendMessageJSON("upgradeBought24");
+			document.getElementById("upgrade25").style.display="";
 			break;
-		case "intro0":
-			if(noSkip) {
-				sendMessage(180,"If you happen to miss any of messages, you can check everything in Log tab.");
-				setTimeout(function(){
-					runEvent("intro1");
-				},2000);
-			}
-			break;
-		case "intro1":
-			if(noSkip) {
-				sendMessage(7,"My mentor told me story about Elements. Legend tells that there was a wise Alchemist that mastered all fundamentals of the world as we know it.");
-				setTimeout(function(){
-					runEvent("intro2");
-				},7000);
-			}
-			break;
-		case "intro2":
-			if(noSkip) {
-				sendMessage(6,"He was able to control all elements and produce mountains of gold, heal sick with one look and much more. Eh, fairy tales...");
-				setTimeout(function(){
-					runEvent("intro3");
-				},6000);
-			}
-			break;
-		case "intro3":
-			if(noSkip) {
-				sendMessage(5,"But now that my father fell deadly ill, that story is the last thing that gives me hope.");
-				setTimeout(function(){
-					runEvent("intro4");
-				},5000);
-			}
-			break;
-		case "intro4":
-			if(noSkip) {
-				sendMessage(7,"I don't want to become god, but maybe Elemental research will let me discover some kind of medicine for my father.");
-				setTimeout(function(){
-					runEvent("intro5");
-				},7000);
-			}
-			break;
-		case "intro5":
-			if(noSkip) {
-				sendMessage(6,"Legend tells that knowledge of the Alchemist came from combining four base Elements together.");
-				setTimeout(function(){
-					runEvent("intro6");
-				},6000);
-			}
-			break;
-		case "intro6":
-			if(noSkip) {
-				sendMessage(10,"After few days of reading about Elements in library, I began to understand the basics. All you need to do begin experimenting is Elemental Glove (which I found at affordable price in nearby market)");
-				setTimeout(function(){
-					runEvent("intro7");
-				},10000);
-			}
-			break;
-		case "intro7":
-			if(noSkip) {
-				sendMessage(10,"Another required piece are Elemental Orbs. Luckily my grandmother used to play with one set of those, I found them in attic of our old house. <br>Rusted, almost broken, but should suffice for learning experience.");
-				setTimeout(function(){
-					runEvent("intro8");
-				},10000);
-			}
-			break;
-		case "intro8":
-			if(noSkip) {
-				sendMessage(10,"And so my study began within this littered room. Quickly I met my biggest obstacle. Elemental Glove can only handle 1 Element at the time.<br> How I'm supposed to combine 4 of them?");
-				setTimeout(function(){
-					runEvent("intro9");
-				},10000);
-			}
-			break;
-		case "intro9":
-			if(noSkip) {
-				sendMessage(14,"But elements inside Orbs can be manipulated with pipes and valves. It seems that grandmother had something setup, but it all crumbled with time.<br>Usually when two Elements happen to be in one container, they will disappear together, but I should investigate different possibilities first.");
-				setTimeout(function(){
-					runEvent("intro10");
-				},14000);
-			}
-			break;
-		case "intro10":
-			sendMessage(14,"Well, using random debris I should fill Earth Orb with its Element. Let's try to actually do something. I decided to make all my interactions with Orbs slow and steady. I don't want to destroy them by clicking too fast.");
-			document.getElementById("element0").style.display="";
-			document.getElementById("skipButton").remove();
-			
-			document.getElementById("containerButton").style.display="";
-			document.getElementById("containerElement").style.display="";
-			document.getElementById("containerMouse").style.display="";
-			document.getElementById("tab0").style.display="";
-			
-			
-			break;
-		case "birthOfGolem":
-			if(golemCount == 1) {
-				var elementImploded = 0;
-				while(elementArray[elementImploded][3]==0) {
-					elementImploded++;
-				}
-				elementArray[elementImploded][3]=0;
-				sendMessage(40,"I-I... I think I messed up. Nothing said that there was a capacity limit of Elemental Orb. It was supposed to condense Element and transfer excess to another plane of existence in case of overflow.<br>But something else happened. There was a big implosion inside "+
-				elementArray[elementImploded][4]+" Orb and aftershock sent me flying across the room. Aftermath of the situation: Every Element disappeared. Machines seem to be fine, but crystals inside exploded. I guess I need to upgrade machine tanks again.<br>"+
-				"Now for the Orbs themselves. Hm, strange. Bases are left intact, but the compression crystals vibrate at high rate. I need to restart everything and test what are they doing.");
-				setTimeout(function(){
-					sendMessage(10,"Alright, whole setup is back in working order. Let's start again.");
-					document.getElementById("upgrade5").style.display="";
-					document.getElementById("upgrade25").style.display="";
-				},39000);
-				accumulatedTime -= 40000;
-				
-				setTimeout(function(){
-					sendMessage(10,"Another implosion. "+elementArray[elementImploded][4]+" Orb transformed. I never saw anything like that before. It still holds Element like before, but compression crystal expanded ten-fold. I wonder what will happen when I fill it again. I need to do few adjustments and I'll let machines run again.");
-					accumulatedTime -= 10000;
-				},50000);
-				setTimeout(function(){
-					sendMessage(10,"Expanded Crystal started generating its Element by itself. Did I just reverse overflow process?");
-					elementArray[elementImploded][3]=1;
-				},60000);
-			} else {
-				sendMessage(20,"Another Orb imploded.");
-				accumulatedTime -= 15000;
-				setTimeout(function(){
-					sendMessage(10,"Alright, whole setup is back in working order. Let's continue.");
-					document.getElementById("upgrade5").style.display="";
-					document.getElementById("upgrade25").style.display="";
-				},14000);
-			}
+		case "golemEvent0":
 			//Clear everything
 			for(var j=0;j<unlockedElements;j++) {
 				elementArray[j][0]=0;
 			}
-			for(var j=0;j<unlockedElements;j++) {
+			for(var j=0;j<unlockedMachines;j++) {
 				currentMachine = machineArray[j];
 				currentMachine[2] = 0;
 				currentMachine[6] = 0;
@@ -741,126 +663,554 @@ function runEvent(eventId) {
 			machineArray[2][7]=16;
 			machineArray[3][3]=256;
 			machineArray[3][7]=64;
+		
+			if(golemCount == 1) {
+				autoclickerLimiter = 0.05;
+				sendMessageJSON("reset0");
+			} else {
+				sendMessageJSON("reset5");
+				runEvent("golemEvent2");
+			}
 			break;
-		case "channeledGolem":
+		case "golemEvent1":
+			document.getElementById("upgrade5").style.display="";
+			document.getElementById("upgrade25").style.display="";
+			accumulatedTime = -100;
+			break;
+		case "golemEvent2":
+			elementArray[elementImploded][3]=1;
+			elementImploded = -1;
+			break;
+		case "golemEvent3":
 			var sum = 0;
 			for(var j=0;j<unlockedElements;j++) {
 				if(elementArray[j][3]==2) {
-					document.getElementById("elementTank"+j).style.visibility = "hidden";
+					document.getElementById("element"+j).style.display = "none";
+					document.getElementById("golem"+j).style.display = "";
 					sum++;
 				}
 			}
 			if(sum==1) {
-				sendMessage(30,"I thought I only began to scratch capacity of new Orb, but it seems expanding crystal had reverse effect on Orb's capacity. This time overflow did not cause implosion, but compression crystal fully merged with Orb itself.<br>"+
-				"I need to test my newest accidental creation");
-				accumulatedTime -= 60000;
-				
-				setTimeout(function(){
-					sendMessage(30,"Are those... eyes? Orb started to have gradual changes in its shape. Now it looks more like a tear, and Element inside swirls in two small orbs.<br>"+
-					"I feel like they are following my movement. I feel... strange about it. Anyway it seems that insides of Orb are fully connected to another plane. My input pipes coming out of it instantly fill and containers I provide to it. Well, that's certainly helpful.");
-					elementArray[elementImploded][3]=1;
-				},30000);
-				setTimeout(function(){
-					sendMessage(3,"Tests complete. I guess I should turn rest of the Orbs into this new entity. I decided to name it \"Golem\". Let's start cycle of machines again.");
-				},57000);
+				sendMessageJSON("reset7");
 			} else if(sum < 4){
-				sendMessage(3,"Another Orb transformed into Golem. I need to continue.");
-				accumulatedTime -= 5000;
+				sendMessageJSON("reset10");
 			} else {
-				sendMessage(3,"Last Orb transformed into Golem. It's time.");
-				accumulatedTime -= 5000;
-				setTimeout(function(){
-					runEvent("outro0");
-				},5000);
+				sendMessageJSON("reset11");
 			}
 			break;
-		case "outro0":
-
-			stopCondition = true;
+		case "theIntro":
+			requestAnimationFrame(loop);
+			sendMessageJSON("intro0");
+			break;
+		case "theBeginning":
+			document.getElementById("element0").style.display="";
+			
+			document.getElementById("containerButton").style.display="";
+			document.getElementById("containerElement").style.display="";
+			document.getElementById("containerMouse").style.display="";
+			switchTab(0);
+			document.getElementById("skipButton").remove();
+			document.getElementById("chatMessageProgressBar").style.transition = "transform 1ms";
+			setTimeout(function(){
+				document.getElementById("chatMessageProgressBar").classList.replace("chatMessageProgressBarActive","chatMessageProgressBar");
+			},0);
+			
+			break;
+		case "theOutro":
 			document.getElementById("containerButton").remove();
 			document.getElementById("containerElement").remove();
 			document.getElementById("containerMouse").remove();
 			document.getElementById("tab0").remove();
 			document.getElementById("tab1").remove();
-			document.getElementById("tab2").remove();
 			document.getElementById("tab3").remove();
 			document.getElementById("tab4").remove();
 			document.getElementById("tab5").remove();
-			
-			sendMessage(6,"Legend tells that knowledge of the Alchemist came from combining four base Elements together.");
-			setTimeout(function(){
-				runEvent("outro1");
-			},6000);
+			document.getElementById("tab6").remove();
+			sendMessageJSON("outro0");
 			break;
-		case "outro1":
-			sendMessage(6,"I removed all Golems from their pedestals and put them in small circle.");
-			setTimeout(function(){
-				runEvent("outro1.1");
-			},6000);
-			break;
-		case "outro1.1":
-			sendMessage(10,"I tried it with Orbs. Touch every one of them at the same time. Complete failure, interaction between elements caused all Orbs to empty themselves.");
-			setTimeout(function(){
-				runEvent("outro2");
-			},10000);
-			break;
-		case "outro2":
-			sendMessage(6,"Now let's try it with Golems. I took my Elemental Glove and touched each Golem with one of my fingers.");
-			setTimeout(function(){
-				runEvent("outro3");
-			},6000);
-			break;
-		case "outro3":
-			sendMessage(6,"Blinding light. Vision. Old person running towards me. Loud shout, piercing every cell of my existence.");
-			setTimeout(function(){
-				runEvent("outro4");
-			},6000);
-			break;
-		case "outro4":
-			sendMessage(6,"\"Thou shall not meddle with Elements. Go back where you came from.\"");
-			setTimeout(function(){
-				runEvent("outro5");
-			},6000);
-			break;
-		case "outro5":
-			sendMessage(6,"Darkness. Quiet and comforting.");
-			setTimeout(function(){
-				runEvent("outro6");
-			},6000);
-			break;
-		case "outro6":
-			sendMessage(6,"I woke up slowly. I was still in attic of my old family house. I think. Every single piece of my machinery disappeared. What happened?");
-			setTimeout(function(){
-				runEvent("outro7");
-			},6000);
-			break;
-		case "outro7":
-			sendMessage(30,"Nothing. I don't remember what happened after hearing that shout. I know one thing though. Elemental Glove I used is now fused with my hand. I cannot take it off. I don't need to take it off. I think I can use it to go back there. To find out what lies on the other side. To find out what Alchemist hides. I'll be back, whether you like it or not.");
-			setTimeout(function(){
-				runEvent("outro8");
-			},30000);
-			break;
-		case "outro8":
-			document.getElementById("overlord").innerHTML = "Thank you for playing intro stage of my game. \\('_' ) <br><br> You can always refresh page to reset.";
+		case "theEnd":
+			theEndReached = true;
+			document.getElementById("chatMessageGameplay").innerHTML = "You made a total of " + clicks + " clicks to reach this ending screen.";
 			break;
 	}
 }
-var noSkip = true;
 function skipIntro() {
-	noSkip = false;
-	runEvent("intro10");
+	var id = setTimeout(null,0);
+    while (id--) 
+    {
+        window.clearTimeout(id);
+    }
+	
+	var log = document.getElementById("chatLog");
+	log.innerHTML = "";
+	for(var i=0;i<16;i++) {
+		var tempMessage = jsonMessages["intro"+i];
+		log.innerHTML += "<br><br>"+tempMessage.loreText;
+		log.innerHTML += "<br>"+tempMessage.gameplayText;
+	}
+	
+	
+	messageAlive = 0;
+	freezeGameplay = false;
+	availableChatButtonClick = false;
+	document.getElementById("chatMessageButton").style.transform = "scaleX(0)";
+	document.getElementById("chatMessageProgressText").innerHTML = "";
+	sendMessageJSON("intro16");
 }
-runEvent("intro0");
 
-setInterval(punMaker,60000);
 var puns = 0;
 function punMaker() {
+	if(disablePuns)
+		return;
 	switch(puns) {
-		case 8:
-			sendMessage(1,"You thought something interesting happened, but it was me, Dio.");
+		case 9600:
+			sendMessageJSON("pun1");
+			break;
+		case 28800:
+			sendMessageJSON("pun2");
 			break;
 	}
 	puns++;
+}
+	
+var ctx;
+function drawPreview() {
+	
+	ctx = document.getElementById("canvasPreview").getContext("2d");
+	ctx.resetTransform();
+	ctx.clearRect(0, 0, 600, 600);
+	
+	ctx.strokeStyle = "white";
+	drawFullCircle(300,300,290,"#0D0D0D");
+	ctx.stroke();
+	
+	ctx.strokeStyle = "black";
+	ctx.lineWidth = 2;
+	
+	
+	
+	if(machineDocks >= 1 ) {
+		drawDockBase(0);
+	}
+	if(machineDocks >= 2 ) {
+		drawDockBase(1);
+	}
+	if(machineDocks >= 3 ) {
+		drawDockBase(2);
+	}
+	if(machineDocks >= 4 ) {
+		drawDockBase(3);
+	}
+	
+	//filled pipes?
+	var greenInputPipesColor = (elementArray[0][0] > 1 ? "#2F681A" : "#4D4D4D");
+	var blueInputPipesColor = (elementArray[1][0] > 1 ? "#39586C" : "#4D4D4D");
+	var yellowInputPipesColor = (elementArray[2][0] > 1 ? "#615400" : "#4D4D4D");
+	var redInputPipesColor = (elementArray[3][0] > 1 ? "#780A0A" : "#4D4D4D");
+	
+	//outer input lines
+	drawFullCircle(300,300,230,greenInputPipesColor);
+	ctx.stroke();
+	drawFullCircle(300,300,220,blueInputPipesColor);
+	ctx.stroke();
+	drawFullCircle(300,300,210,yellowInputPipesColor);
+	ctx.stroke();
+	drawFullCircle(300,300,200,redInputPipesColor);
+	ctx.stroke();
+	drawFullCircle(300,300,190,"#0D0D0D");
+	ctx.stroke();
+	
+	//inner input lines
+	drawFullCircle(300,300,100,greenInputPipesColor);
+	ctx.stroke();
+	drawFullCircle(300,300,90,blueInputPipesColor);
+	ctx.stroke();
+	drawFullCircle(300,300,80,yellowInputPipesColor);
+	ctx.stroke();
+	drawFullCircle(300,300,70,redInputPipesColor);
+	ctx.stroke();
+	drawFullCircle(300,300,60,"#0D0D0D");
+	ctx.stroke();
+	
+	//elemental orbs
+	drawElementalOrb(0);
+	drawElementalOrb(1);
+	drawElementalOrb(2);
+	drawElementalOrb(3);
+
+	//docks
+	if(machineDocks >= 1 ) {
+		drawDock(0);
+	}
+	if(machineDocks >= 2 ) {
+		drawDock(1);
+	}
+	if(machineDocks >= 3 ) {
+		drawDock(2);
+	}
+	if(machineDocks >= 4 ) {
+		drawDock(3);
+	}
+	
+	if(upgrades[24][2] == 0) {
+		ctx.translate(300,300);
+		ctx.rotate(-2*activeMachine/unlockedMachines*Math.PI);
+		if(activeMovementTicks < 40) {
+			var partialMovement = activeMovementTicks-40;
+			var partialMovement2 = Math.min(partialMovement+machineRotationSpeed,0);
+			partialMovement += (partialMovement2-partialMovement)*Math.min(accumulatedTime/50,1);
+			partialMovement /= 40;
+			ctx.rotate(-2*partialMovement/unlockedMachines*Math.PI);
+		}
+		ctx.translate(-300,-300);
+	}
+	if(unlockedMachines >= 1) {
+		drawMachine(0);
+	}
+	if(unlockedMachines >= 2) {
+		ctx.translate(300,300);
+		ctx.rotate(2/unlockedMachines*Math.PI);
+		ctx.translate(-300,-300);
+		
+		drawMachine(1);
+	}
+	if(unlockedMachines >= 3) {
+		ctx.translate(300,300);
+		ctx.rotate(2/unlockedMachines*Math.PI);
+		ctx.translate(-300,-300);
+		
+		drawMachine(2);
+	}
+	if(unlockedMachines >= 4) {
+		ctx.translate(300,300);
+		ctx.rotate(2/unlockedMachines*Math.PI);
+		ctx.translate(-300,-300);
+		
+		drawMachine(3);
+	}
+}
+function drawFullCircle(x,y,radius,color) {
+	ctx.beginPath();
+	ctx.arc(x,y,radius,0,2*Math.PI,false);
+	ctx.fillStyle = color;
+	ctx.fill();
+}
+function drawOctagon(x,y,radius) {
+	ctx.beginPath();
+	var tempNumber = radius * 3.5/5;
+	ctx.moveTo(x,y+radius);
+	ctx.lineTo(x+tempNumber,y+tempNumber);
+	ctx.lineTo(x+radius,y);
+	ctx.lineTo(x+tempNumber,y-tempNumber);
+	ctx.lineTo(x,y-radius);
+	ctx.lineTo(x-tempNumber,y-tempNumber);
+	ctx.lineTo(x-radius,y);
+	ctx.lineTo(x-tempNumber,y+tempNumber);
+	ctx.lineTo(x,y+radius);
+	ctx.lineTo(x+tempNumber,y+tempNumber);
+}
+
+var elementalOrbData = [];
+elementalOrbData.push(["#2F681A","#449625"]);
+elementalOrbData.push(["#39586C","#5890B4"]);
+elementalOrbData.push(["#615400","#AA9A3B"]);
+elementalOrbData.push(["#780A0A","#BD1717"]);
+
+var golemRotation = 0;
+function drawElementalOrb(i) {
+	unlock = 0;
+	var x = 300;
+	var y = 220;
+	ctx.save();
+	ctx.translate(300,300);
+	ctx.rotate(2*Math.PI/4*i);
+	ctx.translate(-300,-300);
+	if(elementArray[i][3]==2) {
+		ctx.beginPath();
+		var radius = 40;
+		ctx.arc(x,y,radius,0,Math.PI,false);
+		ctx.arc(x+radius,y,2*radius,Math.PI,Math.PI*4/3,false);
+		ctx.arc(x-radius,y,2*radius,-Math.PI/3,0,false);
+		ctx.fillStyle = elementalOrbData[i][0];
+		ctx.fill();
+		ctx.strokeStyle=elementalOrbData[i][1];
+		ctx.stroke();
+		
+		ctx.translate(x,y);
+		ctx.rotate(Math.PI/900*golemRotation++/(i+3));
+		ctx.translate(-x,-y);
+		
+		drawFullCircle(x+radius/2,y,radius/4,"rgba(255,255,255,0.10)");
+		drawFullCircle(x-radius/2,y,radius/4,"rgba(255,255,255,0.10)");
+	} else {
+		drawFullCircle(x,y,46,"rgba(29,29,29,0.92)");
+		ctx.stroke();
+		if(elementArray[i][1]==7) {
+			//Orb fill ratio
+			var ratio = elementArray[i][0];
+			ratio = 1+Math.log10(1+ratio);
+			if(ratio<0) {
+				ratio = 0;
+			} else if(ratio<4) {
+				ratio*=ratio;
+			} else {
+				ratio = 6 + 10*(ratio-3);
+			}
+			if(ratio > 46) {
+				ratio = 44;
+			}
+			
+			drawFullCircle(x,y,ratio,elementalOrbData[i][0]);
+			ctx.strokeStyle=elementalOrbData[i][1];
+			if(elementArray[i][3]==1) {
+				ctx.lineWidth = 6;
+				drawOctagon(x,y,30);
+			} else if(elementArray[i][3]==0) {
+				ctx.lineWidth = 3;
+				drawOctagon(x,y,20);
+			} 
+			ctx.stroke();
+		}
+	}
+	ctx.restore();
+}
+
+var dockData = [];
+dockData.push([153,153]);
+dockData.push([447,153]);
+dockData.push([447,447]);
+dockData.push([153,447]);
+
+function drawDock(i) {
+	var x = dockData[i][0];
+	var y = dockData[i][1];
+	drawFullCircle(x,y,56,'#1A0015');
+	ctx.stroke();
+}
+function drawDockBase(i) {
+	var x = dockData[i][0];
+	var y = dockData[i][1];
+	var tempColor;
+	if(upgrades[24][2] == 0 && activeMovementTicks < 40) {
+		tempColor="rgba(19,19,19,0.98)";
+	} else {
+		tempColor='#4A0046';
+	}
+	
+	ctx.beginPath();
+	ctx.fillStyle = tempColor;
+	
+	ctx.moveTo(x-5,y-5);
+	ctx.lineTo(x-5,y-90);
+	ctx.lineTo(x+5,y-90);
+	ctx.lineTo(x+5,y-5);
+	ctx.lineTo(x+90,y-5);
+	ctx.lineTo(x+90,y+5);
+	ctx.lineTo(x+5,y+5);
+	ctx.lineTo(x+5,y+90);
+	ctx.lineTo(x-5,y+90);
+	ctx.lineTo(x-5,y+5);
+	ctx.lineTo(x-90,y+5);
+	ctx.lineTo(x-90,y-5);
+	ctx.lineTo(x-5,y-5);
+	ctx.fill();
+	ctx.stroke();
+	
+	drawFullCircle(x,y,70,tempColor);
+	ctx.stroke();
+}
+function drawMachine(i) {
+	var ratio;
+	drawFullCircle(153,153,50,"rgba(19,19,19,0.98)");
+	ctx.stroke();
+	drawFullCircle(153,153,47,"rgba(19,19,19,0.98)");
+	ctx.stroke();
+	switch(i) {
+		case 0:
+			drawFullCircle(153,153,42,"rgba(19,19,19,0.98)");
+			ctx.stroke();
+			
+			ratio = 1+machineArray[0][6]/machineArray[0][7];
+			ratio /= 2; 
+			ratio = (Math.sqrt(ratio)-Math.sqrt(0.5))/(1-Math.sqrt(0.5));
+			drawFullCircle(153,153,15+27*ratio,"#39586C");
+			
+			drawFullCircle(153,153,15,"#2F681A");
+			ctx.stroke();
+			
+			ratio = 1-machineArray[0][2]/machineArray[0][3];
+			ratio = Math.sqrt(ratio);
+			
+			drawFullCircle(153,153,ratio*15,"rgba(19,19,19,0.98)");
+			break;
+		case 1:
+			drawFullCircle(153,153,42,"rgba(19,19,19,0.98)");
+			ctx.stroke();
+			
+			ratio = 1+machineArray[1][6]/machineArray[1][7];
+			ratio /= 2; 
+			ratio = (Math.sqrt(ratio)-Math.sqrt(0.5))/(1-Math.sqrt(0.5));
+			drawFullCircle(153,153,32+10*ratio,"#780A0A");
+			
+			drawFullCircle(153,153,32,"#39586C");
+			ctx.stroke();
+			
+			ratio = 1-machineArray[1][2]/machineArray[1][3];
+			ratio = Math.sqrt(ratio);
+			
+			drawFullCircle(153,153,ratio*32,"rgba(19,19,19,0.98)");
+			break;
+		case 2:
+			drawFullCircle(153,153,42,"rgba(19,19,19,0.98)");
+			ctx.stroke();
+			
+			ratio = 1+machineArray[2][2]/machineArray[2][3];
+			ratio /= 2; 
+			ratio = (Math.sqrt(ratio)-Math.sqrt(0.5))/(1-Math.sqrt(0.5));
+			drawFullCircle(153,153,10+32*ratio,"#615400");
+			
+			drawFullCircle(153,153,10,"#780A0A");
+			ctx.stroke();
+			
+			ratio = 1-machineArray[2][6]/machineArray[2][7];
+			ratio = Math.sqrt(ratio);
+			
+			drawFullCircle(153,153,ratio*10,"rgba(19,19,19,0.98)");
+			break;
+		case 3:
+			drawFullCircle(153,153,42,"rgba(19,19,19,0.98)");
+			ctx.stroke();
+			
+			ratio = 1+machineArray[3][2]/machineArray[3][3];
+			ratio /= 2; 
+			ratio = (Math.sqrt(ratio)-Math.sqrt(0.5))/(1-Math.sqrt(0.5));
+			drawFullCircle(153,153,20+22*ratio,"#2F681A");
+			
+			drawFullCircle(153,153,20,"#780A0A");
+			ctx.stroke();
+			
+			ratio = 1-machineArray[3][6]/machineArray[3][7];
+			ratio = Math.sqrt(ratio);
+			
+			drawFullCircle(153,153,ratio*20,"rgba(19,19,19,0.98)");
+			break;
+	}
+}
+
+var chatLoreTrimmerDelay = 0;
+var chatGameplayTrimmerDelay = 0;
+function chatTrimmer(timePassed) {
+	if(chatLoreTrimmerDelay == 0) {
+		var chatText = document.getElementById("chatMessageLore");
+		//br handling
+		if(chatText.innerHTML.charAt(0) == '<') {
+			chatText.innerHTML = chatText.innerHTML.slice(3);
+			chatText.innerHTML = chatText.innerHTML.slice(3);
+		}
+		chatText.innerHTML = chatText.innerHTML.slice(1).trim();
+	} else if (chatLoreTrimmerDelay > 0){
+		chatLoreTrimmerDelay = Math.max(chatLoreTrimmerDelay-timePassed,0);
+	}
+	if(chatGameplayTrimmerDelay == 0) {
+		var chatText = document.getElementById("chatMessageGameplay");
+		chatText.innerHTML = chatText.innerHTML.slice(1).trim();
+	} else if (chatGameplayTrimmerDelay > 0) {
+		chatGameplayTrimmerDelay = Math.max(chatGameplayTrimmerDelay-timePassed,0);
+	}
 	
 }
 
+var messageAlive = 0;
+var tempMessage;
+var disablePuns = false;
+function sendMessageJSON(msgId) {
+	document.documentElement.scrollTop = 0;
+	tempMessage = jsonMessages[msgId];
+	
+	var log = document.getElementById("chatLog");
+	log.innerHTML += "<br><br>"+tempMessage.loreText;
+	log.innerHTML += "<br>"+tempMessage.gameplayText;
+	
+	if(tempMessage.flush) {
+		document.getElementById("chatMessageLore").innerHTML = tempMessage.loreText;
+		document.getElementById("chatMessageGameplay").innerHTML = tempMessage.gameplayText;
+		chatLoreTrimmerDelay = tempMessage.loreFreezeDuration;
+		chatGameplayTrimmerDelay = tempMessage.gameplayFreezeDuration;
+	} else {
+		document.getElementById("chatMessageLore").innerHTML += "<br>"+tempMessage.loreText;
+		document.getElementById("chatMessageGameplay").innerHTML += tempMessage.gameplayText;
+		chatLoreTrimmerDelay += tempMessage.loreFreezeDuration;
+		chatGameplayTrimmerDelay += tempMessage.gameplayFreezeDuration;
+	}
+	
+	if(tempMessage.progressBar) {
+		messageAlive++;
+	}
+	if(tempMessage.buttonAvailable) {
+		messageAlive++;
+	}	
+	switch(tempMessage.firstActiveElement) {
+		case "button":
+			messageShowButton();
+			break;
+		case "progressBar":
+			messageActivateProgressBar();
+			break;
+		case "none":
+			messageChainNext();
+			break;
+	}
+	if(tempMessage.eventId) {
+		runEvent(tempMessage.eventId);
+		drawPreview();
+	}
+}
+function messageActivateProgressBar() {
+	document.getElementById("chatMessageProgressText").innerHTML = tempMessage.progressBar.barText;
+	//Run bar
+	document.getElementById("chatMessageProgressBar").style.transition = "transform "+tempMessage.progressBar.duration+"ms linear";
+	disablePuns = true;
+	setTimeout(function(){
+		document.getElementById("chatMessageProgressBar").classList.replace("chatMessageProgressBar","chatMessageProgressBarActive");
+		//On bar completion
+		setTimeout(function(){
+			disablePuns = false;
+			document.getElementById("chatMessageProgressText").innerHTML = "";
+			messageAlive--;
+			document.getElementById("chatMessageProgressBar").style.transition = "transform 1ms linear";
+			document.getElementById("chatMessageProgressBar").classList.replace("chatMessageProgressBarActive","chatMessageProgressBar");
+			if(tempMessage.firstActiveElement == "progressBar" && messageAlive > 0) {
+				messageShowButton();
+			}
+			messageChainNext();
+		},tempMessage.progressBar.duration);
+	},0);
+}
+function messageShowButton() {
+	availableChatButtonClick = true;
+	document.getElementById("chatMessageButton").style.transform = "scaleX(1)";
+}
+var availableChatButtonClick = false;
+function chatButton() {
+	if(availableChatButtonClick) {
+		availableChatButtonClick = false;
+		messageAlive--;
+		document.getElementById("chatMessageButton").style.transform = "scaleX(0)";
+		if(tempMessage.firstActiveElement == "button" && messageAlive > 0) {
+			messageActivateProgressBar();
+		}
+		messageChainNext();	
+	}
+}
+function messageChainNext() {
+	if(messageAlive == 0 && tempMessage.chainedMessage) {
+		freezeGameplay = true;
+		disablePuns = true;
+		setTimeout(function(){
+			freezeGameplay = false;
+			disablePuns = false;
+			sendMessageJSON(tempMessage.chainedMessage);
+		},tempMessage.chainedMessageDelay);
+	}
+}
+runEvent("theIntro");
