@@ -715,8 +715,9 @@ function runEvent(eventId) {
 			document.getElementById("skipButton").remove();
 			document.getElementById("chatMessageProgressBar").style.transition = "transform 1ms";
 			setTimeout(function(){
-				document.getElementById("chatMessageProgressBar").classList.replace("chatMessageProgressBarActive","chatMessageProgressBar");
-			},0);
+				document.getElementById("chatMessageProgressBar").classList.remove("chatMessageProgressBarActive");
+				document.getElementById("chatMessageProgressBar").classList.add("chatMessageProgressBar");
+			},50);
 			
 			break;
 		case "theOutro":
@@ -1173,20 +1174,22 @@ function messageActivateProgressBar() {
 	document.getElementById("chatMessageProgressBar").style.transition = "transform "+tempMessage.progressBar.duration+"ms linear";
 	disablePuns = true;
 	setTimeout(function(){
-		document.getElementById("chatMessageProgressBar").classList.replace("chatMessageProgressBar","chatMessageProgressBarActive");
+		document.getElementById("chatMessageProgressBar").classList.remove("chatMessageProgressBar");
+		document.getElementById("chatMessageProgressBar").classList.add("chatMessageProgressBarActive");
 		//On bar completion
 		setTimeout(function(){
 			disablePuns = false;
 			document.getElementById("chatMessageProgressText").innerHTML = "";
 			messageAlive--;
 			document.getElementById("chatMessageProgressBar").style.transition = "transform 1ms linear";
-			document.getElementById("chatMessageProgressBar").classList.replace("chatMessageProgressBarActive","chatMessageProgressBar");
+			document.getElementById("chatMessageProgressBar").classList.remove("chatMessageProgressBarActive");
+			document.getElementById("chatMessageProgressBar").classList.add("chatMessageProgressBar");
 			if(tempMessage.firstActiveElement == "progressBar" && messageAlive > 0) {
 				messageShowButton();
 			}
 			messageChainNext();
 		},tempMessage.progressBar.duration);
-	},0);
+	},50);
 }
 function messageShowButton() {
 	availableChatButtonClick = true;
