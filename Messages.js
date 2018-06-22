@@ -27,11 +27,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 8000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "outro1",
 		"chainedMessageDelay": 50
@@ -43,11 +40,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 20000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "outro2",
 		"chainedMessageDelay": 50
@@ -59,11 +53,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 9000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "outro3",
 		"chainedMessageDelay": 50
@@ -92,27 +83,21 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 9000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "outro5",
 		"chainedMessageDelay": 50
 	},
 	"outro5" : {
 		"flush" : true,
-		"loreText" : "\"Thou shall not meddle with Elements! What have you done?! Go back where you came from and never do this again!\"",
+		"loreText" : "\"Thou shalt not meddle with Elements! What have you done?! Go back where you came from and never do this again!\"",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 11000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "outro6",
 		"chainedMessageDelay": 50
@@ -127,8 +112,9 @@ var jsonMessages = {
 		"firstActiveElement" : "progressBar",
 		"progressBar" : {
 			"barText": "",
-			"duration": 5000
+			"duration": 4000
 		},
+		"buttonAvailable": true,
 		
 		"chainedMessage": "outro7",
 		"chainedMessageDelay": 50
@@ -140,11 +126,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 16000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "outro8",
 		"chainedMessageDelay": 50
@@ -156,11 +139,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 30000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "outro9",
 		"chainedMessageDelay": 50
@@ -174,7 +154,7 @@ var jsonMessages = {
 		
 		"firstActiveElement" : "button",
 		"progressBar" : {
-			"barText": "My body is trying to move",
+			"barText": "You are trying to move. It's not looking good.",
 			"duration": 20000
 		},
 		"buttonAvailable": true,
@@ -189,11 +169,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 10000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "outro11",
 		"chainedMessageDelay": 50
@@ -232,7 +209,7 @@ var jsonMessages = {
 		"firstActiveElement" : "button",
 		"progressBar" : {
 			"barText": "",
-			"duration": 3000
+			"duration": 2000
 		},
 		"buttonAvailable": true,
 		
@@ -249,7 +226,7 @@ var jsonMessages = {
 		"firstActiveElement" : "progressBar",
 		"progressBar" : {
 			"barText": "Loading Intro cutscene...",
-			"duration": 10000
+			"duration": 2000
 		},
 		"buttonAvailable": true,
 		
@@ -263,11 +240,8 @@ var jsonMessages = {
 		"gameplayText" : "Text can also dissapear in almost animated way.",
 		"gameplayFreezeDuration": 500,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 8000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "intro4",
 		"chainedMessageDelay": 2550
@@ -279,11 +253,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 15000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "intro5",
 		"chainedMessageDelay": 50
@@ -295,11 +266,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 7000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "intro6",
 		"chainedMessageDelay": 50
@@ -311,11 +279,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 18000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "intro7",
 		"chainedMessageDelay": 50
@@ -327,11 +292,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 10000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "intro8",
 		"chainedMessageDelay": 50
@@ -343,11 +305,8 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 25000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "intro9",
 		"chainedMessageDelay": 50
@@ -361,7 +320,7 @@ var jsonMessages = {
 		
 		"firstActiveElement" : "button",
 		"progressBar" : {
-			"barText": "Searching nearby shops. It shouldn't be too bad.",
+			"barText": "Searching nearby shops. It shouldn't be too hard to find.",
 			"duration": 5000
 		},
 		"buttonAvailable": true,
@@ -376,18 +335,15 @@ var jsonMessages = {
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
 		
-		"firstActiveElement" : "progressBar",
-		"progressBar" : {
-			"barText": "",
-			"duration": 10000
-		},
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
 		
 		"chainedMessage": "intro11",
 		"chainedMessageDelay": 50
 	},
 	"intro11" : {
 		"flush" : true,
-		"loreText" : "So I'll need another components. They are called Elemental Orbs. Elements can't hold their form without dedicated containers. Additional benefit of Orbs are their safety. Thanks to small crystal inside Orb it can compress Element into much denser form and redirect any potential overflow into the void.<br><br>Luckily my grandmother used to play with one set of those. And so I found them in attic of our old house. <br>How can I describe it? Rusted pedestals, broken pipes, it's a mess on top of a bigger mess. At least the compression crystals seem to be in working condition. This should suffice for learning experience.",
+		"loreText" : "So I'll need another components. They are called Elemental Orbs. Elements can't hold their form without dedicated containers. Additional benefit of Orbs are their safety. Thanks to small crystal inside Orb it can compress Element into much denser form and redirect any potential overflow into the void.<br><br>Luckily my grandmother used to play with one set of those. And so I found them in attic of our old house.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Place Orbs on pedestals and make some space around.",
 		"gameplayFreezeDuration": -1,
@@ -395,7 +351,7 @@ var jsonMessages = {
 		"firstActiveElement" : "button",
 		"progressBar" : {
 			"barText": "",
-			"duration": 6000
+			"duration": 2000
 		},
 		"buttonAvailable": true,
 		
@@ -404,7 +360,7 @@ var jsonMessages = {
 	},
 	"intro12" : {
 		"flush" : true,
-		"loreText" : "And so my study began within this littered room. Quickly I met my biggest obstacle. Elemental Glove can only handle 1 Element at the time.<br> How I'm supposed to combine 4 of them?<br><br> Also Orbs seem to be disabled without infusing a bit of Element into crystal. This will create a base for that Element, enabling full functionality of the Orb.",
+		"loreText" : "How can I describe it? Rusted pedestals, broken pipes, it's a mess on top of a bigger mess. At least the compression crystals seem to be in working condition. This should suffice for learning experience. <br><br>And so my study began within this littered room. Quickly I met my biggest obstacle. Elemental Glove can only handle 1 Element at the time.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -417,7 +373,7 @@ var jsonMessages = {
 	},
 	"intro13" : {
 		"flush" : true,
-		"loreText" : "Once Orb is active it can be manipulated with pipes and valves. It seems that grandmother had some simple machinery around the room, but everything has crumbled to pieces.<br><br>Usually when two Elements happen to be in one container, they will interfere and dissapear in small flash of light. Well, I should start to investigate different possibilities first. Maybe if I'll try this at bigger concentration it'll behave differently?",
+		"loreText" : "How I'm supposed to combine 4 of them?<br>Also it seems that Orbs will be disabled until I infuse them with a bit of Element. This will create a base for that Element, enabling full functionality of the Orb. Once Orb is active it can be manipulated with pipes and valves. It seems that grandmother had some simple machinery around the room, but everything has crumbled to pieces.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -430,7 +386,7 @@ var jsonMessages = {
 	},
 	"intro14" : {
 		"flush" : true,
-		"loreText" : "Time to start experimenting. Book theory is one thing, real world is the other. I need to activate those Orbs.<br><br>Well, using random debris littering the floor I should be able to fill one Orb with Earth. Lets go.",
+		"loreText" : "Usually when two Elements happen to be in one container, they will interfere and dissapear in small flash of light. Well, I should start to investigate different possibilities first. Maybe if I'll try this at bigger concentration it'll behave differently?<br>Well, it's time to start experimenting. Book theory is one thing, real world is the other. I need to activate those Orbs.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Begin your experiment.",
 		"gameplayFreezeDuration": -1,
@@ -443,7 +399,7 @@ var jsonMessages = {
 	},
 	"intro15" : {
 		"flush" : true,
-		"loreText" : "One more thing before actually doing anything.<br><br>I decided to make all my interactions with Orbs slow and steady. I don't want to destroy them by clicking too fast.",
+		"loreText" : "Well, using random debris littering the floor I should be able to fill one Orb with Earth. Lets go.<br><br>Right, one more thing before actually doing anything.<br><br>I decided to make all my interactions with Orbs slow and steady. I don't want to destroy them by clicking too fast.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Below all Orbs is indicator. You can only click on Orb while it's fully green.",
 		"gameplayFreezeDuration": -1,
@@ -484,7 +440,20 @@ var jsonMessages = {
 	},
 	"reset1" : {
 		"flush" : true,
-		"loreText" : "Aftermath of the situation: My body has all it's pieces. At least I think so.<br>Every Element inside Orbs disappeared. That's bad, I worked hard to collect so much of them.<br>Machines seem to be fine, but my crystals inside exploded, slightly damaging tanks. I guess I'll need to upgrade machine tanks again.<br><br>Now for the Crystals inside Orbs themselves. Hm... Strange. Crystal bases are left intact, but the compression crystals inside orb that caused implosion is vibrating at high rate. I need to restart my machinery and test this crystal out.",
+		"loreText" : "Aftermath of the situation: My body has all it's pieces. At least I think so.<br>Every Element inside Orbs disappeared. That's bad, I worked hard to collect so much of them.<br>Machines seem to be fine, but my crystals inside exploded, slightly damaging tanks. I guess I'll need to upgrade machine tanks again.",
+		"loreFreezeDuration": -1,
+		"gameplayText" : "Repair damaged components and get everything back in place.",
+		"gameplayFreezeDuration": -1,
+		
+		"firstActiveElement" : "button",
+		"buttonAvailable": true,
+		
+		"chainedMessage": "reset1.1",
+		"chainedMessageDelay": 50
+	},
+	"reset1.1" : {
+		"flush" : true,
+		"loreText" : "Now, for the Crystals inside Orbs themselves. Hm... Strange. Crystal bases are left intact, but the compression crystals inside orb that caused implosion is vibrating at high rate. I need to repair my machinery and test this crystal out.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Repair damaged components and get everything back in place.",
 		"gameplayFreezeDuration": -1,
@@ -521,7 +490,7 @@ var jsonMessages = {
 		"firstActiveElement" : "button",
 		"progressBar" : {
 			"barText": "",
-			"duration": 6000
+			"duration": 2000
 		},
 		"buttonAvailable": true,
 		
@@ -579,7 +548,7 @@ var jsonMessages = {
 		"firstActiveElement" : "button",
 		"progressBar" : {
 			"barText": "Testing phase 1/2.",
-			"duration": 6000
+			"duration": 4000
 		},
 		"buttonAvailable": true,
 		
@@ -596,7 +565,7 @@ var jsonMessages = {
 		"firstActiveElement" : "button",
 		"progressBar" : {
 			"barText": "Testing phase 2/2.",
-			"duration": 12000
+			"duration": 4000
 		},
 		"buttonAvailable": true,
 		
@@ -666,11 +635,12 @@ var jsonMessages = {
 	"base0" : {
 		"flush" : true,
 		"loreText" : "Base of Earth Orb has been filled. Now I can truly start filling it with Earth.",
-		"loreFreezeDuration": 4000,
-		"gameplayText" : "",
-		"gameplayFreezeDuration": -1,
+		"loreFreezeDuration": 1000,
+		"gameplayText" : "Also first upgrade appeared at the bottom of the page.",
+		"gameplayFreezeDuration": 1000,
 		
-		"firstActiveElement" : "none"
+		"firstActiveElement" : "button",
+		"buttonAvailable": true
 	},
 	"base1" : {
 		"flush" : true,
@@ -709,7 +679,7 @@ var jsonMessages = {
 		"firstActiveElement" : "button",
 		"progressBar" : {
 			"barText": "",
-			"duration": 12000
+			"duration": 4000
 		},
 		"buttonAvailable": true,
 		
@@ -736,8 +706,8 @@ var jsonMessages = {
 		
 		"firstActiveElement" : "button",
 		"progressBar" : {
-			"barText": "Searching for parts.",
-			"duration": 12000
+			"barText": "Searching for another set of machine parts.",
+			"duration": 6000
 		},
 		"buttonAvailable": true,
 		
@@ -767,7 +737,7 @@ var jsonMessages = {
 	"upgradeBought0" : {
 		"loreText" : "<br>Now I don't need to fill Earth manually. What a relief.",
 		"loreFreezeDuration": 5000,
-		"gameplayText" : "Autoclicker will get slightly better as the game progresses",
+		"gameplayText" : " | Autoclicker will get slightly better as the game progresses",
 		"gameplayFreezeDuration": 5000,
 		
 		"firstActiveElement" : "none"
@@ -781,8 +751,8 @@ var jsonMessages = {
 		
 		"firstActiveElement" : "button",
 		"progressBar" : {
-			"barText": "Searching for another set of machine parts.",
-			"duration": 12000
+			"barText": "Searching for machine parts.",
+			"duration": 4000
 		},
 		"buttonAvailable": true
 	},
@@ -838,8 +808,8 @@ var jsonMessages = {
 		"flush" : true,
 		"loreText" : "I think I came up with a way of manually forcing reaction using my glove without the use of reagent.<br><br>It's going to be inefficient, but I can turn 4 Earth inside Liquefier into some Water by clicking Water Orb.",
 		"loreFreezeDuration": 16000,
-		"gameplayText" : "",
-		"gameplayFreezeDuration": -1,
+		"gameplayText" : "Try to fill Water Orb after Liquefier fills up.",
+		"gameplayFreezeDuration": 16000,
 		
 		"firstActiveElement" : "none",
 		
