@@ -1127,7 +1127,6 @@ var messageAlive = 0;
 var tempMessage;
 var disablePuns = false;
 function sendMessageJSON(msgId) {
-	document.documentElement.scrollTop = 0;
 	tempMessage = jsonMessages[msgId];
 	
 	var log = document.getElementById("chatLog");
