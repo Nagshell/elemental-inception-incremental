@@ -78,7 +78,9 @@ function loop(timestamp) {
 	var ticksDoneThisRound = 0;
 	while(accumulatedTime > 50 && ticksDoneThisRound++ < 3) {
 		accumulatedTime-=50;
-		chatTrimmer(50);
+		if(ticksDoneThisRound == 1) {
+			chatTrimmer(50);
+		}
 		if(!freezeGameplay) {
 			if(accumulatedTime > 100) {
 				document.getElementById("cutsceneIndicator").innerHTML = "Accumulated time:<br>"+accumulatedTime.toFixed(0) + " ms";
@@ -87,6 +89,7 @@ function loop(timestamp) {
 			}
 			tick();
 		} else {
+			ticksDoneThisRound = 3;
 			document.getElementById("cutsceneIndicator").innerHTML = "Gameplay paused<br>Check Chatbox";
 		}
 	}
