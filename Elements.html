@@ -7,7 +7,7 @@
 </head>
 
 <body id="overlord">
-<div class="container" id="containerButton" style="display:none;">
+<div class="container" id="containerButton" style="padding:10px;display:none;">
 	<div style="padding : 2px 5px;"><button id="tabButton0" class="tabButton" onclick="switchTab(0)"> Main Setup </button></div>
 	<div style="padding : 2px 5px;"><button id="tabButton1" class="tabButton" onclick="switchTab(1)"> Full Scale Preview</button></div>
 	<div style="padding : 2px 5px;"><button id="tabButton2" class="tabButton" onclick="switchTab(2)"> Log </button></div>
@@ -16,6 +16,8 @@
 	<div style="padding : 2px 5px;"><button id="tabButton5" class="tabButton" onclick="switchTab(5)"> Tutorial </button></div>
 	<div style="padding : 2px 5px;"><button id="tabButton6" class="tabButton" onclick="switchTab(6)"> Options </button></div>
 </div>
+<button class="tabButton" id="skipButton" onclick="skipIntro()">Skip Intro</button>
+<button class="tabButton" onclick="document.documentElement.scrollTop = document.documentElement.scrollHeight;">Scroll to bottom</button>
 <div class="container" id="chat" style="padding-left: 25px">
 	<div class="chatMessage" id="chatMessage">
 		<div class="chatMessageLore" id="chatMessageLore"></div>
@@ -27,7 +29,6 @@
 		<div class="chatMessageGameplay" id="chatMessageGameplay"></div>
 	</div>
 </div>
-<button class="tabButton" id="skipButton" onclick="skipIntro()">Skip Intro</button>
 <div id="tab0" style="display:none; padding-left: 25px">
 	<div style="text-align:center; height: 100%; padding-top:6px; padding-bottom:6px; font-size:26px; background-color: #1D1D1D;">Elemental Orbs</div>
 	<div class="container" id="containerElement" style="display:none;">
@@ -401,6 +402,7 @@
 
 </div>
 <p id="test"></p>
+<button class="tabButton" onclick="document.documentElement.scrollTop = 0;">Scroll to top</button>
 </body>
 <script type="application/javascript" src="Messages.js" ></script>
 <script type="application/javascript" src="Elements.js"></script>
