@@ -34,9 +34,6 @@ var dynamicData = {
 		"power" : 4
 	},
 	"golems" : [],
-	//"golems" : ["Earth","Water","Air","Fire"],
-	//"golems" : ["Infernal"],
-	//"golems" : ["Earth","Water","Air","Fire","Mud","Steam","Ice","Magma","Sand","Infernal"],
 	"conversionMachines" : [
 		{
 			"name" : "Liquefier",
@@ -1923,7 +1920,7 @@ var functionData = {
 	"resetData" : function(){resetData();},
 	"combineGolems" : function(){combineGolems();},
 	"tabSwitch" : function(oC,arg1){
-		if(dynamicData.tabStatus.disabled) {
+		if(dynamicData.tabStatus[arg1].disabled) {
 			return;
 		}
 		tempData.activeTab = arg1;
