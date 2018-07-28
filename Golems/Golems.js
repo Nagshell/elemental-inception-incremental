@@ -3,10 +3,10 @@
 var elem = ["Earth","Water","Air","Fire"];
 
 var timeToAutoSave = 1*60*1000;
-
+var lastTimestamp;
 function loop(timestamp) {
-	if(!dynamicData.lastTimestamp) {
-		dynamicData.lastTimestamp = timestamp;
+	if(!lastTimestamp) {
+		lastTimestamp = timestamp;
 	}
 	if(dynamicData.popupActive) {
 		tempData.canvasTicks += 1;
@@ -14,12 +14,12 @@ function loop(timestamp) {
 	} else if(cutsceneActive) {
 		cutsceneActive.advanceCutscene(timestamp - lastTimestamp);
 	} else {
-		timeToAutoSave-= timestamp - dynamicData.lastTimestamp;
+		timeToAutoSave-= timestamp - lastTimestamp;
 		if(timeToAutoSave < 0) {
 			timeToAutoSave = 1*60*1000;
 			saveData();
 		}
-		dynamicData.accumulatedTime += timestamp - dynamicData.lastTimestamp;
+		dynamicData.accumulatedTime += timestamp - lastTimestamp;
 		var rounds = 0;
 		while(dynamicData.accumulatedTime > 16 && rounds++<2) {
 			dynamicData.accumulatedTime-=16*rounds*rounds;
@@ -419,8 +419,6 @@ function setup() {
 		}
 	}
 	
-	//addMergeButton();
-	
 	for(var i=0;i<5;i++) {
 		for(var j=0;j<5;j++) {
 			if(i!==j) {
@@ -430,7 +428,8 @@ function setup() {
 					"y1" : 0,
 					"y2" : 30,
 					"arg1" : j,
-					"clicked" : "tabSwitch"
+					"clicked" : "tabSwitch",
+					"disableHighlight" : "checkDisabledTab"
 				});
 			}
 		}
@@ -514,10 +513,6 @@ function setup() {
 	
 	requestAnimationFrame(loop);
 	lore.addLore("start0");
-	//lore.addLore("catalyst1");
-	//for(var l in lore.loreMessages)
-		//lore.addLore(l);
-	//lore.addLore("start1");
 	loadData();
 }
 
@@ -548,6 +543,7 @@ function createGolem(type) {
 		case 0:
 			addUpgrade("stash0");
 			addUpgrade("machineSpeed0");
+			dynamicData.tabStatus[1].disabled = false;
 			break;
 		case 1:
 			addMergeButton();
@@ -602,7 +598,7 @@ function saveData() {
 
 function loadData() {
 	var temporaryLoadedData = JSON.parse(localStorage.getItem("dynamicData"));
-	if(temporaryLoadedData.hardResetActivated === true) {
+	if(temporaryLoadedData.hardResetActivated) {
 		saveData();
 		return;
 	}
@@ -618,6 +614,7 @@ function loadData() {
 
 function resetData() {
 	dynamicData.hardResetActivated = true;
+	saveData();
 	location.reload();
 }
 setup();
