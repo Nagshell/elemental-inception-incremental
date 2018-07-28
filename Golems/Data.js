@@ -1090,7 +1090,7 @@ var staticData = {
 					return "Increase rotation speed of crystals with rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce elements 2x faster.";
+					return "Rift will produce elements a bit faster.";
 				},
 				"additions" : [
 					{
@@ -1120,7 +1120,7 @@ var staticData = {
 					return "Increase rotation speed of crystals with rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce elements 2x faster.";
+					return "Rift will produce elements a bit faster.";
 				},
 				"additions" : [
 					{
@@ -1150,7 +1150,7 @@ var staticData = {
 					return "Increase rotation speed of crystals with rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce elements 2x faster.";
+					return "Rift will produce elements a bit faster.";
 				},
 				"additions" : [
 					{
@@ -1183,7 +1183,7 @@ var staticData = {
 					return "Increase rotation speed of crystals with rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce elements 2x faster.";
+					return "Rift will produce elements a bit faster.";
 				},
 				"additions" : [
 					{
@@ -1215,7 +1215,7 @@ var staticData = {
 					return "Increase rotation speed of crystals with rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce elements 2x faster.";
+					return "Rift will produce elements a bit faster.";
 				},
 				"additions" : [
 					{
