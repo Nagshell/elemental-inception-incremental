@@ -263,7 +263,7 @@ var dynamicData = {
 	"lore" : {
 		"messages" : ["","","",""],
 		"lengths" : [],
-		"maxScroll" : -520
+		"maxScroll" : -320
 	},
 	"mergingButton" : null,
 	"punCounter" : 0,
