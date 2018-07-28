@@ -3,7 +3,7 @@ var dynamicData = {
 	"accumulatedTime" : 0,
 	"elementalTanks" : {
 		"Earth" : {
-			"amount" : 1,
+			"amount" : 0,
 			"gained" : 0,
 			"record" : [],
 			"change" : 0
@@ -778,12 +778,7 @@ var staticData = {
 	"upgrades" : {
 		"rift0" : {
 			"name" : "Open Earth Rift",
-			"costs" : [
-				{
-						"type" : "Earth",
-						"amount" : 1
-				}
-			],
+			"costs" : [],
 			"starting" : true,
 			"chained" : "rift1",
 			"effect" : function() {
