@@ -80,7 +80,7 @@ function redrawFloating(tab) {
 }
 
 function draw() {
-	ctxActive.resetTransform();
+	ctxActive.setTransform(1, 0, 0, 1, 0, 0);
 	ctxActive.clearRect(0, 0, 800, 800);
 	
 	ctxActive.font = "14px Arial";
@@ -403,16 +403,16 @@ function drawMainBackground(ctx) {
 	ctx.save();
 	var y = 110;
 	oMachine = dynamicData.conversionMachines[0];
-	draw2ValverBackground(ctx,689,y,oMachine.name,0,1);
+	draw2ValverBackground(ctx,689,y,oMachine.name,0,1,1);
 	y+=63;
 	oMachine = dynamicData.conversionMachines[1];
-	draw2ValverBackground(ctx,689,y,oMachine.name,1,3);
+	draw2ValverBackground(ctx,689,y,oMachine.name,1,3,2);
 	y+=63;
 	oMachine = dynamicData.conversionMachines[2];
-	draw2ValverBackground(ctx,689,y,oMachine.name,2,3);
+	draw2ValverBackground(ctx,689,y,oMachine.name,2,3,3);
 	y+=63;
 	oMachine = dynamicData.conversionMachines[3];
-	draw2ValverBackground(ctx,689,y,oMachine.name,0,3);
+	draw2ValverBackground(ctx,689,y,oMachine.name,0,3,0);
 	y+=63;
 	oMachine = dynamicData.utilityMachines[0];
 	if(oMachine.unlocked) {
@@ -480,7 +480,11 @@ function draw4ValverBackground(ctx,x,y,machineName) {
 	ctx.fillRect(x+55,y+57,30,30);
 }
 
-function draw2ValverBackground(ctx,x,y,machineName,elementalIdLeft,elementalIdRight) {
+function draw2ValverBackground(ctx,x,y,machineName,elementalIdLeft,elementalIdRight,elementalProductId) {
+	if(elementalProductId > -1) {
+		ctx.fillStyle = staticData.elementalColor[elementalProductId][3];
+		ctx.fillRect(x,y,108,24);
+	}
 	ctx.strokeRect(x,y,108,58);
 	ctx.fillStyle = staticData.textColor;
 	ctx.fillText(machineName,x+54,y+11);
@@ -821,13 +825,6 @@ function drawMainSetupActive(ctx) {
 		
 		ctx.save();
 		ctx.translate(80,0);
-		
-		ctx.fillStyle = staticData.elementalColor[elementalTranlator[oCMachine.product.type]][2];
-		ctx.beginPath();
-		ctx.arc(-30,0,60,-Math.PI/3,Math.PI/3);
-		ctx.arc(30,0,60,2*Math.PI/3,4*Math.PI/3);
-		ctx.fill();
-		
 		
 		ctx.fillStyle = "#060606";
 		ctx.beginPath();

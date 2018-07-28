@@ -11,7 +11,7 @@ function endCutscene() {
 	cutsceneActive = null;
 }
 function startDraw() {
-	ctxActive.resetTransform();
+	ctxActive.setTransform(1, 0, 0, 1, 0, 0);
 	ctxActive.clearRect(0,0,800,800);
 	ctxActive.font = "14px Arial";
 	ctxActive.textBaseline = "middle";
