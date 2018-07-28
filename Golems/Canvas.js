@@ -160,26 +160,28 @@ function drawTabs(ctx) {
 	ctx.textAlign = "center";
 	ctx.translate(100,0);
 	for(var i=0;i<5;i++) {
-		ctx.beginPath();
-		ctx.moveTo(0,0);
-		ctx.lineTo(0,30);
-		ctx.lineTo(110,30);
-		ctx.lineTo(110,0);
-		ctx.stroke();
-		ctx.save();
-		if(i===tempData.activeTab) {
-			ctx.fillStyle = "#230023";
-			dynamicData.tabStatus[i].highlight = false;
-		} else if(dynamicData.tabStatus[i].highlight) {
-			ctx.fillStyle = "#343400";
+		if(!dynamicData.tabStatus[i].disabled) { 
+			ctx.beginPath();
+			ctx.moveTo(0,0);
+			ctx.lineTo(0,30);
+			ctx.lineTo(110,30);
+			ctx.lineTo(110,0);
+			ctx.stroke();
+			ctx.save();
+			if(i===tempData.activeTab) {
+				ctx.fillStyle = "#230023";
+				dynamicData.tabStatus[i].highlight = false;
+			} else if(dynamicData.tabStatus[i].highlight) {
+				ctx.fillStyle = "#343400";
+			}
+			ctx.fill();
+			ctx.restore();
+			
+			ctx.save();
+			ctx.fillStyle = staticData.textColor;
+			ctx.fillText(staticData.tabNames[i],55,15);
+			ctx.restore();
 		}
-		ctx.fill();
-		ctx.restore();
-		
-		ctx.save();
-		ctx.fillStyle = staticData.textColor;
-		ctx.fillText(staticData.tabNames[i],55,15);
-		ctx.restore();
 		ctx.translate(120,0);
 	}
 	ctx.restore();
@@ -495,14 +497,14 @@ function drawElementalTankBackground(ctx,elementId) {
 	ctx.fillStyle = staticData.elementalColor[elementId][2];
 	for(var i=dynamicData.stats.pipes.level;i>0;i-=1) {
 		ctx.beginPath();
-		ctx.arc(80,0,80-i*4,-Math.PI/2,0);
-		ctx.arc(200-i*4,0,40,-Math.PI,Math.PI/2,true);
+		ctx.arc(80,0,80-i*8,-Math.PI/2,0);
+		ctx.arc(200-i*8,0,40,-Math.PI,Math.PI/2,true);
 		ctx.lineTo(200,40);
 		ctx.lineTo(200,44);
-		ctx.lineTo(200-i*4,44);
-		ctx.arc(200-i*4,0,44,Math.PI/2,-Math.PI);
-		ctx.arc(80,0,76-i*4,0,-Math.PI/2,true);
-		ctx.lineTo(80,-80+i*4);
+		ctx.lineTo(200-i*8,44);
+		ctx.arc(200-i*8,0,44,Math.PI/2,-Math.PI);
+		ctx.arc(80,0,76-i*8,0,-Math.PI/2,true);
+		ctx.lineTo(80,-80+i*8);
 		
 		ctx.stroke();
 		
@@ -817,14 +819,21 @@ function drawMainSetupActive(ctx) {
 		
 		ctx.rotate(Math.PI/2);
 		
-		ctx.fillStyle = "#060606";
+		ctx.save();
+		ctx.translate(80,0);
+		
+		ctx.fillStyle = staticData.elementalColor[elementalTranlator[oCMachine.product.type]][2];
 		ctx.beginPath();
-		ctx.arc(80,0,31,0,Math.PI*2);
+		ctx.arc(-30,0,60,-Math.PI/3,Math.PI/3);
+		ctx.arc(30,0,60,2*Math.PI/3,4*Math.PI/3);
 		ctx.fill();
 		
 		
-		ctx.save();
-		ctx.translate(80,0);
+		ctx.fillStyle = "#060606";
+		ctx.beginPath();
+		ctx.arc(0,0,31,0,Math.PI*2);
+		ctx.fill();
+		
 		ctx.rotate(tempData.machineRota/2);
 		
 		ctx.fillStyle = staticData.elementalColor[elementalTranlator[oCMachine.ingredient.type]][1];
@@ -1087,6 +1096,7 @@ function drawElementalTankRift(ctx,elementId) {
 		ctx.stroke();
 		ctx.beginPath();
 		ctx.arc(0,0,16,0,Math.PI*2);
+		ctx.lineTo(20,0);
 		ctx.stroke();
 		
 		var progressBar = (dynamicData.rifts.delay/dynamicData.rifts.maxDelay)*Math.PI*2;
@@ -1403,7 +1413,7 @@ function drawNumber(ctx,x,y,amount,prefix) {
 	}
 	if(amount > 9999) {
 		ctx.textAlign = "left";
-		ctx.fillText(amount.toExponential(2),x,y);
+		ctx.fillText(amount.toExponential(2).replace('+',''),x,y);
 	} else {
 		ctx.textAlign = "right";
 		ctx.fillText(amount.toFixed(1),x+57,y);
