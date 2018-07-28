@@ -80,7 +80,12 @@ function hover(x,y) {
 		var oE = dynamicData.clickableElements[tempData.activeTab][i];
 		if(x >= oE.x1 && y >= oE.y1 && x <= oE.x2 && y <= oE.y2) {
 			if(oE.clicked) {
-				temp = true;
+				if(oE.disableHighlight) {
+					temp = !functionData[oE.disableHighlight](oE,oE.arg1,oE.arg2);
+				} else {
+					temp = true;
+				}
+				
 				highlight.x1 = oE.x1;
 				highlight.x2 = oE.x2;
 				highlight.y1 = oE.y1;

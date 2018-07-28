@@ -1,6 +1,5 @@
 var dynamicData = {
 	"popupActive" : null,
-	"lastTimestamp" : null,
 	"accumulatedTime" : 0,
 	"elementalTanks" : {
 		"Earth" : {
@@ -254,7 +253,8 @@ var dynamicData = {
 		{
 			"highlight" : false
 		},{
-			"highlight" : false
+			"highlight" : false,
+			"disabled" : true
 		},{
 			"highlight" : false
 		},{
@@ -266,7 +266,7 @@ var dynamicData = {
 	"lore" : {
 		"messages" : ["","","",""],
 		"lengths" : [],
-		"maxScroll" : -420
+		"maxScroll" : -520
 	},
 	"mergingButton" : null,
 	"punCounter" : 0,
@@ -548,6 +548,7 @@ var staticData = {
 					if(!dynamicData.golemEffects["Infernal"].appliedEffect) {
 						lore.addLore("ending0");
 						dynamicData.nextStagePreview = true;
+						dynamicData.tabStatus[1].disabled = true;
 						dynamicData.golemEffects["Infernal"].appliedEffect = true;
 					}
 				}
@@ -1922,6 +1923,9 @@ var functionData = {
 	"resetData" : function(){resetData();},
 	"combineGolems" : function(){combineGolems();},
 	"tabSwitch" : function(oC,arg1){
+		if(dynamicData.tabStatus.disabled) {
+			return;
+		}
 		tempData.activeTab = arg1;
 		highlight.active = false;
 	},
@@ -1996,5 +2000,8 @@ var functionData = {
 	},
 	"scrollLoreStop" : function(oC,arg1) {
 		tempData.loreScrollSpeed = 0;
+	},
+	"checkDisabledTab" : function (oC,arg1) {
+		return dynamicData.tabStatus[arg1].disabled;
 	}
 }
