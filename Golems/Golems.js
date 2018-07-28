@@ -196,6 +196,7 @@ function boughtUpgrade(oC,upgradeId) {
 	if(bAffordable) {
 		for(var i=0;i<oUpgrade.costs.length;i++) {
 			var elementCleared = oUpgrade.costs[i].type;
+			dynamicData.elementalTanks[elementCleared].record = [];
 			dynamicData.elementalTanks[elementCleared].amount = 0;
 			for(var j=0;j<4;j++) {
 				var oCMachine = dynamicData.conversionMachines[j];
@@ -518,6 +519,7 @@ function setup() {
 
 function createGolem(type) {
 	for(var i=0;i<4;i++) {
+		dynamicData.elementalTanks[elem[i]].record = [];
 		var cObject = dynamicData.conversionMachines[i];
 		if(dynamicData.utilityMachines[2].unlocked) {
 			dynamicData.elementalTanks[elem[i]].amount = Math.pow(dynamicData.utilityMachines[2].tanks[i].amount, 1/dynamicData.utilityMachines[2].divider);
