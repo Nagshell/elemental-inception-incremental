@@ -842,7 +842,7 @@ function drawMainSetupActive(ctx) {
 		ctx.lineWidth = 3;
 		for(var j=0;j<4;j++) {
 			ctx.beginPath();
-			ctx.arc(-13,0,13,0,3/2*Math.PI*r2);
+			ctx.arc(-13,0,13,0,-3/2*Math.PI*r2,true);
 			ctx.stroke();
 			ctx.rotate(Math.PI/2);
 		}
