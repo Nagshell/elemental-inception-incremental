@@ -476,7 +476,7 @@ var staticData = {
 		},
 		"Ice" : {
 			"effect" : function() {
-				dynamicData.golemEffects.production["Earth"] += dynamicData.conversionMachines[0].ingredient.used * 1.3;
+				dynamicData.golemEffects.production["Earth"] += dynamicData.conversionMachines[0].ingredient.used * 1.7;
 			},
 			"x" : 0,
 			"y" : 180,
