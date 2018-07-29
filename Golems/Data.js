@@ -3,7 +3,7 @@ var dynamicData = {
 	"accumulatedTime" : 0,
 	"elementalTanks" : {
 		"Earth" : {
-			"amount" : 1,
+			"amount" : 0,
 			"gained" : 0,
 			"record" : [],
 			"change" : 0
@@ -263,7 +263,7 @@ var dynamicData = {
 	"lore" : {
 		"messages" : ["","","",""],
 		"lengths" : [],
-		"maxScroll" : -520
+		"maxScroll" : -320
 	},
 	"mergingButton" : null,
 	"punCounter" : 0,
@@ -476,7 +476,7 @@ var staticData = {
 		},
 		"Ice" : {
 			"effect" : function() {
-				dynamicData.golemEffects.production["Earth"] += dynamicData.conversionMachines[0].ingredient.used * 1.3;
+				dynamicData.golemEffects.production["Earth"] += dynamicData.conversionMachines[0].ingredient.used * 1.7;
 			},
 			"x" : 0,
 			"y" : 180,
@@ -778,12 +778,7 @@ var staticData = {
 	"upgrades" : {
 		"rift0" : {
 			"name" : "Open Earth Rift",
-			"costs" : [
-				{
-						"type" : "Earth",
-						"amount" : 1
-				}
-			],
+			"costs" : [],
 			"starting" : true,
 			"chained" : "rift1",
 			"effect" : function() {
@@ -1095,7 +1090,7 @@ var staticData = {
 					return "Increase rotation speed of crystals with rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce elements 2x faster.";
+					return "Rift will produce elements a bit faster.";
 				},
 				"additions" : [
 					{
@@ -1125,7 +1120,7 @@ var staticData = {
 					return "Increase rotation speed of crystals with rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce elements 2x faster.";
+					return "Rift will produce elements a bit faster.";
 				},
 				"additions" : [
 					{
@@ -1155,7 +1150,7 @@ var staticData = {
 					return "Increase rotation speed of crystals with rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce elements 2x faster.";
+					return "Rift will produce elements a bit faster.";
 				},
 				"additions" : [
 					{
@@ -1188,7 +1183,7 @@ var staticData = {
 					return "Increase rotation speed of crystals with rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce elements 2x faster.";
+					return "Rift will produce elements a bit faster.";
 				},
 				"additions" : [
 					{
@@ -1220,7 +1215,7 @@ var staticData = {
 					return "Increase rotation speed of crystals with rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce elements 2x faster.";
+					return "Rift will produce elements a bit faster.";
 				},
 				"additions" : [
 					{

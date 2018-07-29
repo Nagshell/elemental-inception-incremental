@@ -600,6 +600,9 @@ function saveData() {
 
 function loadData() {
 	var temporaryLoadedData = JSON.parse(localStorage.getItem("dynamicData"));
+	if(!temporaryLoadedData) {
+		return;
+	}
 	if(temporaryLoadedData.hardResetActivated) {
 		saveData();
 		return;
