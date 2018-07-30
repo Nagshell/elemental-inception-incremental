@@ -1,5 +1,5 @@
 var achievementsData = {
-	"achievementsUnlocked" : true,
+	"achievementsUnlocked" : false,
 	"mergeWatched" : false,
 	"achievementList" : {
 		"upgrades" : {
