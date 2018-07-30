@@ -561,7 +561,7 @@ function drawMainActive(ctx) {
 		ctx.fillText(tempData.currentBanner.text,tempData.currentBannerPosition,740);
 		lore.bannerScroll(ctx);
 	} else {
-		if(tempData.ticksWithoutBanner++ > 54000) {
+		if(tempData.ticksWithoutBanner++ > 24000) {
 			lore.idleBanner();
 			tempData.ticksWithoutBanner = 0;
 		}
@@ -1375,7 +1375,42 @@ function drawLoreActive(ctx) {
 }
 
 function drawStatsActive(ctx) {
+	ctx.fillRect(100,100,600,600);
+	ctx.strokeRect(100,100,600,600);
 	
+	if(achievementsData.achievementsUnlocked) {
+		ctx.save();
+		ctx.font = "18px Arial";
+		ctx.textAlign = "center";
+		ctx.fillStyle = staticData.textColor;
+		ctx.fillText("Achievements",400,130);
+		var y = 160;
+		for(var achievementId in achievementsData.achievementList) {
+			var achievement = achievementsData.achievementList[achievementId];
+			ctx.save();
+			
+			ctx.fillText(achievement.name,400,y+20);
+			ctx.font = "14px Arial";
+			ctx.fillText(achievement.description,400,y+55);
+			
+			if(achievement.unlocked) {
+				ctx.strokeStyle = "#B5A348";
+			} else {
+				ctx.strokeStyle = "#773333";
+			}
+			ctx.strokeRect(200,y,400,75);
+			y+=85;
+			ctx.restore();
+		}
+		ctx.restore();
+	} else {
+		ctx.save();
+		ctx.font = "18px Arial";
+		ctx.textAlign = "center";
+		ctx.fillStyle = staticData.textColor;
+		ctx.fillText("Finish the game once to unlock achievements.",400,130);
+		ctx.restore();
+	}
 }
 
 function drawOptionsActive(ctx) {
@@ -1398,7 +1433,7 @@ function drawOptionsActive(ctx) {
 	ctx.fillStyle = staticData.textColor;
 	ctx.fillText("Manual Save",400,140);
 	ctx.fillText("Manual Load",400,200);
-	ctx.fillText("Hard Reset",400,260);
+	ctx.fillText("Soft Reset",400,260);
 }
 
 function drawNumber(ctx,x,y,amount,prefix) {
