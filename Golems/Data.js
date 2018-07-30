@@ -1,4 +1,42 @@
+var achievementsData = {
+	"achievementsUnlocked" : true,
+	"mergeWatched" : false,
+	"achievementList" : {
+		"upgrades" : {
+			"unlocked" : false,
+			"name" : "Gold is the only color I see.",
+			"description" : "Get all upgrades."
+		},
+		"golems" : {
+			"unlocked" : false,
+			"name" : "But I wanted more of them...",
+			"description" : "Get all Golems."
+		},
+		"tanks" : {
+			"unlocked" : false,
+			"name" : "They were supposed to be infinite.",
+			"description" : "Get 1e300 of an Element"
+		},
+		"stash" : {
+			"unlocked" : false,
+			"name" : "Doing things the long way.",
+			"description" : "Do not unlock Stash"
+		},
+		"infernal" : {
+			"unlocked" : false,
+			"name" : "The ending makes no damn sense this way.",
+			"description" : "Complete the stage while you have only 1 Golem."
+		},
+		"flow" : {
+			"unlocked" : false,
+			"name" : "Are you a RTS veteran?",
+			"description" : "Do not buy Flow System upgrade"
+		}
+	}
+};
+
 var dynamicData = {
+	"version" : 2,
 	"popupActive" : null,
 	"accumulatedTime" : 0,
 	"elementalTanks" : {
@@ -222,7 +260,8 @@ var dynamicData = {
 			"level" : 1
 		},
 		"valvesAdded" : 0,
-		"golemCounter" : 0,	
+		"golemCounter" : 0,
+		"upgradeCounter" : 0
 	},
 	"golemEffects" : {
 		"production" : {
@@ -294,7 +333,7 @@ var staticData = {
 	],
 	"textColor" : "#CCCCCC",
 	"borderColor" : "#999999",
-	"tabNames" : ["Main","Golems","Lore","Number-o-Wall","Options"],
+	"tabNames" : ["Main","Golems","Lore","Achievements","Options"],
 	"mergeButtonTooltip" : {
 		"topRow" : function() {
 			return "Merge Golems";
@@ -467,10 +506,10 @@ var staticData = {
 					return "Magma Golem < Earth + Fire";
 				},
 				"middleRow" : function() {
-					return "Usage of all reagents decreased 4 times";
+					return "Reagents are 4 times as effective.";
 				},
 				"bottomRow" : function() {
-					return "";
+					return "You can use only a quarter of them without decreasing production.";
 				}
 			}
 		},
@@ -547,6 +586,17 @@ var staticData = {
 						dynamicData.nextStagePreview = true;
 						dynamicData.tabStatus[1].disabled = true;
 						dynamicData.golemEffects["Infernal"].appliedEffect = true;
+						
+						achievementsData.achievementsUnlocked = true;
+						if(dynamicData.golems.length === 1) {
+							achievementsData.achievementList.infernal.unlocked = true;
+						}
+						if(!dynamicData.upgradesBought.stash0) {
+							achievementsData.achievementList.stash.unlocked = true;
+						}
+						if(!dynamicData.upgradesBought.machineOverflow) {
+							achievementsData.achievementList.flow.unlocked = true;
+						}
 					}
 				}
 			},
@@ -664,7 +714,7 @@ var staticData = {
 				}
 				
 				if(oMyself.active) {
-					oMyself.speed += oMyself.baseSpeed/100;
+					oMyself.speed += oMyself.baseSpeed/500;
 					oMyself.maxCooldown += 0.01;
 				} else {
 					oMyself.speed = oMyself.baseSpeed;
@@ -775,6 +825,7 @@ var staticData = {
 		}
 	],
 	
+	"upgradeNumber" : 32,
 	"upgrades" : {
 		"rift0" : {
 			"name" : "Open Earth Rift",

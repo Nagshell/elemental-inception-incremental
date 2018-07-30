@@ -173,15 +173,19 @@ function tick() {
 	for(var i=0;i<4;i++) {
 		dynamicData.elementalTanks[elem[i]].gained += dynamicData.golemEffects.production[elem[i]];
 	}
-	
+	var maxedCounter = 0;
 	for(var j=0;j<4;j++) {
 		dynamicData.elementalTanks[elem[j]].amount += dynamicData.elementalTanks[elem[j]].gained;
+		
 		if(dynamicData.elementalTanks[elem[j]].amount > 1e300) {
 			dynamicData.elementalTanks[elem[j]].amount = 1e300;
+			maxedCounter++;
 		}
 		dynamicData.elementalTanks[elem[j]].gained = 0;
 	}
-	
+	if(maxedCounter === 4) {
+		achievementsData.achievementList.tanks.unlocked = true;
+	}
 }
 
 
@@ -206,7 +210,10 @@ function boughtUpgrade(oC,upgradeId) {
 					oCMachine.reagent.amount = 0;
 			}
 		}
-		
+		dynamicData.stats.upgradeCounter++;
+		if(dynamicData.stats.upgradeCounter === 32) {
+			achievementsData.achievementList.upgrades.unlocked = true;
+		}
 		dynamicData.upgradesBought[upgradeId] = true;
 		oUpgrade.effect();
 		redraw[0] = true;
@@ -560,6 +567,9 @@ function createGolem(type) {
 			dynamicData.stats.golemCounter++;
 			return;
 			break;
+		case 15:
+			achievementsData.achievementList.golems.unlocked = true;
+			break;
 	}
 	dynamicData.stats.golemCounter++;
 	dynamicData.golems.push(type);
@@ -596,6 +606,7 @@ function combineGolems() {
 
 function saveData() {
 	localStorage.setItem("dynamicData",JSON.stringify(dynamicData));
+	localStorage.setItem("achievementsData",JSON.stringify(achievementsData));
 }
 
 function loadData() {
@@ -603,6 +614,14 @@ function loadData() {
 	if(!temporaryLoadedData) {
 		return;
 	}
+	if(!temporaryLoadedData.version || temporaryLoadedData.version < dynamicData.version) {
+		alert("Sorry, due to recent patch I need to make a hard reset on older saves. Game is not very long so I hope it's okay. I promise once playthroughs will start to get longer I'll make it not necessary.");
+		dynamicData.hardResetActivated = true;
+		saveData();
+		location.reload();
+		return;
+	}
+	achievementsData = JSON.parse(localStorage.getItem("achievementsData"));
 	if(temporaryLoadedData.hardResetActivated) {
 		saveData();
 		return;
@@ -618,8 +637,10 @@ function loadData() {
 }
 
 function resetData() {
-	dynamicData.hardResetActivated = true;
-	saveData();
-	location.reload();
+	if(confirm("Are you sure? It'll wipe everything except earned achievements.")) {
+		dynamicData.hardResetActivated = true;
+		saveData();
+		location.reload();
+	}
 }
 setup();
