@@ -8,6 +8,9 @@ function click(x,y) {
 		return;
 	}
 	if(cutsceneActive) {
+		if(cutsceneActive.skipable && (x-100)*(x-100)+(y-100)*(y-100) < 45*45) {
+			endCutscene();
+		}
 		return;
 	}
 	if(tempData.activeTab == 0 && dynamicData.nextStagePreview) {
