@@ -201,7 +201,12 @@ function boughtUpgrade(oC,upgradeId) {
 		for(var i=0;i<oUpgrade.costs.length;i++) {
 			var elementCleared = oUpgrade.costs[i].type;
 			dynamicData.elementalTanks[elementCleared].record = [];
-			dynamicData.elementalTanks[elementCleared].amount = 0;
+			if(dynamicData.utilityMachines[2].unlocked) {
+				dynamicData.elementalTanks[elementCleared].amount = Math.pow(dynamicData.utilityMachines[2].tanks[elementalTranlator[elementCleared]].amount, 1/dynamicData.utilityMachines[2].divider);
+			} else {
+				dynamicData.elementalTanks[elementCleared].amount = 0;
+			}
+			
 			for(var j=0;j<4;j++) {
 				var oCMachine = dynamicData.conversionMachines[j];
 				if(oCMachine.ingredient.type === elementCleared)
