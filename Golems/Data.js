@@ -36,7 +36,7 @@ var achievementsData = {
 };
 
 var dynamicData = {
-	"version" : 2,
+	"version" : 2.1,
 	"popupActive" : null,
 	"accumulatedTime" : 0,
 	"elementalTanks" : {
