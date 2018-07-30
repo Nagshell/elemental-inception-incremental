@@ -76,8 +76,9 @@ var lore = {
 				"Sadly including that barrier inside my tanks would render them unusable with\n"+
 				"my current subspace piping technology, I should still be able to make a special container\n"+
 				"that'd be safe from waves. Pumping Elements in and out of it will be problematic.\n"+
-				"Well, I have a plan. It'll only be able to retrieve small portion of stored Elements,\n"+
-				"but that's still better than starting from scratch each time.\n"+
+				"Well, I have a plan. I'll only be able to retrieve a small portion of stored Elements\n"+
+				"after each wave created during process of upgrading or golem creation, but it's better.\n"+
+				"than starting from scratch\n"+
 				"\n----------------------------------------------------------------------------------"
 		},
 		"merge0" : {
