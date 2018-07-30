@@ -15,9 +15,21 @@ function startDraw() {
 	ctxActive.clearRect(0,0,800,800);
 	ctxActive.font = "14px Arial";
 	ctxActive.textBaseline = "middle";
+	ctxActive.textAlign = "center";
 	ctxActive.strokeStyle = staticData.borderColor;
 	ctxActive.lineWidth = 2;
 	ctxActive.fillStyle = "#181818";
+}
+
+function endDraw() {
+	if(cutsceneActive && cutsceneActive.skipable) {
+		ctxActive.beginPath();
+		ctxActive.arc(100,100,45,0,Math.PI*2);
+		ctxActive.fill();
+		ctxActive.stroke();
+		ctxActive.fillStyle = staticData.textColor;
+		ctxActive.fillText("Skip",100,100);
+	}
 }
 
 var cutsceneActive = false;
@@ -60,6 +72,8 @@ var cutscenes = {
 				cutsceneCanvasCtx[i].clearRect(0,0,800,800);
 			}
 			
+			cutsceneActive.quickMode = achievementsData.mergeWatched;
+			cutsceneActive.skipable = achievementsData.mergeWatched;
 			currentCtx = cutsceneCanvasCtx[0];
 			currentCtx.lineWidth = 2;
 			currentCtx.fillStyle = "#000000";
@@ -94,6 +108,7 @@ var cutscenes = {
 			currentCtx.restore();
 			
 			ctxActive.drawImage(cutsceneCanvas[0],0,0);
+			endDraw();
 		},
 		"drawSegments" : [
 			function(tRatio) {
@@ -238,7 +253,7 @@ var cutscenes = {
 				cutsceneActive.drawCombinedGolem(0,0,0,cutsceneActive.colors3);
 			},
 			function() {
-				cutsceneActive.quickMode = true;
+				achievementsData.mergeWatched = true;
 				endCutscene();
 			}
 		],
@@ -554,7 +569,7 @@ var cutscenes = {
 	"preview" : {
 		"segmentTimePassed" : 0,
 		"segmentCount" : 0,
-		"segmentDuration" : [8000,4000,10000,60000,0],
+		"segmentDuration" : [8000,4000,10000,6000,0],
 		"startCutscene" : function() {
 
 			if(cutsceneCanvas.length < 1) {
