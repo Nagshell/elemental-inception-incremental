@@ -1176,9 +1176,9 @@ function drawFillRatiosActive(ctx) {
 		r2 /= rMax;
 		
 		ctx.fillStyle = staticData.elementalColor[elementalTranlator[oCMachine.ingredient.type]][0];
-		ctx.fillRect(722,135+53*i,20,30*r1);	
+		ctx.fillRect(722,135+63*i,20,25*r1);	
 		ctx.fillStyle = staticData.elementalColor[elementalTranlator[oCMachine.reagent.type]][0];
-		ctx.fillRect(774,135+53*i,20,30*r2);
+		ctx.fillRect(774,135+63*i,20,25*r2);
 	}
 	oCMachine = dynamicData.utilityMachines[0];
 	if(oCMachine.unlocked) {
