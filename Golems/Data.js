@@ -811,7 +811,7 @@ var staticData = {
 				},
 				"middleRow" : function() {
 					var oCM = dynamicData.utilityMachines[0];
-					return "";
+					return "Returns root of stored Elements after buying an upgrade / creating Golem.";
 				},
 				"bottomRow" : function() {
 					return "";
@@ -1562,7 +1562,7 @@ var staticData = {
 					return "Create isolated machine for storing elements.";
 				},
 				"middleRow" : function() {
-					return "Stash lets you get some elements back after creating golem.";
+					return "Stash lets you get root of stored elements back after creating golem or buying upgrade.";
 				},
 				"bottomRow" : function() {
 					return "";
@@ -1594,7 +1594,7 @@ var staticData = {
 					return "Make Stash much better!";
 				},
 				"middleRow" : function() {
-					return "Stash lets you get some elements back after creating golem.";
+					return "Stash lets you get root of stored elements back after creating golem or buying upgrade.";
 				},
 				"bottomRow" : function() {
 					return "Improve design of valves attached to Stash.";
@@ -1626,7 +1626,7 @@ var staticData = {
 					return "Make Stash great again!";
 				},
 				"middleRow" : function() {
-					return "Stash lets you get some elements back after creating golem.";
+					return "Stash lets you get root of stored elements back after creating golem or buying upgrade.";
 				},
 				"bottomRow" : function() {
 					return "Isolate vital parts of pipes leading in and out of stash.";
