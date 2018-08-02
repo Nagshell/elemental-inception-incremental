@@ -1,14 +1,15 @@
 function canvasClick(event) {
 	var canvasBox = canvas.getBoundingClientRect();
-	var x = event.clientX - canvasBox.left-1;
-	var y = event.clientY - canvasBox.top-1;
+	var x = (event.clientX - canvasBox.left-1)*800/canvasBox.width;
+	var y = (event.clientY - canvasBox.top-1)*800/canvasBox.height;
+	
 	click(x,y);
 }
 
 function canvasHover(event) {
 	var canvasBox = canvas.getBoundingClientRect();
-	var x = event.clientX - canvasBox.left-1;
-	var y = event.clientY - canvasBox.top-1;
+	var x = (event.clientX - canvasBox.left-1)*800/canvasBox.width;
+	var y = (event.clientY - canvasBox.top-1)*800/canvasBox.height;
 	hover(x,y);
 }
 
@@ -1176,9 +1177,9 @@ function drawFillRatiosActive(ctx) {
 		r2 /= rMax;
 		
 		ctx.fillStyle = staticData.elementalColor[elementalTranlator[oCMachine.ingredient.type]][0];
-		ctx.fillRect(722,135+63*i,20,25*r1);	
+		ctx.fillRect(722,135+63*i,20,26*r1);	
 		ctx.fillStyle = staticData.elementalColor[elementalTranlator[oCMachine.reagent.type]][0];
-		ctx.fillRect(774,135+63*i,20,25*r2);
+		ctx.fillRect(774,135+63*i,20,26*r2);
 	}
 	oCMachine = dynamicData.utilityMachines[0];
 	if(oCMachine.unlocked) {
