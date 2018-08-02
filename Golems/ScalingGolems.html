@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>The First Alkahistorian</title>
+<link rel="stylesheet" type="text/css" href="Golems.css">
+<style>
+@media all and (orientation:portrait) {
+	body {
+		overflow:hidden;
+	}
+	#canvasMain {
+		width:100vw;
+	}
+}
+
+@media all and (orientation:landscape) {
+	body {
+		overflow:hidden;
+	}
+	#canvasMain {
+		height:100vh;
+	}
+}
+</style>
+</head>
+
+<body oncontextmenu="return false;">
+	<canvas id="canvasMain" width=800; height=800;></canvas>
+</body>
+<script type="application/javascript" src="Data.js"></script>
+<script type="application/javascript" src="Lore.js"></script>
+<script type="application/javascript" src="Clicker.js"></script>
+<script type="application/javascript" src="Cutscene.js"></script>
+<script type="application/javascript" src="Canvas.js"></script>
+<script type="application/javascript" src="Golems.js"></script>
+</html>
