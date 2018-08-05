@@ -36,7 +36,8 @@ var achievementsData = {
 };
 
 var dynamicData = {
-	"version" : 2.1,
+	"version" : 2.2,
+	"colorblindMode" : false,
 	"popupActive" : null,
 	"accumulatedTime" : 0,
 	"elementalTanks" : {
@@ -297,6 +298,8 @@ var dynamicData = {
 			"highlight" : false
 		},{
 			"highlight" : false
+		},{
+			"highlight" : false
 		}
 	],
 	"lore" : {
@@ -311,7 +314,7 @@ var dynamicData = {
 	"nextStagePreview" : false,
 };
 var tempData = {
-	"activeTab" : 4,
+	"activeTab" : 0,
 	"canvasTicks" : 0,
 	"catalystRota" : 0,
 	"machineRota" : 0,
@@ -700,6 +703,12 @@ var staticData = {
 		{
 			"effect" : function() {
 				var oMyself = dynamicData.utilityMachines[0];
+				if(oMyself.tanks[0].amount > 1e300) {
+					oMyself.tanks[0].amount = 1e300;
+				}
+				if(oMyself.tanks[1].amount > 1e300) {
+					oMyself.tanks[1].amount = 1e300;
+				}
 				if(oMyself.maxBoost === 0) {
 					return;
 				}
@@ -2046,5 +2055,56 @@ var functionData = {
 	},
 	"checkDisabledTab" : function (oC,arg1) {
 		return dynamicData.tabStatus[arg1].disabled;
-	}
+	},
+	"showFAQ" : function(oC,arg1) {
+		FAQvisible = true;
+	},
+	"hideFAQ" : function(oC,arg1) {
+		FAQvisible = false;
+	},
+	"toggleColorblind" : function(oC,arg1) {
+		dynamicData.colorblindMode = !dynamicData.colorblindMode;
+	},
+	"mainHub" : function(oC,arg1) {
+		saveData();
+		window.location.href = "https://nagshell.github.io/elemental-inception-incremental";
+	},
+	"patreonLink" : function(oC,arg1) {
+		window.open('https://www.patreon.com/user?u=12559765', '_blank');
+	},
+	"paypalLink" : function(oC,arg1) {
+		window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TNTLB3ZN7BVUQ', '_blank');
+	},
+	"exportData" : function(oC,arg1) {
+		functionData.rejectedImport();
+		if(confirm("Once you accept save data will be copied to your clipboard.")) {
+			var tempElem = document.getElementById("clipbordElement");
+			tempElem.style.display = '';
+			tempElem.value = saveDataToCode();
+			tempElem.focus();
+			tempElem.select();
+			document.execCommand('copy');
+			tempElem.style.display = 'none';
+		}
+	},
+	"importData" : function(oC,arg1) {
+		var tempElem = document.getElementById("clipbordElement");
+		tempElem.style.display = '';
+		tempElem.value='';
+		alert("Copy your data into text-box below game window and press accept after that.");
+		document.getElementById("clipboardAccept").style.display = '';
+		document.getElementById("clipboardCancel").style.display = '';
+	},
+	"confirmedImport" : function(oC,arg1) {
+		var tempElem = document.getElementById("clipbordElement");
+		loadData(tempElem.value);
+		tempElem.style.display = 'none';
+		document.getElementById("clipboardAccept").style.display = 'none';
+		document.getElementById("clipboardCancel").style.display = 'none';
+	},
+	"rejectedImport" : function(oC,arg1) {
+		document.getElementById("clipbordElement").style.display = 'none';
+		document.getElementById("clipboardAccept").style.display = 'none';
+		document.getElementById("clipboardCancel").style.display = 'none';
+	},
 }
