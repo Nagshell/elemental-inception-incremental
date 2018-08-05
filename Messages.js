@@ -35,7 +35,7 @@ var jsonMessages = {
 	},
 	"outro1" : {
 		"flush" : true,
-		"loreText" : "So my plan at first was to touch every Orb at the same time. Technically Glove can only hold one element, but this way I connect to all elements at the same time. I tried it before. Complete failure, interactions between elements caused all Orbs to empty themselves.",
+		"loreText" : "So my plan at first was to touch every Orb at the same time. Technically Glove can only hold one element, but this way I connect to all elements at the same time. I tried it before. Complete failure, the interactions between elements caused all Orbs to empty themselves.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -61,7 +61,7 @@ var jsonMessages = {
 	},
 	"outro3" : {
 		"flush" : true,
-		"loreText" : "Alright, I'm ready. I will take my Elemental Glove and touch each Golem with one of my fingers. Hopefully combined elements will be able to heal my father.",
+		"loreText" : "Alright, I'm ready. I will take my Elemental Glove and touch each Golem with one of my fingers. Hopefully, the combined elements will be able to heal my father.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -91,7 +91,7 @@ var jsonMessages = {
 	},
 	"outro5" : {
 		"flush" : true,
-		"loreText" : "\"Thou shalt not meddle with Elements! What have you done?! Go back where you came from and never do this again!\"",
+		"loreText" : "\"Thou shalt not meddle with Elements! What have you done?! Go back where you came from, and never do this again!\"",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -121,7 +121,7 @@ var jsonMessages = {
 	},
 	"outro7" : {
 		"flush" : true,
-		"loreText" : "I woke up slowly. I was still in attic of my old family house. At least walls look similar. Every single movable piece in room disappeared. What happened? What happened?!",
+		"loreText" : "I woke up slowly. I was still in attic of my old family house. At least the walls look similar. Every single movable piece in room disappeared. What happened? What happened?!",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -134,7 +134,7 @@ var jsonMessages = {
 	},
 	"outro8" : {
 		"flush" : true,
-		"loreText" : "Nothing.<br>I don't remember what happened after hearing that shout.<br>I might not remember, but I know one thing certainly did change.<br>Elemental Glove I used is now fused with whole arm. I cannot take it off. I don't need to take it off. I think I can use it to go back there. To find out what lies on the other side.",
+		"loreText" : "Nothing.<br>I don't remember what happened after hearing that shout.<br>I might not remember, but I know one thing certainly did change.<br>The Elemental Glove I used is now fused with my whole arm. I cannot take it off. I don't need to take it off. I think I can use it to go back there. To find out what lies on the other side.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -201,9 +201,9 @@ var jsonMessages = {
 	},
 	"intro1" : {
 		"flush" : true,
-		"loreText" : "Few words about this message box. When something appears here it'll usually freeze gameplay.<br><br>This box usually contains lore, while small box below will contain gameplay tip or action activated with button.",
+		"loreText" : "A few words about this message box: when something appears here it'll usually freeze gameplay.<br><br>This box usually contains lore, while the small box below will contain a gameplay tip or action that is activated with the button.",
 		"loreFreezeDuration": -1,
-		"gameplayText" : "Sometimes after pressing button you'll have to wait for action to complete.",
+		"gameplayText" : "Sometimes after pressing the button you'll have to wait for action to complete.",
 		"gameplayFreezeDuration": -1,
 		
 		"firstActiveElement" : "button",
@@ -235,7 +235,7 @@ var jsonMessages = {
 	},
 	"intro3" : {
 		"flush" : true,
-		"loreText" : "My mentor told me story about Elements.<br><br>Legend tells that there was a wise Alchemist that mastered all fundamentals of the world as we know it.",
+		"loreText" : "My mentor told me a story about Elements.<br><br>Legend tells that there was a wise Alchemist that mastered all the fundamentals of the world as we know it.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Text can also dissapear in almost animated way.",
 		"gameplayFreezeDuration": 500,
@@ -261,7 +261,7 @@ var jsonMessages = {
 	},
 	"intro5" : {
 		"flush" : true,
-		"loreText" : "But now that my father fell deadly ill, that story became my last hope.",
+		"loreText" : "But now that my father has fallen deathly ill, that story has become my last hope.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -274,7 +274,7 @@ var jsonMessages = {
 	},
 	"intro6" : {
 		"flush" : true,
-		"loreText" : "I don't want to become god. Well, I would like to if possible.<br><br> But I just want to try researching mystic art of Elements. Maybe they will lead me to the discovery of unknown medicine that could help my father.",
+		"loreText" : "I don't want to become god. Well, I would like to if possible.<br><br> But I just want to try researching the mystic art of the Elements. Maybe they will lead me to the discovery of an unknown medicine that could help my father.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -287,7 +287,7 @@ var jsonMessages = {
 	},
 	"intro7" : {
 		"flush" : true,
-		"loreText" : "Scholars give him no more than a month.<br><br>So I don't have too much time. Armed with a lot of motivation I made my way towards * Library.",
+		"loreText" : "Scholars give him no more than a month.<br><br>So I don't have too much time. Armed with a lot of motivation I made my way towards the * Library.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -313,7 +313,7 @@ var jsonMessages = {
 	},
 	"intro9" : {
 		"flush" : true,
-		"loreText" : "After few days of reading about it in library, I began to understand the basics. All you need to do begin experimenting is Elemental Glove.",
+		"loreText" : "After few days of reading about it in library, I began to understand the basics. All you need to do begin experimenting is an Elemental Glove.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Begin your search",
 		"gameplayFreezeDuration": -1,
@@ -330,7 +330,7 @@ var jsonMessages = {
 	},
 	"intro10" : {
 		"flush" : true,
-		"loreText" : "I found Glove at affordable price in toy store. People don't think highly of them. I hope that I'll be able to use it better than most.<br><br>By itself Glove is quite limited though.",
+		"loreText" : "I found Glove at affordable price in toy store. People don't think highly of them. I hope that I'll be able to use it better than most.<br><br>By itself the Glove is quite limited though.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -343,7 +343,7 @@ var jsonMessages = {
 	},
 	"intro11" : {
 		"flush" : true,
-		"loreText" : "So I'll need another components. They are called Elemental Orbs. Elements can't hold their form without dedicated containers. Additional benefit of Orbs are their safety. Thanks to small crystal inside Orb it can compress Element into much denser form and redirect any potential overflow into the void.<br><br>Luckily my grandmother used to play with one set of those. And so I found them in attic of our old house.",
+		"loreText" : "So I'll need other components. They are called Elemental Orbs. Elements can't hold their form without dedicated containers. An additional benefit of Orbs are their safety. Thanks to small crystal inside Orb it can compress Element into much denser form and redirect any potential overflow into the void.<br><br>Luckily my grandmother used to play with one set of those. And so I found them in attic of our old house.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Place Orbs on pedestals and make some space around.",
 		"gameplayFreezeDuration": -1,
@@ -373,7 +373,7 @@ var jsonMessages = {
 	},
 	"intro13" : {
 		"flush" : true,
-		"loreText" : "How I'm supposed to combine 4 of them?<br>Also it seems that Orbs will be disabled until I infuse them with a bit of Element. This will create a base for that Element, enabling full functionality of the Orb. Once Orb is active it can be manipulated with pipes and valves. It seems that grandmother had some simple machinery around the room, but everything has crumbled to pieces.",
+		"loreText" : "How am I supposed to combine 4 of them?<br>Also it seems that Orbs will be disabled until I infuse them with a bit of Element. This will create a base for that Element, enabling full functionality of the Orb. Once an Orb is active it can be manipulated with pipes and valves. It seems that grandmother had some simple machinery around the room, but everything has crumbled to pieces.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -440,7 +440,7 @@ var jsonMessages = {
 	},
 	"reset1" : {
 		"flush" : true,
-		"loreText" : "Aftermath of the situation: My body has all it's pieces. At least I think so.<br>Every Element inside Orbs disappeared. That's bad, I worked hard to collect so much of them.<br>Machines seem to be fine, but my crystals inside exploded, slightly damaging tanks. I guess I'll need to upgrade machine tanks again.",
+		"loreText" : "Aftermath of the situation: My body has all it's pieces. At least I think so.<br>Every Element inside the Orbs disappeared. That's bad, I worked hard to collect so much of them.<br>Machines seem to be fine, but my crystals inside exploded, slightly damaging tanks. I guess I'll need to upgrade machine tanks again.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Repair damaged components and get everything back in place.",
 		"gameplayFreezeDuration": -1,
