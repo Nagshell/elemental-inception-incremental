@@ -33,8 +33,11 @@ var floatingCanvas = [
 	[null,null],
 	[null,null],
 	[null,null],
+	[null,null],
 	[null,null]
 ];
+
+var FAQvisible = false;
 
 var canvas = document.getElementById("canvasMain");
 canvas.addEventListener("mousemove", canvasHover);
@@ -43,7 +46,7 @@ canvas.addEventListener("wheel", canvasClick);
 
 var ctxActive = canvas.getContext("2d");
 var canvasTooltip = null;
-var redraw = [true,true,true,true,true];
+var redraw = [true,true,true,true,true,true];
 
 function redrawFloating(tab) {
 	redraw[tab] = false;
@@ -120,11 +123,14 @@ function draw() {
 			drawOptionsActive(ctxActive);
 			break;
 		case 5:
+			drawDonate(ctxActive);
 			break;
 	}
 	ctxActive.restore();
 	ctxActive.drawImage(floatingCanvas[tempData.activeTab][1],0,0);
-	
+	if(FAQvisible) {
+		drawFAQ(ctxActive);
+	}
 	if(dynamicData.popupActive) {
 		ctxActive.save();
 		ctxActive.fillRect(100,400,600,300);
@@ -463,8 +469,19 @@ function drawMainBackground(ctx) {
 	ctx.translate(-400,-400);
 	
 	
-	ctx.fillRect(20,700,760,80);
-	ctx.strokeRect(20,700,760,80);
+	ctx.fillRect(120,700,660,80);
+	ctx.strokeRect(120,700,660,80);
+	
+	ctx.save();
+	ctx.lineWidth = 2;
+	ctx.fillRect(10,700,100,30);
+	ctx.strokeRect(10,700,100,30);
+	ctx.fillRect(10,750,100,30);
+	ctx.strokeRect(10,750,100,30);
+	ctx.fillStyle = staticData.textColor;
+	ctx.fillText("FAQ",60,715);
+	ctx.fillText("Donate",60,765);
+	ctx.restore();
 }
 
 function draw4ValverBackground(ctx,x,y,machineName) {
@@ -551,7 +568,7 @@ function drawMainActive(ctx) {
 	ctx.save();
 	ctx.fillStyle = "#080808";
 	ctx.beginPath();
-	ctx.rect(30,710,740,60);
+	ctx.rect(130,710,640,60);
 	ctx.fill();
 	ctx.clip();
 	
@@ -642,9 +659,15 @@ function drawSingleValveActive(ctx,x,y,elementalId,valveStatus) {
 	ctx.save();
 	ctx.translate(x+15,y+15);
 	if(valveStatus) {
-		ctx.fillStyle = "#337733";
+		if(dynamicData.colorblindMode)
+			ctx.fillStyle = "#777777";
+		else
+			ctx.fillStyle = "#337733";
 	} else {
-		ctx.fillStyle = "#773333";
+		if(dynamicData.colorblindMode)
+			ctx.fillStyle = "#333333";
+		else
+			ctx.fillStyle = "#773333";
 	}
 	ctx.beginPath();
 	ctx.arc(0,0,7,0,2*Math.PI);
@@ -1384,7 +1407,7 @@ function drawStatsActive(ctx) {
 		ctx.font = "18px Arial";
 		ctx.textAlign = "center";
 		ctx.fillStyle = staticData.textColor;
-		ctx.fillText("Achievements",400,130);
+		ctx.fillText("Achievements - Soft Reset lets you try to get them all.",400,130);
 		var y = 160;
 		for(var achievementId in achievementsData.achievementList) {
 			var achievement = achievementsData.achievementList[achievementId];
@@ -1431,10 +1454,30 @@ function drawOptionsActive(ctx) {
 	ctx.fillRect(330,240,140,40);
 	ctx.strokeRect(330,240,140,40);
 	
+	ctx.fillRect(100,300,200,40);
+	ctx.strokeRect(100,300,200,40);
+	
+	ctx.fillRect(500,300,200,40);
+	ctx.strokeRect(500,300,200,40);
+	
+	ctx.fillRect(220,400,160,40);
+	ctx.strokeRect(220,400,160,40);
+	
+	ctx.fillRect(420,400,160,40);
+	ctx.strokeRect(420,400,160,40);
+	
 	ctx.fillStyle = staticData.textColor;
 	ctx.fillText("Manual Save",400,140);
 	ctx.fillText("Manual Load",400,200);
 	ctx.fillText("Soft Reset",400,260);
+	if(dynamicData.colorblindMode) {
+		ctx.fillText("Turn colorblind valves mode off.",200,320);
+	} else {
+		ctx.fillText("Turn colorblind valves mode on.",200,320);
+	}
+	ctx.fillText("Go back to stage select.",600,320);
+	ctx.fillText("Experimental Import",300,420);
+	ctx.fillText("Experimental Export",500,420);
 }
 
 function drawNumber(ctx,x,y,amount,prefix) {
@@ -1457,4 +1500,63 @@ function drawNumber(ctx,x,y,amount,prefix) {
 
 function estimateBannerLength(bannerText,ctx) {
 	return ctx.measureText(bannerText).width;
+}
+
+function drawFAQ(ctx) {
+	ctx.save();
+	ctx.globalAlpha = 0.9;
+	ctx.fillRect(120,120,560,560);
+	ctx.strokeRect(120,120,560,560);
+	ctx.globalAlpha = 1;
+	ctx.fillStyle = staticData.textColor;
+	ctx.textAlign = "center";
+	ctx.fillText("Frequently asked questions",400,160);
+	ctx.textAlign = "left";
+	ctx.fillText("Q1 : Why can't I see capacity of the machines?",160,200);
+	ctx.fillText("A1 : With new crystals machines have near infinite capacity. (1e300)",160,220);
+	ctx.fillText("Q2 : When gauge on machine looks full, why Element still flows into it?",160,260);
+	ctx.fillText("A2 : With new capacity gauges behave differently. They show",160,280);
+	ctx.fillText(     "ratio of Elements inside machine. This helps you visualise",190,300);
+	ctx.fillText(     "which part of conversion recipe would need improvement.",190,320);
+	ctx.fillText("Q3 : I have both valves open on machine, but I don't produce anything. Help?",160,360);
+	ctx.fillText("A3 : 1. Secondary value on tank shows absolute change of amount per second.",160,380);
+	ctx.fillText(     "2. Before you get specific upgrade there are no limits in amount",190,400);
+	ctx.fillText(     "Element that can flow into machine, which sometimes can lead to",190,420);
+	ctx.fillText(     "situation where everything you produce just flows into machines.",190,440);
+	ctx.fillText(     "Try disabling valve with dominant Element and enable valve with lesser one.",190,460);
+	ctx.fillText(     "This will empty out the machine over time.",190,480);
+	ctx.fillText("Q4 : How does Stash work exactly?",160,520);
+	ctx.fillText("A4 : Whenever you make a golem or buy an upgrade stash activates,",160,540);
+	ctx.fillText(     "letting out nth root of stored Elements. At first it's 4th root,",190,560);
+	ctx.fillText(     "but with futher upgrades it can get up to square root.",190,580);
+	ctx.fillText("Q5 : Is Mayonnaisse an Element?",160,620);
+	ctx.fillText("A5 : No. I don't know what are you talking about.",160,640);
+}
+
+function drawDonate(ctx) {
+	ctx.font = "14px Arial";
+	ctx.textBaseline = "middle";
+	ctx.textAlign = "center";
+	ctx.strokeStyle = staticData.borderColor;
+	ctx.lineWidth = 2;
+	ctx.fillStyle = "#181818";
+	
+	ctx.fillRect(150,200,500,300);
+	ctx.strokeRect(150,200,500,300);
+	
+	ctx.strokeRect(330,450,140,40);
+	
+	ctx.strokeRect(330,450,140,40);
+	ctx.strokeRect(230,350,140,40);
+	ctx.strokeRect(430,350,140,40);
+	
+	ctx.fillStyle = staticData.textColor;
+	
+	ctx.fillText("Patreon",300,370);
+	ctx.fillText("Paypal",500,370);
+	ctx.fillText("Go back",400,470);
+	
+	ctx.fillText("This it the place if you really enjoyed my game",400,230);
+	ctx.fillText("and want to support me financially.",400,252);
+	ctx.fillText("Here are the links which you can use to do so.",400,274);
 }

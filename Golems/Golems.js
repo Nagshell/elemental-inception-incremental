@@ -432,7 +432,7 @@ function setup() {
 		}
 	}
 	
-	for(var i=0;i<5;i++) {
+	for(var i=0;i<6;i++) {
 		for(var j=0;j<5;j++) {
 			if(i!==j) {
 				dynamicData.clickableElements[i].push({
@@ -522,6 +522,80 @@ function setup() {
 		"y2" : 740,
 		"hovered" : "scrollLoreDownFast",
 		"unhovered" : "scrollLoreStop"
+	});
+	
+	
+	
+	
+	dynamicData.clickableElements[0].push({
+		"x1" : 10,
+		"x2" : 110,
+		"y1" : 700,
+		"y2" : 730,
+		"hovered" : "showFAQ",
+		"unhovered" : "hideFAQ"
+	});
+	dynamicData.clickableElements[0].push({
+		"x1" : 10,
+		"x2" : 110,
+		"y1" : 750,
+		"y2" : 780,
+		"arg1" : 5,
+		"clicked" : "tabSwitch",
+		"disableHighlight" : "checkDisabledTab"
+	});
+	dynamicData.clickableElements[4].push({
+		"x1" : 100,
+		"x2" : 300,
+		"y1" : 300,
+		"y2" : 340,
+		"clicked" : "toggleColorblind"
+	});
+	dynamicData.clickableElements[4].push({
+		"x1" : 500,
+		"x2" : 700,
+		"y1" : 300,
+		"y2" : 340,
+		"clicked" : "mainHub"
+	});
+	dynamicData.clickableElements[4].push({
+		"x1" : 220,
+		"x2" : 380,
+		"y1" : 400,
+		"y2" : 440,
+		"clicked" : "importData"
+	});
+	dynamicData.clickableElements[4].push({
+		"x1" : 420,
+		"x2" : 580,
+		"y1" : 400,
+		"y2" : 440,
+		"clicked" : "exportData"
+	});
+	dynamicData.clickableElements[5].push({
+		"x1" : 330,
+		"x2" : 470,
+		"y1" : 450,
+		"y2" : 490,
+		"arg1" : 0,
+		"clicked" : "tabSwitch",
+		"disableHighlight" : "checkDisabledTab"
+	});
+	dynamicData.clickableElements[5].push({
+		"x1" : 230,
+		"x2" : 370,
+		"y1" : 350,
+		"y2" : 390,
+		"arg1" : 0,
+		"clicked" : "patreonLink"
+	});
+	dynamicData.clickableElements[5].push({
+		"x1" : 430,
+		"x2" : 570,
+		"y1" : 350,
+		"y2" : 390,
+		"arg1" : 0,
+		"clicked" : "paypalLink"
 	});
 	
 	requestAnimationFrame(loop);
@@ -614,19 +688,28 @@ function saveData() {
 	localStorage.setItem("achievementsData",JSON.stringify(achievementsData));
 }
 
-function loadData() {
-	var temporaryLoadedData = JSON.parse(localStorage.getItem("dynamicData"));
-	if(!temporaryLoadedData) {
+function loadData(data) {
+	var temporaryLoadedData;
+	if(data) {
+		var object = JSON.parse(atob(data));
+		temporaryLoadedData = object.dynamic;
+	} else {
+		temporaryLoadedData = JSON.parse(localStorage.getItem("dynamicData"));
+		if(!temporaryLoadedData) {
+			return;
+		}
+	}
+	if(!temporaryLoadedData.version || temporaryLoadedData.version !== dynamicData.version) {
+		versionFixer(temporaryLoadedData);
 		return;
 	}
-	if(!temporaryLoadedData.version || temporaryLoadedData.version < dynamicData.version) {
-		alert("Sorry, due to recent patch I need to make a hard reset on older saves. Game is not very long so I hope it's okay. I promise once playthroughs will start to get longer I'll make it not necessary.");
-		dynamicData.hardResetActivated = true;
-		saveData();
-		location.reload();
-		return;
+	if(data) {
+		var object = JSON.parse(atob(data));
+		achievementsData = object.achievements;
+	} else {
+		achievementsData = JSON.parse(localStorage.getItem("achievementsData"));
 	}
-	achievementsData = JSON.parse(localStorage.getItem("achievementsData"));
+	
 	if(temporaryLoadedData.hardResetActivated) {
 		saveData();
 		return;
@@ -641,11 +724,116 @@ function loadData() {
 	highlight.active = false;
 }
 
+function saveDataToCode() {
+	return btoa(JSON.stringify({"dynamic": dynamicData, "achievements": achievementsData}));
+}
+
 function resetData() {
 	if(confirm("Are you sure? It'll wipe everything except earned achievements.")) {
 		dynamicData.hardResetActivated = true;
 		saveData();
 		location.reload();
+	}
+}
+function versionFixer(data) {
+	switch(data.version) {
+		case 2.1:
+			data.clickableElements[0].push({
+				"x1" : 10,
+				"x2" : 110,
+				"y1" : 700,
+				"y2" : 730,
+				"hovered" : "showFAQ",
+				"unhovered" : "hideFAQ"
+			});
+			data.clickableElements[0].push({
+				"x1" : 10,
+				"x2" : 110,
+				"y1" : 750,
+				"y2" : 780,
+				"arg1" : 5,
+				"clicked" : "tabSwitch",
+				"disableHighlight" : "checkDisabledTab"
+			});
+			data.clickableElements[4].push({
+				"x1" : 100,
+				"x2" : 300,
+				"y1" : 300,
+				"y2" : 340,
+				"clicked" : "toggleColorblind"
+			});
+			data.clickableElements[4].push({
+				"x1" : 500,
+				"x2" : 700,
+				"y1" : 300,
+				"y2" : 340,
+				"clicked" : "mainHub"
+			});
+			data.clickableElements[4].push({
+				"x1" : 220,
+				"x2" : 380,
+				"y1" : 400,
+				"y2" : 440,
+				"clicked" : "importData"
+			});
+			data.clickableElements[4].push({
+				"x1" : 420,
+				"x2" : 580,
+				"y1" : 400,
+				"y2" : 440,
+				"clicked" : "exportData"
+			});
+			data.clickableElements[5].push({
+				"x1" : 330,
+				"x2" : 470,
+				"y1" : 450,
+				"y2" : 490,
+				"arg1" : 0,
+				"clicked" : "tabSwitch",
+				"disableHighlight" : "checkDisabledTab"
+			});
+			data.clickableElements[5].push({
+				"x1" : 230,
+				"x2" : 370,
+				"y1" : 350,
+				"y2" : 390,
+				"arg1" : 0,
+				"clicked" : "patreonLink"
+			});
+			data.clickableElements[5].push({
+				"x1" : 430,
+				"x2" : 570,
+				"y1" : 350,
+				"y2" : 390,
+				"arg1" : 0,
+				"clicked" : "paypalLink"
+			});
+			
+			data.colorblindMode = false;
+			data.tabStatus.push({
+				"highlight" : false
+				});
+				
+			for(var j=0;j<5;j++) {
+				if(5!==j) {
+					dynamicData.clickableElements[5].push({
+						"x1" : 100+120*j,
+						"x2" : 210+120*j,
+						"y1" : 0,
+						"y2" : 30,
+						"arg1" : j,
+						"clicked" : "tabSwitch",
+						"disableHighlight" : "checkDisabledTab"
+					});
+				}
+			}
+			break;
+		default:
+			alert("Sorry, due to recent patch I need to make a hard reset on older saves. Game is not very long so I hope it's okay. I promise once playthroughs will start to get longer I'll make it not necessary.");
+			dynamicData.hardResetActivated = true;
+			saveData();
+			location.reload();
+			break;
 	}
 }
 setup();
