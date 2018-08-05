@@ -182,8 +182,26 @@ var lore = {
 				"You can now check out sneak peek of main mechanic of stage three.\n"+
 				"Click the circle in the middle of main setup.\n\n\n\n"+
 				"If you liked the game please consider supporting me.\n"+
-				"I'd love to work full time on this game.\n"
-		},
+				"I'd love to work full time on this game.\n"+
+				"\n----------------------------------------------------------------------------------\n\n\n"+
+				"Credits\n\n\n"+
+				"Production director\n"+
+				"Nagshell\n\n"+
+				"Art Design\n"+
+				"Nagshell\n\n"+
+				"Programming\n"+
+				"Nagshell\n\n"+
+				"Public Relations\n"+
+				"Nagshell\n\n"+
+				"Moral Support\n"+
+				"Silent but Deadly, Essi\n"+
+				"Loud sub-woof-er, Baster\n\n"+
+				"Supporters on Patreon\n"+
+				"\n"+
+				"PhantomLemon\n"+
+				"ranger10700\n"+
+				"Slav\n"
+				},
 		
 	},//"\n"+
 	"popupMessages" : {
@@ -278,7 +296,7 @@ var lore = {
 			tempData.currentBanner.bannerLength = estimateBannerLength(tempData.currentBanner.text,ctx);
 		}
 		
-		if(tempData.currentBanner.bannerLength + tempData.currentBannerPosition < 20) {
+		if(tempData.currentBanner.bannerLength + tempData.currentBannerPosition < 120) {
 			tempData.currentBannerPosition = 780;
 			if(tempData.nextBanners.length > 0) {
 				tempData.currentBanner = lore.bannerMessages[tempData.nextBanners.shift()];
