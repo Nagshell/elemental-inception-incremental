@@ -31,13 +31,20 @@ var achievementsData = {
 			"unlocked" : false,
 			"name" : "Are you a RTS veteran?",
 			"description" : "Do not buy Flow System upgrade"
+		},
+		"speed" : {
+			"unlocked" : false,
+			"name" : "How fast can you go?",
+			"description" : "",
+			"time" : 23*60*60*1000
 		}
 	}
 };
 
 var dynamicData = {
-	"version" : 2.2,
+	"version" : 2.21,
 	"colorblindMode" : false,
+	"startTime" : new Date(),
 	"popupActive" : null,
 	"accumulatedTime" : 0,
 	"elementalTanks" : {
@@ -599,6 +606,14 @@ var staticData = {
 						}
 						if(!dynamicData.upgradesBought.machineOverflow) {
 							achievementsData.achievementList.flow.unlocked = true;
+						}
+						
+						if(dynamicData.startTime) {
+							achievementsData.achievementList.speed.time = (new Date() - dynamicData.startTime);
+							if(achievementsData.achievementList.speed.time < (66*60+38)*1000) {
+								achievementsData.achievementList.speed.unlocked = true;
+							}
+							
 						}
 					}
 				}
