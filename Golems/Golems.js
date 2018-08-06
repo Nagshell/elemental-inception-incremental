@@ -684,9 +684,16 @@ function combineGolems() {
 }
 
 function saveData() {
+	if(achievementsData.achievementList.speed.time < 1000) {
+		achievementsData.achievementList.speed.unlocked = false;
+		achievementsData.achievementList.speed.time = 23*60*60*1000;
+		dynamicData.startTime = new Date();
+		dynamicData.startTime.setHours(dynamicData.startTime.getHours() - 2);
+	}
 	if(achievementsData.achievementList.speed.time < (90*60)*1000) {
 		achievementsData.achievementList.speed.unlocked = true;
 	}
+	
 	localStorage.setItem("dynamicData",JSON.stringify(dynamicData));
 	localStorage.setItem("achievementsData",JSON.stringify(achievementsData));
 }
