@@ -1399,8 +1399,8 @@ function drawLoreActive(ctx) {
 }
 
 function drawStatsActive(ctx) {
-	ctx.fillRect(100,100,600,600);
-	ctx.strokeRect(100,100,600,600);
+	ctx.fillRect(100,100,600,660);
+	ctx.strokeRect(100,100,600,660);
 	
 	if(achievementsData.achievementsUnlocked) {
 		ctx.save();
@@ -1415,14 +1415,34 @@ function drawStatsActive(ctx) {
 			
 			ctx.fillText(achievement.name,400,y+20);
 			ctx.font = "14px Arial";
-			ctx.fillText(achievement.description,400,y+55);
+			if(achievementId==='speed') {
+				if(!dynamicData.startTime) {
+					ctx.fillText("Finish stage under 90 min. Your timer will start on next Soft Reset.",400,y+55);
+				} else {
+					var shownTime = Math.floor(achievement.time/60000)+achievement.time%60000/100000;
+					shownTime = Math.floor(shownTime*100)/100;
+					if(achievement.unlocked) {
+						ctx.fillText("Your best time: "+shownTime.toFixed(2)+" min - Developer's time 66.38 min.",400,y+45);
+					} else {
+						ctx.fillText("Finish stage under 90 min. Your current best time : "+shownTime.toFixed(2)+" min.",400,y+45);
+					}
+					var time = (new Date() - dynamicData.startTime)
+					shownTime = Math.floor(time/60000)+time%60000/100000;
+					shownTime = Math.floor(shownTime*100)/100;
+					ctx.font = "10px Arial";
+					ctx.fillText("Current run : "+shownTime.toFixed(2)+" min",400,y+65);
+				}
+				
+			} else {
+				ctx.fillText(achievement.description,400,y+55);
+			}
 			
 			if(achievement.unlocked) {
 				ctx.strokeStyle = "#B5A348";
 			} else {
 				ctx.strokeStyle = "#773333";
 			}
-			ctx.strokeRect(200,y,400,75);
+			ctx.strokeRect(180,y,440,75);
 			y+=85;
 			ctx.restore();
 		}
