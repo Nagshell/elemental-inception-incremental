@@ -609,8 +609,8 @@ var staticData = {
 						}
 						
 						if(dynamicData.startTime) {
-							achievementsData.achievementList.speed.time = (new Date() - dynamicData.startTime);
-							if(achievementsData.achievementList.speed.time < (66*60+38)*1000) {
+							achievementsData.achievementList.speed.time = Math.min(achievementsData.achievementList.speed.time,(new Date() - dynamicData.startTime));
+							if(achievementsData.achievementList.speed.time < (90*60)*1000) {
 								achievementsData.achievementList.speed.unlocked = true;
 							}
 							
