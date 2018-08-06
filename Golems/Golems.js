@@ -684,7 +684,7 @@ function combineGolems() {
 }
 
 function saveData() {
-	if(achievementsData.achievementList.speed.time < 1000) {
+	if(achievementsData.achievementList.speed.time < 1000 || achievementsData.achievementList.speed.time.isNaN()) {
 		achievementsData.achievementList.speed.unlocked = false;
 		achievementsData.achievementList.speed.time = 23*60*60*1000;
 		dynamicData.startTime = new Date();
@@ -729,6 +729,7 @@ function loadData(data) {
 		return;
 	}
 	dynamicData = temporaryLoadedData;
+	dynamicData.startTime = new Date(dynamicData.startTime);
 	for(var i=0;i<5;i++)
 		redraw[i]=true;
 	tempData.activeTab = 0;
