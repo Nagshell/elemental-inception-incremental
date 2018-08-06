@@ -1426,7 +1426,7 @@ function drawStatsActive(ctx) {
 					} else {
 						ctx.fillText("Finish stage under 90 min. Your current best time : "+shownTime.toFixed(2)+" min.",400,y+45);
 					}
-					var time = (new Date() - dynamicData.startTime)
+					var time = ((new Date()) - dynamicData.startTime);
 					shownTime = Math.floor(time/60000)+time%60000/100000;
 					shownTime = Math.floor(shownTime*100)/100;
 					ctx.font = "10px Arial";
