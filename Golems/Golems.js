@@ -684,6 +684,9 @@ function combineGolems() {
 }
 
 function saveData() {
+	if(achievementsData.achievementList.speed.time < (90*60)*1000) {
+		achievementsData.achievementList.speed.unlocked = true;
+	}
 	localStorage.setItem("dynamicData",JSON.stringify(dynamicData));
 	localStorage.setItem("achievementsData",JSON.stringify(achievementsData));
 }
