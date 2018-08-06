@@ -688,6 +688,8 @@ function saveData() {
 	localStorage.setItem("achievementsData",JSON.stringify(achievementsData));
 }
 
+
+var achievementsVersion;
 function loadData(data) {
 	var temporaryLoadedData;
 	if(data) {
@@ -700,7 +702,7 @@ function loadData(data) {
 		}
 	}
 	if(!temporaryLoadedData.version || temporaryLoadedData.version !== dynamicData.version) {
-		versionFixer(temporaryLoadedData);
+		while(versionFixer(temporaryLoadedData)) {}
 		return;
 	}
 	if(data) {
@@ -709,7 +711,9 @@ function loadData(data) {
 	} else {
 		achievementsData = JSON.parse(localStorage.getItem("achievementsData"));
 	}
-	
+	while(achievementsVersion) {
+		chievoFixer();
+	}
 	if(temporaryLoadedData.hardResetActivated) {
 		saveData();
 		return;
@@ -737,6 +741,13 @@ function resetData() {
 }
 function versionFixer(data) {
 	switch(data.version) {
+		case 2.21:
+			return false;
+			break;
+		case 2.2:
+			achievementsVersion = 2.2;
+			data.version = 2.21;
+			break;
 		case 2.1:
 			data.clickableElements[0].push({
 				"x1" : 10,
@@ -827,12 +838,28 @@ function versionFixer(data) {
 					});
 				}
 			}
+			data.version = 2.2;
 			break;
 		default:
 			alert("Sorry, due to recent patch I need to make a hard reset on older saves. Game is not very long so I hope it's okay. I promise once playthroughs will start to get longer I'll make it not necessary.");
 			dynamicData.hardResetActivated = true;
 			saveData();
 			location.reload();
+			break;
+	}
+	return true;
+}
+
+function chievoFixer() {
+	switch(achievementsVersion) {
+		case 2.2:
+			achievementsData.achievementList.speed = {
+				"unlocked" : false,
+				"name" : "How fast can you go?",
+				"description" : "",
+				"time" : 23*60*60*1000
+			};
+			achievementsVersion = null;
 			break;
 	}
 }
