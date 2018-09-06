@@ -1,15 +1,1 @@
-Version 0.2 19.06.2018 - 21.06.2018
--Visual animation of whole system called Preview.
--Added cost display to orbs. It also updates text color to let player know if he actually can click orb to produce element.
--Thanks to u/robnugen few grammar mistakes have been corrected. I need more people like this. Thank you so much for active support \('_' )
--New message system. Both front-end (progress bars and buttons to continue) and back-end(separate file, json driven)
--Big rewrite of the story. Everything that was there is pretty much the same, but I heavily expanded elements that weren't explained too well.
--New version of punMaker(). Now with increased number of puns.
--Enhanced visuals of many parts of the UI.
--When game is in inactive tab javascript loops slow down. So now while game is inactive idle time accumulates and then is used up to catch up.
--Simple remake of log in a Log Tab.
-
-Version 0.1 13.06.2018 - 18.06.2018
--Initial release of feedback ready content
--Including punMaker()
--Features only stage 1 out of many
+TODO

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Elemental Shells</title>
+<link rel="stylesheet" type="text/css" href="Elements.css">
+</head>
+
+<body id="overlord">
+<div class="container" id="containerButton" style="padding:10px;display:none;">
+	<div style="padding : 2px 5px;"><button id="tabButton0" class="tabButton" onclick="switchTab(0)"> Main Setup </button></div>
+	<div style="padding : 2px 5px;"><button id="tabButton1" class="tabButton" onclick="switchTab(1)"> Full Scale Preview</button></div>
+	<div style="padding : 2px 5px;"><button id="tabButton2" class="tabButton" onclick="switchTab(2)"> Log </button></div>
+	<div style="padding : 2px 5px;"><button id="tabButton3" class="tabButton" onclick="switchTab(3)"> Number-o-Wall </button></div>
+	<div style="padding : 2px 5px;"><button id="tabButton4" class="tabButton" onclick="switchTab(4)"> Developer's Info </button></div>
+	<div style="padding : 2px 5px;"><button id="tabButton5" class="tabButton" onclick="switchTab(5)"> Tutorial </button></div>
+	<div style="padding : 2px 5px;"><button id="tabButton6" class="tabButton" onclick="switchTab(6)"> Options </button></div>
+</div>
+<button class="tabButton" id="skipButton" onclick="skipIntro()">Skip Intro</button>
+<button class="tabButton" onclick="document.documentElement.scrollTop = document.documentElement.scrollHeight;">Scroll to bottom</button>
+<div class="container" id="chat" style="padding-left: 25px">
+	<div class="chatMessage" id="chatMessage">
+		<div class="chatMessageLore" id="chatMessageLore"></div>
+		<div class="chatMessageProgress">
+			<div class="chatMessageProgressText"id="chatMessageProgressText"></div>
+			<div class="chatMessageProgressBar" id="chatMessageProgressBar" style="transition: transform 1ms"></div>
+		</div>
+		<div class="chatMessageButton" id="chatMessageButton" onclick = "chatButton()">Proceed</div>
+		<div class="chatMessageGameplay" id="chatMessageGameplay"></div>
+	</div>
+</div>
+<div id="tab0" style="display:none; padding-left: 25px">
+	<div style="text-align:center; height: 100%; padding-top:6px; padding-bottom:6px; font-size:26px; background-color: #1D1D1D;">Elemental Orbs</div>
+	<div class="container" id="containerElement" style="display:none;">
+		<div class="elementDivTop" id="element0" style="display:none;">
+			<div class="elementDivMid" onclick="manual(0)" style="color: #C5FFB0; border-color: #66C543;">
+				<div class="elementText">Earth</div>
+				<div class="elementTank" id="elementTank0"></div>
+				<div class="elementBase" id="elementBase0" style="background-color: #449625; border-color: #66C543;"></div>
+				<div class="elementCost" id="elementCost0" style="color: #C5FFB0;">Cost to click:<br>Free</div>
+				<div class="elementBackground" id="elementBackground0" style="background-color: #2F681A;"></div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="golem0" style="display:none;">
+			<div class="golemDivMid" style="color: #C5FFB0; border-color: #66C543; background-color: #2F681A;">
+				<div class="golemText">Earth<br>Golem</div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="element1" style="display:none;">
+			<div class="elementDivMid" onclick="manual(1)" style="color: #B9E3FF; border-color: #75C1F2;">
+				<div class="elementText">Water</div>
+				<div class="elementTank" id="elementTank1"></div>
+				<div class="elementBase" id="elementBase1" style="background-color: #387094; border-color: #75C1F2;"></div>
+				<div class="elementCost" id="elementCost1" style="color: #C5FFB0;">Cost to click:<br>4 Earth in Liquefier</div>
+				<div class="elementBackground" id="elementBackground1" style="background-color: #39586C;"></div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="golem1" style="display:none;">
+			<div class="golemDivMid" style="color: #B9E3FF; border-color: #75C1F2; background-color: #39586C;">
+				<div class="golemText">Water<br>Golem</div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="element2" style="display:none;">
+			<div class="elementDivMid" onclick="manual(2)" style="color: #FFF6C6; border-color: #FFEB71;">
+				<div class="elementText">Air</div>
+				<div class="elementTank" id="elementTank2"></div>
+				<div class="elementBase" id="elementBase2" style="background-color: #AA9A3B; border-color: #FFEB71;"></div>
+				<div class="elementCost" id="elementCost2" style="color: #C5FFB0;">Cost to click:<br>4 Water in Boiler</div>
+				<div class="elementBackground" id="elementBackground2" style="background-color: #615400;"></div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="golem2" style="display:none;">
+			<div class="golemDivMid" style="color: #FFF6C6; border-color: #FFEB71; background-color: #615400;">
+				<div class="golemText">Air<br>Golem</div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="element3" style="display:none;">
+			<div class="elementDivMid" onclick="manual(3)" style="color: #FFC6C6; border-color: #E74F4F;">
+				<div class="elementText">Fire</div>
+				<div class="elementTank" id="elementTank3"></div>
+				<div class="elementBase" id="elementBase3" style="background-color: #BD1717; border-color: #E74F4F;"></div>
+				<div class="elementCost" id="elementCost3" style="color: #C5FFB0;">Cost to click:<br>4 Air in Combustor</div>
+				<div class="elementBackground" id="elementBackground3" style="background-color: #780A0A;"></div>
+			</div>
+		</div>
+		<div class="elementDivTop" id="golem3" style="display:none;">
+			<div class="golemDivMid" style="color: #FFC6C6; border-color: #E74F4F; background-color: #780A0A;">
+				<div class="golemText">Fire<br>Golem</div>
+			</div>
+		</div>
+	</div>
+	<div class="container" id="containerMouse" style="display:none;">
+		<div class="mouseIndicator">
+			<div class="mouseIndicatorBar" id="mouseIndicatorBar"></div>
+		</div>
+	</div>
+	<div style="text-align:center; height: 100%; padding-top:6px; padding-bottom:6px; font-size:26px; background-color: #1D1D1D;">Machines</div>		
+	<div class="container">
+		<div class="container" style="width:300px;height:370px;float:left">
+			<div class="machine" id="machine1" style="display:none;">
+				<div class="machineMainPanel">
+					<div class="machineName">Boiler</div>
+					<div class="machineValves">
+						<div class="machineValveIngredient" onclick="machineIngredientValveTurn(1)">
+							<div class="machineValveBar" id="machineIngredientValve1"></div>
+						</div>
+						<div class="machineValveReagent" onclick="machineReagentValveTurn(1)">
+							<div class="machineValveBar" id="machineReagentValve1"></div>
+						</div>
+					</div>
+					<div class="machineTanks">
+						<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank1" style="background-color: #39586C;"></div></div>
+						<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank1" style="background-color: #780A0A;"></div></div>
+					</div>
+				</div>
+				<div class="machineSidePanel">
+					<div class="machineInfo">
+						<div class="machineInfoName">Product</div>
+						<div class="machineInfoElementName" id="machineProductInfo1">4 Air</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Ingredient</div>
+						<div class="machineInfoElementName">4 Water</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Reagent</div>
+						<div class="machineInfoElementName">1 Fire</div>
+					</div>
+				</div>
+			</div>
+			<div class="machine" id="machine2" style="display:none;">
+				<div class="machineMainPanel">
+					<div class="machineName">Combustor</div>
+					<div class="machineValves">
+						<div class="machineValveIngredient" onclick="machineIngredientValveTurn(2)">
+							<div class="machineValveBar" id="machineIngredientValve2"></div>
+						</div>
+						<div class="machineValveReagent" onclick="machineReagentValveTurn(2)">
+							<div class="machineValveBar" id="machineReagentValve2"></div>
+						</div>
+					</div>
+					<div class="machineTanks">
+						<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank2" style="background-color: #615400;"></div></div>
+						<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank2" style="background-color: #780A0A;"></div></div>
+					</div>
+				</div>
+				<div class="machineSidePanel">
+					<div class="machineInfo">
+						<div class="machineInfoName">Product</div>
+						<div class="machineInfoElementName" id="machineProductInfo2">4 Fire</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Ingredient</div>
+						<div class="machineInfoElementName">4 Air</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Reagent</div>
+						<div class="machineInfoElementName">1 Fire</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container" id="machineHolder" style="width:250px;height:370px;float:left">
+			<div id="cutsceneIndicator" style="text-align:center; padding-top:6px; padding-bottom:6px; font-size:26px; color: #FFC6C6; background-color: #1D1D1D;"></div>	
+		</div>
+		<div class="container" style="width:300px;height:370px;float:left">
+			<div class="machine" id="machine0" style="display:none;">
+				<div class="machineMainPanel">
+					<div class="machineName">Liquefier</div>
+					<div class="machineValves">
+						<div class="machineValveIngredient" onclick="machineIngredientValveTurn(0)">
+							<div class="machineValveBar" id="machineIngredientValve0"></div>
+						</div>
+						<div class="machineValveReagent" onclick="machineReagentValveTurn(0)">
+							<div class="machineValveBar" id="machineReagentValve0"></div>
+						</div>
+					</div>
+					<div class="machineTanks">
+						<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank0" style="background-color: #2F681A;"></div></div>
+						<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank0" style="background-color: #39586C;"></div></div>
+					</div>
+				</div>
+				<div class="machineSidePanel">
+					<div class="machineInfo">
+						<div class="machineInfoName">Product</div>
+						<div class="machineInfoElementName" id="machineProductInfo0">4 Water</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Ingredient</div>
+						<div class="machineInfoElementName">4 Earth</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Reagent</div>
+						<div class="machineInfoElementName">1 Water</div>
+					</div>
+				</div>
+			</div>
+			<div class="machine" id="machine3" style="display:none;">
+				<div class="machineMainPanel">
+					<div class="machineName">Volcano</div>
+					<div class="machineValves">
+						<div class="machineValveIngredient" onclick="machineIngredientValveTurn(3)">
+							<div class="machineValveBar" id="machineIngredientValve3"></div>
+						</div>
+						<div class="machineValveReagent" onclick="machineReagentValveTurn(3)">
+							<div class="machineValveBar" id="machineReagentValve3"></div>
+						</div>
+					</div>
+					<div class="machineTanks">
+						<div class="machineTankIngredient"><div class="machineTankBar" id="machineIngredientTank3" style="background-color: #2F681A;"></div></div>
+						<div class="machineTankReagent"><div class="machineTankBar" id="machineReagentTank3" style="background-color: #780A0A;"></div></div>
+					</div>
+				</div>
+				<div class="machineSidePanel">
+					<div class="machineInfo">
+						<div class="machineInfoName">Product</div>
+						<div class="machineInfoElementName" id="machineProductInfo3">4 Earth</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Ingredient</div>
+						<div class="machineInfoElementName">4 Earth</div>
+					</div>
+					<div class="machineInfo">
+						<div class="machineInfoName">Reagent</div>
+						<div class="machineInfoElementName">1 Fire</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="text-align:center; height: 100%; padding-top:6px; padding-bottom:6px; font-size:26px; background-color: #1D1D1D;">Upgrades</div>
+	<div class="container">
+		<div class="upgrade" id="upgrade0" onClick="upgrade(0)" style="display:none;">
+			<div class="upgradeName">My mouse broke</div>
+			<div class="upgradeCost">Cost: 2 Earth</div>
+			<div class="upgradeDescription">Engages Earth autoclicker</div>
+		</div>
+		<div class="upgrade" id="upgrade1" onClick="upgrade(1)" style="display:none;">
+			<div class="upgradeName">Repair liquefier tanks</div>
+			<div class="upgradeCost">Cost: 2 Water</div>
+			<div class="upgradeDescription">(I'd suggest accumulating 16 water before clicking this)<br> Liquefier tanks capacity x8</div>
+		</div>
+		<div class="upgrade" id="upgrade2" onClick="upgrade(2)" style="display:none;">
+			<div class="upgradeName">Regulate reaction safety measures</div>
+			<div class="upgradeCost">Cost: 4 Water</div>
+			<div class="upgradeDescription">Decrease fill ratio of machine needed for reaction from 75% to 50%</div>
+		</div>
+		<div class="upgrade" id="upgrade3" onClick="upgrade(3)" style="display: none;">
+			<div class="upgradeName">Disable reaction safety measures</div>
+			<div class="upgradeCost">Cost: 4 Air</div>
+			<div class="upgradeDescription">Decrease fill ratio of machine needed for reaction from 50% to 25%</div>
+		</div>
+		<div class="upgrade" id="upgrade4" onClick="upgrade(4)" style="display: none;">
+			<div class="upgradeName">Remove inner walls of machines</div>
+			<div class="upgradeCost">Cost: 4 Fire</div>
+			<div class="upgradeDescription">(This upgrade is really strong)<br>Decrease fill ratio of machine needed for reaction from 25% to 0%</div>
+		</div>
+		<div class="upgrade" id="upgrade5" onClick="upgrade(5)" style="display:none;">
+			<div class="upgradeName">Spring Break Tank Cleaning</div>
+			<div class="upgradeCost">Cost: 32 Water</div>
+			<div class="upgradeDescription">Increases capacity of all tanks x2</div>
+		</div>
+		<div class="upgrade" id="upgrade6" onClick="upgrade(6)" style="display: none;">
+			<div class="upgradeName">Blow out unnecessary debris</div>
+			<div class="upgradeCost">Cost: 128 Air</div>
+			<div class="upgradeDescription">Further increases capacity of all tanks x2</div>
+		</div>
+		<div class="upgrade" id="upgrade7" onClick="upgrade(7)" style="display: none;">
+			<div class="upgradeName">Modify machine walls</div>
+			<div class="upgradeCost">Cost: 1024 Earth</div>
+			<div class="upgradeDescription">Doubles capacity of all tanks. Again.</div>
+		</div>
+		<div class="upgrade" id="upgrade8" onClick="upgrade(8)" style="display: none;">
+			<div class="upgradeName">Rebuild Tanks mimicking Orbs</div>
+			<div class="upgradeCost">Cost: 5120 Earth</div>
+			<div class="upgradeDescription">Quadruples capacity of all tanks.</div>
+		</div>
+		<div class="upgrade" id="upgrade9" onClick="upgrade(9)" style="display:none;">
+			<div class="upgradeName">Clear input pipes</div>
+			<div class="upgradeCost">Cost: 16 Water</div>
+			<div class="upgradeDescription">Improves transfer rate into machines (1% of element's amount)</div>
+		</div>
+		<div class="upgrade" id="upgrade10" onClick="upgrade(10)" style="display: none;">
+			<div class="upgradeName">Repair broken parts of input pipes</div>
+			<div class="upgradeCost">Cost: 64 Earth</div>
+			<div class="upgradeDescription">Improves transfer rate into machines (1.5% of element's amount)</div>
+		</div>
+		<div class="upgrade" id="upgrade11" onClick="upgrade(11)" style="display: none;">
+			<div class="upgradeName">Make input pipes stainless </div>
+			<div class="upgradeCost">Cost: 128 Air</div>
+			<div class="upgradeDescription">Improves transfer rate into machines (2% of element's amount)</div>
+		</div>
+		<div class="upgrade" id="upgrade12" onClick="upgrade(12)" style="display: none;">
+			<div class="upgradeName">Refine design of input pipes</div>
+			<div class="upgradeCost">Cost: 1024 Fire</div>
+			<div class="upgradeDescription">Improves transfer rate into machines (5% of element's amount)</div>
+		</div>
+		<div class="upgrade" id="upgrade13" onClick="upgrade(13)" style="display:none;">
+			<div class="upgradeName">Transfer a bit of Fire into Catalyst</div>
+			<div class="upgradeCost">Cost: 2 Fire</div>
+			<div class="upgradeDescription">Reactions produce 0% -> 25% more output per used ingredient</div>
+		</div>
+		<div class="upgrade" id="upgrade14" onClick="upgrade(14)" style="display: none;">
+			<div class="upgradeName">Transfer more Fire into Catalyst</div>
+			<div class="upgradeCost">Cost: 256 Fire</div>
+			<div class="upgradeDescription">Reactions produce 25% -> 50% more output per used ingredient</div>
+		</div>
+		<div class="upgrade" id="upgrade15" onClick="upgrade(15)" style="display: none;">
+			<div class="upgradeName">Make basin around Catalyst</div>
+			<div class="upgradeCost">Cost: 2048 Earth</div>
+			<div class="upgradeDescription">Prepares space for next Catalyst upgrade</div>
+		</div>
+		<div class="upgrade" id="upgrade16" onClick="upgrade(16)" style="display: none;">
+			<div class="upgradeName">Fully fill Catalyst's basin</div>
+			<div class="upgradeCost">Cost: 2048 Fire</div>
+			<div class="upgradeDescription">Reactions produce 50% -> 100% more output per used ingredient</div>
+		</div>
+		<div class="upgrade" id="upgrade17" onClick="upgrade(17)" style="display:none;">
+			<div class="upgradeName">Dust off rails around the room</div>
+			<div class="upgradeCost">Cost: 16 Air</div>
+			<div class="upgradeDescription">Rotation speed of setup doubles</div>
+		</div>
+		<div class="upgrade" id="upgrade18" onClick="upgrade(18)" style="display: none;">
+			<div class="upgradeName">Oil machines wheels</div>
+			<div class="upgradeCost">Cost: 128 Water</div>
+			<div class="upgradeDescription">Rotation speed of setup increases</div>
+		</div>
+		<div class="upgrade" id="upgrade19" onClick="upgrade(19)" style="display: none;">
+			<div class="upgradeName">Regulate safety brakes</div>
+			<div class="upgradeCost">Cost: 256 Fire</div>
+			<div class="upgradeDescription">Rotation speed of setup increases even more</div>
+		</div>
+		<div class="upgrade" id="upgrade20" onClick="upgrade(20)" style="display: none;">
+			<div class="upgradeName">Setup friction nullification field</div>
+			<div class="upgradeCost">Cost: 1024 Air</div>
+			<div class="upgradeDescription">Rotation speed of setup maxed</div>
+		</div>
+		<div class="upgrade" id="upgrade21" onClick="upgrade(21)" style="display: none;">
+			<div class="upgradeName">Build parallel docking station</div>
+			<div class="upgradeCost">Cost: 2048 Earth</div>
+			<div class="upgradeDescription">Two machines will be active at the same time</div>
+		</div>
+		<div class="upgrade" id="upgrade22" onClick="upgrade(22)" style="display: none;">
+			<div class="upgradeName">Build another docking station</div>
+			<div class="upgradeCost">Cost: 5120 Earth</div>
+			<div class="upgradeDescription">Three machines will be active at the same time</div>
+		</div>
+		<div class="upgrade" id="upgrade23" onClick="upgrade(23)" style="display: none;">
+			<div class="upgradeName">Build yet another docking station</div>
+			<div class="upgradeCost">Cost: 10240 Earth</div>
+			<div class="upgradeDescription">Four machines will be active at the same time</div>
+		</div>
+		<div class="upgrade" id="upgrade24" onClick="upgrade(24)" style="display: none;">
+			<div class="upgradeName">Use sub-space input system</div>
+			<div class="upgradeCost">Cost: 40960 Air</div>
+			<div class="upgradeDescription">Machines no longer need to have separate input and work docks</div>
+		</div>
+		<div class="upgrade" id="upgrade25" onClick="upgrade(25)" style="display:none;">
+			<div class="upgradeName">Create copies of elemental crystals</div>
+			<div class="upgradeCost">Cost: 102400 Earth</div>
+			<div class="upgradeDescription">Nothing by itself</div>
+		</div>
+		<div class="upgrade" id="upgrade26" onClick="upgrade(26)" style="display: none;">
+			<div class="upgradeName">Make crystal infusion orbs</div>
+			<div class="upgradeCost">Cost: 102400 Water</div>
+			<div class="upgradeDescription">Nothing by itself</div>
+		</div>
+		<div class="upgrade" id="upgrade27" onClick="upgrade(27)" style="display: none;">
+			<div class="upgradeName">Infuse crystals with elements</div>
+			<div class="upgradeCost">Cost: 102400 Air</div>
+			<div class="upgradeDescription">Nothing by itself</div>
+		</div>
+		<div class="upgrade" id="upgrade28" onClick="upgrade(28)" style="display: none;">
+			<div class="upgradeName">Implant crystals into machines</div>
+			<div class="upgradeCost">Cost: 102400 Fire</div>
+			<div class="upgradeDescription">Machine tanks capacity x256</div>
+		</div>
+	</div>
+</div>
+<div id="tab1" style="display: none; padding-left: 19px;">
+	<div class="container" id="canvasHolder">
+		<canvas id="canvasPreview" width=600; height=600; style="background-color: #000000; border:1px solid #FFFFFF;"></canvas>
+	</div>
+</div>
+<div id="tab2" style="display: none; padding-left: 25px;"> I decided to write my thoughts and observations about Elements into this log.
+	<div class="chat" id="chatLog" style="width: 600px;">
+	</div>
+</div>
+<div id="tab3" style="display: none; padding-left: 25px;"> Imagine that all important numbers are displayed here. Will be improved in next public release.
+	<div class="chat">
+		<div class="chatMessageGameplay">Mouse Clicks that did something:</div>
+		<div class="chatMessageGameplay" id="clicksMade">0</div>
+	</div>
+</div>
+<div id="tab4" style="user-select:text; display: none; padding-left: 25px;"> Developed by Nagshell. You can contact me using my email: nagshell@gmail.com<br><br>I appreciate all support/feedback. As this is my first game, you can probably see that I'm very unexperienced with pretty much everything. Let me know how can I improve this child of mine.
+
+</div>
+<div id="tab5" style="display: none; padding-left: 25px;"> Imagine that all mechanics are explained here.
+
+</div>
+<div id="tab6" style="display: none; padding-left: 25px;"> <a class="tabButton"href="https://discord.gg/CjdSuzH">Discord Server</a> <a class="tabButton"href="https://nagshell.github.io/elemental-inception-incremental">Main Hub - Includes second part of the game!</a>
+
+</div>
+<p id="test"></p>
+<button class="tabButton" onclick="document.documentElement.scrollTop = 0;">Scroll to top</button>
+</body>
+<script type="application/javascript" src="Messages.js" ></script>
+<script type="application/javascript" src="Elements.js"></script>
+</html>

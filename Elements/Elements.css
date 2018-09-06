@@ -1,0 +1,348 @@
+body {
+	font-family: "Lucida Console", Monaco, monospace;
+	background-color : #1D1D1D;
+	color: white;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+* {
+	box-sizing: border-box;
+}
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding-left: 5px; 
+	padding-right: 5px;
+}
+.chatMessage {
+	padding: 10px;
+	width : 800px;
+	height : 320px;
+	opacity: 1;
+	border: 1px solid black;
+	border-radius : 10px;
+	background-color: #090909;
+	margin: 8px;
+}
+.chatMessageLore {
+	width : 100%;
+	height: 190px;
+	float : left;
+	border: 1px solid #393939;
+	border-radius : 10px;
+	padding: 10px;
+	overflow:hidden;
+}
+.chatMessageGameplay {
+	float : left;
+	width : 100%;
+	height: 30px;
+	border: 1px solid #393939;
+	border-radius : 6px;
+	padding: 6px;
+	white-space: nowrap;
+	overflow:hidden;
+}
+.chatMessageButton {
+	float : left;
+	width : 100px;
+	height: 30px;
+	margin: 5px;
+	border: 1px solid #393939;
+	border-radius : 15px;
+	background-color: #292929;
+	padding: 6px;
+	text-align: center;
+	transition:transform 500ms;
+	transform:scaleX(0);
+}
+.chatMessageButton:hover {
+	background-color: #393939;
+}
+.chatMessageProgress {
+	float : left;
+	width : 100%;
+	height: 30px;
+	margin: 5px;
+	border: 1px solid #393939;
+	border-radius : 15px;
+	background-color : #090909;
+	position:relative;
+}
+.chatMessageProgressText {
+	z-index:1;
+	width : 100%;
+	height: 100%;
+	position:absolute;
+	padding: 6px 25px 6px 25px;
+}
+.chatMessageProgressBar {
+	z-index:0;
+	width : 100%;
+	height: 100%;
+	position:absolute;
+	border-radius : 15px;
+	background-color : #2B0014;
+	transform:scaleX(0);
+}
+.chatMessageProgressBarActive {
+	z-index:0;
+	width : 100%;
+	height: 100%;
+	position:absolute;
+	border-radius : 15px;
+	background-color : #2B0014;
+	transform:scaleX(1);
+}
+.tabButton {
+    background-color: #292929;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.mouseIndicator {
+	width : 300px;
+	height : 20px;
+	border: 2px solid black;
+	background-color: #AC7D7D;
+}
+.mouseIndicatorBar {
+	width : 100%;
+	height : 100%;
+	background-color: #81AE86;
+	transition:transform 510ms linear;
+	transform-origin: center bottom;
+	transform:scaleY(1);
+	
+}
+.elementDivTop {
+	width : 200px;
+	height : 140px;
+	text-align: center;
+	padding : 5px 10px 5px 10px;
+}
+.elementDivMid {
+	width:100%; 
+	height:100%; 
+	text-align: center;
+	border: 2px solid;
+	border-radius: 3px;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	position: relative;
+}
+.elementDivMid:hover {
+	box-shadow: 0 4px 8px 0 rgba(136,136,136,0.5);
+}
+.elementText {
+	width:100%; 
+	height:30%;
+	font-size: 24px;
+	text-align: center;
+	padding : 10px 10px 5px 10px;
+}
+.elementTank {
+	width:100%; 
+	height:25%;
+	font-size: 16px;
+	text-align: right;
+	padding : 9px 40px 9px 10px;
+}
+.elementBase {
+	width:100%; 
+	height:15%;
+	border: 1px solid;		
+	transition:transform 1000ms;
+	transform:scaleX(0);
+	transform-origin: left center;
+}
+.elementCost {
+	width:100%; 
+	height:35%;
+	font-size: 12px;
+	padding : 8px 10px 4px 10px;
+}
+.elementBackground {
+	z-index:-1;
+	float:none;
+	width:100%; 
+	height:100%;
+	position: absolute;
+    top: 0px;
+	transition:transform 1000ms;
+	transform:scaleX(0);
+	transform-origin: right center;
+}
+.golemDivMid {
+	width:100%; 
+	height:100%; 
+	text-align: center;
+	border: 2px solid;
+	border-radius: 32px;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	position: relative;
+}
+.golemText {
+	width:100%; 
+	height:100%;
+	font-size: 28px;
+	text-align: center;
+	padding : 30px 10px 5px 10px;
+}
+.machine {
+	width : 290px;
+	height : 180px;
+	border: 2px solid #4E4E4E;
+	border-radius: 3px;
+	margin:2px;
+	background-color: #2E2E2E;
+}
+.machineMainPanel {
+	width: 50%;
+	height:100%;
+	float:left;
+	padding : 8px 10px 8px 10px;
+}
+.machineName {
+	width:100%; 
+	height:15%;
+	text-align: center;
+	font-size: 16px;
+	padding : 4px 10px 4px 10px;
+}
+.machineValves {
+	width:100%; 
+	height:10%;
+	border-top:2px solid #2B3300;
+	border-radius: 3px;
+}
+.machineValveIngredient {
+	width:80%; 
+	height:100%;
+	float:left;
+	border-left:2px solid #2B3300;
+	border-right:2px solid #2B3300;
+	background-color: #AC7D7D;
+}
+.machineValveReagent {
+	width:20%; 
+	height:100%;
+	float:right;
+	border-right:2px solid #2B3300;
+	background-color: #AC7D7D;
+}
+.machineValveBar {
+	width:100%; 
+	height:100%;
+	background-color: #91AE86;
+	transition:transform 1000ms;
+	transform:scaleX(0);
+}
+.machineTanks {
+	width:100%; 
+	height:75%;
+	border-bottom: 2px solid #2B3300;
+	border-radius: 3px;
+	background-color: #0E0E0E;
+}
+.machineTankIngredient {
+	width:80%; 
+	height:100%;
+	float:left;
+	border-left:2px solid #2B3300;
+	border-right:2px solid #2B3300;
+}
+.machineTankReagent {
+	width:20%; 
+	height:100%;
+	float:right;
+	border-right:2px solid #2B3300;
+}
+.machineTankBar {
+	width: 100%; 
+	height: 100%;
+	transition:transform 40ms;
+	transition-timing-function: linear;
+	transform-origin: center bottom;
+	transform:scaleY(0);
+}
+.machineSidePanel {
+	width: 50%;
+	height:100%;
+	float:right; 
+	padding : 8px 10px 8px 10px;
+}
+.machineInfo {
+	width:100%; 
+	height:33%;
+	background-color: #333333;
+	border: 2px solid #6A6A6A;
+	border-radius: 3px;
+}
+.machineInfoName {
+	width:100%; 
+	height:40%;
+	text-align: center;
+	padding : 4px 3px 4px 3px;
+	font-size: 12px;
+}
+.machineInfoElementName {
+	width:100%; 
+	height:60%;
+	text-align: center;
+	padding : 5px 3px 4px 3px;
+	font-size: 18px;
+}
+.upgrade {
+	width : 580px;
+	height : 90px;
+	border: 2px solid red;
+	border-radius: 3px;
+	margin:2px;
+	box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+}
+.upgrade:hover {
+	box-shadow: 0 3px 6px 0 rgba(136,136,136,1);
+}
+.upgradeInfo {
+	width : 100%;
+	height : 60px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.upgradeName {
+	float:left;
+	width:70%; 
+	height:50%;
+	text-align: center;
+	font-size:18px;
+	padding: 8px 6px 8px 6px;
+}
+.upgradeCost {
+	float:right;
+	width:30%; 
+	height:50%;
+	font-size:14px;
+	text-align: right;
+	padding: 5px 6px 5px 6px;
+}
+.upgradeDescription {
+	float:left;
+	width:100%; 
+	height:50%;
+	text-align: right;
+	font-size:14px;
+	padding: 5px 6px 5px 6px;
+}
+
+
+
