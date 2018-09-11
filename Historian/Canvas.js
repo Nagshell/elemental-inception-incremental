@@ -1254,21 +1254,35 @@ var drawingTabs = [{ //Main setup
 			ctx.beginPath();
 			ctx.arc(0, 0, 350, 0, 2 * Math.PI);
 			ctx.fill();
+			if (!tempData.skillTreeZoomActive) {
+				if (dynamicData.skillTree.currentBranch) {
+					ctx.fillStyle = staticData.elementalColor[elementalTranlator[dynamicData.skillTree.currentBranch]][3];
+				}
+				else {
+					ctx.fillStyle = "#111111";
+				}
+				ctx.globalAlpha = 0.4;
+			}
+			ctx.fill();
+			if (!tempData.skillTreeZoomActive) {
+				ctx.globalAlpha = 1;
+			}
 			ctx.stroke();
 			ctx.clip();
 
-			ctx.beginPath();
-
-			if (dynamicData.skillTree.currentBranch) {
-				ctx.fillStyle = staticData.elementalColor[elementalTranlator[dynamicData.skillTree.currentBranch]][3];
+			if (tempData.skillTreeZoomActive) {
+				ctx.beginPath();
+				if (dynamicData.skillTree.currentBranch) {
+					ctx.fillStyle = staticData.elementalColor[elementalTranlator[dynamicData.skillTree.currentBranch]][3];
+				}
+				else {
+					ctx.fillStyle = "#111111";
+				}
+				ctx.globalAlpha = 0.4;
+				ctx.arc(0, 0, 250, 0, 2 * Math.PI);
+				ctx.fill();
+				ctx.globalAlpha = 1;
 			}
-			else {
-				ctx.fillStyle = "#111111";
-			}
-			ctx.globalAlpha = 0.4;
-			ctx.arc(0, 0, 250, 0, 2 * Math.PI);
-			ctx.fill();
-			ctx.globalAlpha = 1;
 
 			ctx.scale(tZ, tZ);
 			ctx.translate(tX, tY);

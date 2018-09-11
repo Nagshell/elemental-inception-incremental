@@ -39,7 +39,7 @@ function click(x, y) {
 			skillTree.processNodes();
 		}
 
-		var clickedSkill = null;
+		var clickedSkill = false;
 		var offcenterradius = (x - 400) * (x - 400) + (y - 400) * (y - 400);
 		if (offcenterradius < 122500) {
 			var clickPositionX = x - 400;
@@ -54,7 +54,11 @@ function click(x, y) {
 				//nodePositionY *= tempData.skillTreeZoom;
 				if ((clickPositionX - nodePositionX) * (clickPositionX - nodePositionX) + (clickPositionY - nodePositionY) * (clickPositionY - nodePositionY) < 625) {
 					skillTree.clickNode(nodeID);
+					clickedSkill = true;
 				}
+			}
+			if (!clickedSkill) {
+				tempData.skillTreeZoomActive = !tempData.skillTreeZoomActive;
 			}
 		}
 	}
@@ -112,9 +116,11 @@ function hover(x, y) {
 		}
 		else if (offcenterradius < 122500) {
 			if (offcenterradius > 62500) {
-				var length = Math.sqrt(offcenterradius);
-				tempData.skillTreeScrollSpeedX = -(x - 400) / length * 6;
-				tempData.skillTreeScrollSpeedY = -(y - 400) / length * 6;
+				if (tempData.skillTreeZoomActive) {
+					var length = Math.sqrt(offcenterradius);
+					tempData.skillTreeScrollSpeedX = -(x - 400) / length * 6;
+					tempData.skillTreeScrollSpeedY = -(y - 400) / length * 6;
+				}
 			}
 			else {
 				tempData.skillTreeScrollSpeedX = 0;

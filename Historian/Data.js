@@ -430,6 +430,7 @@ var tempData = {
 	"skillTreeScrollSpeedX": 0,
 	"skillTreeScrollSpeedY": 0,
 	"skillTreeZoomSpeed": 1,
+	"skillTreeZoomActive": true,
 };
 var staticData = {
 	"achievementList": {
