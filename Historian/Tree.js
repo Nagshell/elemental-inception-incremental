@@ -775,8 +775,10 @@ var skillTree = {
 		}
 	},
 	"startChallenge": function (nodeID) {
-		dynamicData.skillTree.currentChallengeNode = nodeID;
-		skillTree.endChallenge();
+		if (confirm("Start a challenge? In this alpha is autocompletes.")) {
+			dynamicData.skillTree.currentChallengeNode = nodeID;
+			skillTree.endChallenge();
+		}
 	},
 	"endChallenge": function () {
 		permanentSaveData.skillTree.unlocked[dynamicData.skillTree.currentChallengeNode] = true;
