@@ -84,6 +84,7 @@ var skillTree = {
 				"airCatalyst1": ["airGains1", "airMachineSpeed5"],
 				"airCatalyst2": ["airCatalyst1"],
 				"airCatalyst3": ["airCatalyst2"],
+				"airCatalyst4": ["airCatalyst3"],
 				"airUpgradeCost1": ["airGolemCost3"],
 				"airUpgradeCost2": ["airUpgradeCost1"],
 				"airUpgradeCost3": ["airUpgradeCost2"],
@@ -92,6 +93,7 @@ var skillTree = {
 				"airTransferRate3": ["airTransferRate2"],
 				"airCapacity1": ["airGolemCost4"],
 				"airCapacity2": ["airCapacity1"],
+				"airCapacity3": ["airCapacity2"],
 			}
 		},
 		"Fire": {
@@ -144,6 +146,7 @@ var skillTree = {
 			"x": -100,
 			"y": 0,
 		},
+
 		"fireCatalyst1": {
 			"x": -180,
 			"y": -50,
@@ -252,6 +255,7 @@ var skillTree = {
 			"x": -640,
 			"y": -270,
 		},
+
 		"earthGolemCost1": {
 			"x": 40,
 			"y": 200,
@@ -360,6 +364,7 @@ var skillTree = {
 			"x": -115,
 			"y": 710,
 		},
+
 		"airMachineSpeed1": {
 			"x": 0,
 			"y": -300,
@@ -428,6 +433,10 @@ var skillTree = {
 			"x": 180,
 			"y": -680,
 		},
+		"airCatalyst4": {
+			"x": 260,
+			"y": -620,
+		},
 		"airUpgradeCost1": {
 			"x": -230,
 			"y": -390,
@@ -460,6 +469,11 @@ var skillTree = {
 			"x": -260,
 			"y": -580,
 		},
+		"airCapacity3": {
+			"x": -200,
+			"y": -660,
+		},
+
 		"waterTransferRate1": {
 			"x": 180,
 			"y": -40,
@@ -571,9 +585,11 @@ var skillTree = {
 	},
 	"processNodes": function () {
 		redraw[5] = true;
+
 		if (!dynamicData.skillTree.nodes) {
 			dynamicData.skillTree.nodes = {};
 			for (var branchID in skillTree.branches) {
+				var nodeHex = 1;
 				for (var nodeID in skillTree.branches[branchID].nodes) {
 					dynamicData.skillTree.nodes[nodeID] = {};
 					var node = dynamicData.skillTree.nodes[nodeID];
@@ -581,6 +597,11 @@ var skillTree = {
 					node.branchID = branchID;
 					node.branch = skillTree.branches[branchID];
 					node.nextLinks = [];
+					node.hexID = nodeHex;
+					nodeHex <<= 1;
+				}
+				for (var nodeID in skillTree.branches[branchID].nodes) {
+					skillTree.preCountNodeCost(nodeID);
 				}
 			}
 			for (var branchID in skillTree.branches) {
@@ -589,6 +610,15 @@ var skillTree = {
 					for (var i = 0; i < nodeLinks.length; i++) {
 						dynamicData.skillTree.nodes[nodeLinks[i]].nextLinks.push(nodeID);
 					}
+				}
+			}
+		}
+		if (!dynamicData.skillTree.missing) {
+			dynamicData.skillTree.missing = {};
+			for (var branchID in skillTree.branches) {
+				dynamicData.skillTree.missing[branchID] = 0;
+				for (var nodeID in skillTree.branches[branchID].nodes) {
+					dynamicData.skillTree.missing[branchID] |= dynamicData.skillTree.nodes[nodeID].hexID;
 				}
 			}
 		}
@@ -601,16 +631,10 @@ var skillTree = {
 				}
 			}
 		}
+
 		if (!dynamicData.skillTree.locked) {
 			for (var nodeID in skillTree.nodes) {
-				dynamicData.skillTree.nodes[nodeID].cost = false;
-				dynamicData.skillTree.nodes[nodeID].costNodes = {};
-			}
-			for (var nodeID in skillTree.nodes) {
 				skillTree.countNodeCost(nodeID);
-			}
-			for (var nodeID in skillTree.nodes) {
-				dynamicData.skillTree.nodes[nodeID].costNodes = null;
 			}
 		}
 		for (var branchID in skillTree.branches) {
@@ -678,6 +702,7 @@ var skillTree = {
 		}
 		dynamicData.skillTree.spAvail++;
 		node.active = false;
+		dynamicData.skillTree.missing[node.branchID] ^= node.hexID;
 	},
 	"activateNode": function (nodeID) {
 		var node = dynamicData.skillTree.nodes[nodeID];
@@ -690,52 +715,35 @@ var skillTree = {
 		}
 		dynamicData.skillTree.spAvail--;
 		node.active = true;
+		dynamicData.skillTree.missing[node.branchID] ^= node.hexID;
+	},
+	"preCountNodeCost": function (nodeID) {
+		var node = dynamicData.skillTree.nodes[nodeID];
+		if (node.required) {
+			return;
+		}
+		if (!permanentSaveData.skillTree.unlocked[nodeID]) {
+			node.required = -1;
+			return;
+		}
+		var nodeLinks = node.branch.nodes[nodeID];
+		node.required = node.hexID;
+		for (var i = 0; i < nodeLinks.length; i++) {
+			skillTree.preCountNodeCost(nodeLinks[i]);
+			var linkedNode = dynamicData.skillTree.nodes[nodeLinks[i]];
+			if (linkedNode.required < 0) {
+				node.required = -1;
+				return;
+			}
+			node.required |= linkedNode.required;
+		}
 	},
 	"countNodeCost": function (nodeID) {
-
 		var node = dynamicData.skillTree.nodes[nodeID];
-
-		if (node.cost) {
-			return;
+		if (node.required < 0) {
+			node.cost = 1e6;
 		}
-
-		if (node.active) {
-			node.cost = 0;
-			return;
-		}
-
-		if (!permanentSaveData.skillTree.unlocked[nodeID]) {
-			node.cost = 1000;
-			return;
-		}
-
-		if (dynamicData.skillTree.currentBranch && dynamicData.skillTree.currentBranch !== node.branchID) {
-			node.cost = 1000000;
-			return;
-		}
-
-		var nodeLinks = node.branch.nodes[nodeID];
-		var nodeCost = node.costNodes;
-		for (var i = 0; i < nodeLinks.length; i++) {
-			skillTree.countNodeCost(nodeLinks[i]);
-			var nodeLink = dynamicData.skillTree.nodes[nodeLinks[i]];
-			if (nodeLink.cost > 999999) {
-				node.cost = 1000000;
-				return;
-			}
-			if (nodeLink.cost > 999) {
-				node.cost = 1000;
-				return;
-			}
-			if (nodeLink.cost > 0) {
-				for (var requiredNodeID in nodeLink.costNodes) {
-					nodeCost[requiredNodeID] = true;
-				}
-				nodeCost[nodeLinks[i]] = true;
-			}
-		}
-
-		node.cost = Object.keys(nodeCost).length + 1;
+		node.cost = bitCount(node.required & dynamicData.skillTree.missing[node.branchID]);
 	},
 	"clickNode": function (nodeID) {
 		var node = dynamicData.skillTree.nodes[nodeID];
@@ -783,5 +791,11 @@ var skillTree = {
 	"endChallenge": function () {
 		permanentSaveData.skillTree.unlocked[dynamicData.skillTree.currentChallengeNode] = true;
 		dynamicData.skillTree.currentChallengeNode = null;
+		for (var nodeID in skillTree.nodes) {
+			dynamicData.skillTree.nodes[nodeID].required = null;
+		}
+		for (var nodeID in skillTree.nodes) {
+			skillTree.preCountNodeCost(nodeID);
+		}
 	}
 };

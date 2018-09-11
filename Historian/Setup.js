@@ -1,9 +1,9 @@
 var softResetEnabled = false;
 
-var backupTempData = JSON.parse(JSON.stringify(tempData));
-var backupDynamicData = JSON.parse(JSON.stringify(dynamicData));
-var backupDynamicSaveData = JSON.parse(JSON.stringify(dynamicSaveData));
-var backupPermamentSaveData = JSON.parse(JSON.stringify(permanentSaveData));
+var backupTempData = JSON.stringify(tempData);
+var backupDynamicData = JSON.stringify(dynamicData);
+var backupDynamicSaveData = JSON.stringify(dynamicSaveData);
+var backupPermamentSaveData = JSON.stringify(permanentSaveData);
 
 function addConversionMachineValves(machinesAdded) {
 	dynamicData.clickableElements[0].push({
@@ -471,18 +471,18 @@ function saveDataToCode() {
 
 function resetData() {
 	if (confirm("Are you sure? It'll wipe everything in the current run.")) {
-		tempData = JSON.parse(JSON.stringify(backupTempData));
-		dynamicData = JSON.parse(JSON.stringify(backupDynamicData));
-		dynamicSaveData = JSON.parse(JSON.stringify(backupDynamicSaveData));
+		tempData = JSON.parse(backupTempData);
+		dynamicData = JSON.parse(backupDynamicData);
+		dynamicSaveData = JSON.parse(backupDynamicSaveData);
 		setup();
 	}
 }
 
 function clearData() {
-	tempData = JSON.parse(JSON.stringify(backupTempData));
-	dynamicData = JSON.parse(JSON.stringify(backupDynamicData));
-	dynamicSaveData = JSON.parse(JSON.stringify(backupDynamicSaveData));
-	permanentSaveData = JSON.parse(JSON.stringify(backupPermamentSaveData));
+	tempData = JSON.parse(backupTempData);
+	dynamicData = JSON.parse(backupDynamicData);
+	dynamicSaveData = JSON.parse(backupDynamicSaveData);
+	permanentSaveData = JSON.parse(backupPermamentSaveData);
 	localStorage.setItem("dynamicSaveData", "");
 	localStorage.setItem("permanentSaveData", "");
 	setup();
