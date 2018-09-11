@@ -115,12 +115,11 @@ function hover(x, y) {
 			dynamicData.skillTree.hoveredNode = "lock";
 		}
 		else if (offcenterradius < 122500) {
-			if (offcenterradius > 62500) {
-				if (tempData.skillTreeZoomActive) {
-					var length = Math.sqrt(offcenterradius);
-					tempData.skillTreeScrollSpeedX = -(x - 400) / length * 6;
-					tempData.skillTreeScrollSpeedY = -(y - 400) / length * 6;
-				}
+			if (offcenterradius > 62500 && tempData.skillTreeZoomActive) {
+				var length = Math.sqrt(offcenterradius);
+				tempData.skillTreeScrollSpeedX = -(x - 400) / length * 6;
+				tempData.skillTreeScrollSpeedY = -(y - 400) / length * 6;
+
 			}
 			else {
 				tempData.skillTreeScrollSpeedX = 0;
