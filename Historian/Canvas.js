@@ -2,14 +2,14 @@ function canvasClick(event) {
 	var canvasBox = canvas.getBoundingClientRect();
 	var x = (event.clientX - canvasBox.left - 1) * 800 / canvasBox.width;
 	var y = (event.clientY - canvasBox.top - 1) * 800 / canvasBox.height;
-	click(x, y);
+	clicker.click(x, y);
 }
 
 function canvasHover(event) {
 	var canvasBox = canvas.getBoundingClientRect();
 	var x = (event.clientX - canvasBox.left - 1) * 800 / canvasBox.width;
 	var y = (event.clientY - canvasBox.top - 1) * 800 / canvasBox.height;
-	hover(x, y);
+	clicker.hover(x, y);
 }
 var highlight = {
 	"active": false,
@@ -106,6 +106,9 @@ function draw() {
 		ctxActive.strokeStyle = "rgba(255,255,255,0.6)";
 		ctxActive.strokeRect(highlight.x1, highlight.y1, highlight.x2 - highlight.x1, highlight.y2 - highlight.y1);
 		ctxActive.restore();
+	}
+	if (clicker.tabs[tempData.activeTab].canvas) {
+		//ctxActive.drawImage(clicker.tabs[tempData.activeTab].canvas, 0, 0);
 	}
 }
 
