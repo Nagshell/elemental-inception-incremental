@@ -17,3 +17,7 @@ function NumbertoRGB(number) {
 	array.push(number % 256);
 	return array;
 }
+
+function RGBtoColorCSS(array) {
+	return "rgb(" + array[0] + "," + array[1] + "," + array[2] + ")";
+}

@@ -1,6 +1,8 @@
 var tutorialClickable = null;
+var currentlyHovered = null;
+var clickerFreeID = 1;
 var clicker = {
-	"click": function (x, y) {
+	click: function (x, y) {
 		if (dynamicData.popupActive) {
 			if (x >= 350 && y >= 650 && x <= 450 && y <= 690) {
 				lore.disablePopup();
@@ -19,12 +21,14 @@ var clicker = {
 			return;
 		}
 		if (clickerTab.canvas) {
-			console.log(clickerTab.hexTranslator[RGBtoNumber(clickerTab.canvas.getContext('2d').getImageData(x, y, 1, 1).data)]);
+			var oClicker = clickerTab.hexTranslator[RGBtoNumber(clickerTab.canvas.getContext('2d').getImageData(x, y, 1, 1).data)];
+			if (oClicker && oClicker.clicked) {
+				oClicker.clicked();
+			}
 		}
-		click(x, y);
 		clicker.hover(x, y);
 	},
-	"hover": function (x, y) {
+	hover: function (x, y) {
 		if (dynamicData.popupActive) {
 			if (x >= 350 && y >= 650 && x <= 450 && y <= 690) {
 				highlight.x1 = 350;
@@ -45,75 +49,67 @@ var clicker = {
 		if (clickerTab.specialHover(x, y)) {
 			return;
 		}
-		if (clickerTab.canvas) {
-			clickerTab.hexTranslator[RGBtoNumber(clickerTab.canvas.getContext('2d').getImageData(x, y, 1, 1).data)];
-		}
-		hover(x, y);
-	},
-	"tabs": [{ //Machine setup
-			"canvas": null,
-			"hexTranslator": {},
-			"specialClick": function (x, y) {},
-			"specialHover": function (x, y) {}
-		},
-		{ //Golems
-			"canvas": null,
-			"hexTranslator": {},
-			"specialClick": function (x, y) {
-				for (var golem in dynamicData.golems) {
-					if (dynamicData.golems[golem] === 0) continue;
-					var oG = staticData.golems[golem];
-					if (oG.combine) {
-						if ((x - oG.x - 400) * (x - oG.x - 400) + (y - oG.y - 400) * (y - oG.y - 400) < 1600) {
-							if (tempData.mergingGolems[0] === golem) {
-								tempData.mergingGolems = tempData.mergingGolems.splice(1);
-							}
-							else if (tempData.mergingGolems[1] === golem) {
-								tempData.mergingGolems.splice(1);
-							}
-							else if (tempData.mergingGolems.length < 2) {
-								tempData.mergingGolems.push(golem);
-							}
-						}
-					}
+		if (currentlyHovered) {
+			var oClicker = clickerTab.hexTranslator[RGBtoNumber(clickerTab.canvas.getContext('2d').getImageData(x, y, 1, 1).data)];
+			if (oClicker !== currentlyHovered) {
+				if (currentlyHovered.unhovered) {
+					currentlyHovered.unhovered();
 				}
-			},
-			"specialHover": function (x, y) {
-				canvasTooltip = null;
-				for (var golem in dynamicData.golems) {
-					if (dynamicData.golems[golem] === 0) continue;
-					var oG = staticData.golems[golem];
-					if ((x - oG.x - 400) * (x - oG.x - 400) + (y - oG.y - 400) * (y - oG.y - 400) < 1600) {
-						canvasTooltip = oG.tooltip;
-					}
+				currentlyHovered = null;
+			}
+		}
+		if (!currentlyHovered && clickerTab.canvas) {
+			var oClicker = clickerTab.hexTranslator[RGBtoNumber(clickerTab.canvas.getContext('2d').getImageData(x, y, 1, 1).data)];
+			if (oClicker) {
+				if (oClicker.hovered) {
+					oClicker.hovered();
+					currentlyHovered = oClicker;
+				}
+				else if (oClicker.clicked) {
+					currentlyHovered = oClicker;
 				}
 			}
+		}
+	},
+	tabs: [{ //Machine setup
+			canvas: null,
+			hexTranslator: [null],
+			specialClick: function (x, y) {},
+			specialHover: function (x, y) {}
+		},
+		{ //Golems
+			canvas: null,
+			hexTranslator: [null],
+			specialClick: function (x, y) {},
+			specialHover: function (x, y) {}
 		},
 		{ //Lore
-			"canvas": null,
-			"hexTranslator": {},
-			"specialClick": function (x, y) {},
-			"specialHover": function (x, y) {}
+			canvas: null,
+			hexTranslator: [null],
+			specialClick: function (x, y) {},
+			specialHover: function (x, y) {}
 		},
 		{ //Chievos
-			"canvas": null,
-			"hexTranslator": {},
-			"specialClick": function (x, y) {},
-			"specialHover": function (x, y) {}
+			canvas: null,
+			hexTranslator: [null],
+			specialClick: function (x, y) {},
+			specialHover: function (x, y) {}
 		},
 		{ //Options
-			"canvas": null,
-			"hexTranslator": {},
-			"specialClick": function (x, y) {},
-			"specialHover": function (x, y) {}
+			canvas: null,
+			hexTranslator: [null],
+			specialClick: function (x, y) {},
+			specialHover: function (x, y) {}
 		},
 		{ //Tree
-			"canvas": null,
-			"hexTranslator": {},
-			"specialClick": function (x, y) {
+			canvas: null,
+			hexTranslator: [null],
+			specialClick: function (x, y) {
 				if ((x - 100) * (x - 100) + (y - 80) * (y - 80) < 400) {
-					dynamicData.skillTree.locked = !dynamicData.skillTree.locked;
-					skillTree.processNodes();
+					if (dynamicData.skillTree.currentBranch) {
+						dynamicData.skillTree.locked = !dynamicData.skillTree.locked;
+						skillTree.processNodes();
+					}
 				}
 
 				var clickedSkill = false;
@@ -139,7 +135,7 @@ var clicker = {
 					}
 				}
 			},
-			"specialHover": function (x, y) {
+			specialHover: function (x, y) {
 				if ((x - 700) * (x - 700) + (y - 80) * (y - 80) < 400) {
 					tempData.skillTreeZoomSpeed = 1.01;
 				}
@@ -187,115 +183,68 @@ var clicker = {
 			}
 		},
 		{ //Donation Box
-			"canvas": null,
-			"hexTranslator": {},
-			"specialClick": function (x, y) {},
-			"specialHover": function (x, y) {}
+			canvas: null,
+			hexTranslator: [null],
+			specialClick: function (x, y) {},
+			specialHover: function (x, y) {}
 		},
 		{ //
-			"canvas": null,
-			"hexTranslator": {},
-			"specialClick": function (x, y) {},
-			"specialHover": function (x, y) {}
+			canvas: null,
+			hexTranslator: [null],
+			specialClick: function (x, y) {},
+			specialHover: function (x, y) {}
 		},
 		{ //
-			"canvas": null,
-			"hexTranslator": {},
-			"specialClick": function (x, y) {},
-			"specialHover": function (x, y) {}
+			canvas: null,
+			hexTranslator: [null],
+			specialClick: function (x, y) {},
+			specialHover: function (x, y) {}
 		}
 	],
-}
-for (var i = 0; i < clicker.tabs.length; i++) {
-	clicker.tabs[i].canvas = document.createElement("canvas");
-	clicker.tabs[i].canvas.width = 800;
-	clicker.tabs[i].canvas.height = 800;
-}
+	addingCanvas: null,
+	addClicker: function (oClicker, tab) {
+		clicker.tabs[tab].hexTranslator[clickerFreeID] = oClicker;
 
-function click(x, y) {
-	for (var i = 0; i < dynamicData.clickableElements[tempData.activeTab].length; i++) {
-		var oE = dynamicData.clickableElements[tempData.activeTab][i];
-		if (oE.clicked && x >= oE.x1 && y >= oE.y1 && x <= oE.x2 && y <= oE.y2) {
-			functionData[oE.clicked](oE, oE.arg1, oE.arg2);
-		}
-	}
-}
-var currentlyHovered = null;
+		var ctxFilter = clicker.addingCanvas.getContext('2d');
+		ctxFilter.clearRect(0, 0, 800, 800);
+		var colorArray = NumbertoRGB(clickerFreeID++);
+		ctxFilter.fillStyle = RGBtoColorCSS(colorArray);
 
-function hover(x, y) {
-	if ((x - 700) * (x - 700) + (y - 80) * (y - 80) < 400) {
-		tempData.skillTreeZoomSpeed = 1.01;
-	}
-	else if ((x - 700) * (x - 700) + (y - 130) * (y - 130) < 400) {
-		tempData.skillTreeZoomSpeed = 0.99;
-	}
-	else {
-		tempData.skillTreeZoomSpeed = 1;
-	}
-	dynamicData.skillTree.hoveredNode = null;
-	var offcenterradius = (x - 400) * (x - 400) + (y - 400) * (y - 400);
-	if ((x - 100) * (x - 100) + (y - 80) * (y - 80) < 400) {
-		dynamicData.skillTree.hoveredNode = "lock";
-	}
-	else if (offcenterradius < 122500) {
-		if (offcenterradius > 62500 && tempData.skillTreeZoomActive) {
-			var length = Math.sqrt(offcenterradius);
-			tempData.skillTreeScrollSpeedX = -(x - 400) / length * 6;
-			tempData.skillTreeScrollSpeedY = -(y - 400) / length * 6;
+		ctxFilter.beginPath();
+		oClicker.path(ctxFilter);
+		ctxFilter.fill();
 
-		}
-		else {
-			tempData.skillTreeScrollSpeedX = 0;
-			tempData.skillTreeScrollSpeedY = 0;
+		var ctxDestination = clicker.tabs[tab].canvas.getContext('2d');
+		var destinationImageData = ctxDestination.getImageData(oClicker.bounds.x, oClicker.bounds.y, oClicker.bounds.w, oClicker.bounds.h);
+		var destinationData = destinationImageData.data;
+		var filterData = ctxFilter.getImageData(oClicker.bounds.x, oClicker.bounds.y, oClicker.bounds.w, oClicker.bounds.h).data;
 
-			var hoverPositionX = x - 400;
-			var hoverPositionY = y - 400;
-			hoverPositionX /= tempData.skillTreeZoom;
-			hoverPositionY /= tempData.skillTreeZoom;
-			for (var nodeID in skillTree.nodes) {
-				var node = dynamicData.skillTree.nodes[nodeID];
-				var nodePositionX = node.data.x + tempData.skillTreeScrollX;
-				var nodePositionY = node.data.y + tempData.skillTreeScrollY;
-
-				if ((hoverPositionX - nodePositionX) * (hoverPositionX - nodePositionX) + (hoverPositionY - nodePositionY) * (hoverPositionY - nodePositionY) < 625) {
-					dynamicData.skillTree.hoveredNode = nodeID;
-				}
+		for (var i = 0; i < filterData.length; i += 4) {
+			if (filterData[i + 3] > 0) {
+				destinationData[i + 0] = colorArray[0];
+				destinationData[i + 1] = colorArray[1];
+				destinationData[i + 2] = colorArray[2];
+				destinationData[i + 3] = 255;
 			}
 		}
+
+		ctxDestination.putImageData(destinationImageData, oClicker.bounds.x, oClicker.bounds.y);
+	},
+	resetTab: function (tab) {
+		tab = clicker.tabs[tab];
+		tab.canvas.getContext('2d').clearRect(0, 0, 800, 800);
+		tab.hexTranslator = [null];
 	}
-	else {
-		tempData.skillTreeScrollSpeedX = 0;
-		tempData.skillTreeScrollSpeedY = 0;
-	}
-	if (currentlyHovered) {
-		if (x < currentlyHovered.x1 || y < currentlyHovered.y1 || x > currentlyHovered.x2 || y > currentlyHovered.y2) {
-			if (currentlyHovered.unhovered) {
-				functionData[currentlyHovered.unhovered](currentlyHovered, currentlyHovered.arg1, currentlyHovered.arg2);
-			}
-			currentlyHovered = null;
-		}
-	}
-	var temp = false;
-	for (var i = 0; i < dynamicData.clickableElements[tempData.activeTab].length; i++) {
-		var oE = dynamicData.clickableElements[tempData.activeTab][i];
-		if (x >= oE.x1 && y >= oE.y1 && x <= oE.x2 && y <= oE.y2) {
-			if (oE.clicked) {
-				if (oE.disableHighlight) {
-					temp = !functionData[oE.disableHighlight](oE, oE.arg1, oE.arg2);
-				}
-				else {
-					temp = true;
-				}
-				highlight.x1 = oE.x1;
-				highlight.x2 = oE.x2;
-				highlight.y1 = oE.y1;
-				highlight.y2 = oE.y2;
-			}
-			if (oE.hovered) {
-				currentlyHovered = oE;
-				functionData[oE.hovered](oE, oE.arg1, oE.arg2);
-			}
-		}
-	}
-	highlight.active = temp;
 }
+
+function preprocessClicker() {
+	clicker.addingCanvas = document.createElement('canvas');
+	clicker.addingCanvas.width = 800;
+	clicker.addingCanvas.height = 800;
+	for (var i = 0; i < clicker.tabs.length; i++) {
+		clicker.tabs[i].canvas = document.createElement('canvas');
+		clicker.tabs[i].canvas.width = 800;
+		clicker.tabs[i].canvas.height = 800;
+	}
+}
+preprocessClicker();

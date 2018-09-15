@@ -394,7 +394,16 @@ var dynamicData = {
 		},
 		{
 			"highlight": false
-		}
+		},
+		{
+			"highlight": false
+		},
+		{
+			"highlight": false
+		},
+		{
+			"highlight": false
+		},
 	],
 	"lore": {
 		"messages": ["", "", "", ""],
@@ -412,7 +421,7 @@ var dynamicData = {
 	"punCounter": 0,
 };
 var tempData = {
-	"activeTab": 5,
+	"activeTab": 0,
 	"canvasTicks": 0,
 	"catalystRota": 0,
 	"machineRota": 0,
@@ -848,7 +857,7 @@ var staticData = {
 			"effect": function () {
 				for (var i = 0; i < 4; i++) {
 					var oTank = dynamicData.utilityMachines[2].tanks[i];
-					oTank.capacity = Math.max(oTank.capacity, dynamicData.elementalTanks[oTank.type].amount * 2);
+					oTank.capacity = 1e50;
 				}
 			},
 			"tooltip": {
@@ -1478,21 +1487,21 @@ var functionData = {
 	"combineGolems": function () {
 		combineGolems();
 	},
-	"tabSwitch": function (oC, arg1) {
-		if (dynamicData.tabStatus[arg1].disabled) {
+	"tabSwitch": function () {
+		if (dynamicData.tabStatus[this.arg1].disabled) {
 			return;
 		}
-		tempData.activeTab = arg1;
-		highlight.active = false;
+		tempData.activeTab = this.arg1;
+		currentlyHovered = null;
 	},
-	"upgradeBought": function (oC, arg1) {
-		boughtUpgrade(oC, arg1);
+	"upgradeBought": function () {
+		boughtUpgrade(this, this.arg1);
 	},
-	"valveSwitch": function (oC, arg1, arg2) {
-		dynamicData.conversionMachines[arg1][arg2].valve = !dynamicData.conversionMachines[arg1][arg2].valve;
+	"valveSwitch": function () {
+		dynamicData.conversionMachines[this.arg1][this.arg2].valve = !dynamicData.conversionMachines[this.arg1][this.arg2].valve;
 	},
-	"utilityMachineTankSwitch": function (oC, arg1, arg2) {
-		dynamicData.utilityMachines[arg1].tanks[arg2].valve = !dynamicData.utilityMachines[arg1].tanks[arg2].valve;
+	"utilityMachineTankSwitch": function () {
+		dynamicData.utilityMachines[this.arg1].tanks[this.arg2].valve = !dynamicData.utilityMachines[this.arg1].tanks[this.arg2].valve;
 	},
 	"catalystSwitch": function () {
 		if (dynamicData.utilityMachines[0].active) {
@@ -1506,28 +1515,28 @@ var functionData = {
 	"tooltipUnhover": function () {
 		canvasTooltip = null;
 	},
-	"tooltipHoverUpgrade": function (oC, arg1) {
-		if (dynamicData.upgradesBought[arg1]) {
-			canvasTooltip = staticData.upgrades[arg1].tooltipBought;
+	"tooltipHoverUpgrade": function () {
+		if (dynamicData.upgradesBought[this.arg1]) {
+			canvasTooltip = staticData.upgrades[this.arg1].tooltipBought;
 		}
 		else {
-			canvasTooltip = staticData.upgrades[arg1].tooltip;
+			canvasTooltip = staticData.upgrades[this.arg1].tooltip;
 		}
-		if (canvasTooltip) canvasTooltip.arg1 = arg1;
+		if (canvasTooltip) canvasTooltip.arg1 = this.arg1;
 	},
-	"tooltipHoverConversionMachine": function (oC, arg1) {
-		canvasTooltip = staticData.conversionMachines[arg1].tooltip;
-		if (canvasTooltip) canvasTooltip.arg1 = arg1;
+	"tooltipHoverConversionMachine": function () {
+		canvasTooltip = staticData.conversionMachines[this.arg1].tooltip;
+		if (canvasTooltip) canvasTooltip.arg1 = this.arg1;
 	},
-	"tooltipHoverUtilityMachine": function (oC, arg1) {
-		canvasTooltip = staticData.utilityMachines[arg1].tooltip;
-		if (canvasTooltip) canvasTooltip.arg1 = arg1;
+	"tooltipHoverUtilityMachine": function () {
+		canvasTooltip = staticData.utilityMachines[this.arg1].tooltip;
+		if (canvasTooltip) canvasTooltip.arg1 = this.arg1;
 	},
-	"tooltipHoverCatalystButton": function (oC, arg1) {
+	"tooltipHoverCatalystButton": function () {
 		canvasTooltip = staticData.utilityMachines[0].tooltipButton;
-		if (canvasTooltip) canvasTooltip.arg1 = arg1;
+		if (canvasTooltip) canvasTooltip.arg1 = this.arg1;
 	},
-	"tooltipHoverMergeButton": function (oC, arg1) {
+	"tooltipHoverMergeButton": function () {
 		if (tempData.mergingGolems.length === 2) {
 			if (staticData.golems[tempData.mergingGolems[0]].combine[tempData.mergingGolems[1]]) {
 				canvasTooltip = staticData.golems[staticData.golems[tempData.mergingGolems[0]].combine[tempData.mergingGolems[1]]].tooltip;
@@ -1539,53 +1548,82 @@ var functionData = {
 		else {
 			canvasTooltip = staticData.mergeButtonTooltip;
 		}
-		if (canvasTooltip) canvasTooltip.arg1 = arg1;
 	},
-	"scrollLoreTop": function (oC, arg1) {
+	"tooltipHoverGolem": function () {
+		if (dynamicData.golems[this.arg1] !== 0) {
+			canvasTooltip = staticData.golems[this.arg1].tooltip;
+		}
+	},
+	"checkGolem": function () {
+		return (dynamicData.golems[this.arg1] === 0);
+	},
+	"clickedGolem": function () {
+		if (dynamicData.golems[this.arg1] !== 0) {
+
+			if (staticData.golems[this.arg1].combine) {
+
+				if (tempData.mergingGolems[0] === this.arg1) {
+					console.log(0);
+					tempData.mergingGolems = tempData.mergingGolems.splice(1);
+				}
+				else if (tempData.mergingGolems[1] === this.arg1) {
+					console.log(1);
+					tempData.mergingGolems.splice(1);
+				}
+				else if (tempData.mergingGolems.length < 2) {
+					console.log(2);
+					tempData.mergingGolems.push(this.arg1);
+				}
+			}
+			else {
+
+			}
+		}
+	},
+	"scrollLoreTop": function () {
 		tempData.loreScroll = 0;
 	},
-	"scrollLoreBot": function (oC, arg1) {
+	"scrollLoreBot": function () {
 		tempData.loreScroll = Math.max(0, dynamicData.lore.maxScroll);
-		console.log(dynamicData.lore.maxScroll);
 	},
-	"scrollLoreUp": function (oC, arg1) {
+	"scrollLoreUp": function () {
 		tempData.loreScrollSpeed = -1;
 	},
-	"scrollLoreUpFast": function (oC, arg1) {
+	"scrollLoreUpFast": function () {
 		tempData.loreScrollSpeed = -8;
 	},
-	"scrollLoreDown": function (oC, arg1) {
+	"scrollLoreDown": function () {
 		tempData.loreScrollSpeed = 1;
 	},
-	"scrollLoreDownFast": function (oC, arg1) {
+	"scrollLoreDownFast": function () {
 		tempData.loreScrollSpeed = 8;
 	},
-	"scrollLoreStop": function (oC, arg1) {
+	"scrollLoreStop": function () {
 		tempData.loreScrollSpeed = 0;
 	},
-	"checkTab": function (oC, arg1) {
-		return dynamicData.tabStatus[arg1].disabled || arg1 == tempData.activeTab;
+	"checkTab": function () {
+		return dynamicData.tabStatus[this.arg1].disabled || this.arg1 == tempData.activeTab;
 	},
-	"showFAQ": function (oC, arg1) {
+	"showFAQ": function () {
 		FAQvisible = true;
 	},
-	"hideFAQ": function (oC, arg1) {
+	"hideFAQ": function () {
 		FAQvisible = false;
 	},
-	"toggleColorblind": function (oC, arg1) {
+	"toggleColorblind": function () {
 		dynamicSaveData.options.colorblindMode = !dynamicSaveData.options.colorblindMode;
 	},
-	"mainHub": function (oC, arg1) {
+	"mainHub": function () {
 		saveData();
 		window.location.href = "https://nagshell.github.io/elemental-inception-incremental";
 	},
-	"patreonLink": function (oC, arg1) {
+	"patreonLink": function () {
 		window.open('https://www.patreon.com/user?u=12559765', '_blank');
 	},
-	"paypalLink": function (oC, arg1) {
+	"paypalLink": function () {
 		window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TNTLB3ZN7BVUQ', '_blank');
 	},
-	"exportData": function (oC, arg1) {
+	"exportData": function () {
 		functionData.rejectedImport();
 		if (confirm("Once you accept save data will be copied to your clipboard.")) {
 			var tempElem = document.getElementById("clipbordElement");
@@ -1597,7 +1635,7 @@ var functionData = {
 			tempElem.style.display = 'none';
 		}
 	},
-	"importData": function (oC, arg1) {
+	"importData": function () {
 		var tempElem = document.getElementById("clipbordElement");
 		tempElem.style.display = '';
 		tempElem.value = '';
@@ -1605,14 +1643,14 @@ var functionData = {
 		document.getElementById("clipboardAccept").style.display = '';
 		document.getElementById("clipboardCancel").style.display = '';
 	},
-	"confirmedImport": function (oC, arg1) {
+	"confirmedImport": function () {
 		var tempElem = document.getElementById("clipbordElement");
 		loadData(tempElem.value);
 		tempElem.style.display = 'none';
 		document.getElementById("clipboardAccept").style.display = 'none';
 		document.getElementById("clipboardCancel").style.display = 'none';
 	},
-	"rejectedImport": function (oC, arg1) {
+	"rejectedImport": function () {
 		document.getElementById("clipbordElement").style.display = 'none';
 		document.getElementById("clipboardAccept").style.display = 'none';
 		document.getElementById("clipboardCancel").style.display = 'none';

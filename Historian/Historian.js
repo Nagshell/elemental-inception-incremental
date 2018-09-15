@@ -237,16 +237,21 @@ function boughtUpgrade(oC, upgradeId, loadOverride) {
 
 function addUpgrade(sUpgrade) {
 	dynamicData.visibleUpgrades.push(sUpgrade);
-	dynamicData.clickableElements[0].push({
-		"x1": 2,
-		"x2": 111,
-		"y1": 89 + dynamicData.stats.upgradesNum * 35,
-		"y2": 121 + dynamicData.stats.upgradesNum * 35,
-		"arg1": sUpgrade,
-		"clicked": (dynamicData.upgradesBought[sUpgrade]) ? false : "upgradeBought",
-		"hovered": "tooltipHoverUpgrade",
-		"unhovered": "tooltipUnhover"
-	});
+	clicker.addClicker({
+		path: (function (ctx) {
+			ctx.rect(2, 89 + this * 35, 109, 32);
+		}).bind(dynamicData.stats.upgradesNum),
+		bounds: {
+			x: 1,
+			y: 88 + dynamicData.stats.upgradesNum * 35,
+			w: 111,
+			h: 34
+		},
+		clicked: (dynamicData.upgradesBought[sUpgrade]) ? false : functionData.upgradeBought,
+		hovered: functionData.tooltipHoverUpgrade,
+		unhovered: functionData.tooltipUnhover,
+		arg1: sUpgrade
+	}, 0);
 	dynamicData.stats.upgradesNum++;
 	redraw[0] = true;
 }

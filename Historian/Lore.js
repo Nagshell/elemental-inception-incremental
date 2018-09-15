@@ -1,7 +1,24 @@
 var lore = {
 	"loreMessages": {
 		"start0": {
-			"text": ""
+			"text": "test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n" +
+				"test\n"
 		},
 		"rifts0": {
 			"text": ""

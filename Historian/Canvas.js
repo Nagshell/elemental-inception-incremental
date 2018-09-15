@@ -11,13 +11,6 @@ function canvasHover(event) {
 	var y = (event.clientY - canvasBox.top - 1) * 800 / canvasBox.height;
 	clicker.hover(x, y);
 }
-var highlight = {
-	"active": false,
-	x1: 0,
-	x2: 0,
-	y1: 0,
-	y2: 0
-}
 var elementalTranlator = {
 	"Earth": 0,
 	"Water": 1,
@@ -99,13 +92,17 @@ function draw() {
 	if (dynamicData.popupActive) {
 		drawPopup(ctxActive);
 	}
-	if (highlight.active) {
-		ctxActive.save();
-		ctxActive.fillStyle = "rgba(255,255,255,0.06)";
-		ctxActive.fillRect(highlight.x1, highlight.y1, highlight.x2 - highlight.x1, highlight.y2 - highlight.y1);
-		ctxActive.strokeStyle = "rgba(255,255,255,0.6)";
-		ctxActive.strokeRect(highlight.x1, highlight.y1, highlight.x2 - highlight.x1, highlight.y2 - highlight.y1);
-		ctxActive.restore();
+	if (currentlyHovered && currentlyHovered.clicked) {
+		if (!currentlyHovered.disableHighlight || !currentlyHovered.disableHighlight()) {
+			ctxActive.save();
+			ctxActive.fillStyle = "rgba(255,255,255,0.06)";
+			ctxActive.strokeStyle = "rgba(255,255,255,0.6)";
+			ctxActive.beginPath();
+			currentlyHovered.path(ctxActive);
+			ctxActive.fill();
+			ctxActive.stroke();
+			ctxActive.restore();
+		}
 	}
 	if (clicker.tabs[tempData.activeTab].canvas) {
 		//ctxActive.drawImage(clicker.tabs[tempData.activeTab].canvas, 0, 0);
@@ -113,7 +110,7 @@ function draw() {
 }
 
 var drawingTabs = [{ //Main setup
-		"background": function (ctx) {
+		background: function (ctx) {
 			ctx.font = "14px Arial";
 			ctx.textBaseline = "middle";
 			ctx.textAlign = "center";
@@ -252,7 +249,7 @@ var drawingTabs = [{ //Main setup
 			ctx.fillText("Donate", 60, 765);
 			ctx.restore();
 		},
-		"draw4ValverBackground": function (ctx, x, y, machineName) {
+		draw4ValverBackground: function (ctx, x, y, machineName) {
 			ctx.strokeRect(x, y, 108, 90);
 			ctx.fillStyle = staticData.textColor;
 			ctx.fillText(machineName, x + 54, y + 11);
@@ -265,7 +262,7 @@ var drawingTabs = [{ //Main setup
 			ctx.fillStyle = staticData.elementalColor[1][0];
 			ctx.fillRect(x + 55, y + 57, 30, 30);
 		},
-		"draw2ValverBackground": function (ctx, x, y, machineName, elementalIdLeft, elementalIdRight, elementalProductId) {
+		draw2ValverBackground: function (ctx, x, y, machineName, elementalIdLeft, elementalIdRight, elementalProductId) {
 			if (elementalProductId > -1) {
 				ctx.fillStyle = staticData.elementalColor[elementalProductId][3];
 				ctx.fillRect(x, y, 108, 24);
@@ -278,7 +275,7 @@ var drawingTabs = [{ //Main setup
 			ctx.fillStyle = staticData.elementalColor[elementalIdRight][0];
 			ctx.fillRect(x + 55, y + 25, 30, 30);
 		},
-		"drawElementalTankBackground": function (ctx, elementId) {
+		drawElementalTankBackground: function (ctx, elementId) {
 			ctx.save();
 			ctx.lineWidth = 1;
 			ctx.strokeStyle = "#222222";
@@ -308,7 +305,7 @@ var drawingTabs = [{ //Main setup
 			ctx.fill();
 			ctx.restore();
 		},
-		"foreground": function (ctx) {
+		foreground: function (ctx) {
 			ctx.font = "14px Arial";
 			ctx.textBaseline = "middle";
 			ctx.textAlign = "center";
@@ -377,17 +374,17 @@ var drawingTabs = [{ //Main setup
 			}
 			ctx.translate(-400, -400);
 		},
-		"draw4ValverForeground": function (ctx, x, y) {
+		draw4ValverForeground: function (ctx, x, y) {
 			this.drawSingleValveForeground(ctx, x + 3, y + 25, 3);
 			this.drawSingleValveForeground(ctx, x + 3, y + 57, 2);
 			this.drawSingleValveForeground(ctx, x + 55, y + 25, 0);
 			this.drawSingleValveForeground(ctx, x + 55, y + 57, 1);
 		},
-		"draw2ValverForeground": function (ctx, x, y, elementalIdLeft, elementalIdRight) {
+		draw2ValverForeground: function (ctx, x, y, elementalIdLeft, elementalIdRight) {
 			this.drawSingleValveForeground(ctx, x + 3, y + 25, elementalIdLeft);
 			this.drawSingleValveForeground(ctx, x + 55, y + 25, elementalIdRight);
 		},
-		"drawSingleValveForeground": function (ctx, x, y, elementalId) {
+		drawSingleValveForeground: function (ctx, x, y, elementalId) {
 			ctx.save();
 			ctx.translate(x + 15, y + 15);
 			ctx.beginPath();
@@ -411,7 +408,7 @@ var drawingTabs = [{ //Main setup
 			ctx.stroke();
 			ctx.restore();
 		},
-		"drawElementalTankForeground": function (ctx) {
+		drawElementalTankForeground: function (ctx) {
 			ctx.beginPath();
 			ctx.arc(0, 0, 80, 0, Math.PI / 2);
 			ctx.lineTo(-80, 80);
@@ -420,7 +417,7 @@ var drawingTabs = [{ //Main setup
 			ctx.lineTo(80, 0);
 			ctx.stroke();
 		},
-		"active": function (ctx) {
+		active: function (ctx) {
 			ctx.font = "14px Arial";
 			ctx.textBaseline = "middle";
 			ctx.textAlign = "center";
@@ -454,7 +451,7 @@ var drawingTabs = [{ //Main setup
 			}
 			ctx.restore();
 		},
-		"drawSidebarsActive": function (ctx) {
+		drawSidebarsActive: function (ctx) {
 			ctx.save();
 			ctx.translate(3, 90);
 			for (var i = 0; i < dynamicData.visibleUpgrades.length; i++) {
@@ -510,17 +507,17 @@ var drawingTabs = [{ //Main setup
 			y += 95;
 
 		},
-		"draw4ValverActive": function (ctx, x, y, valve0, valve1, valve2, valve3) {
+		draw4ValverActive: function (ctx, x, y, valve0, valve1, valve2, valve3) {
 			this.drawSingleValveActive(ctx, x + 3, y + 25, 3, valve0);
 			this.drawSingleValveActive(ctx, x + 3, y + 57, 2, valve1);
 			this.drawSingleValveActive(ctx, x + 55, y + 25, 0, valve2);
 			this.drawSingleValveActive(ctx, x + 55, y + 57, 1, valve3);
 		},
-		"draw2ValverActive": function (ctx, x, y, elementalIdLeft, leftValveStatus, elementalIdRight, rightValveStatus) {
+		draw2ValverActive: function (ctx, x, y, elementalIdLeft, leftValveStatus, elementalIdRight, rightValveStatus) {
 			this.drawSingleValveActive(ctx, x + 3, y + 25, elementalIdLeft, leftValveStatus);
 			this.drawSingleValveActive(ctx, x + 55, y + 25, elementalIdRight, rightValveStatus);
 		},
-		"drawSingleValveActive": function (ctx, x, y, elementalId, valveStatus) {
+		drawSingleValveActive: function (ctx, x, y, elementalId, valveStatus) {
 			ctx.save();
 			ctx.translate(x + 15, y + 15);
 			if (valveStatus) {
@@ -536,7 +533,7 @@ var drawingTabs = [{ //Main setup
 			ctx.fill();
 			ctx.restore();
 		},
-		"drawMainSetupActive": function (ctx) {
+		drawMainSetupActive: function (ctx) {
 			ctx.save();
 			ctx.rotate(Math.PI * tempData.canvasTicks / 2000);
 			for (var i = 0; i < dynamicData.golems.length; i++) {
@@ -783,7 +780,7 @@ var drawingTabs = [{ //Main setup
 				ctx.translate(180, 180);
 			}
 		},
-		"drawElementalTankRift": function (ctx, elementId) {
+		drawElementalTankRift: function (ctx, elementId) {
 			ctx.save();
 			ctx.lineWidth = 4;
 			ctx.strokeStyle = staticData.elementalColor[elementId][1];
@@ -826,7 +823,7 @@ var drawingTabs = [{ //Main setup
 
 			ctx.restore();
 		},
-		"drawTankNumbers": function (ctx) {
+		drawTankNumbers: function (ctx) {
 			var prefix;
 			var amount;
 			ctx.save();
@@ -883,7 +880,7 @@ var drawingTabs = [{ //Main setup
 			drawNumber(ctx, -215, 242, Math.abs(dynamicData.elementalTanks["Air"].change), prefix, postfix);
 			ctx.restore();
 		},
-		"drawFillRatiosActive": function (ctx) {
+		drawFillRatiosActive: function (ctx) {
 			ctx.save();
 			var oCMachine;
 			ctx.lineWidth = 1;
@@ -922,6 +919,7 @@ var drawingTabs = [{ //Main setup
 				var r = [];
 				for (var j = 0; j < 4; j++) {
 					r.push(Math.log2(1 + oCMachine.tanks[j].amount) / Math.log2(1 + oCMachine.tanks[j].capacity));
+					r[j] = Math.min(1, Math.max(0, r[j]));
 				}
 				ctx.fillStyle = staticData.elementalColor[elementalTranlator[oCMachine.tanks[3].type]][0];
 				ctx.fillRect(722, 135 + 63 * 5 + 95 * i, 20, 30 * r[3]);
@@ -936,7 +934,7 @@ var drawingTabs = [{ //Main setup
 		},
 	},
 	{ //Golems
-		"background": function (ctx) {
+		background: function (ctx) {
 			ctx.font = "14px Arial";
 			ctx.textBaseline = "middle";
 			ctx.textAlign = "center";
@@ -952,8 +950,8 @@ var drawingTabs = [{ //Main setup
 			ctx.strokeRect(330, 170, 60, 30);
 			ctx.strokeRect(410, 170, 60, 30);
 		},
-		"foreground": function (ctx) {},
-		"active": function (ctx) {
+		foreground: function (ctx) {},
+		active: function (ctx) {
 			ctx.save();
 			ctx.font = "14px Arial";
 			ctx.textBaseline = "middle";
@@ -984,7 +982,7 @@ var drawingTabs = [{ //Main setup
 			ctx.translate(-400, -400);
 			ctx.restore();
 		},
-		"drawGolem": function (ctx, x, y, colors, rotatingSpeed) {
+		drawGolem: function (ctx, x, y, colors, rotatingSpeed) {
 			ctx.save();
 			ctx.translate(x, y);
 			ctx.fillStyle = colors[0];
@@ -1009,9 +1007,9 @@ var drawingTabs = [{ //Main setup
 		},
 	},
 	{ //Lore
-		"background": function (ctx) {},
-		"foreground": function (ctx) {},
-		"active": function (ctx) {
+		background: function (ctx) {},
+		foreground: function (ctx) {},
+		active: function (ctx) {
 			ctx.lineWidth = 2;
 			ctx.fillRect(230, 60, 140, 40);
 			ctx.strokeRect(230, 60, 140, 40);
@@ -1057,9 +1055,9 @@ var drawingTabs = [{ //Main setup
 		},
 	},
 	{ //Chievos
-		"background": function (ctx) {},
-		"foreground": function (ctx) {},
-		"active": function (ctx) {
+		background: function (ctx) {},
+		foreground: function (ctx) {},
+		active: function (ctx) {
 			ctx.fillRect(100, 100, 600, 660);
 			ctx.strokeRect(100, 100, 600, 660);
 			if (permanentSaveData.achievementsUnlocked) {
@@ -1120,9 +1118,9 @@ var drawingTabs = [{ //Main setup
 		},
 	},
 	{ //Options
-		"background": function (ctx) {},
-		"foreground": function (ctx) {},
-		"active": function (ctx) {
+		background: function (ctx) {},
+		foreground: function (ctx) {},
+		active: function (ctx) {
 			ctx.font = "14px Arial";
 			ctx.textBaseline = "middle";
 			ctx.textAlign = "center";
@@ -1159,11 +1157,11 @@ var drawingTabs = [{ //Main setup
 		},
 	},
 	{ //Tree
-		"background": function (ctx) {
+		background: function (ctx) {
 			this.tree(floatingCanvas[tempData.activeTab][2].getContext('2d'));
 		},
-		"foreground": function (ctx) {},
-		"active": function (ctx) {
+		foreground: function (ctx) {},
+		active: function (ctx) {
 			var tX = tempData.skillTreeScrollX + tempData.skillTreeScrollSpeedX;
 			if (tX > 600) tX = 600;
 			if (tX < -600) tX = -600;
@@ -1180,52 +1178,54 @@ var drawingTabs = [{ //Main setup
 			ctx.lineWidth = 1;
 
 			//Lock
-			ctx.save();
-			ctx.beginPath();
-			ctx.arc(100, 80, 20, 0, 2 * Math.PI);
-			ctx.fillStyle = "#002300";
-			ctx.fill();
-			ctx.stroke();
-			ctx.restore();
-
-			if (dynamicData.skillTree.locked) {
-				ctx.beginPath();
-				ctx.moveTo(90, 70);
-				ctx.lineTo(90, 90);
-				ctx.lineTo(110, 90);
-				ctx.lineTo(110, 70);
-				ctx.closePath();
-				ctx.stroke();
-			}
-			else {
-				ctx.beginPath();
-				ctx.moveTo(90, 70);
-				ctx.lineTo(90, 90);
-				ctx.lineTo(110, 90);
-				ctx.lineTo(110, 70);
-				ctx.lineTo(105, 70);
-				ctx.lineTo(95, 75);
-				ctx.stroke();
-			}
-			if (dynamicData.skillTree.hoveredNode == "lock") {
-				ctx.beginPath();
-				ctx.arc(100, 80, 20, -Math.PI / 2, Math.PI / 2);
-				ctx.lineTo(200, 100);
-				ctx.arc(200, 80, 20, Math.PI / 2, -Math.PI / 2, true);
-				ctx.closePath();
-				ctx.fill();
-				ctx.arc(100, 80, 20, -Math.PI / 2, Math.PI / 2, true);
-				ctx.stroke();
+			if (dynamicData.skillTree.currentBranch) {
 				ctx.save();
-				ctx.fillStyle = staticData.textColor;
-				ctx.textAlign = "center";
+				ctx.beginPath();
+				ctx.arc(100, 80, 20, 0, 2 * Math.PI);
+				ctx.fillStyle = "#002300";
+				ctx.fill();
+				ctx.stroke();
+				ctx.restore();
+
 				if (dynamicData.skillTree.locked) {
-					ctx.fillText("Locked", 170, 80);
+					ctx.beginPath();
+					ctx.moveTo(90, 70);
+					ctx.lineTo(90, 90);
+					ctx.lineTo(110, 90);
+					ctx.lineTo(110, 70);
+					ctx.closePath();
+					ctx.stroke();
 				}
 				else {
-					ctx.fillText("Unlocked", 170, 80);
+					ctx.beginPath();
+					ctx.moveTo(90, 70);
+					ctx.lineTo(90, 90);
+					ctx.lineTo(110, 90);
+					ctx.lineTo(110, 70);
+					ctx.lineTo(105, 70);
+					ctx.lineTo(95, 75);
+					ctx.stroke();
 				}
-				ctx.restore();
+				if (dynamicData.skillTree.hoveredNode == "lock") {
+					ctx.beginPath();
+					ctx.arc(100, 80, 20, -Math.PI / 2, Math.PI / 2);
+					ctx.lineTo(200, 100);
+					ctx.arc(200, 80, 20, Math.PI / 2, -Math.PI / 2, true);
+					ctx.closePath();
+					ctx.fill();
+					ctx.arc(100, 80, 20, -Math.PI / 2, Math.PI / 2, true);
+					ctx.stroke();
+					ctx.save();
+					ctx.fillStyle = staticData.textColor;
+					ctx.textAlign = "center";
+					if (dynamicData.skillTree.locked) {
+						ctx.fillText("Locked", 170, 80);
+					}
+					else {
+						ctx.fillText("Unlocked", 170, 80);
+					}
+					ctx.restore();
+				}
 			}
 
 			//Scroll buttons
@@ -1355,7 +1355,7 @@ var drawingTabs = [{ //Main setup
 				}
 			}
 		},
-		"tree": function (ctx) {
+		tree: function (ctx) {
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
 			ctx.clearRect(0, 0, 2000, 2000);
 			ctx.translate(1000, 1000);
@@ -1397,9 +1397,9 @@ var drawingTabs = [{ //Main setup
 		}
 	},
 	{ //Donation Box
-		"background": function (ctx) {},
-		"foreground": function (ctx) {},
-		"active": function (ctx) {
+		background: function (ctx) {},
+		foreground: function (ctx) {},
+		active: function (ctx) {
 			ctx.font = "14px Arial";
 			ctx.textBaseline = "middle";
 			ctx.textAlign = "center";
@@ -1420,14 +1420,16 @@ var drawingTabs = [{ //Main setup
 			ctx.fillText("and want to support me financially.", 400, 252);
 			ctx.fillText("Here are the links which you can use to do so.", 400, 274);
 		},
-	}, { //
-		"background": function (ctx) {},
-		"foreground": function (ctx) {},
-		"active": function (ctx) {},
-	}, { //
-		"background": function (ctx) {},
-		"foreground": function (ctx) {},
-		"active": function (ctx) {},
+	},
+	{ //
+		background: function (ctx) {},
+		foreground: function (ctx) {},
+		active: function (ctx) {},
+	},
+	{ //
+		background: function (ctx) {},
+		foreground: function (ctx) {},
+		active: function (ctx) {},
 	}
 ];
 
