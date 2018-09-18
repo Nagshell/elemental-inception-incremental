@@ -183,6 +183,9 @@ var lore = {
 			"text": "Elemental wave created by new Golem reached another Golem of same type.\n" +
 				"Something is not right..."
 		},
+		"challengeComplete0": {
+			"text": "You've completed a challenge."
+		}
 	},
 	"bannerMessages": {
 		"overflow0": {

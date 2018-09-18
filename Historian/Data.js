@@ -123,6 +123,7 @@ var dynamicSaveData = {
 		}
 	],
 	"upgradesBought": {},
+	"skillTree": {},
 	"visibleUpgrades": [],
 };
 var dynamicData = {
@@ -342,7 +343,7 @@ var dynamicData = {
 		"pipes": {
 			"level": 1
 		},
-		"golemCost": 1e10,
+		"golemCost": 1e5,
 		"upgradeCounter": 0
 	},
 	"golemEffects": {
@@ -414,14 +415,16 @@ var dynamicData = {
 	"skillTree": {
 		"hoveredNode": null,
 		"spAvail": 12,
+		"spMax": 12,
 		"currentBranch": null,
 		"locked": false,
 		"currentChallengeNode": null,
+		"activeNodes": {},
 	},
 	"punCounter": 0,
 };
 var tempData = {
-	"activeTab": 0,
+	"activeTab": 5,
 	"canvasTicks": 0,
 	"catalystRota": 0,
 	"machineRota": 0,
@@ -435,7 +438,7 @@ var tempData = {
 	"loreScrollSpeed": 0,
 	"skillTreeScrollX": 0,
 	"skillTreeScrollY": 0,
-	"skillTreeZoom": 0.7,
+	"skillTreeZoom": 0.55,
 	"skillTreeScrollSpeedX": 0,
 	"skillTreeScrollSpeedY": 0,
 	"skillTreeZoomSpeed": 1,
@@ -1563,15 +1566,12 @@ var functionData = {
 			if (staticData.golems[this.arg1].combine) {
 
 				if (tempData.mergingGolems[0] === this.arg1) {
-					console.log(0);
 					tempData.mergingGolems = tempData.mergingGolems.splice(1);
 				}
 				else if (tempData.mergingGolems[1] === this.arg1) {
-					console.log(1);
 					tempData.mergingGolems.splice(1);
 				}
 				else if (tempData.mergingGolems.length < 2) {
-					console.log(2);
 					tempData.mergingGolems.push(this.arg1);
 				}
 			}

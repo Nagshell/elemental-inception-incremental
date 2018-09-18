@@ -36,7 +36,6 @@ var FAQvisible = false;
 var canvas = document.getElementById("canvasMain");
 canvas.addEventListener("mousemove", canvasHover);
 canvas.addEventListener("click", canvasClick);
-canvas.addEventListener("wheel", canvasClick);
 var ctxActive = canvas.getContext("2d");
 var canvasTooltip = null;
 var redraw = [true, true, true, true, true, true, true, true, true, true, true];
@@ -139,7 +138,7 @@ var drawingTabs = [{ //Main setup
 					var oUpgrade = staticData.upgrades[dynamicData.visibleUpgrades[i]];
 					ctx.fillStyle = staticData.textColor;
 					if (dynamicData.upgradesBought[dynamicData.visibleUpgrades[i]]) {
-						if (oUpgrade.boughtName.length > 14) {
+						if (oUpgrade.boughtName && oUpgrade.boughtName.length > 14) {
 							ctx.font = "12px Arial";
 						}
 						else {
@@ -595,6 +594,8 @@ var drawingTabs = [{ //Main setup
 				r2 /= rMax;
 				r1 = 1 - (1 - r1) * (1 - r1);
 				r2 = 1 - (1 - r2) * (1 - r2);
+				r1 = Math.max(0, r1);
+				r2 = Math.max(0, r2);
 				ctx.rotate(Math.PI / 2);
 				ctx.save();
 				ctx.translate(80, 0);
@@ -977,6 +978,7 @@ var drawingTabs = [{ //Main setup
 					ctx.restore();
 				}
 				this.drawGolem(ctx, oG.x, oG.y, oG.colors, oG.rotatingSpeed);
+				ctx.fillText(dynamicData.golems[golem], oG.x, oG.y - 50);
 				ctx.restore();
 			}
 			ctx.translate(-400, -400);
@@ -1162,6 +1164,7 @@ var drawingTabs = [{ //Main setup
 		},
 		foreground: function (ctx) {},
 		active: function (ctx) {
+			ctx.textAlign = "center";
 			var tX = tempData.skillTreeScrollX + tempData.skillTreeScrollSpeedX;
 			if (tX > 600) tX = 600;
 			if (tX < -600) tX = -600;
@@ -1337,18 +1340,30 @@ var drawingTabs = [{ //Main setup
 					ctx.fillText(nodeData.x, centerX - 40, centerY - 110);
 					ctx.fillText(nodeData.y, centerX - 40, centerY - 90);
 
-					//ctx.fillText(dynamicData.skillTree.hoveredNode, centerX - 60, centerY -
-					//60);
-					if (node.cost > 999) {
-						ctx.fillText("To get this node you need to unlock it.", centerX - 120, centerY -
-							60);
-						ctx.fillText("Activate a node on this branch.", centerX - 110, centerY - 40);
-						ctx.fillText("And then lock your tree to do it.", centerX - 110, centerY - 20);
+					if (dynamicData.skillTree.locked) {
+						ctx.fillText("You can't interact with tree while it's locked.", centerX, centerY -
+							40);
 					}
 					else {
-						ctx.fillText("To get this node and all required for it:", centerX - 120, centerY -
-							60);
-						ctx.fillText(node.cost + " sp out of available " + dynamicData.skillTree.spAvail, centerX - 110, centerY - 40);
+						if (node.cost > 999) {
+							ctx.fillText("To get this node you need to unlock it.", centerX, centerY -
+								60);
+							ctx.fillText("Activate a node on this branch.", centerX, centerY - 40);
+							ctx.fillText("And then lock your tree to do it.", centerX, centerY - 20);
+						}
+						else {
+							ctx.fillText("To get this node and all required for it:", centerX, centerY -
+								60);
+							ctx.fillText(node.cost + " sp out of available " + dynamicData.skillTree.spAvail, centerX, centerY - 40);
+							ctx.fillText(node.required, centerX, centerY - 20);
+						}
+					}
+
+					if (!permanentSaveData.skillTree.unlocked[dynamicData.skillTree.hoveredNode] && nodeData.challenge) {
+						ctx.fillText("To unlock:", centerX, centerY + 30);
+						ctx.fillText("Gather " + nodeData.challenge.golemCount + " " + node.branchID + " golems.", centerX, centerY + 50);
+						ctx.fillText("Golem cost: ", centerX - 40, centerY + 70);
+						drawNumber(ctx, centerX, centerY + 70, nodeData.challenge.golemCost, );
 					}
 
 					ctx.restore();

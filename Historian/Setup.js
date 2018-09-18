@@ -297,7 +297,148 @@ function addMergeButton() {
 	}, 1);
 }
 
+function addTreeControls() {
+	clicker.addClicker({
+		path: function (ctx) {
+			ctx.arc(400, 400, 350, 0, Math.PI * 2);
+		},
+		bounds: {
+			x: 49,
+			y: 49,
+			w: 702,
+			h: 702
+		},
+		clicked: function (x, y) {
+			var clickedSkill = false;
+			var clickPositionX = x - 400;
+			var clickPositionY = y - 400;
+			clickPositionX /= tempData.skillTreeZoom;
+			clickPositionY /= tempData.skillTreeZoom;
+			for (var nodeID in skillTree.nodes) {
+				var node = dynamicData.skillTree.nodes[nodeID];
+				var nodePositionX = node.data.x + tempData.skillTreeScrollX;
+				var nodePositionY = node.data.y + tempData.skillTreeScrollY;
+				if ((clickPositionX - nodePositionX) * (clickPositionX - nodePositionX) + (clickPositionY - nodePositionY) * (clickPositionY - nodePositionY) < 625) {
+					skillTree.clickNode(nodeID);
+					clickedSkill = true;
+				}
+			}
+			if (!clickedSkill) {
+				tempData.skillTreeZoomActive = !tempData.skillTreeZoomActive;
+			}
+		},
+		disableHighlight: function () {
+			return true;
+		},
+		hovered: function (x, y) {
+			dynamicData.skillTree.hoveredNode = null;
+			var offcenterradius = (x - 400) * (x - 400) + (y - 400) * (y - 400);
+			if (offcenterradius > 62500 && tempData.skillTreeZoomActive) {
+				var length = Math.sqrt(offcenterradius);
+				tempData.skillTreeScrollSpeedX = -(x - 400) / length * 6;
+				tempData.skillTreeScrollSpeedY = -(y - 400) / length * 6;
+			}
+			else {
+				tempData.skillTreeScrollSpeedX = 0;
+				tempData.skillTreeScrollSpeedY = 0;
+
+				var hoverPositionX = x - 400;
+				var hoverPositionY = y - 400;
+				hoverPositionX /= tempData.skillTreeZoom;
+				hoverPositionY /= tempData.skillTreeZoom;
+				for (var nodeID in skillTree.nodes) {
+					var node = dynamicData.skillTree.nodes[nodeID];
+					var nodePositionX = node.data.x + tempData.skillTreeScrollX;
+					var nodePositionY = node.data.y + tempData.skillTreeScrollY;
+
+					if ((hoverPositionX - nodePositionX) * (hoverPositionX - nodePositionX) + (hoverPositionY - nodePositionY) * (hoverPositionY - nodePositionY) < 625) {
+						dynamicData.skillTree.hoveredNode = nodeID;
+					}
+				}
+			}
+		},
+		unhovered: function () {
+			tempData.skillTreeScrollSpeedX = 0;
+			tempData.skillTreeScrollSpeedY = 0;
+			dynamicData.skillTree.hoveredNode = null;
+		},
+		arg1: 0,
+	}, 5);
+	clicker.addClicker({
+		path: function (ctx) {
+			ctx.arc(700, 80, 20, 0, Math.PI * 2);
+		},
+		bounds: {
+			x: 679,
+			y: 59,
+			w: 42,
+			h: 42
+		},
+		hovered: function () {
+			tempData.skillTreeZoomSpeed = 1.01;
+		},
+		unhovered: function () {
+			tempData.skillTreeZoomSpeed = 1;
+		},
+	}, 5);
+	clicker.addClicker({
+		path: function (ctx) {
+			ctx.arc(700, 130, 20, 0, Math.PI * 2);
+		},
+		bounds: {
+			x: 679,
+			y: 109,
+			w: 42,
+			h: 42
+		},
+		hovered: function () {
+			tempData.skillTreeZoomSpeed = 0.99;
+		},
+		unhovered: function () {
+			tempData.skillTreeZoomSpeed = 1;
+		},
+	}, 5);
+	clicker.addClicker({
+		path: function (ctx) {
+			ctx.arc(100, 80, 20, 0, Math.PI * 2);
+		},
+		bounds: {
+			x: 79,
+			y: 59,
+			w: 42,
+			h: 42
+		},
+		clicked: function () {
+			if (dynamicData.skillTree.currentBranch && !dynamicData.skillTree.currentChallengeNode) {
+				dynamicData.skillTree.locked = !dynamicData.skillTree.locked;
+				skillTree.processNodes();
+			}
+		},
+		disableHighlight: function () {
+			return !dynamicData.skillTree.currentBranch;
+		},
+		hovered: function () {
+			dynamicData.skillTree.hoveredNode = "lock";
+		},
+		unhovered: function () {
+			dynamicData.skillTree.hoveredNode = null;
+		},
+	}, 5);
+}
+
 function setup() {
+	if (currentlyHovered && currentlyHovered.unhovered) {
+		currentlyHovered.unhovered();
+	}
+	currentlyHovered = null;
+
+	for (var i = 0; i < clicker.tabs.length; i++) {
+		clicker.resetTab(i);
+	}
+
+	loadData();
+
+	skillTree.processNodes();
 
 	var tabSwitch = [];
 	for (var j = 0; j < 6; j++) {
@@ -317,7 +458,6 @@ function setup() {
 		});
 	}
 	for (var i = 0; i < 7; i++) {
-		clicker.resetTab(i);
 		for (var j = 0; j < tabSwitch.length; j++) {
 			clicker.addClicker(tabSwitch[j], i);
 		}
@@ -334,6 +474,7 @@ function setup() {
 	addOrbInfuser();
 	addStash();
 	addMergeButton();
+	addTreeControls();
 	for (var golemID in staticData.golems) {
 		var golem = staticData.golems[golemID];
 		clicker.addClicker({
@@ -356,9 +497,8 @@ function setup() {
 		}, 1);
 	}
 
-	loadData();
-
 	if (softResetEnabled) {
+		softResetEnabled = false;
 		for (var sUpgrade in staticData.upgrades) {
 			if (staticData.upgrades[sUpgrade].starting) {
 				addUpgrade(sUpgrade);
@@ -368,8 +508,7 @@ function setup() {
 			dynamicData.golems[golem] = 0;
 		}
 	}
-
-	skillTree.processNodes();
+	//saveData();
 }
 
 var setupButtons = [
@@ -641,6 +780,10 @@ function saveData() {
 	dynamicSaveData.upgradesBought = dynamicData.upgradesBought;
 	dynamicSaveData.visibleUpgrades = dynamicData.visibleUpgrades;
 
+	dynamicSaveData.skillTree.activeNodes = dynamicData.skillTree.activeNodes;
+	dynamicSaveData.skillTree.currentChallengeNode = dynamicData.skillTree.currentChallengeNode;
+	dynamicSaveData.skillTree.locked = dynamicData.skillTree.locked;
+
 	permanentSaveData.lore.obtained = dynamicData.lore.obtained;
 
 	dynamicSaveData.softResetEnabled = dynamicData.softResetEnabled;
@@ -651,7 +794,8 @@ function saveData() {
 var achievementsVersion;
 
 function loadData(data) {
-	if (!localStorage.getItem("dynamicSaveData")) {
+	var tempDData = localStorage.getItem("dynamicSaveData");
+	if (!tempDData) {
 		lore.addLore("start0");
 		softResetEnabled = true;
 		return;
@@ -664,6 +808,25 @@ function loadData(data) {
 		softResetEnabled = true;
 		return;
 	}
+
+	preprocessSkillTree();
+	dynamicData.skillTree.currentChallengeNode = dynamicSaveData.skillTree.currentChallengeNode;
+	if (dynamicData.skillTree.currentChallengeNode) {
+		var node = dynamicData.skillTree.nodes[dynamicData.skillTree.currentChallengeNode];
+		var nodeData = skillTree.nodes[dynamicData.skillTree.currentChallengeNode];
+
+		if (nodeData.challenge) {
+			dynamicData.stats.golemCost = nodeData.challenge.golemCost;
+		}
+	}
+
+	dynamicData.skillTree.locked = dynamicSaveData.skillTree.locked;
+	for (var nodeID in dynamicSaveData.skillTree.activeNodes) {
+		if (dynamicSaveData.skillTree.activeNodes[nodeID]) {
+			skillTree.activateNode(nodeID);
+		}
+	}
+
 	for (var i = 0; i < permanentSaveData.lore.obtained.length; i++) {
 		lore.addLore(permanentSaveData.lore.obtained[i]);
 	}
@@ -695,6 +858,7 @@ function loadData(data) {
 }
 
 function saveDataToCode() {
+	saveData();
 	return btoa(JSON.stringify({
 		"permanent": permanentSaveData,
 		"dynamic": dynamicSaveData
@@ -703,6 +867,7 @@ function saveDataToCode() {
 
 function resetData() {
 	if (confirm("Are you sure? It'll wipe everything in the current run.")) {
+		localStorage.setItem("dynamicSaveData", "");
 		tempData = JSON.parse(backupTempData);
 		dynamicData = JSON.parse(backupDynamicData);
 		dynamicSaveData = JSON.parse(backupDynamicSaveData);
@@ -734,3 +899,9 @@ if (localStorage.getItem("dynamicSaveData")) {
 }
 setup();
 requestAnimationFrame(loop);
+
+function test() {
+	localStorage.setItem("test", "AHA");
+	console.log(localStorage.getItem("test"));
+	localStorage.setItem("test", null);
+}

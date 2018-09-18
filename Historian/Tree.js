@@ -259,6 +259,10 @@ var skillTree = {
 		"earthGolemCost1": {
 			"x": 40,
 			"y": 200,
+			"challenge": {
+				golemCount: 2,
+				golemCost: 1e10,
+			}
 		},
 		"earthGolemCost2": {
 			"x": 40,
@@ -583,45 +587,11 @@ var skillTree = {
 			"y": 40,
 		},
 	},
+
 	"processNodes": function () {
 		redraw[5] = true;
 
-		if (!dynamicData.skillTree.nodes) {
-			dynamicData.skillTree.nodes = {};
-			for (var branchID in skillTree.branches) {
-				var nodeHex = 1;
-				for (var nodeID in skillTree.branches[branchID].nodes) {
-					dynamicData.skillTree.nodes[nodeID] = {};
-					var node = dynamicData.skillTree.nodes[nodeID];
-					node.data = skillTree.nodes[nodeID];
-					node.branchID = branchID;
-					node.branch = skillTree.branches[branchID];
-					node.nextLinks = [];
-					node.hexID = nodeHex;
-					nodeHex <<= 1;
-				}
-				for (var nodeID in skillTree.branches[branchID].nodes) {
-					skillTree.preCountNodeCost(nodeID);
-				}
-			}
-			for (var branchID in skillTree.branches) {
-				for (var nodeID in skillTree.branches[branchID].nodes) {
-					var nodeLinks = skillTree.branches[branchID].nodes[nodeID];
-					for (var i = 0; i < nodeLinks.length; i++) {
-						dynamicData.skillTree.nodes[nodeLinks[i]].nextLinks.push(nodeID);
-					}
-				}
-			}
-		}
-		if (!dynamicData.skillTree.missing) {
-			dynamicData.skillTree.missing = {};
-			for (var branchID in skillTree.branches) {
-				dynamicData.skillTree.missing[branchID] = 0;
-				for (var nodeID in skillTree.branches[branchID].nodes) {
-					dynamicData.skillTree.missing[branchID] |= dynamicData.skillTree.nodes[nodeID].hexID;
-				}
-			}
-		}
+		preprocessSkillTree();
 		if (!dynamicData.skillTree.currentBranch) {
 			for (var branchID in skillTree.branches) {
 				for (var nodeID in skillTree.branches[branchID].nodes) {
@@ -641,8 +611,18 @@ var skillTree = {
 			for (var nodeID in skillTree.branches[branchID].nodes) {
 				var node = dynamicData.skillTree.nodes[nodeID];
 				node.showColor = false;
+				if (nodeID == dynamicData.skillTree.currentChallengeNode) {
+					node.showColor = "#180018";
+				}
+				else
 				if (node.active) {
-					node.showColor = "#232300";
+					if (dynamicData.skillTree.currentChallengeNode) {
+
+						node.showColor = "#181800";
+					}
+					else {
+						node.showColor = "#232300";
+					}
 				}
 				else {
 					if (dynamicData.skillTree.locked) {
@@ -662,17 +642,27 @@ var skillTree = {
 									available = false;
 								}
 							}
-							if (available) {
-								node.showColor = "#002300";
+							if (dynamicData.skillTree.currentChallengeNode) {
+								if (available) {
+									node.showColor = "#001000";
+								}
+								else if (visible) {
+									node.showColor = "#100000";
+								}
 							}
-							else if (visible) {
-								node.showColor = "#230000";
+							else {
+								if (available) {
+									node.showColor = "#002300";
+								}
+								else if (visible) {
+									node.showColor = "#230000";
+								}
 							}
 						}
 					}
 					else {
 						if (permanentSaveData.skillTree.unlocked[nodeID]) {
-							if (dynamicData.skillTree.spAvail >= node.cost) {
+							if ((!dynamicData.skillTree.currentBranch || dynamicData.skillTree.currentBranch == node.branchID) && dynamicData.skillTree.spAvail >= node.cost) {
 								node.showColor = "#002300";
 							}
 							else {
@@ -702,9 +692,14 @@ var skillTree = {
 		}
 		dynamicData.skillTree.spAvail++;
 		node.active = false;
+		dynamicData.skillTree.activeNodes[nodeID] = false;
 		dynamicData.skillTree.missing[node.branchID] ^= node.hexID;
 	},
 	"activateNode": function (nodeID) {
+		if (nodeID == "attuneAir") {
+			//clearData();
+			//return;
+		}
 		var node = dynamicData.skillTree.nodes[nodeID];
 		if (node.active) {
 			return;
@@ -715,6 +710,7 @@ var skillTree = {
 		}
 		dynamicData.skillTree.spAvail--;
 		node.active = true;
+		dynamicData.skillTree.activeNodes[nodeID] = true;
 		dynamicData.skillTree.missing[node.branchID] ^= node.hexID;
 	},
 	"preCountNodeCost": function (nodeID) {
@@ -742,6 +738,7 @@ var skillTree = {
 		var node = dynamicData.skillTree.nodes[nodeID];
 		if (node.required < 0) {
 			node.cost = 1e6;
+			return;
 		}
 		node.cost = bitCount(node.required & dynamicData.skillTree.missing[node.branchID]);
 	},
@@ -754,11 +751,13 @@ var skillTree = {
 			}
 			if (node.active) {
 				skillTree.deactivateNode(nodeID);
-				dynamicData.skillTree.currentBranch = false;
+				if (dynamicData.skillTree.spAvail == dynamicData.skillTree.spMax) {
+					dynamicData.skillTree.currentBranch = false;
+				}
 				skillTree.processNodes();
 				return;
 			}
-			if (dynamicData.skillTree.spAvail >= node.cost) {
+			if ((!dynamicData.skillTree.currentBranch || dynamicData.skillTree.currentBranch == node.branchID) && dynamicData.skillTree.spAvail >= node.cost) {
 				skillTree.activateNode(nodeID);
 				skillTree.processNodes();
 			}
@@ -785,17 +784,89 @@ var skillTree = {
 	"startChallenge": function (nodeID) {
 		if (confirm("Start a challenge? In this alpha is autocompletes.")) {
 			dynamicData.skillTree.currentChallengeNode = nodeID;
+
+			saveData();
+			dynamicData = JSON.parse(backupDynamicData);
+			dynamicSaveData = JSON.parse(backupDynamicSaveData);
+			setup();
+			tempData.activeTab = 5;
+			//skillTree.endChallenge();
+		}
+	},
+	"testChallenge": function () {
+		if (!dynamicData.skillTree.currentChallengeNode) {
+			return;
+		}
+		var node = dynamicData.skillTree.nodes[dynamicData.skillTree.currentChallengeNode];
+		var nodeData = skillTree.nodes[dynamicData.skillTree.currentChallengeNode];
+		if (!nodeData.challenge) {
+			skillTree.endChallenge();
+		}
+		else if (dynamicData.golems[node.branchID] >= nodeData.challenge.golemCount) {
 			skillTree.endChallenge();
 		}
 	},
 	"endChallenge": function () {
+		tempData.activeTab = 5;
+
 		permanentSaveData.skillTree.unlocked[dynamicData.skillTree.currentChallengeNode] = true;
 		dynamicData.skillTree.currentChallengeNode = null;
+		dynamicData.skillTree.locked = false;
+		dynamicData.skillTree.currentBranch = false;
+
 		for (var nodeID in skillTree.nodes) {
 			dynamicData.skillTree.nodes[nodeID].required = null;
+			skillTree.deactivateNode(nodeID);
 		}
-		for (var nodeID in skillTree.nodes) {
-			skillTree.preCountNodeCost(nodeID);
+		for (var golemID in dynamicData.golems) {
+			if (staticData.golems[golemID].combine) {
+				dynamicData.golems[golemID] = Math.min(dynamicData.golems[golemID], 1);
+			}
 		}
+		dynamicData.skillTree.missing = null;
+		saveData();
+		dynamicData = JSON.parse(backupDynamicData);
+		dynamicSaveData = JSON.parse(backupDynamicSaveData);
+		setup();
+		lore.activatePopup("challengeComplete0");
 	}
 };
+
+function preprocessSkillTree() {
+	if (!dynamicData.skillTree.nodes) {
+		dynamicData.skillTree.nodes = {};
+		for (var branchID in skillTree.branches) {
+			var nodeHex = 1;
+			for (var nodeID in skillTree.branches[branchID].nodes) {
+				dynamicData.skillTree.nodes[nodeID] = {};
+				var node = dynamicData.skillTree.nodes[nodeID];
+				node.data = skillTree.nodes[nodeID];
+				node.branchID = branchID;
+				node.branch = skillTree.branches[branchID];
+				node.nextLinks = [];
+				node.hexID = nodeHex;
+				nodeHex <<= 1;
+			}
+		}
+		for (var branchID in skillTree.branches) {
+			for (var nodeID in skillTree.branches[branchID].nodes) {
+				var nodeLinks = skillTree.branches[branchID].nodes[nodeID];
+				for (var i = 0; i < nodeLinks.length; i++) {
+					dynamicData.skillTree.nodes[nodeLinks[i]].nextLinks.push(nodeID);
+				}
+			}
+			for (var nodeID in skillTree.branches[branchID].nodes) {
+				skillTree.preCountNodeCost(nodeID);
+			}
+		}
+	}
+	if (!dynamicData.skillTree.missing) {
+		dynamicData.skillTree.missing = {};
+		for (var branchID in skillTree.branches) {
+			dynamicData.skillTree.missing[branchID] = 0;
+			for (var nodeID in skillTree.branches[branchID].nodes) {
+				dynamicData.skillTree.missing[branchID] |= dynamicData.skillTree.nodes[nodeID].hexID;
+			}
+		}
+	}
+}

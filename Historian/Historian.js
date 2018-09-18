@@ -24,8 +24,8 @@ function loop(timestamp) {
 		}
 		dynamicSaveData.accumulatedTime += timestamp - lastTimestamp;
 		var rounds = 0;
-		while (dynamicSaveData.accumulatedTime > 16 && rounds++ < 2) {
-			dynamicSaveData.accumulatedTime -= 16 * rounds * rounds;
+		while (dynamicSaveData.accumulatedTime > 1 && rounds++ < 20) {
+			dynamicSaveData.accumulatedTime -= 1;
 			tempData.canvasTicks += 1;
 			tick();
 		}
@@ -36,6 +36,7 @@ function loop(timestamp) {
 }
 
 function tick() {
+	skillTree.testChallenge();
 	//logic
 	var tempNumber;
 	//Utility machines onTick
@@ -178,6 +179,9 @@ function tick() {
 		if (dynamicData.golems[golem] > 0) {
 			staticData.golems[golem].effect();
 		}
+		if (dynamicData.golems[golem] > 1) {
+			dynamicData.golemEffects.production[golem] -= dynamicData.elementalTanks[golem].amount * dynamicData.golems[golem] * dynamicData.golems[golem] / 10000;
+		}
 	}
 	// Applying golem production
 	for (var tankElement in dynamicData.elementalTanks) {
@@ -186,6 +190,7 @@ function tick() {
 	// Applying tank gains
 	for (var tankElement in dynamicData.elementalTanks) {
 		dynamicData.elementalTanks[tankElement].amount += dynamicData.elementalTanks[tankElement].gained;
+		dynamicData.elementalTanks[tankElement].amount = Math.max(0.1, dynamicData.elementalTanks[tankElement].amount);
 		if (dynamicData.elementalTanks[tankElement].amount > 1e300) {
 			dynamicData.elementalTanks[tankElement].amount = 1e300;
 		}
@@ -236,6 +241,7 @@ function boughtUpgrade(oC, upgradeId, loadOverride) {
 }
 
 function addUpgrade(sUpgrade) {
+	//for (var i = 0; i < )
 	dynamicData.visibleUpgrades.push(sUpgrade);
 	clicker.addClicker({
 		path: (function (ctx) {
@@ -266,19 +272,13 @@ function createGolem(type) {
 		cObject.ingredient.amount = 0;
 		cObject.reagent.amount = 0;
 	}
-	for (var i = 0; i < dynamicData.golems.length; i++) {
-		if (dynamicData.golems[i] === type) {
-			cutscenes["eat"].golemType = type;
-			startCutscene("eat");
-			if (dynamicData.golemEatPopup) {
-				dynamicData.golemEatPopup = false;
-				lore.activatePopup("eat0");
-				lore.addLore("eat0");
-			}
-			return;
-		}
+	if (dynamicData.skillTree.nodes["attune" + type].active && dynamicData.skillTree.currentChallengeNode) {
+		dynamicData.golems[type]++;
 	}
-	dynamicData.golems[type] = 1;
+	else {
+		dynamicData.golems[type] = 1;
+	}
+
 }
 
 function combineGolems() {
@@ -292,8 +292,13 @@ function combineGolems() {
 			addable = false;
 		}
 		if (addable) {
-			dynamicData.golems[tempData.mergingGolems[0]] = 0;
-			dynamicData.golems[tempData.mergingGolems[1]] = 0;
+			dynamicData.golems[tempData.mergingGolems[0]]--;
+			dynamicData.golems[tempData.mergingGolems[1]]--;
+			for (var golemID in dynamicData.golems) {
+				if (staticData.golems[golemID].from) {
+					dynamicData.golems[golemID] = 0;
+				}
+			}
 
 			startCutscene("combine");
 			tempData.mergingGolems = [];
