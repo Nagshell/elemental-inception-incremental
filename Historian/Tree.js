@@ -267,6 +267,10 @@ var skillTree = {
 		"earthGolemCost2": {
 			"x": 40,
 			"y": 280,
+			"challenge": {
+				golemCount: 10,
+				golemCost: 1e50,
+			}
 		},
 		"earthGolemCost3": {
 			"x": 20,
