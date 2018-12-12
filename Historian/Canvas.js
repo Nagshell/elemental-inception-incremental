@@ -15,6 +15,7 @@ function canvasHover(event) {
 var keySpeed = 7;
 
 function canvasKeydown(event) {
+	if (event.code == 'Tab') return;
 	if (tempData.activeTab != 5) return;
 	if (tempData.keyflags[event.code]) return;
 	switch (event.code) {
@@ -34,10 +35,11 @@ function canvasKeydown(event) {
 			break;
 	}
 	tempData.keyflags[event.code] = true;
-	tempData.keyflags.count++;
+	tempData.keyflags.count = 1;
 }
 
 function canvasKeyup(event) {
+	if (event.code == 'Tab') return;
 	if (tempData.activeTab != 5) return;
 	if (!tempData.keyflags[event.code]) return;
 	switch (event.code) {
@@ -57,7 +59,7 @@ function canvasKeyup(event) {
 			break;
 	}
 	tempData.keyflags[event.code] = false;
-	tempData.keyflags.count--;
+	tempData.keyflags.count++;
 }
 
 var elementalTranlator = {
