@@ -35,7 +35,7 @@ function canvasKeydown(event) {
 			break;
 	}
 	tempData.keyflags[event.code] = true;
-	tempData.keyflags.count = 1;
+	tempData.keyflags.count++;
 }
 
 function canvasKeyup(event) {
@@ -59,7 +59,7 @@ function canvasKeyup(event) {
 			break;
 	}
 	tempData.keyflags[event.code] = false;
-	tempData.keyflags.count++;
+	tempData.keyflags.count--;
 }
 
 var elementalTranlator = {

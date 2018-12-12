@@ -220,6 +220,16 @@ var skillTree = {
 			"y": 140,
 			"stat": "stashCapacity",
 			"power": 3,
+			"challenge": {
+				golemCount: 1000,
+				golemCost: 1e100,
+				effects: {
+					//"longHaul": true,
+					//"cruiser": true,
+					//"outburst": true,
+					//"pipage": true,
+				},
+			},
 		},
 		"fireTransferRate1": {
 			"x": -140,
