@@ -112,6 +112,7 @@ function addReactionCatalyst() {
 			h: 60
 		},
 		clicked: functionData.catalystSwitch,
+		disableHighlight: functionData.catalystDisable,
 		hovered: functionData.tooltipHoverCatalystButton,
 		unhovered: functionData.tooltipUnhover,
 		arg1: 0,
@@ -293,7 +294,8 @@ function addMergeButton() {
 		},
 		clicked: functionData.combineGolems,
 		hovered: functionData.tooltipHoverMergeButton,
-		unhovered: functionData.tooltipUnhover
+		unhovered: functionData.tooltipUnhover,
+		disable: functionData.challengeActive,
 	}, 1);
 }
 
@@ -319,7 +321,8 @@ function addTreeControls() {
 				var nodePositionX = node.data.x + tempData.skillTreeScrollX;
 				var nodePositionY = node.data.y + tempData.skillTreeScrollY;
 				if ((clickPositionX - nodePositionX) * (clickPositionX - nodePositionX) + (clickPositionY - nodePositionY) * (clickPositionY - nodePositionY) < 625) {
-					skillTree.clickNode(nodeID);
+					if (!dynamicData.skillTree.currentChallengeNode)
+						skillTree.clickNode(nodeID);
 					clickedSkill = true;
 				}
 			}
@@ -426,6 +429,22 @@ function addTreeControls() {
 	}, 5);
 }
 
+function addChallengeHovers() {
+	clicker.addClicker({
+		path: function (ctx) {
+			ctx.rect(360, 120, 160, 70);
+		},
+		bounds: {
+			x: 359,
+			y: 119,
+			w: 162,
+			h: 72
+		},
+		hovered: functionData.showOverlayChallenge,
+		unhovered: functionData.hideOverlay
+	}, 0);
+}
+
 function setup() {
 	if (currentlyHovered && currentlyHovered.unhovered) {
 		currentlyHovered.unhovered();
@@ -435,8 +454,14 @@ function setup() {
 	for (var i = 0; i < clicker.tabs.length; i++) {
 		clicker.resetTab(i);
 	}
+	for (var i = 0; i < redraw.length; i++) {
+		redraw[i] = true;
+	}
 
 	loadData();
+
+	dynamicData.skillTree.spMax = Math.floor(Object.keys(permanentSaveData.skillTree.unlocked).length / 4 + 2);
+	dynamicData.skillTree.spAvail = dynamicData.skillTree.spMax;
 
 	skillTree.processNodes();
 
@@ -475,6 +500,7 @@ function setup() {
 	addStash();
 	addMergeButton();
 	addTreeControls();
+	addChallengeHovers();
 	for (var golemID in staticData.golems) {
 		var golem = staticData.golems[golemID];
 		clicker.addClicker({
@@ -508,7 +534,7 @@ function setup() {
 			dynamicData.golems[golem] = 0;
 		}
 	}
-	//saveData();
+	saveData();
 }
 
 var setupButtons = [
@@ -523,8 +549,8 @@ var setupButtons = [
 				w: 102,
 				h: 32
 			},
-			hovered: functionData.showFAQ,
-			unhovered: functionData.hideFAQ
+			hovered: functionData.showOverlayFAQ,
+			unhovered: functionData.hideOverlay
 		},
 		{
 			path: function (ctx) {
@@ -658,6 +684,18 @@ var setupButtons = [
 				h: 42
 			},
 			clicked: functionData.resetData
+		},
+		{
+			path: function (ctx) {
+				ctx.rect(330, 300, 140, 40);
+			},
+			bounds: {
+				x: 329,
+				y: 299,
+				w: 142,
+				h: 42
+			},
+			clicked: functionData.clearData,
 		},
 		{
 			path: function (ctx) {
@@ -796,7 +834,7 @@ var achievementsVersion;
 function loadData(data) {
 	var tempDData = localStorage.getItem("dynamicSaveData");
 	if (!tempDData) {
-		lore.addLore("start0");
+		//lore.addLore("start0");
 		softResetEnabled = true;
 		return;
 	}

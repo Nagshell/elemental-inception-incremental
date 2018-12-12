@@ -3,6 +3,7 @@ var currentlyHovered = null;
 var clickerFreeID = 1;
 var clicker = {
 	click: function (x, y) {
+		if (tempData.keyflags.count > 0) return;
 		if (dynamicData.popupActive) {
 			if (x >= 350 && y >= 650 && x <= 450 && y <= 690) {
 				lore.disablePopup();
@@ -21,13 +22,14 @@ var clicker = {
 		}
 		if (clickerTab.canvas) {
 			var oClicker = clickerTab.hexTranslator[RGBtoNumber(clickerTab.canvas.getContext('2d').getImageData(x, y, 1, 1).data)];
-			if (oClicker && oClicker.clicked) {
+			if (oClicker && oClicker.clicked && (!oClicker.disable || !oClicker.disable())) {
 				oClicker.clicked(x, y);
 			}
 		}
 		clicker.hover(x, y);
 	},
 	hover: function (x, y) {
+		if (tempData.keyflags.count > 0) return;
 		if (dynamicData.popupActive) {
 			if (x >= 350 && y >= 650 && x <= 450 && y <= 690) {
 				currentlyHovered = dynamicData.popupActive.clicker;
@@ -55,7 +57,7 @@ var clicker = {
 		}
 		if (clickerTab.canvas) {
 			var oClicker = clickerTab.hexTranslator[RGBtoNumber(clickerTab.canvas.getContext('2d').getImageData(x, y, 1, 1).data)];
-			if (oClicker) {
+			if (oClicker && (!oClicker.disable || !oClicker.disable())) {
 				if (oClicker.hovered) {
 					oClicker.hovered(x, y);
 					currentlyHovered = oClicker;

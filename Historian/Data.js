@@ -159,7 +159,7 @@ var dynamicData = {
 		}
 	},
 	"rifts": {
-		"power": 1e40
+		"power": 1,
 	},
 	"golems": {},
 	"conversionMachines": [{
@@ -343,7 +343,7 @@ var dynamicData = {
 		"pipes": {
 			"level": 1
 		},
-		"golemCost": 1e5,
+		"golemCost": 1e6,
 		"upgradeCounter": 0
 	},
 	"golemEffects": {
@@ -414,12 +414,12 @@ var dynamicData = {
 	},
 	"skillTree": {
 		"hoveredNode": null,
-		"spAvail": 12,
-		"spMax": 12,
+		"spAvail": 3,
+		"spMax": 3,
 		"currentBranch": null,
 		"locked": false,
 		"currentChallengeNode": null,
-		"activeNodes": {},
+		"activeNodes": {}
 	},
 	"punCounter": 0,
 };
@@ -443,6 +443,9 @@ var tempData = {
 	"skillTreeScrollSpeedY": 0,
 	"skillTreeZoomSpeed": 1,
 	"skillTreeZoomActive": true,
+	"keyflags": {
+		"count": 0,
+	},
 };
 var staticData = {
 	"achievementList": {
@@ -776,23 +779,42 @@ var staticData = {
 					oMyself.maxBoost += 0.01;
 					oMyself.tanks[1].capacity *= 1e3;
 				}
+				var minSpeed = oMyself.baseSpeed * (1 + dynamicData.skillTree.treeStats["catalystMax"] / 100);
 				if (oMyself.active) {
-					oMyself.speed += oMyself.baseSpeed / 500;
+					var randomModifier = 1;
+					if (dynamicData.skillTree.treeStats["catalystMax"] > 3) {
+						dynamicData.skillTree.treeStats["catalystMax"] *= 0.999;
+					}
+					else if (dynamicData.skillTree.treeStats["catalystMax"] > 2) {
+						dynamicData.skillTree.treeStats["catalystMax"] = 3 + Math.random();
+					}
+					if (dynamicData.skillTree.treeStats["catalystMax"] > 3) {
+						randomModifier = 50 * (dynamicData.skillTree.treeStats["catalystMax"] - 3);
+					}
+					oMyself.speed += minSpeed / 500 * randomModifier;
 					oMyself.maxCooldown += 0.01;
 				}
 				else {
-					oMyself.speed = oMyself.baseSpeed;
+					oMyself.speed = minSpeed;
 					oMyself.cooldown -= 0.02;
 					if (oMyself.cooldown < 0) {
 						oMyself.maxCooldown = 0.2;
 						oMyself.cooldown = 0;
 					}
 				}
+				if (dynamicData.skillTree.treeStats["catalystMax"] > 2 && oMyself.speed > 1.3 * oMyself.maxSpeed) {
+					oMyself.speed = minSpeed;
+					oMyself.maxCooldown = 0.2;
+				}
+
 				if (oMyself.speed < oMyself.maxSpeed) {
 					oMyself.boost = oMyself.maxBoost * oMyself.speed;
 				}
 				else {
 					oMyself.boost = oMyself.maxBoost * Math.max(0, 2 * oMyself.maxSpeed - oMyself.speed);
+					if (dynamicData.skillTree.treeStats["catalystMax"] > 3) {
+						oMyself.boost *= 10 * (dynamicData.skillTree.treeStats["catalystMax"] - 3);
+					}
 				}
 			},
 			"tooltip": {
@@ -837,7 +859,7 @@ var staticData = {
 						oTank.amount = 0;
 						createGolem(oTank.type);
 					}
-					oTank.capacity = dynamicData.stats.golemCost;
+					oTank.capacity = Math.pow(dynamicData.stats.golemCost, 1 - dynamicData.skillTree.treeStats["golemCost"] / 100);
 				}
 			},
 			"tooltip": {
@@ -860,7 +882,13 @@ var staticData = {
 			"effect": function () {
 				for (var i = 0; i < 4; i++) {
 					var oTank = dynamicData.utilityMachines[2].tanks[i];
-					oTank.capacity = 1e50;
+					if (dynamicData.skillTree.currentChallenge && dynamicData.skillTree.currentChallenge.effects.longHaul) {
+						oTank.capacity = 1;
+					}
+					else {
+						oTank.capacity = Math.pow(dynamicData.stats.golemCost, 0.5 + dynamicData.skillTree.treeStats["stashCapacity"] / 200);
+					}
+
 				}
 			},
 			"tooltip": {
@@ -1487,6 +1515,9 @@ var functionData = {
 	"resetData": function () {
 		resetData();
 	},
+	"clearData": function () {
+		clearData();
+	},
 	"combineGolems": function () {
 		combineGolems();
 	},
@@ -1506,7 +1537,17 @@ var functionData = {
 	"utilityMachineTankSwitch": function () {
 		dynamicData.utilityMachines[this.arg1].tanks[this.arg2].valve = !dynamicData.utilityMachines[this.arg1].tanks[this.arg2].valve;
 	},
+	"catalystDisable": function () {
+		if (dynamicData.skillTree.currentChallenge && dynamicData.skillTree.currentChallenge.effects.cruiser) {
+			return true;
+		}
+		return false;
+	},
 	"catalystSwitch": function () {
+		if (dynamicData.skillTree.currentChallenge && dynamicData.skillTree.currentChallenge.effects.cruiser) {
+			return true;
+		}
+
 		if (dynamicData.utilityMachines[0].active) {
 			dynamicData.utilityMachines[0].active = false;
 			dynamicData.utilityMachines[0].cooldown = dynamicData.utilityMachines[0].maxCooldown;
@@ -1514,6 +1555,7 @@ var functionData = {
 		else {
 			if (dynamicData.utilityMachines[0].cooldown === 0) dynamicData.utilityMachines[0].active = true;
 		}
+		return false;
 	},
 	"tooltipUnhover": function () {
 		canvasTooltip = null;
@@ -1536,8 +1578,10 @@ var functionData = {
 		if (canvasTooltip) canvasTooltip.arg1 = this.arg1;
 	},
 	"tooltipHoverCatalystButton": function () {
-		canvasTooltip = staticData.utilityMachines[0].tooltipButton;
-		if (canvasTooltip) canvasTooltip.arg1 = this.arg1;
+		if (!dynamicData.skillTree.currentChallenge || !dynamicData.skillTree.currentChallenge.effects.cruiser) {
+			canvasTooltip = staticData.utilityMachines[0].tooltipButton;
+			if (canvasTooltip) canvasTooltip.arg1 = this.arg1;
+		}
 	},
 	"tooltipHoverMergeButton": function () {
 		if (tempData.mergingGolems.length === 2) {
@@ -1553,15 +1597,15 @@ var functionData = {
 		}
 	},
 	"tooltipHoverGolem": function () {
-		if (dynamicData.golems[this.arg1] !== 0) {
+		if (!dynamicData.skillTree.currentChallengeNode && dynamicData.golems[this.arg1] !== 0) {
 			canvasTooltip = staticData.golems[this.arg1].tooltip;
 		}
 	},
 	"checkGolem": function () {
-		return (dynamicData.golems[this.arg1] === 0);
+		return (dynamicData.skillTree.currentChallengeNode || dynamicData.golems[this.arg1] === 0);
 	},
 	"clickedGolem": function () {
-		if (dynamicData.golems[this.arg1] !== 0) {
+		if (!dynamicData.skillTree.currentChallengeNode && dynamicData.golems[this.arg1] !== 0) {
 
 			if (staticData.golems[this.arg1].combine) {
 
@@ -1604,11 +1648,16 @@ var functionData = {
 	"checkTab": function () {
 		return dynamicData.tabStatus[this.arg1].disabled || this.arg1 == tempData.activeTab;
 	},
-	"showFAQ": function () {
-		FAQvisible = true;
+	"showOverlayChallenge": function () {
+		if (dynamicData.skillTree.currentChallenge) {
+			visibleOverlay = 'Challenge';
+		}
 	},
-	"hideFAQ": function () {
-		FAQvisible = false;
+	"showOverlayFAQ": function () {
+		visibleOverlay = 'FAQ';
+	},
+	"hideOverlay": function () {
+		visibleOverlay = null;
 	},
 	"toggleColorblind": function () {
 		dynamicSaveData.options.colorblindMode = !dynamicSaveData.options.colorblindMode;
@@ -1655,6 +1704,9 @@ var functionData = {
 		document.getElementById("clipboardAccept").style.display = 'none';
 		document.getElementById("clipboardCancel").style.display = 'none';
 	},
+	"challengeActive": function () {
+		return dynamicData.skillTree.currentChallengeNode;
+	}
 };
 
 function preprocessData() {

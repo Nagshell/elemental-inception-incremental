@@ -24,9 +24,10 @@ function loop(timestamp) {
 		}
 		dynamicSaveData.accumulatedTime += timestamp - lastTimestamp;
 		var rounds = 0;
-		while (dynamicSaveData.accumulatedTime > 1 && rounds++ < 20) {
-			dynamicSaveData.accumulatedTime -= 1;
+		while (dynamicSaveData.accumulatedTime > 15 && rounds++ < 20) {
+			dynamicSaveData.accumulatedTime -= 16;
 			tempData.canvasTicks += 1;
+			gaugeChange();
 			tick();
 		}
 		draw();
@@ -35,8 +36,44 @@ function loop(timestamp) {
 	requestAnimationFrame(loop);
 }
 
+function gaugeChange() {
+	//Main tanks change display
+	for (var tankElement in dynamicData.elementalTanks) {
+		var oTank = dynamicData.elementalTanks[tankElement];
+		var nAmount = oTank.amount + 1;
+		var aRecord = oTank.record;
+		if (aRecord.length < 30) {
+			aRecord.push(nAmount);
+			oTank.recordPos = aRecord.length;
+		}
+		else {
+			if (oTank.recordPos == aRecord.length) {
+				oTank.recordPos = 0;
+			}
+			aRecord[oTank.recordPos++] = nAmount;
+		}
+		if (oTank.recordPos == aRecord.length) {
+			oTank.change = (aRecord[oTank.recordPos - 1] - aRecord[0]) / aRecord.length * 60;
+			nAmount = aRecord[0];
+		}
+		else {
+			oTank.change = (aRecord[oTank.recordPos - 1] - aRecord[oTank.recordPos]) / aRecord.length * 60;
+			nAmount = aRecord[oTank.recordPos];
+		}
+		if (dynamicSaveData.options.relativeChange) {
+			oTank.change /= nAmount;
+			oTank.change *= 100;
+
+		}
+	}
+}
+
 function tick() {
+	if (dynamicData.skillTree.currentChallengeNode) {
+		dynamicData.skillTree.currentChallenge = skillTree.nodes[dynamicData.skillTree.currentChallengeNode].challenge;
+	}
 	skillTree.testChallenge();
+
 	//logic
 	var tempNumber;
 	//Utility machines onTick
@@ -53,38 +90,22 @@ function tick() {
 		var tIng = tObject.ingredient;
 		var tRea = tObject.reagent;
 		var tAmount = Math.min(tIng.amount / tIng.drain, tRea.amount / tRea.drain);
-		tAmount *= Math.min(1, 0.01 * dynamicData.stats.machineBonusSpeed * dynamicData.stats.machineGolemSpeed);
+		tAmount *= Math.min(1, 0.01 * dynamicData.stats.machineBonusSpeed * dynamicData.stats.machineGolemSpeed * (1 + dynamicData.skillTree.treeStats["machineSpeed"] / 100));
 		tIng.used = tIng.drain * tAmount;
 		tIng.amount -= tIng.used;
 		tRea.used = tRea.drain * tAmount;
 		tRea.amount -= tRea.used;
-		dynamicData.elementalTanks[tObject.product.type].gained += tObject.product.rate * tAmount * (1 + dynamicData.utilityMachines[0].boost);
+		tAmount = tObject.product.rate * tAmount;
+		tAmount *= (1 + dynamicData.utilityMachines[0].boost);
+		tAmount *= (1 + dynamicData.skillTree.treeStats["gain" + tObject.product.type] / 100);
+		tAmount *= (1 + dynamicData.skillTree.treeStats["gainAll"] / 100);
+		dynamicData.elementalTanks[tObject.product.type].gained += tAmount;
 	}
+
 	// Main tanks flow
 	for (var tankElement in dynamicData.elementalTanks) {
 		var oTank = dynamicData.elementalTanks[tankElement];
 		var nAmount = oTank.amount;
-		var aRecord = oTank.record;
-		if (aRecord.length < 120) {
-			aRecord.push(nAmount);
-			oTank.recordPos = aRecord.length;
-		}
-		else {
-			if (oTank.recordPos == aRecord.length) {
-				oTank.recordPos = 0;
-			}
-			aRecord[oTank.recordPos++] = nAmount;
-		}
-		if (oTank.recordPos == aRecord.length) {
-			oTank.change = (aRecord[oTank.recordPos - 1] - aRecord[0]) / aRecord.length * 60
-		}
-		else {
-			oTank.change = (aRecord[oTank.recordPos - 1] - aRecord[oTank.recordPos]) / aRecord.length * 60;
-		}
-		if (dynamicSaveData.options.relativeChange) {
-			oTank.change /= oTank.amount;
-			oTank.change *= 100;
-		}
 		var totalDrain = 0;
 		for (var j = 0; j < dynamicData.conversionMachines.length; j++) {
 			var oCMachine = dynamicData.conversionMachines[j];
@@ -107,8 +128,14 @@ function tick() {
 		if (totalDrain === 0) {
 			continue;
 		}
-		nAmount *= 0.001 * Math.pow(dynamicData.stats.pipes.level, 1.5);
-		nAmount = Math.min(oTank.amount, nAmount);
+		if (!dynamicData.skillTree.currentChallenge || !dynamicData.skillTree.currentChallenge.effects.pipage) {
+			nAmount *= 0.001 * Math.pow(dynamicData.stats.pipes.level, 1.5);
+			nAmount *= (1 + dynamicData.skillTree.treeStats["transferRate"] / 100);
+			if (dynamicData.skillTree.treeStats["transferRateMultiplier"] > 0) {
+				nAmount *= dynamicData.skillTree.treeStats["transferRateMultiplier"];
+			}
+			nAmount = Math.min(oTank.amount, nAmount);
+		}
 		oTank.amount -= nAmount;
 		for (var j = 0; j < dynamicData.conversionMachines.length; j++) {
 			var oCMachine = dynamicData.conversionMachines[j];
@@ -179,22 +206,26 @@ function tick() {
 		if (dynamicData.golems[golem] > 0) {
 			staticData.golems[golem].effect();
 		}
-		if (dynamicData.golems[golem] > 1) {
-			dynamicData.golemEffects.production[golem] -= dynamicData.elementalTanks[golem].amount * dynamicData.golems[golem] * dynamicData.golems[golem] / 10000;
-		}
 	}
 	// Applying golem production
 	for (var tankElement in dynamicData.elementalTanks) {
 		dynamicData.elementalTanks[tankElement].gained += dynamicData.golemEffects.production[tankElement];
 	}
-	// Applying tank gains
+	// Applying tank gains and counting drains
 	for (var tankElement in dynamicData.elementalTanks) {
 		dynamicData.elementalTanks[tankElement].amount += dynamicData.elementalTanks[tankElement].gained;
-		dynamicData.elementalTanks[tankElement].amount = Math.max(0.1, dynamicData.elementalTanks[tankElement].amount);
-		if (dynamicData.elementalTanks[tankElement].amount > 1e300) {
-			dynamicData.elementalTanks[tankElement].amount = 1e300;
-		}
 		dynamicData.elementalTanks[tankElement].gained = 0;
+
+		if (dynamicData.golems[tankElement] > 1) {
+			if (dynamicData.skillTree.currentChallenge && dynamicData.skillTree.currentChallenge.effects.outburst) {
+				dynamicData.elementalTanks[tankElement].amount -= dynamicData.elementalTanks[tankElement].amount * dynamicData.golems[tankElement] * dynamicData.golems[tankElement] / 4000;
+			}
+			else {
+				dynamicData.elementalTanks[tankElement].amount -= dynamicData.elementalTanks[tankElement].amount * dynamicData.golems[tankElement] * dynamicData.golems[tankElement] / 10000;
+			}
+		}
+		dynamicData.elementalTanks[tankElement].amount = Math.max(0.1, dynamicData.elementalTanks[tankElement].amount);
+		dynamicData.elementalTanks[tankElement].amount = Math.min(1e300, dynamicData.elementalTanks[tankElement].amount);
 	}
 }
 
@@ -278,7 +309,7 @@ function createGolem(type) {
 	else {
 		dynamicData.golems[type] = 1;
 	}
-
+	redraw[1] = true;
 }
 
 function combineGolems() {
