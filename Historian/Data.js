@@ -443,6 +443,7 @@ var tempData = {
 	"skillTreeScrollSpeedY": 0,
 	"skillTreeZoomSpeed": 1,
 	"skillTreeZoomActive": true,
+	"skillTreeStats": false,
 	"keyflags": {
 		"count": 0,
 	},

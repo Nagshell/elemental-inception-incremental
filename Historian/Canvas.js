@@ -1719,7 +1719,32 @@ var drawingTabs = [{ //Main setup
 				ctx.stroke();
 			}
 
+			//StatsHover
+			ctx.beginPath();
+			ctx.arc(100, 700, 40, 0, 2 * Math.PI);
+			ctx.fill();
+			ctx.stroke();
+			ctx.save();
+			ctx.fillStyle = staticData.textColor;
+			ctx.fillText("Skill Tree", 100, 690);
+			ctx.fillText("Stats", 100, 710);
+			ctx.restore();
+
+			//softResetEnabled
+			if (dynamicData.skillTree.currentChallengeNode) {
+				ctx.beginPath();
+				ctx.arc(700, 700, 40, 0, 2 * Math.PI);
+				ctx.fill();
+				ctx.stroke();
+				ctx.save();
+				ctx.fillStyle = staticData.textColor;
+				ctx.fillText("Forfeit", 700, 690);
+				ctx.fillText("challenge", 700, 710);
+				ctx.restore();
+			}
+
 			//Center piece
+			ctx.save();
 			ctx.translate(400, 400);
 			ctx.beginPath();
 			ctx.arc(0, 0, 350, 0, 2 * Math.PI);
@@ -1909,6 +1934,24 @@ var drawingTabs = [{ //Main setup
 				}
 
 				ctx.restore();
+			}
+			ctx.restore();
+			if (tempData.skillTreeStats) {
+				ctx.beginPath();
+				ctx.rect(200, 150, 400, 500);
+				ctx.fill();
+				ctx.stroke();
+				ctx.fillStyle = staticData.textColor;
+				var i = 0;
+				ctx.textAlign = "right";
+				for (var statId in dynamicData.skillTree.treeStats) {
+					ctx.fillText(statId, 395, 220 + 30 * i++);
+				}
+				i = 0;
+				ctx.textAlign = "left";
+				for (var statId in dynamicData.skillTree.treeStats) {
+					ctx.fillText(dynamicData.skillTree.treeStats[statId], 405, 220 + 30 * i++);
+				}
 			}
 		},
 		tree: function (ctx) {

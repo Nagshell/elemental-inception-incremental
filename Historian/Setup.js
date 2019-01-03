@@ -427,6 +427,23 @@ function addTreeControls() {
 			dynamicData.skillTree.hoveredNode = null;
 		},
 	}, 5);
+	clicker.addClicker({
+		path: function (ctx) {
+			ctx.arc(100, 700, 40, 0, 2 * Math.PI);
+		},
+		bounds: {
+			x: 59,
+			y: 659,
+			w: 82,
+			h: 82
+		},
+		hovered: function () {
+			tempData.skillTreeStats = true;
+		},
+		unhovered: function () {
+			tempData.skillTreeStats = false;
+		},
+	}, 5);
 }
 
 function addChallengeHovers() {
