@@ -29,6 +29,7 @@ function canvasClick(event) {
 var canvas = document.getElementById("canvasMain");
 
 canvas.addEventListener("mousemove", canvasMouseHover);
+canvas.addEventListener("touchmove", canvasMouseHover);
 canvas.addEventListener("mousedown", canvasMouseDown);
 canvas.addEventListener("mouseup", canvasMouseUp);
 canvas.addEventListener("click", canvasClick);
