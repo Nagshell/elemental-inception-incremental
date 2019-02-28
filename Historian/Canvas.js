@@ -1,38 +1,12 @@
-function canvasMouseHover(event) {
-	var canvasBox = canvas.getBoundingClientRect();
-	var x = event.clientX - canvasBox.left - 1;
-	var y = event.clientY - canvasBox.top - 1;
-	panes.handleMouse(x, y, "hover");
+function canvasMouseHandler(event) {
+	panes.mouseHandler(event);
 }
-
-function canvasMouseDown(event) {
-	var canvasBox = canvas.getBoundingClientRect();
-	var x = event.clientX - canvasBox.left - 1;
-	var y = event.clientY - canvasBox.top - 1;
-	panes.handleMouse(x, y, "mouseDown");
-}
-
-function canvasMouseUp(event) {
-	var canvasBox = canvas.getBoundingClientRect();
-	var x = event.clientX - canvasBox.left - 1;
-	var y = event.clientY - canvasBox.top - 1;
-	panes.handleMouse(x, y, "mouseUp");
-}
-
-function canvasClick(event) {
-	var canvasBox = canvas.getBoundingClientRect();
-	var x = event.clientX - canvasBox.left - 1;
-	var y = event.clientY - canvasBox.top - 1;
-	panes.handleMouse(x, y, "click");
-}
-
 var canvas = document.getElementById("canvasMain");
 
-canvas.addEventListener("mousemove", canvasMouseHover);
-canvas.addEventListener("touchmove", canvasMouseHover);
-canvas.addEventListener("mousedown", canvasMouseDown);
-canvas.addEventListener("mouseup", canvasMouseUp);
-canvas.addEventListener("click", canvasClick);
+canvas.addEventListener("mousemove", canvasMouseHandler);
+canvas.addEventListener("mousedown", canvasMouseHandler);
+canvas.addEventListener("mouseup", canvasMouseHandler);
+canvas.addEventListener("click", canvasMouseHandler);
 
 var ctxActive = canvas.getContext("2d");
 

@@ -3,29 +3,31 @@ var nullCtx = nullCanvas.getContext("2d");
 
 var panes = {
 	list: [],
-	dragndrop: {
-		pane: null,
-		x: 0,
-		y: 0,
-	},
-	handleMouse: function (x, y, type) {
-		if (type == "click" && x < 50 && y < 50) {
+	dragndrop: null,
+	mouseHandler: function (event) {
+		var x = event.offsetX;
+		var y = event.offsetY;
+		var type = event.type;
+		if (event.type == "click" && x < 50 && y < 50) {
 			panes.resetPositions();
 		}
-		if (type == "hover" && panes.dragndrop.pane) {
-			panes.dragndrop.pane.x += x - panes.dragndrop.x;
-			panes.dragndrop.x = x;
-			panes.dragndrop.pane.y += y - panes.dragndrop.y;
-			panes.dragndrop.y = y;
+		if (event.type == "mousemove" && panes.dragndrop) {
+			var top = panes.dragndrop.top;
+			if (!top || top.checkBoundary(10 + top.x + panes.dragndrop.x + event.movementX, 10 + top.y + panes.dragndrop.y, "mousemove")) {
+				panes.dragndrop.x += event.movementX;
+			}
+			if (!top || top.checkBoundary(10 + top.x + panes.dragndrop.x, 10 + top.y + panes.dragndrop.y + event.movementY, "mousemove")) {
+				panes.dragndrop.y += event.movementY;
+			}
 			return;
 		}
-		if (type == "mouseUp" && panes.dragndrop.pane) {
-			panes.dragndrop.pane = null;
+		if (event.type == "mouseup" && panes.dragndrop) {
+			panes.dragndrop = null;
 		}
 		for (var i = 0; i < panes.list.length; i++) {
 			var targetPane = panes.list[i].checkBoundary(x, y, type);
 			if (targetPane) {
-				if (type == "mouseDown") {
+				if (type == "mousedown") {
 					var temp = panes.list[i];
 					while (i-- > 0) {
 						panes.list[i + 1] = panes.list[i];
@@ -84,7 +86,7 @@ cPane.prototype.checkBoundary = function (x, y, type) {
 		for (var i = 0; i < this.subPanes.length; i++) {
 			var target = this.subPanes[i].checkBoundary(x, y, type);
 			if (target) {
-				if (type == "mouseDown") {
+				if (type == "mousedown") {
 					var temp = this.subPanes[i];
 					while (i-- > 0) {
 						this.subPanes[i + 1] = this.subPanes[i];
@@ -147,28 +149,24 @@ cRegion.prototype.draw = function (ctx) {
 	}
 	ctx.restore();
 };
+
 var dragRegion = new cRegion();
 var path = new Path2D();
 path.rect(0, 0, 20, 20);
 dragRegion.boundaryPath = path;
 dragRegion.action = function (pane, x, y, type) {
-	if (type == "mouseDown") {
-		panes.dragndrop.pane = pane;
-		panes.dragndrop.x = x;
-		panes.dragndrop.y = y;
-		var temp = pane;
-		while (temp) {
-			panes.dragndrop.x += temp.x;
-			panes.dragndrop.y += temp.y;
-			temp = temp.top;
-		}
+	if (type == "mousedown") {
+		panes.dragndrop = pane;
 	}
 }
 
 var testPane = new cPane(null, 100, 300);
 testPane.subRegions.push(dragRegion);
 path = new Path2D();
-path.rect(0, 0, 200, 200);
+path.moveTo(0, 0);
+path.lineTo(0, 300);
+path.arc(0, 0, 300, Math.PI / 2, 0, true);
+path.closePath();
 testPane.boundaryPath = path;
 
 var testPane2 = new cPane(null, 300, 300);
