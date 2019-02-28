@@ -18,7 +18,7 @@ function draw() {
 	ctxActive.textBaseline = "middle";
 	ctxActive.textAlign = "center";
 	ctxActive.strokeStyle = "#686868";
-	ctxActive.lineWidth = 1;
+	ctxActive.lineWidth = 2;
 	ctxActive.fillStyle = "#181818";
 
 	for (var i = panes.list.length - 1; i >= 0; i--) {
@@ -27,8 +27,9 @@ function draw() {
 
 	ctxActive.beginPath();
 	ctxActive.rect(0, 0, 50, 50);
-	ctxActive.fill();
+
 	ctxActive.stroke();
+	ctxActive.fill();
 	ctxActive.fillStyle = "#818181";
 	ctxActive.fillText("Reset", 25, 25);
 }

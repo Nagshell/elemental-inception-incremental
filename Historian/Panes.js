@@ -66,6 +66,8 @@ function cPane(top, x, y) {
 	this.boundaryPath = null;
 	this.subPanes = [];
 	this.subRegions = [];
+	this.subPanesMin = [];
+	this.subRegionsMin = [];
 
 	this.top = top;
 	if (top) {
@@ -103,6 +105,10 @@ cPane.prototype.checkBoundary = function (x, y, type) {
 cPane.prototype.interact = function (x, y, type) {};
 
 cPane.prototype.resetPosition = function () {
+	if (this.switchedPath) {
+		this.boundaryPath = this.switchedPath;
+		this.switchedPath = null;
+	}
 	this.x = this.defaultX;
 	this.y = this.defaultY;
 	for (var i = 0; i < this.subPanes.length; i++) {
@@ -114,8 +120,9 @@ cPane.prototype.draw = function (ctx) {
 	ctx.save();
 	ctx.translate(this.x, this.y);
 	if (this.boundaryPath) {
-		ctx.fill(this.boundaryPath);
+
 		ctx.stroke(this.boundaryPath);
+		ctx.fill(this.boundaryPath);
 		ctx.clip(this.boundaryPath);
 		for (var i = this.subRegions.length - 1; i >= 0; i--) {
 			this.subRegions[i].draw(ctx);
@@ -127,11 +134,15 @@ cPane.prototype.draw = function (ctx) {
 	ctx.restore();
 };
 
-function cRegion() {
+function cRegion(x, y) {
 	this.boundaryPath = null;
+	this.x = x;
+	this.y = y;
 }
 
 cRegion.prototype.checkBoundary = function (x, y) {
+	x -= this.x;
+	y -= this.y;
 	if (!this.boundaryPath) {
 		return false;
 	}
@@ -142,35 +153,105 @@ cRegion.prototype.checkBoundary = function (x, y) {
 
 cRegion.prototype.draw = function (ctx) {
 	ctx.save();
+	ctx.translate(this.x, this.y);
 	if (this.boundaryPath) {
-		ctxActive.fillStyle = "#451845";
-		ctx.fill(this.boundaryPath);
 		ctx.stroke(this.boundaryPath);
+		ctx.fill(this.boundaryPath);
+		if (this.img) {
+			ctx.drawImage(this.img, 0, 0);
+		}
 	}
 	ctx.restore();
 };
 
-var dragRegion = new cRegion();
+var dragRegion = new cRegion(0, 0);
 var path = new Path2D();
-path.rect(0, 0, 20, 20);
+path.rect(0, 0, 16, 16);
 dragRegion.boundaryPath = path;
 dragRegion.action = function (pane, x, y, type) {
 	if (type == "mousedown") {
 		panes.dragndrop = pane;
 	}
 }
+var dragImg = new Image();
+dragImg.onload = function () {
+	dragRegion.img = dragImg;
+}
+dragImg.src = "img/iconDrag.png";
+
+var hideRegion = new cRegion(32, 0);
+hideRegion.boundaryPath = path;
+hideRegion.action = function (pane, x, y, type) {
+	if (type == "mouseup") {
+		pane.switchedPath = pane.boundaryPath;
+		pane.boundaryPath = null;
+	}
+}
+var hideImg = new Image();
+hideImg.onload = function () {
+	hideRegion.img = hideImg;
+}
+hideImg.src = "img/iconHide.png";
+
+var minRegion = new cRegion(16, 0);
+minRegion.boundaryPath = path;
+minRegion.action = function (pane, x, y, type) {
+	if (type == "mouseup") {
+		pane.subPanesMax = pane.subPanes;
+		pane.subPanes = pane.subPanesMin;
+
+		pane.subRegionsMax = pane.subRegions;
+		pane.subRegions = pane.subRegionsMin;
+
+		pane.boundaryPathMax = pane.boundaryPath;
+		pane.boundaryPath = pane.boundaryPathMin;
+	}
+}
+var minImg = new Image();
+minImg.onload = function () {
+	minRegion.img = minImg;
+}
+minImg.src = "img/iconMin.png";
+var maxRegion = new cRegion(16, 0);
+maxRegion.boundaryPath = path;
+maxRegion.action = function (pane, x, y, type) {
+	if (type == "mouseup") {
+		pane.subPanesMin = pane.subPanes;
+		pane.subPanes = pane.subPanesMax;
+
+		pane.subRegionsMin = pane.subRegions;
+		pane.subRegions = pane.subRegionsMax;
+
+		pane.boundaryPathMin = pane.boundaryPath;
+		pane.boundaryPath = pane.boundaryPathMax;
+	}
+}
+var maxImg = new Image();
+maxImg.onload = function () {
+	maxRegion.img = maxImg;
+}
+maxImg.src = "img/iconMax.png";
 
 var testPane = new cPane(null, 100, 300);
 testPane.subRegions.push(dragRegion);
+testPane.subRegions.push(minRegion);
+testPane.subRegions.push(hideRegion);
+testPane.subRegionsMin.push(dragRegion);
+testPane.subRegionsMin.push(maxRegion);
 path = new Path2D();
 path.moveTo(0, 0);
 path.lineTo(0, 300);
 path.arc(0, 0, 300, Math.PI / 2, 0, true);
 path.closePath();
 testPane.boundaryPath = path;
+path = new Path2D();
+path.rect(0, 0, 100, 64);
+testPane.boundaryPathMin = path;
 
-var testPane2 = new cPane(null, 300, 300);
+var testPane2 = new cPane(null, 500, 300);
 testPane2.subRegions.push(dragRegion);
+testPane2.subRegions.push(minRegion);
+testPane2.subRegions.push(hideRegion);
 path = new Path2D();
 path.rect(0, 0, 100, 200);
 testPane2.boundaryPath = path;
