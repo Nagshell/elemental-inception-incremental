@@ -178,11 +178,17 @@ testPane2.boundaryPath = path;
 var testPane3 = new cPane(testPane, 75, 25);
 testPane3.subRegions.push(dragRegion);
 path = new Path2D();
-path.rect(0, 0, 50, 50);
+path.rect(0, 0, 150, 50);
 testPane3.boundaryPath = path;
 
-var testPane4 = new cPane(testPane, 25, 75);
+var testPane4 = new cPane(testPane, 25, 125);
 testPane4.subRegions.push(dragRegion);
 path = new Path2D();
-path.rect(0, 0, 50, 50);
+path.rect(0, 0, 50, 150);
 testPane4.boundaryPath = path;
+
+var testPane5 = new cPane(testPane, 125, 125);
+testPane5.subRegions.push(dragRegion);
+path = new Path2D();
+path.rect(0, 0, 75, 75);
+testPane5.boundaryPath = path;
