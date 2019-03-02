@@ -1,21 +1,29 @@
-function tick() {}
+function tick()
+{
+	machines.tick();
+	particleGenerator.tick();
+}
 
-function click(x, y) {}
+function click(x, y)
+{}
 
-function hover(x, y) {}
+function hover(x, y)
+{}
 
-// Loop timer
 var lastTimestamp = null;
 var accumulatedTime = 0;
 
-function loop(timestamp) {
-	if (!lastTimestamp) {
+function loop(timestamp)
+{
+	if (!lastTimestamp)
+	{
 		lastTimestamp = timestamp;
 	}
 	accumulatedTime += timestamp - lastTimestamp;
 	lastTimestamp = timestamp;
 	var rounds = 0;
-	while (accumulatedTime > 16 && rounds++ < 4) {
+	while (accumulatedTime > 16 && rounds++ < 4)
+	{
 		accumulatedTime -= 16;
 		tick();
 	}
@@ -23,5 +31,3 @@ function loop(timestamp) {
 	requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-//tick();
-//draw();
