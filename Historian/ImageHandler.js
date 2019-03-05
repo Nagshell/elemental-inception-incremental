@@ -7,6 +7,9 @@ function preprocessImages()
 	var imageList = [
 		"iconOn",
 		"iconOff",
+		"iconUp",
+		"iconUpNot",
+		"iconLock",
 		"iconShow",
 		"iconHide",
 		"iconDrag",

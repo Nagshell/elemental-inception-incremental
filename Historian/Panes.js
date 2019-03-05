@@ -229,6 +229,7 @@ cRegion.prototype.draw = function (ctx, pane)
 	{
 		ctx.stroke(this.boundaryPath);
 		ctx.fill(this.boundaryPath);
+		ctx.clip(this.boundaryPath);
 		if (this.img)
 		{
 			ctx.drawImage(this.img, 0, 0);

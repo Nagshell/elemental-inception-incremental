@@ -13,7 +13,7 @@ function preprocessRegionData()
 			panes.resetPositions();
 		}
 	}
-	regionData.resetRegion.text = "Reset";
+	regionData.resetRegion.text = "Unhide";
 	regionData.resetRegion.textX = 25;
 	regionData.resetRegion.textY = 25;
 
@@ -56,6 +56,20 @@ function preprocessRegionData()
 			{
 				pane.boundaryPath = pane.hiddenPath;
 				pane.hiddenPath = null;
+			}
+			if (pane.top)
+			{
+				var i = 0;
+				while (pane.top.subPanes[i] !== pane)
+				{
+					i++;
+				}
+				while (i > 0)
+				{
+					i--;
+					pane.top.subPanes[i + 1] = pane.top.subPanes[i];
+				}
+				pane.top.subPanes[i] = pane;
 			}
 		}
 	}
@@ -101,7 +115,7 @@ preprocessRegionData();
 
 var trackerPane = new cPane(null, 0, 0);
 var path = new Path2D();
-path.rect(0, 0, 800, 99);
+path.rect(0, 0, 800, 100);
 trackerPane.boundaryPath = path;
 
 var mainPane = new cPane(null, 0, 100);
@@ -110,13 +124,4 @@ var path = new Path2D();
 path.rect(0, 0, 800, 700);
 mainPane.boundaryPath = path;
 
-trackerPane.customDraw = function (ctx)
-{
-	for (var i = 0; i < data.aElements.length; i++)
-	{
-		if (images["icon" + data.aElements[i].type])
-		{
-			ctx.drawImage(images["icon" + data.aElements[i].type], 1 + 62 * i, 10);
-		}
-	}
-}
+trackerPane.customDraw = function (ctx) {}

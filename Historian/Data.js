@@ -203,7 +203,8 @@ var data = {
 	aElements: [],
 	oElements:
 	{},
-	oElementsFlow: [],
+	oElementsFlow:
+	{},
 	aMachines: [],
 	oMachines:
 	{},

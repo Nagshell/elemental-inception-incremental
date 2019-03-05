@@ -40,12 +40,28 @@ function draw()
 	ctxActive.globalAlpha = 1;
 }
 
-function drawNumber(ctx, num, x, y)
+function drawNumber(ctx, num, x, y, mode = "")
 {
 	ctx.save();
 	ctx.textAlign = "left";
-
-	ctx.fillText(Math.trunc(num * 100) / 100, x, y);
+	if (mode == "exp")
+	{
+		var e = 0;
+		while (num >= 10)
+		{
+			e++;
+			num /= 10;
+		}
+		ctx.fillText((Math.trunc(num * 10) / 10).toFixed(1) + "e" + e, x, y);
+	}
+	else if (mode == "fixed")
+	{
+		ctx.fillText((Math.trunc(num * 1000) / 1000).toFixed(3), x, y);
+	}
+	else
+	{
+		ctx.fillText(Math.trunc(num), x, y);
+	}
 
 	ctx.restore();
 }
