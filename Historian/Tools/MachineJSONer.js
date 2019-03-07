@@ -21,7 +21,6 @@ var simplifiedMachineData = {
 				out: [
 					["Earth", 0.02, 2],
 				],
-				lock: ["Earth", 0],
 				upgrade: ["Earth Avalanche", "Fire", 0.01],
 			},
 			"Earth Avalanche":
@@ -31,7 +30,6 @@ var simplifiedMachineData = {
 				out: [
 					["Earth", 0.04, 2],
 				],
-				lock: ["Earth", 0],
 				upgrade: ["Weak Earth Rift", "Earth", 8],
 			},
 			"Weak Earth Rift":
