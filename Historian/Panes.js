@@ -192,6 +192,15 @@ cPane.prototype.draw = function (ctx)
 		{
 			this.subRegions[i].draw(ctx, this);
 		}
+
+		if (this.markedToGlow)
+		{
+			ctx.save();
+			ctx.strokeStyle = "#000000";
+			ctx.shadowBlur = borderGlowRadius;
+			ctx.stroke(this.boundaryPath);
+			ctx.restore();
+		}
 		for (var i = this.subPanes.length - 1; i >= 0; i--)
 		{
 			this.subPanes[i].draw(ctx);
@@ -252,6 +261,14 @@ cRegion.prototype.draw = function (ctx, pane)
 		if (this.customDraw)
 		{
 			this.customDraw(ctx, pane);
+		}
+		if (this.markedToGlow)
+		{
+			ctx.save();
+			ctx.strokeStyle = "#000000";
+			ctx.shadowBlur = borderGlowRadius;
+			ctx.stroke(this.boundaryPath);
+			ctx.restore();
 		}
 	}
 	ctx.restore();

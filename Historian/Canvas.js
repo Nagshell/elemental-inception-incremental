@@ -17,8 +17,13 @@ document.addEventListener("click", canvasMouseHandler);
 var canvas = document.getElementById("canvasMain");
 var ctxActive = canvas.getContext("2d");
 
+var borderGlowRadius = 5;
+var borderGlowTicks = 0;
+
 function draw()
 {
+	borderGlowRadius = 6 + Math.abs(borderGlowTicks++ % 60 / 60 - 0.5) * 8;
+
 	ctxActive.resetTransform();
 	ctxActive.clearRect(0, 0, 800, 800);
 

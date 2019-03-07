@@ -129,6 +129,8 @@ function preprocessRegionData()
 					}
 					pane.target.paymentSuccess();
 					pane.costs = null;
+					machines.glowCheckCD = 0;
+					machines.glowCheck();
 				}
 			}
 		}

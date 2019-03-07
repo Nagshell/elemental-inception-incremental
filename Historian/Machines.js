@@ -1,8 +1,98 @@
 var machines = {
 	list: [],
+	glowCheckCD: 0,
 
+	glowCheck: function ()
+	{
+		if (this.glowCheckCD-- == 0)
+		{
+			this.glowCheckCD = 60;
+			for (var i = 0; i < this.list.length; i++)
+			{
+				var tempMachine = this.list[i];
+				var machineGlow = false;
+				for (var j = 0; j < tempMachine.recipes.length; j++)
+				{
+					var tempRecipe = tempMachine.recipes[j];
+					var recipeGlow = false;
+					if (tempRecipe.unlocked)
+					{
+
+						if (tempRecipe.upgradeTo)
+						{
+							if (paymentPane.isAffordable(tempRecipe.upgradeCosts))
+							{
+								recipeGlow = true;
+							}
+						}
+						for (var k = 0; k < tempRecipe.inputs.length; k++)
+						{
+							var tempIngredient = tempRecipe.inputs[k];
+							if (tempIngredient.sliderRegion)
+							{
+								var sliderGlow = false;
+								if (tempIngredient.upped < tempIngredient.upgrades.length)
+								{
+									if (paymentPane.isAffordable(tempIngredient.upgrades[tempIngredient.upped].costs))
+									{
+										sliderGlow = true;
+
+									}
+								}
+								tempIngredient.sliderRegion.markedToGlow = sliderGlow;
+								if (sliderGlow)
+								{
+									recipeGlow = true;
+								}
+							}
+						}
+						for (var k = 0; k < tempRecipe.outputs.length; k++)
+						{
+							var tempIngredient = tempRecipe.outputs[k];
+							if (tempIngredient.sliderRegion)
+							{
+								var sliderGlow = false;
+								if (tempIngredient.upped < tempIngredient.upgrades.length)
+								{
+									if (paymentPane.isAffordable(tempIngredient.upgrades[tempIngredient.upped].costs))
+									{
+										sliderGlow = true;
+
+									}
+								}
+								tempIngredient.sliderRegion.markedToGlow = sliderGlow;
+								if (sliderGlow)
+								{
+									recipeGlow = true;
+								}
+							}
+						}
+					}
+					else
+					{
+						if (paymentPane.isAffordable(tempRecipe.unlockCosts))
+						{
+							recipeGlow = true;
+						}
+					}
+					tempRecipe.region.markedToGlow = recipeGlow;
+					if (recipeGlow)
+					{
+						machineGlow = true;
+					}
+				}
+				tempMachine.pane.markedToGlow = machineGlow;
+				if (machineGlow && !tempMachine.region.boundaryPath)
+				{
+					tempMachine.region.boundaryPath = machines.displayRegionPath;
+				}
+				tempMachine.region.markedToGlow = machineGlow;
+			}
+		}
+	},
 	tick: function ()
 	{
+		this.glowCheck();
 		for (var i = 0; i < this.list.length; i++)
 		{
 			this.list[i].tick();
@@ -325,6 +415,7 @@ var machines = {
 			this.recipe.markedToUpgrade = true;
 			this.recipe = this.recipe.machine.hiddenRecipes[this.recipe.upgradeTo];
 			this.pane = this.recipe.pane;
+			this.recipe.region = this;
 		}
 	},
 	recipeRegionDraw: function (ctx, pane)
@@ -388,7 +479,10 @@ var machines = {
 		ctx.textAlign = "left";
 		ctx.fillStyle = ctx.strokeStyle;
 		var y = 30;
-		ctx.fillText("Inputs", 15, y);
+		if (this.recipe.inputs.length > 0)
+		{
+			ctx.fillText("Inputs", 15, y);
+		}
 		y += 22;
 		for (var i = 0; i < this.recipe.inputs.length; i++)
 		{
@@ -438,7 +532,10 @@ var machines = {
 
 			y += 22;
 		}
-		ctx.fillText("Outputs", 15, y);
+		if (this.recipe.outputs.length > 0)
+		{
+			ctx.fillText("Outputs", 15, y);
+		}
 		y += 22;
 		for (var i = 0; i < this.recipe.outputs.length; i++)
 		{
@@ -644,7 +741,7 @@ function initMachine(title)
 	thisData.region = new cRegion(thisData.x, thisData.y);
 	thisData.region.machine = thisData;
 	thisData.region.mouseHandler = machines.displayRegionMouseHandler;
-	thisData.region.boundaryPath = machines.displayRegionPath;
+	//thisData.region.boundaryPath = machines.displayRegionPath;
 	if (thisData.displayRegionCustomDraw)
 	{
 
@@ -700,6 +797,7 @@ function initMachine(title)
 		thisRecipe.machine = thisData;
 		thisRecipe.pieChart = new cEfficiencyCounter();
 		var recipeRegion = new cRegion(0, 17 + 17 * i);
+		thisRecipe.region = recipeRegion;
 		thisData.pane.recipeSelectorPane.subRegions.push(recipeRegion);
 		recipeRegion.recipe = thisRecipe;
 		recipeRegion.boundaryPath = machines.recipeRegionPath;
@@ -730,6 +828,7 @@ function initMachine(title)
 			if (thisRecipe.inputs[j].upgrades)
 			{
 				var sliderRegion = new cRegion(34, y);
+				thisRecipe.inputs[j].sliderRegion = sliderRegion;
 				sliderRegion.boundaryPath = machines.sliderRegionPath;
 				sliderRegion.mouseHandler = machines.sliderRegionMouseHandler;
 				sliderRegion.customDraw = machines.sliderRegionDraw;
@@ -747,6 +846,7 @@ function initMachine(title)
 			if (thisRecipe.outputs[j].upgrades)
 			{
 				var sliderRegion = new cRegion(34, y);
+				thisRecipe.outputs[j].sliderRegion = sliderRegion;
 				sliderRegion.boundaryPath = machines.sliderRegionPath;
 				sliderRegion.mouseHandler = machines.sliderRegionMouseHandler;
 				sliderRegion.customDraw = machines.sliderRegionDraw;
@@ -786,6 +886,7 @@ function initMachine(title)
 			if (thisRecipe.inputs[j].upgrades)
 			{
 				var sliderRegion = new cRegion(34, y);
+				thisRecipe.inputs[j].sliderRegion = sliderRegion;
 				sliderRegion.boundaryPath = machines.sliderRegionPath;
 				sliderRegion.mouseHandler = machines.sliderRegionMouseHandler;
 				sliderRegion.customDraw = machines.sliderRegionDraw;
@@ -803,6 +904,7 @@ function initMachine(title)
 			if (thisRecipe.outputs[j].upgrades)
 			{
 				var sliderRegion = new cRegion(34, y);
+				thisRecipe.outputs[j].sliderRegion = sliderRegion;
 				sliderRegion.boundaryPath = machines.sliderRegionPath;
 				sliderRegion.mouseHandler = machines.sliderRegionMouseHandler;
 				sliderRegion.customDraw = machines.sliderRegionDraw;
