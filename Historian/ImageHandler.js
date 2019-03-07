@@ -11,6 +11,8 @@ function preprocessImages()
 		"iconUpNot",
 		"iconLock",
 		"iconShow",
+		"iconPause",
+		"iconResume",
 		"iconHide",
 		"iconDrag",
 		"iconMin",
@@ -30,6 +32,9 @@ function preprocessImages()
 		"iconGolemWater",
 		"iconGolemAir",
 		"iconGolemFire",
+		"buttonConfirm",
+		"buttonConfirmCrossed",
+		"buttonCancel",
 	];
 	for (var i = 0; i < imageList.length; i++)
 	{

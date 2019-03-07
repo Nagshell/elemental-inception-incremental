@@ -1,21 +1,17 @@
-data.oElements.Water.amount = 2;
-data.oElements.Earth.amount = 2;
-data.oElements.Air.amount = 2;
-data.oElements.Fire.amount = 4;
+// data.oElements.Water.amount += 5.5e0;
+// data.oElements.Earth.amount += 5.5e0;
+// data.oElements.Air.amount += 5.5e100;
+// data.oElements.Fire.amount += 5.5e0;
 
 function tick()
 {
-	for (var element in data.oElements)
-	{
-		data.oElementsFlow[element] = 0;
-	}
 	machines.tick();
-	particleGenerator.tick();
 
 	for (var element in data.oElements)
 	{
 		data.oElements[element].amount += data.oElementsFlow[element];
-		data.oElements[element].amount = Math.max(0, data.oElements[element].amount);
+		data.oElements[element].amount = Math.min(1e300, Math.max(0, data.oElements[element].amount));
+		data.oElementsFlow[element] = 0;
 	}
 }
 

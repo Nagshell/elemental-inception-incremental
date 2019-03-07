@@ -1,27 +1,82 @@
-var origins = [];
-
 var particleGenerator = {
+	machineFlow: function (machineOrigin, machineTarget, type, volume, delay = 0)
+	{
+
+		if (!machineOrigin || !machineTarget || machineOrigin == machineTarget)
+		{
+			return;
+		}
+		if (elementalDisplayType[type] == "exp")
+		{
+			volume = Math.log10(1 + volume);
+		}
+		var color = elementalColors[type][0];
+		if (this.machineLinks[machineOrigin][machineTarget].volumes[color])
+		{
+			this.machineLinks[machineOrigin][machineTarget].volumes[color].amount += volume;
+			this.machineLinks[machineOrigin][machineTarget].volumes[color].cd += delay;
+		}
+		else
+		{
+			this.machineLinks[machineOrigin][machineTarget].volumes[color] = {
+				amount: volume,
+				cd: 0,
+			};
+		}
+
+	},
+
 	particles:
+	{},
+
+	machineLinks:
 	{},
 
 	tick: function ()
 	{
-		for (var i = 0; i < origins.length; i++)
+		var temp;
+		for (var origin in this.machineLinks)
 		{
-			if (!particleGenerator.particles[origins[i].type])
+			for (var target in this.machineLinks[origin])
 			{
-				particleGenerator.particles[origins[i].type] = [];
-			}
-			if (origins[i].c-- < 0)
-			{
-				origins[i].c = origins[i].cd;
-				var dr = Math.random() * origins[i].r;
-				var dq = Math.random() * Math.PI * 2;
-				var dx = dr * Math.sin(dq) * 1;
-				var dy = dr * Math.cos(dq) * 1;
-				particleGenerator.particles[origins[i].type].push(new particle(dx + origins[i].x, dy + origins[i].y, origins[i].a, origins[i].b, 2500));
+				temp = this.machineLinks[origin][target];
+				for (var color in temp.volumes)
+				{
+					if (!this.particles[color])
+					{
+						this.particles[color] = [];
+					}
+					if (temp.volumes[color].amount > 0)
+					{
+						if (temp.volumes[color].cd-- == 0)
+						{
+							var cdMax = 20;
+							if (temp.volumes[color].amount <= 1)
+							{
+								cdMax *= 1.5;
+							}
+							if (temp.volumes[color].amount <= 1e1)
+							{
+								cdMax *= 1.5;
+							}
+							if (temp.volumes[color].amount <= 1e4)
+							{
+								cdMax *= 2;
+							}
+							if (temp.volumes[color].amount <= 1e30)
+							{
+								cdMax *= 1.5;
+							}
+
+							temp.volumes[color].cd = cdMax;
+							this.particles[color].push(new particle(machineData[origin].region.x, machineData[origin].region.y, target, Math.min(5, Math.log2(1 + Math.max(1, temp.volumes[color].amount / 30))) / 2, 600));
+							temp.volumes[color].amount = 0;
+						}
+					}
+				}
 			}
 		}
+
 		for (var type in this.particles)
 		{
 			for (var i = 0; i < this.particles[type].length; i++)
@@ -37,8 +92,11 @@ var particleGenerator = {
 			}
 		}
 	},
+
 	draw: function (ctx)
 	{
+		particleGenerator.tick();
+
 		ctx.save();
 		ctx.shadowBlur = 5;
 
@@ -46,7 +104,7 @@ var particleGenerator = {
 		for (var type in this.particles)
 		{
 			ctx.fillStyle = type;
-			ctx.shadowColor = type;
+			ctx.shadowColor = "#FFFFFF";
 			ctx.beginPath();
 			for (var i = 0; i < this.particles[type].length; i++)
 			{
@@ -55,19 +113,15 @@ var particleGenerator = {
 				ctx.save();
 				ctx.translate(temp.x, temp.y);
 
-				ctx.rotate(temp.lifespan / 300 * Math.PI * 6);
-				// ctx.moveTo(16, 0);
-				// ctx.arc(0, 0, 16, 0, Math.PI / 2, true);
-				// ctx.arc(1, 1, 15, Math.PI / 2, 0);
-				//ctx.moveTo(-1, -1);
-				ctx.rect(-2, -2, 4, 4);
+				ctx.rotate(temp.lifespan / 20);
+				ctx.scale(temp.size, temp.size);
+				ctx.rect(-1, -1, 2, 2);
 
-				if (i % 50 == 9)
-				{
-					//ctx.stroke();
-					ctx.fill();
-					ctx.beginPath();
-				}
+				// if (i % 17 == 9)
+				// {
+				// 	ctx.fill();
+				// 	ctx.beginPath();
+				// }
 				ctx.restore();
 
 			}
@@ -75,28 +129,71 @@ var particleGenerator = {
 		}
 		ctx.restore();
 	},
-	mouseHandler: function (event)
-	{
-		var x = event.offsetX;
-		var y = event.offsetY;
-		var type = event.type;
-		if (type == "mousemove")
-		{}
-	},
 };
 
-function particle(x, y, a, b, ticks)
+function particle(x, y, target, size, ticks)
 {
-	this.a = a;
-	this.b = b;
-	this.x = x;
-	this.y = y;
+	this.x = x + (Math.random() - 0.5) * 25;
+	this.y = y + (Math.random() - 0.5) * 25;
+	this.size = 0.5 + size;
 	this.lifespan = ticks;
+	this.v = 0.3;
+	this.target = target;
 }
-
+var particleTemporaryAngle;
+var particleTemporaryTarget;
 particle.prototype.tick = function ()
 {
-	this.x += (this.a - this.x) * 0.0015 + (Math.random() - 0.5) * 0.38;
-	this.y += (this.b - this.y) * 0.0015 + (Math.random() - 0.5) * 0.38;
+	particleTemporaryTarget = machineData[this.target].region;
+	if (this.y !== particleTemporaryTarget.y)
+	{
+		particleTemporaryAngle = Math.atan((this.x - particleTemporaryTarget.x) / (this.y - particleTemporaryTarget.y));
+		if (this.y > particleTemporaryTarget.y)
+		{
+			particleTemporaryAngle += Math.PI;
+		}
+		this.x += this.v * Math.sin(particleTemporaryAngle);
+		this.y += this.v * Math.cos(particleTemporaryAngle);
+	}
+	else
+	{
+		if (this.x > particleTemporaryTarget.x)
+		{
+			//this.x -= this.v;
+		}
+		else
+		{
+			//this.x += this.v;
+		}
+	}
+	this.x += (Math.random() - 0.5) * 0.6;
+	this.y += (Math.random() - 0.5) * 0.6;
 	this.lifespan--;
 };
+
+function preprocessParticles()
+{
+	for (var machineOrigin in machineData)
+	{
+		if (!particleGenerator.machineLinks[machineOrigin])
+		{
+			particleGenerator.machineLinks[machineOrigin] = {};
+		}
+		for (var machineTarget in machineData)
+		{
+			if (machineTarget == machineOrigin)
+			{
+				continue;
+			}
+			if (!particleGenerator.machineLinks[machineOrigin][machineTarget])
+			{
+				particleGenerator.machineLinks[machineOrigin][machineTarget] = {
+					volumes:
+					{},
+				};
+			}
+		}
+	}
+}
+
+preprocessParticles();

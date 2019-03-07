@@ -35,15 +35,13 @@ function draw()
 	{
 		panes.list[i].draw(ctxActive);
 	}
-	//ctxActive.globalAlpha = 0.5;
-	//particleGenerator.draw(ctxActive);
 	ctxActive.globalAlpha = 1;
 }
 
-function drawNumber(ctx, num, x, y, mode = "")
+function drawNumber(ctx, num, x, y, mode = "", align = "left")
 {
 	ctx.save();
-	ctx.textAlign = "left";
+	ctx.textAlign = align;
 	if (mode == "exp")
 	{
 		var e = 0;
