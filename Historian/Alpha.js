@@ -1,15 +1,17 @@
-data.oElements.Water.amount = 2e2 * 0;
-data.oElements.Earth.amount = 2e2 * 0;
-data.oElements.Air.amount = 2e2 * 0;
-data.oElements.Fire.amount = 2e2 * 0;
-for (var i = 0; i < data.aElements.length; i++)
-{
-	//data.aElements[i].amount = 1e300;
-}
-//data.oElements.GolemEarth.amount = 15;
-//data.oElements.GolemWater.amount = 3;
-//data.oElements.GolemAir.amount = 31;
-//data.oElements.GolemFire.amount = 7;
+// data.oElements.Water.amount = 2e23;
+// data.oElements.Earth.amount = 2e23;
+// data.oElements.Air.amount = 2e23;
+// data.oElements.Fire.amount = 2e23;
+//
+// data.oElements.GolemEarth.amount = 80;
+// data.oElements.GolemWater.amount = 80;
+// data.oElements.GolemAir.amount = 80;
+// data.oElements.GolemFire.amount = 80;
+//
+// for (var i = 0; i < data.aElements.length; i++)
+// {
+// 	data.aElements[i].amount = 1e300;
+// }
 
 function tick()
 {

@@ -1560,7 +1560,7 @@ var machineData = {
 		"y": 600,
 		"recipes": [
 		{
-			"title": "Simple Mud Merging",
+			"title": "Merge : Traces of Mud",
 			"enabled": false,
 			"inputs": [
 			{
@@ -1572,25 +1572,15 @@ var machineData = {
 				"type": "GolemWater",
 				"ratio": 1,
 				"min": 1
-			},
-			{
-				"type": "Earth",
-				"ratio": 10000000000,
-				"min": 10000000000
-			},
-			{
-				"type": "Water",
-				"ratio": 10000000000,
-				"min": 10000000000
 			}],
 			"outputs": [
 			{
 				"type": "Mud",
-				"ratio": 0.4,
-				"max": 1.5
+				"ratio": 1,
+				"max": 0.1
 			}],
 			"productionRate": 1,
-			"efficiency": 1,
+			"efficiency": 0.01,
 			"unlocked": false,
 			"unlockCosts": [
 			{
@@ -1600,53 +1590,16 @@ var machineData = {
 			{
 				"type": "GolemWater",
 				"amount": 2
-			},
-			{
-				"type": "Mud",
-				"amount": 0.5
 			}],
-			"upgradeTo": "Intermediete Mud Merging",
+			"upgradeTo": "Simple Mud Extraction",
 			"upgradeCosts": [
 			{
 				"type": "Mud",
-				"amount": 2
+				"amount": 0.1
 			}]
 		},
 		{
-			"title": "Golem Merging : Mud",
-			"enabled": false,
-			"inputs": [
-			{
-				"type": "GolemEarth",
-				"ratio": 1,
-				"min": 1
-			},
-			{
-				"type": "GolemWater",
-				"ratio": 1,
-				"min": 1
-			}],
-			"outputs": [
-			{
-				"type": "Mud",
-				"ratio": 0.1,
-				"max": 1
-			}],
-			"productionRate": 1,
-			"efficiency": 1,
-			"unlocked": false,
-			"unlockCosts": [
-			{
-				"type": "GolemEarth",
-				"amount": 2
-			},
-			{
-				"type": "GolemWater",
-				"amount": 2
-			}]
-		},
-		{
-			"title": "Golem Merging : Ice",
+			"title": "Merge : Traces of Ice",
 			"enabled": false,
 			"inputs": [
 			{
@@ -1662,11 +1615,11 @@ var machineData = {
 			"outputs": [
 			{
 				"type": "Ice",
-				"ratio": 0.08,
-				"max": 1
+				"ratio": 1,
+				"max": 0.1
 			}],
 			"productionRate": 1,
-			"efficiency": 1,
+			"efficiency": 0.008,
 			"unlocked": false,
 			"unlockCosts": [
 			{
@@ -1683,7 +1636,7 @@ var machineData = {
 			}]
 		},
 		{
-			"title": "Golem Merging : Steam",
+			"title": "Merge : Traces of Steam",
 			"enabled": false,
 			"inputs": [
 			{
@@ -1699,11 +1652,11 @@ var machineData = {
 			"outputs": [
 			{
 				"type": "Steam",
-				"ratio": 0.06,
-				"max": 1
+				"ratio": 1,
+				"max": 0.1
 			}],
 			"productionRate": 1,
-			"efficiency": 1,
+			"efficiency": 0.006,
 			"unlocked": false,
 			"unlockCosts": [
 			{
@@ -1716,11 +1669,11 @@ var machineData = {
 			},
 			{
 				"type": "Ice",
-				"amount": 0.3
+				"amount": 0.03
 			}]
 		},
 		{
-			"title": "Golem Merging : Magma",
+			"title": "Merge : Traces of Magma",
 			"enabled": false,
 			"inputs": [
 			{
@@ -1736,11 +1689,11 @@ var machineData = {
 			"outputs": [
 			{
 				"type": "Magma",
-				"ratio": 0.04,
-				"max": 1
+				"ratio": 1,
+				"max": 0.1
 			}],
 			"productionRate": 1,
-			"efficiency": 1,
+			"efficiency": 0.004,
 			"unlocked": false,
 			"unlockCosts": [
 			{
@@ -1753,11 +1706,11 @@ var machineData = {
 			},
 			{
 				"type": "Steam",
-				"amount": 0.3
+				"amount": 0.03
 			}]
 		},
 		{
-			"title": "Golem Merging : Sand",
+			"title": "Merge : Traces of Sand",
 			"enabled": false,
 			"inputs": [
 			{
@@ -1773,11 +1726,11 @@ var machineData = {
 			"outputs": [
 			{
 				"type": "Sand",
-				"ratio": 0.02,
-				"max": 1
+				"ratio": 1,
+				"max": 0.1
 			}],
 			"productionRate": 1,
-			"efficiency": 1,
+			"efficiency": 0.002,
 			"unlocked": false,
 			"unlockCosts": [
 			{
@@ -1790,14 +1743,55 @@ var machineData = {
 			},
 			{
 				"type": "Magma",
-				"amount": 0.3
+				"amount": 0.03
 			}]
 		}],
 		"hiddenRecipes":
 		{
-			"Intermediete Mud Merging":
+			"Simple Mud Extraction":
 			{
-				"title": "Intermediete Mud Merging",
+				"title": "Simple Mud Extraction",
+				"enabled": false,
+				"inputs": [
+				{
+					"type": "GolemEarth",
+					"ratio": 1,
+					"min": 1
+				},
+				{
+					"type": "GolemWater",
+					"ratio": 1,
+					"min": 1
+				},
+				{
+					"type": "Earth",
+					"ratio": 10000000000,
+					"min": 10000000000
+				},
+				{
+					"type": "Water",
+					"ratio": 10000000000,
+					"min": 10000000000
+				}],
+				"outputs": [
+				{
+					"type": "Mud",
+					"ratio": 0.4,
+					"max": 1.5
+				}],
+				"productionRate": 1,
+				"efficiency": 1,
+				"unlocked": true,
+				"upgradeTo": "Intermediete Mud Extraction",
+				"upgradeCosts": [
+				{
+					"type": "Mud",
+					"amount": 2
+				}]
+			},
+			"Intermediete Mud Extraction":
+			{
+				"title": "Intermediete Mud Extraction",
 				"enabled": false,
 				"inputs": [
 				{
@@ -1824,13 +1818,76 @@ var machineData = {
 				{
 					"type": "Mud",
 					"ratio": 1.2,
-					"max": 3
+					"max": 100
 				}],
 				"productionRate": 1,
 				"efficiency": 1,
 				"unlocked": true
 			}
 		}
+	},
+	"Aggregator":
+	{
+		"x": 400,
+		"y": 550,
+		"recipes": [],
+		"hiddenRecipes":
+		{},
+		"displayElement": "Mud"
+	},
+	"Polar Vortex":
+	{
+		"x": 150,
+		"y": 350,
+		"recipes": [],
+		"hiddenRecipes":
+		{},
+		"displayElement": "Ice"
+	},
+	"Combustion Engine":
+	{
+		"x": 250,
+		"y": 100,
+		"recipes": [],
+		"hiddenRecipes":
+		{},
+		"displayElement": "Steam"
+	},
+	"Volcano":
+	{
+		"x": 650,
+		"y": 350,
+		"recipes": [],
+		"hiddenRecipes":
+		{},
+		"displayElement": "Magma"
+	},
+	"Pulverizer":
+	{
+		"x": 550,
+		"y": 100,
+		"recipes": [],
+		"hiddenRecipes":
+		{},
+		"displayElement": "Sand"
+	},
+	"Orb of Emptiness":
+	{
+		"x": 400,
+		"y": 150,
+		"recipes": [],
+		"hiddenRecipes":
+		{},
+		"displayElement": "Void"
+	},
+	"Nexus of Unification":
+	{
+		"x": 400,
+		"y": 300,
+		"recipes": [],
+		"hiddenRecipes":
+		{},
+		"displayElement": "Alkahest"
 	}
 };
 var machineDisplayElements = {};
@@ -1926,6 +1983,10 @@ function preprocessMachinesData()
 			machineDisplayElements[machineData[title].displayElement] = title;
 		}
 	}
+	machineDisplayElements["GolemEarth"] = "Golem Infuser";
+	machineDisplayElements["GolemWater"] = "Golem Infuser";
+	machineDisplayElements["GolemAir"] = "Golem Infuser";
+	machineDisplayElements["GolemFire"] = "Golem Infuser";
 
 	infuser.pane.regularDraw = infuser.pane.customDraw;
 	infuser.pane.customDraw = function (ctx)

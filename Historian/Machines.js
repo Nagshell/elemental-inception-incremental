@@ -95,6 +95,13 @@ var machines = {
 		this.glowCheck();
 		for (var i = 0; i < this.list.length; i++)
 		{
+			if (!this.list[i].region.boundaryPath && this.list[i].displayElement)
+			{
+				if (data.oElements[this.list[i].displayElement].amount > 0)
+				{
+					this.list[i].region.boundaryPath = machines.displayRegionPath;
+				}
+			}
 			this.list[i].tick();
 		}
 	},
@@ -105,7 +112,11 @@ var machines = {
 	{
 		if (this.displayElement)
 		{
-			if (data.oElements[this.displayElement].amount > 1e127)
+			if (data.oElements[this.displayElement].amount > 1e255)
+			{
+				this.displayStep = Math.min(0.09, this.displayStep);
+			}
+			else if (data.oElements[this.displayElement].amount > 1e127)
 			{
 				this.displayStep = Math.min(0.125, this.displayStep);
 			}
@@ -224,7 +235,7 @@ var machines = {
 		if (this.machine.displayElement)
 		{
 			ctx.strokeStyle = elementalColors[this.machine.displayElement][0];
-			ctx.fillStyle = elementalColors[this.machine.displayElement][2];
+			ctx.fillStyle = elementalColors[this.machine.displayElement][3];
 			ctx.lineWidth = 0.1;
 			var amount = data.oElements[this.machine.displayElement].amount;
 			if (amount > 0.0)
@@ -254,7 +265,7 @@ var machines = {
 				//ctx.lineTo(0, 0);
 				ctx.closePath();
 				ctx.fill();
-				ctx.lineWidth = 0.7;
+				ctx.lineWidth = 1.3;
 				ctx.stroke();
 			}
 		}
@@ -323,8 +334,6 @@ var machines = {
 			ctx.translate(12, 200);
 			for (var i = 0; i < this.machine.recipes.length; i++)
 			{
-				if (!this.machine.recipes[i].pieChart)
-					console.log(this.machine.recipes[i]);
 				if (this.machine.recipes[i].pieChart.results.null == 600)
 				{
 					continue;
@@ -332,14 +341,15 @@ var machines = {
 				turnedOn = true;
 				var temp = this.machine.recipes[i].pieChart;
 
+				var radius = 31 - this.machine.recipes.length;
 				ctx.save();
 				ctx.beginPath();
-				ctx.arc(40, 0, 32, 0, Math.PI * 2);
+				ctx.arc(40, 0, radius, 0, Math.PI * 2);
 				ctx.stroke();
 				ctx.fill();
 				ctx.clip();
 				var angle = 0;
-				var radius = 28;
+				radius -= 3;
 				if (!this.machine.recipes[i].enabled)
 				{
 					radius /= 2;
@@ -355,7 +365,7 @@ var machines = {
 				}
 
 				ctx.restore();
-				ctx.translate(0, 70);
+				ctx.translate(0, radius * 2 + 10);
 			}
 
 			ctx.restore();

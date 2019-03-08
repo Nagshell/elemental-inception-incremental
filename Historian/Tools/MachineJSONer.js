@@ -555,9 +555,22 @@ var simplifiedMachineData = {
 		baseStats: [600, 600],
 		recipes:
 		{
-			"Simple Mud Merging":
+			"Merge : Traces of Mud":
 			{
-				baseStats: [1, 1, true, false],
+				baseStats: [1, 0.01, true, false],
+				in: [
+					["GolemEarth", 1, 1],
+					["GolemWater", 1, 1],
+				],
+				out: [
+					["Mud", 1, 0.1],
+				],
+				lock: ["GolemEarth", 2, "GolemWater", 2],
+				upgrade: ["Simple Mud Extraction", "Mud", 0.1],
+			},
+			"Simple Mud Extraction":
+			{
+				baseStats: [1, 1, false, false],
 				in: [
 					["GolemEarth", 1, 1],
 					["GolemWater", 1, 1],
@@ -567,10 +580,9 @@ var simplifiedMachineData = {
 				out: [
 					["Mud", 0.4, 1.5],
 				],
-				lock: ["GolemEarth", 2, "GolemWater", 2, "Mud", 0.5],
-				upgrade: ["Intermediete Mud Merging", "Mud", 2],
+				upgrade: ["Intermediete Mud Extraction", "Mud", 2],
 			},
-			"Intermediete Mud Merging":
+			"Intermediete Mud Extraction":
 			{
 				baseStats: [1, 1, false, false],
 				in: [
@@ -580,69 +592,114 @@ var simplifiedMachineData = {
 					["Water", 1e20, 1e20],
 				],
 				out: [
-					["Mud", 1.2, 3],
+					["Mud", 1.2, 100],
 				],
 			},
-			"Golem Merging : Mud":
+
+			"Merge : Traces of Ice":
 			{
-				baseStats: [1, 1, true, false],
-				in: [
-					["GolemEarth", 1, 1],
-					["GolemWater", 1, 1],
-				],
-				out: [
-					["Mud", 0.1, 1],
-				],
-				lock: ["GolemEarth", 2, "GolemWater", 2],
-			},
-			"Golem Merging : Ice":
-			{
-				baseStats: [1, 1, true, false],
+				baseStats: [1, 0.008, true, false],
 				in: [
 					["GolemWater", 1, 1],
 					["GolemAir", 1, 1],
 				],
 				out: [
-					["Ice", 0.08, 1],
+					["Ice", 1, 0.1],
 				],
 				lock: ["GolemWater", 2, "GolemAir", 2, "Mud", 0.3],
 			},
-			"Golem Merging : Steam":
+			"Merge : Traces of Steam":
 			{
-				baseStats: [1, 1, true, false],
+				baseStats: [1, 0.006, true, false],
 				in: [
 					["GolemWater", 1, 1],
 					["GolemFire", 1, 1],
 				],
 				out: [
-					["Steam", 0.06, 1],
+					["Steam", 1, 0.1],
 				],
-				lock: ["GolemWater", 2, "GolemFire", 2, "Ice", 0.3],
+				lock: ["GolemWater", 2, "GolemFire", 2, "Ice", 0.03],
 			},
-			"Golem Merging : Magma":
+			"Merge : Traces of Magma":
 			{
-				baseStats: [1, 1, true, false],
+				baseStats: [1, 0.004, true, false],
 				in: [
 					["GolemEarth", 1, 1],
 					["GolemFire", 1, 1],
 				],
 				out: [
-					["Magma", 0.04, 1],
+					["Magma", 1, 0.1],
 				],
-				lock: ["GolemEarth", 2, "GolemFire", 2, "Steam", 0.3],
+				lock: ["GolemEarth", 2, "GolemFire", 2, "Steam", 0.03],
 			},
-			"Golem Merging : Sand":
+			"Merge : Traces of Sand":
 			{
-				baseStats: [1, 1, true, false],
+				baseStats: [1, 0.002, true, false],
 				in: [
 					["GolemEarth", 1, 1],
 					["GolemAir", 1, 1],
 				],
 				out: [
-					["Sand", 0.02, 1],
+					["Sand", 1, 0.1],
 				],
-				lock: ["GolemEarth", 2, "GolemAir", 2, "Magma", 0.3],
+				lock: ["GolemEarth", 2, "GolemAir", 2, "Magma", 0.03],
 			},
+		}
+	},
+	"Aggregator":
+	{
+		baseStats: [400, 550, "Mud"],
+		recipes:
+		{
+
+		}
+	},
+	"Polar Vortex":
+	{
+		baseStats: [150, 350, "Ice"],
+		recipes:
+		{
+
+		}
+	},
+	"Combustion Engine":
+	{
+		baseStats: [250, 100, "Steam"],
+		recipes:
+		{
+
+		}
+	},
+	"Volcano":
+	{
+		baseStats: [650, 350, "Magma"],
+		recipes:
+		{
+
+		}
+	},
+	"Pulverizer":
+	{
+		baseStats: [550, 100, "Sand"],
+		recipes:
+		{
+
+		}
+	},
+	"Orb of Emptiness":
+	{
+		baseStats: [400, 150, "Void"],
+		recipes:
+		{
+
+		}
+	},
+	"Nexus of Unification":
+	{
+		baseStats: [400, 300, "Void"],
+		recipes:
+		{
+
 		}
 	},
 };

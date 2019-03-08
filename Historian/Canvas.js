@@ -48,6 +48,10 @@ function drawNumber(ctx, num, x, y, mode = "", align = "left")
 {
 	ctx.save();
 	ctx.textAlign = align;
+	if (num < 0.1 && mode == "exp")
+	{
+		mode = "fixed";
+	}
 	if (mode == "exp")
 	{
 		var e = 0;
