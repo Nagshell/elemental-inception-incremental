@@ -21,14 +21,36 @@ var panes = {
 		if (event.type == "mousemove" && panes.dragndrop)
 		{
 			var top = panes.dragndrop.top;
-			if (!top || top.checkBoundary(10 + top.x + panes.dragndrop.x + event.movementX, 10 + top.y + panes.dragndrop.y, "mousemove"))
+			var x = 10 + top.x + panes.dragndrop.x;
+			var y = 10 + top.y + panes.dragndrop.y;
+			if (top.centerX)
+			{
+				x += top.centerX;
+				y += top.centerY;
+			}
+			if (!top.checkBoundary(x, y, "mousemove"))
+			{
+				panes.dragndrop.x = panes.dragndrop.defaultX;
+				panes.dragndrop.y = panes.dragndrop.defaultY;
+				return;
+			}
+			x += event.movementX;
+			if (!top || top.checkBoundary(x, y, "mousemove"))
 			{
 				panes.dragndrop.x += event.movementX;
 			}
-			if (!top || top.checkBoundary(10 + top.x + panes.dragndrop.x, 10 + top.y + panes.dragndrop.y + event.movementY, "mousemove"))
+			x -= event.movementX;
+			y += event.movementY;
+			if (!top || top.checkBoundary(x, y, "mousemove"))
 			{
 				panes.dragndrop.y += event.movementY;
 			}
+			return;
+		}
+		if (event.type == "mousemove" && panes.dragndropcenter)
+		{
+			panes.dragndropcenter.centerX += event.movementX;
+			panes.dragndropcenter.centerY += event.movementY;
 			return;
 		}
 		if (event.type == "mouseup")
@@ -36,6 +58,11 @@ var panes = {
 			if (panes.dragndrop)
 			{
 				panes.dragndrop = null;
+				return;
+			}
+			if (panes.dragndropcenter)
+			{
+				panes.dragndropcenter = null;
 				return;
 			}
 			if (machines.drag)
@@ -65,18 +92,28 @@ var panes = {
 				var temp = targetPane;
 				while (temp)
 				{
+					if (temp.centerX)
+					{
+						x -= temp.centerX;
+						y -= temp.centerY;
+					}
 					x -= temp.x;
 					y -= temp.y;
 					temp = temp.top;
 				}
-
+				var nohit = true;
 				for (var j = 0; j < targetPane.subRegions.length; j++)
 				{
 					var targetRegion = targetPane.subRegions[j].checkBoundary(x, y, type);
 					if (targetRegion)
 					{
+						nohit = false;
 						targetRegion.mouseHandler(targetPane, x, y, type);
 					}
+				}
+				if (nohit && targetPane.centerX && type == "mousedown")
+				{
+					panes.dragndropcenter = targetPane;
 				}
 				return;
 			}
@@ -116,14 +153,19 @@ function cPane(top, x, y)
 
 cPane.prototype.checkBoundary = function (x, y, type)
 {
-	x -= this.x;
-	y -= this.y;
 	if (!this.boundaryPath)
 	{
 		return false;
 	}
+	x -= this.x;
+	y -= this.y;
 	if (nullCtx.isPointInPath(this.boundaryPath, x, y))
 	{
+		if (this.centerX)
+		{
+			x -= this.centerX;
+			y -= this.centerY;
+		}
 		for (var i = 0; i < this.subPanes.length; i++)
 		{
 			var target = this.subPanes[i].checkBoundary(x, y, type);
@@ -176,7 +218,10 @@ cPane.prototype.draw = function (ctx)
 		ctx.stroke(this.boundaryPath);
 		ctx.fill(this.boundaryPath);
 		ctx.clip(this.boundaryPath);
-
+		if (this.centerX)
+		{
+			ctx.translate(this.centerX, this.centerY);
+		}
 		if (this.title)
 		{
 			ctx.save();
@@ -190,12 +235,10 @@ cPane.prototype.draw = function (ctx)
 			ctx.stroke();
 			ctx.restore();
 		}
-
 		if (this.customDraw)
 		{
 			this.customDraw(ctx);
 		}
-
 		for (var i = this.subRegions.length - 1; i >= 0; i--)
 		{
 			this.subRegions[i].draw(ctx, this);
@@ -204,6 +247,10 @@ cPane.prototype.draw = function (ctx)
 		if (this.markedToGlow)
 		{
 			ctx.save();
+			if (this.centerX)
+			{
+				ctx.translate(-this.centerX, -this.centerY);
+			}
 			ctx.strokeStyle = "#000000";
 			ctx.shadowBlur = borderGlowRadius;
 			ctx.stroke(this.boundaryPath);

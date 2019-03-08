@@ -70,6 +70,20 @@ function preprocessRegionData()
 					pane.top.subPanes[i + 1] = pane.top.subPanes[i];
 				}
 				pane.top.subPanes[i] = pane;
+
+				var mx = 10 + pane.top.x + pane.x;
+				var my = 10 + pane.top.y + pane.y;
+				if (pane.top.centerX)
+				{
+					mx += pane.top.centerX;
+					my += pane.top.centerY;
+				}
+				if (!pane.top.checkBoundary(mx, my, "mousemove"))
+				{
+					pane.x = pane.defaultX;
+					pane.y = pane.defaultY;
+					return;
+				}
 			}
 		}
 	}
@@ -205,12 +219,48 @@ trackerPane.boundaryPath = path;
 
 var mainPane = new cPane(null, 0, 100);
 //mainPane.subRegions.push(regionData.resetRegion);
-var path = new Path2D();
+path = new Path2D();
 path.rect(0, 0, 800, 700);
 mainPane.boundaryPath = path;
 mainPane.customDraw = function (ctx)
 {
 	particleGenerator.draw(ctx);
+	var x = -this.centerX + canvas.width / 2;
+	var y = -this.centerY + canvas.height / 2 - 100;
+	ctx.save();
+	ctx.lineWidth = 0.4;
+	ctx.shadowBlur = 20;
+	ctx.strokeStyle = "#000000";
+	ctx.shadowColor = "#300030";
+	ctx.beginPath();
+	ctx.moveTo(x, y);
+	var noGlow = true;
+	for (var i = 0; i < this.subRegions.length; i++)
+	{
+		if (this.subRegions[i].markedToGlow)
+		{
+			ctx.lineTo(this.subRegions[i].x, this.subRegions[i].y);
+			ctx.moveTo(x, y);
+			noGlow = false;
+		}
+	}
+	if (noGlow && x * x + y * y > 90000)
+	{
+		ctx.lineTo(0, 0);
+		ctx.moveTo(x, y);
+		noGlow = false;
+	}
+	if (!noGlow)
+	{
+		ctx.moveTo(x + 5, y);
+		ctx.arc(x, y, 5, 0, Math.PI * 2);
+		ctx.moveTo(x + 10, y);
+		ctx.arc(x, y, 10, 0, Math.PI * 2);
+		ctx.moveTo(x + 15, y);
+		ctx.arc(x, y, 15, 0, Math.PI * 2);
+		ctx.stroke();
+	}
+	ctx.restore();
 }
 
 trackerPane.customDraw = function (ctx)

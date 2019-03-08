@@ -17,6 +17,32 @@ document.addEventListener("click", canvasMouseHandler);
 var canvas = document.getElementById("canvasMain");
 var ctxActive = canvas.getContext("2d");
 
+function resizeCanvas()
+{
+	if (mainPane.centerX)
+	{
+		mainPane.centerX -= Math.trunc(canvas.width / 2);
+		mainPane.centerY -= Math.trunc(canvas.height / 2) - 100;
+	}
+	canvas.width = document.body.clientWidth - 50;
+	canvas.height = document.body.clientHeight - 50;
+	var path = new Path2D();
+	path.rect(0, 0, canvas.width, 99);
+	trackerPane.boundaryPath = path;
+	path = new Path2D();
+	path.rect(0, 0, canvas.width, canvas.height - 100);
+	mainPane.boundaryPath = path;
+	if (mainPane.centerX)
+	{
+		mainPane.centerX += Math.trunc(canvas.width / 2);
+		mainPane.centerY += Math.trunc(canvas.height / 2) - 100;
+	}
+	else
+	{
+		mainPane.centerX = Math.trunc(canvas.width / 2);
+		mainPane.centerY = Math.trunc(canvas.height / 2) - 100;
+	}
+}
 var borderGlowRadius = 5;
 var borderGlowTicks = 0;
 
@@ -48,7 +74,7 @@ function drawNumber(ctx, num, x, y, mode = "", align = "left")
 {
 	ctx.save();
 	ctx.textAlign = align;
-	if (num < 0.1 && mode == "exp")
+	if (num < 3e2 && mode == "exp")
 	{
 		mode = "fixed";
 	}
@@ -60,7 +86,7 @@ function drawNumber(ctx, num, x, y, mode = "", align = "left")
 			e++;
 			num /= 10;
 		}
-		ctx.fillText((Math.trunc(num * 10) / 10).toFixed(1) + "e" + e, x, y);
+		ctx.fillText((Math.trunc(num * 100) / 100).toFixed(2) + "e" + e, x, y);
 	}
 	else if (mode == "fixed")
 	{

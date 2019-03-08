@@ -7,6 +7,7 @@ var machines = {
 		if (this.glowCheckCD-- == 0)
 		{
 			this.glowCheckCD = 60;
+			var mainGlow = false;
 			for (var i = 0; i < this.list.length; i++)
 			{
 				var tempMachine = this.list[i];
@@ -40,10 +41,7 @@ var machines = {
 									}
 								}
 								tempIngredient.sliderRegion.markedToGlow = sliderGlow;
-								if (sliderGlow)
-								{
-									recipeGlow = true;
-								}
+								recipeGlow = recipeGlow || sliderGlow;
 							}
 						}
 						for (var k = 0; k < tempRecipe.outputs.length; k++)
@@ -61,10 +59,7 @@ var machines = {
 									}
 								}
 								tempIngredient.sliderRegion.markedToGlow = sliderGlow;
-								if (sliderGlow)
-								{
-									recipeGlow = true;
-								}
+								recipeGlow = recipeGlow || sliderGlow;
 							}
 						}
 					}
@@ -76,10 +71,7 @@ var machines = {
 						}
 					}
 					tempRecipe.region.markedToGlow = recipeGlow;
-					if (recipeGlow)
-					{
-						machineGlow = true;
-					}
+					machineGlow = machineGlow || recipeGlow;
 				}
 				tempMachine.pane.markedToGlow = machineGlow;
 				if (machineGlow && !tempMachine.region.boundaryPath)
@@ -87,7 +79,10 @@ var machines = {
 					tempMachine.region.boundaryPath = machines.displayRegionPath;
 				}
 				tempMachine.region.markedToGlow = machineGlow;
+				mainGlow = mainGlow || machineGlow;
+
 			}
+			mainPane.markedToGlow = mainGlow;
 		}
 	},
 	tick: function ()
@@ -219,14 +214,24 @@ var machines = {
 					data.oElementsFlow[temp.outputs[j].type] += amount * temp.outputs[j].ratio * temp.efficiency;
 					particleGenerator.machineFlow(this.title, machineDisplayElements[temp.outputs[j].type], temp.outputs[j].type, amount * temp.outputs[j].ratio);
 				}
-
+				if (this.title == "Golem Infuser")
+				{
+					particleGenerator.explosion(this.region.x, this.region.y, 1, elementalColors[temp.outputs[0].type][3], elementalColors[temp.outputs[0].type][0], 600);
+				}
 			}
 		}
 	},
 
 	displayRegionMouseHandler: function (pane, x, y, type)
 	{
-		regionData.showRegion.mouseHandler(this.machine.pane, x, y, type);
+		if (this.machine.pane.hiddenPath)
+		{
+			regionData.showRegion.mouseHandler(this.machine.pane, x, y, type);
+		}
+		else
+		{
+			regionData.hideRegion.mouseHandler(this.machine.pane, x, y, type);
+		}
 	},
 	displayRegionRegularDraw: function (ctx, pane)
 	{
@@ -651,7 +656,7 @@ var machines = {
 			ctx.restore();
 			y += 22;
 		}
-		ctx.fillText("Efficiency " + this.recipe.efficiency, 15, y);
+		ctx.fillText("Efficiency " + this.recipe.efficiency * 100 + "%", 15, y);
 		y += 22;
 
 		ctx.restore();
@@ -659,6 +664,11 @@ var machines = {
 	sliderRegionPaymenentSuccess: function ()
 	{
 		this.target.upped++;
+		if (this.target.max)
+		{
+			this.target.slider = 2;
+			this.target.max = this.target.sliderBase * Math.pow(this.target.sliderStep, this.target.upped);
+		}
 	},
 	sliderRegionMouseHandler: function (pane, x, y, type)
 	{

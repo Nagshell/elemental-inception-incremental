@@ -26,6 +26,12 @@ var particleGenerator = {
 
 	},
 
+	explosion: function (x, y, v, color1, color2, lifespan)
+	{
+		this.explosions.push(new cExplosion(x, y, v, color1, color2, lifespan));
+	},
+
+	explosions: [],
 	particles:
 	{},
 
@@ -91,6 +97,17 @@ var particleGenerator = {
 				}
 			}
 		}
+
+		for (var i = 0; i < this.explosions.length; i++)
+		{
+			this.explosions[i].r += this.explosions[i].v;
+			if (this.explosions[i].lifespan <= this.explosions[i].r)
+			{
+				this.explosions[i] = this.explosions[this.explosions.length - 1];
+				this.explosions.length--;
+				i--;
+			}
+		}
 	},
 
 	draw: function (ctx)
@@ -127,9 +144,32 @@ var particleGenerator = {
 			}
 			ctx.fill();
 		}
+
+		ctx.shadowBlur = 25;
+		for (var i = 0; i < this.explosions.length; i++)
+		{
+			if (this.explosions[i].r < 0) continue;
+			ctx.strokeStyle = this.explosions[i].color1;
+			ctx.shadowColor = this.explosions[i].color2;
+			ctx.globalAlpha = (this.explosions[i].lifespan - this.explosions[i].r) / this.explosions[i].lifespan;
+			ctx.beginPath();
+			ctx.arc(this.explosions[i].x, this.explosions[i].y, this.explosions[i].r, 0, Math.PI * 2);
+			ctx.stroke();
+		}
 		ctx.restore();
 	},
 };
+
+function cExplosion(x, y, v, color1, color2, lifespan)
+{
+	this.x = x;
+	this.y = y;
+	this.v = v;
+	this.r = -Math.trunc(Math.random() * 30);
+	this.color1 = color1;
+	this.color2 = color2;
+	this.lifespan = lifespan;
+}
 
 function particle(x, y, target, size, ticks)
 {
@@ -137,7 +177,7 @@ function particle(x, y, target, size, ticks)
 	this.y = y + (Math.random() - 0.5) * 25;
 	this.size = 0.5 + size;
 	this.lifespan = ticks;
-	this.v = 0.8;
+	this.v = 1.8;
 	this.target = target;
 }
 var particleTemporaryAngle;
@@ -166,8 +206,12 @@ particle.prototype.tick = function ()
 			//this.x += this.v;
 		}
 	}
-	this.x += (Math.random() - 0.5) * 1.1;
-	this.y += (Math.random() - 0.5) * 1.1;
+	if ((this.y - particleTemporaryTarget.y) * (this.y - particleTemporaryTarget.y) + (this.x - particleTemporaryTarget.x) * (this.x - particleTemporaryTarget.x) < 100)
+	{
+		this.lifespan = 0;
+	}
+	//this.x += (Math.random() - 0.5) * 2;
+	//this.y += (Math.random() - 0.5) * 2;
 	this.lifespan--;
 };
 

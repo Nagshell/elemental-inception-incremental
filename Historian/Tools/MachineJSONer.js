@@ -1,52 +1,52 @@
 var simplifiedMachineData = {
 	"Crystallizer":
 	{
-		baseStats: [500, 400, "Earth", 4],
+		baseStats: [100, 100, "Earth", 16],
 		recipes:
 		{
 			"Earth Trickle":
 			{
-				baseStats: [1, 0.25, true, false],
+				baseStats: [1, 0.0008, true, false],
 				in: [],
 				out: [
-					["Earth", 0.01, 2],
+					["Earth", 1, 1.2],
 				],
 				lock: ["Earth", 0],
-				upgrade: ["Earth Slide", "Air", 0.1],
+				upgrade: ["Earth Slide", "Water", 0.1],
 			},
 			"Earth Slide":
 			{
-				baseStats: [1, 0.50, false, false],
+				baseStats: [1, 0.0015, false, false],
 				in: [],
 				out: [
-					["Earth", 0.02, 2],
+					["Earth", 1, 1.2],
 				],
-				upgrade: ["Earth Avalanche", "Fire", 0.1],
+				upgrade: ["Earth Avalanche", "Air", 0.1],
 			},
 			"Earth Avalanche":
 			{
-				baseStats: [1, 0.75, false, false],
+				baseStats: [1, 0.004, false, false],
 				in: [],
 				out: [
-					["Earth", 0.03, 2],
+					["Earth", 1, 1.2],
 				],
-				upgrade: ["Weak Earth Rift", "Earth", 8],
+				upgrade: ["Weak Earth Rift", "Earth", 5],
 			},
 			"Weak Earth Rift":
 			{
-				baseStats: [1, 1, false, false],
+				baseStats: [1, 0.1, false, false],
 				in: [],
 				out: [
-					["Earth", 0.1, 3e1],
+					["Earth", 1, 12, 10, ["Earth", 80]],
 				],
-				upgrade: ["Pure Earth Rift", "Earth", 1e50],
+				upgrade: ["Pure Earth Rift", "Mud", 0.1, "Magma", 0.1],
 			},
 			"Pure Earth Rift":
 			{
 				baseStats: [1, 1, false, false],
 				in: [],
 				out: [
-					["Earth", 1e2, 1e300],
+					["Earth", 2, 1200],
 				],
 			},
 			"Simple Earth Conversion":
@@ -57,94 +57,94 @@ var simplifiedMachineData = {
 					["Fire", 1, 1.1],
 				],
 				out: [
-					["Earth", 2, 11, 10, ["Earth", 10]],
+					["Earth", 2, 5.2, 4, ["Earth", 10, "GolemEarth", 1]],
 				],
 				lock: ["Fire", 1],
-				upgrade: ["Improved Earth Conversion", "GolemEarth", 1],
+				upgrade: ["Improved Earth Conversion", "Earth", 100],
 			},
 			"Improved Earth Conversion":
 			{
-				baseStats: [1, 1.3, false, true],
+				baseStats: [1, 1.05, false, true],
 				in: [
-					["Earth", 1, 0.1],
-					["Fire", 1, 0.1],
+					["Earth", 1, 80.1],
+					["Fire", 1, 80.1],
 				],
 				out: [
-					["Earth", 2, 1.1e11, 1e9, ["Earth", 1e11]],
+					["Earth", 2, 502],
 				],
-				upgrade: ["True Earth Rift", "GolemEarth", 3],
+				upgrade: ["True Earth Rift", "Void", 0.1, "GolemEarth", 8],
 			},
 			"True Earth Rift":
 			{
-				baseStats: [1, 1.8, false, true],
+				baseStats: [1, 1.4, false, true],
 				in: [
 					["Earth", 1, 1]
 				],
 				out: [
-					["Earth", 1, 1e200],
+					["Earth", 1, 12000],
 				],
 			},
 			"Catalized Earth Conversion":
 			{
-				baseStats: [1, 2, true, true],
+				baseStats: [1, 1.2, true, true],
 				in: [
-					["Earth", 1, 1e20],
-					["Fire", 1, 1e20],
+					["Earth", 1, 500],
+					["Fire", 1, 500],
 					["Mud", 0, 2],
 					["Magma", 0, 2],
 					["Sand", 0, 2],
 				],
 				out: [
-					["Earth", 2, 1.1e51, 1e49, ["Void", 100]],
+					["Earth", 2, 12000, 4, ["Mud", 10]],
 				],
 				lock: ["Mud", 2, "Magma", 2, "Sand", 2],
-				upgrade: ["Stable Earth Rift", "GolemEarth", 8],
+				upgrade: ["Stable Earth Rift", "Void", 10, "GolemEarth", 8],
 			},
 			"Stable Earth Rift":
 			{
-				baseStats: [1, 3, false, true],
+				baseStats: [1, 1.8, false, true],
 				in: [
-					["Earth", 1, 1e20],
-					["Alkahest", 0, 1],
+					["Earth", 1, 500],
+					["Alkahest", 0, 0.1],
 				],
 				out: [
-					["Earth", 1, 1e300],
+					["Earth", 1, 52000],
 				],
 			},
 		}
 	},
 	"Aqueous Extractor":
 	{
-		baseStats: [300, 400, "Water", 8],
+		baseStats: [-100, 100, "Water", 16],
 		recipes:
 		{
 			"Forcefull Water Conversion":
 			{
 				baseStats: [1, 0.25, true, true],
 				in: [
-					["Earth", 1, 0.1],
+					["Earth", 1, 0.4],
 				],
 				out: [
-					["Water", 1, 2],
+					["Water", 1, 1.2],
 				],
-				lock: ["Earth", 2],
-				upgrade: ["Weak Water Rift", "Water", 8],
+				lock: ["Earth", 1],
+				upgrade: ["Weak Water Rift", "Water", 5],
 			},
 			"Weak Water Rift":
 			{
-				baseStats: [1, 1, false, false],
+				baseStats: [1, 0.1, false, false],
 				in: [],
 				out: [
-					["Water", 0.1, 3e1],
+					["Water", 1, 12, 10, ["Water", 80]],
 				],
-				upgrade: ["Pure Water Rift", "Water", 1e50],
+				upgrade: ["Pure Water Rift", "Ice", 0.1, "Steam", 0.1],
 			},
 			"Pure Water Rift":
 			{
 				baseStats: [1, 1, false, false],
 				in: [],
 				out: [
-					["Water", 1e2, 1e300],
+					["Water", 2, 1200],
 				],
 			},
 			"Simple Water Conversion":
@@ -155,94 +155,94 @@ var simplifiedMachineData = {
 					["Water", 1, 1.1],
 				],
 				out: [
-					["Water", 2, 11, 10, ["Water", 10]],
+					["Water", 2, 5.2, 4, ["Water", 10, "GolemWater", 1]],
 				],
 				lock: ["Water", 1],
-				upgrade: ["Improved Water Conversion", "GolemWater", 1],
+				upgrade: ["Improved Water Conversion", "Water", 100],
 			},
 			"Improved Water Conversion":
 			{
-				baseStats: [1, 1.3, false, true],
+				baseStats: [1, 1.05, false, true],
 				in: [
-					["Earth", 1, 0.1],
-					["Water", 1, 0.1],
+					["Earth", 1, 80.1],
+					["Water", 1, 80.1],
 				],
 				out: [
-					["Water", 2, 1.1e11, 1e9, ["Water", 1e11]],
+					["Water", 2, 502],
 				],
-				upgrade: ["True Water Rift", "GolemWater", 3],
+				upgrade: ["True Water Rift", "Void", 0.1, "GolemWater", 8],
 			},
 			"True Water Rift":
 			{
-				baseStats: [1, 1.8, false, true],
+				baseStats: [1, 1.4, false, true],
 				in: [
 					["Water", 1, 1]
 				],
 				out: [
-					["Water", 1, 1e300],
+					["Water", 1, 12000],
 				],
 			},
-			"Catalized Earth Conversion":
+			"Catalized Water Conversion":
 			{
-				baseStats: [1, 2, true, true],
+				baseStats: [1, 1.2, true, true],
 				in: [
-					["Earth", 1, 1e20],
-					["Water", 1, 1e20],
+					["Earth", 1, 500],
+					["Water", 1, 500],
 					["Mud", 0, 2],
 					["Ice", 0, 2],
 					["Steam", 0, 2],
 				],
 				out: [
-					["Water", 2, 1.1e51, 1e49, ["Void", 100]],
+					["Water", 2, 12000, 4, ["Ice", 10]],
 				],
 				lock: ["Mud", 2, "Ice", 2, "Steam", 2],
-				upgrade: ["Stable Water Rift", "GolemWater", 8],
+				upgrade: ["Stable Water Rift", "Void", 10, "GolemWater", 8],
 			},
 			"Stable Water Rift":
 			{
-				baseStats: [1, 3, false, true],
+				baseStats: [1, 1.8, false, true],
 				in: [
-					["Water", 1, 1e20],
-					["Alkahest", 0, 1],
+					["Water", 1, 500],
+					["Alkahest", 0, 0.1],
 				],
 				out: [
-					["Water", 1, 1e300],
+					["Water", 1, 52000],
 				],
 			},
 		}
 	},
 	"Pressure Chamber":
 	{
-		baseStats: [300, 200, "Air", 8],
+		baseStats: [-100, -100, "Air", 16],
 		recipes:
 		{
 			"Forcefull Air Conversion":
 			{
 				baseStats: [1, 0.25, true, true],
 				in: [
-					["Water", 1, 0.1],
+					["Water", 1, 0.4],
 				],
 				out: [
-					["Air", 1, 2],
+					["Air", 1, 1.2],
 				],
 				lock: ["Water", 4],
-				upgrade: ["Weak Air Rift", "Air", 8],
+				upgrade: ["Weak Air Rift", "Air", 5],
 			},
 			"Weak Air Rift":
 			{
-				baseStats: [1, 1, false, false],
+				baseStats: [1, 0.1, false, false],
 				in: [],
 				out: [
-					["Air", 0.1, 3e1],
+					["Air", 1, 12, 10, ["Air", 80]],
 				],
-				upgrade: ["Pure Air Rift", "Air", 1e50],
+				upgrade: ["Pure Air Rift", "Steam", 0.1, "Sand", 0.1],
 			},
 			"Pure Air Rift":
 			{
 				baseStats: [1, 1, false, false],
 				in: [],
 				out: [
-					["Air", 1e2, 1e300],
+					["Air", 2, 1200],
 				],
 			},
 			"Simple Air Conversion":
@@ -253,65 +253,64 @@ var simplifiedMachineData = {
 					["Fire", 1, 1.1],
 				],
 				out: [
-					["Air", 2, 11, 10, ["Air", 10]],
+					["Air", 2, 5.2, 4, ["Air", 10, "GolemAir", 1]],
 				],
 				lock: ["Fire", 1],
-				upgrade: ["Improved Air Conversion", "GolemAir", 1],
+				upgrade: ["Improved Air Conversion", "Air", 100],
 			},
 			"Improved Air Conversion":
 			{
-				baseStats: [1, 1.3, false, true],
+				baseStats: [1, 1.05, false, true],
 				in: [
-					["Water", 1, 0.1],
-					["Fire", 1, 0.1],
+					["Water", 1, 80.1],
+					["Fire", 1, 80.1],
 				],
 				out: [
-					["Air", 2, 1.1e11, 1e9, ["Air", 1e11]],
+					["Air", 2, 502],
 				],
-				upgrade: ["True Air Rift", "GolemAir", 3],
+				upgrade: ["True Air Rift", "Void", 0.1, "GolemAir", 8],
 			},
 			"True Air Rift":
 			{
-				baseStats: [1, 1.8, false, true],
+				baseStats: [1, 1.4, false, true],
 				in: [
 					["Air", 1, 1]
 				],
 				out: [
-					["Air", 1, 1e300],
+					["Air", 1, 12000],
 				],
 			},
 			"Catalized Air Conversion":
 			{
-				baseStats: [1, 2, true, true],
+				baseStats: [1, 1.2, true, true],
 				in: [
-					["Water", 1, 1e20],
-					["Fire", 1, 1e20],
-					["Ice", 0, 2],
+					["Water", 1, 500],
+					["Fire", 1, 500],
+					["Steam", 0, 2],
 					["Sand", 0, 2],
-					["Void", 0, 2],
 				],
 				out: [
-					["Air", 2, 1.1e51, 1e49, ["Void", 100]],
+					["Air", 2, 12000, 4, ["Steam", 10]],
 				],
-				lock: ["Ice", 2, "Sand", 2, "Void", 2],
-				upgrade: ["Stable Air Rift", "GolemAir", 8],
+				lock: ["Steam", 2, "Sand", 2],
+				upgrade: ["Stable Air Rift", "Void", 10, "GolemAir", 8],
 			},
 			"Stable Air Rift":
 			{
-				baseStats: [1, 3, false, true],
+				baseStats: [1, 1.8, false, true],
 				in: [
-					["Air", 1, 1e20],
-					["Alkahest", 0, 1],
+					["Air", 1, 500],
+					["Alkahest", 0, 0.1],
 				],
 				out: [
-					["Air", 1, 1e300],
+					["Air", 1, 52000],
 				],
 			},
 		}
 	},
 	"Incinerator":
 	{
-		baseStats: [500, 200, "Fire", 8],
+		baseStats: [100, -100, "Fire", 16],
 		recipes:
 		{
 			"Forcefull Fire Conversion":
@@ -321,26 +320,26 @@ var simplifiedMachineData = {
 					["Air", 1, 0.1],
 				],
 				out: [
-					["Fire", 1, 2],
+					["Fire", 1, 1.2],
 				],
 				lock: ["Air", 1],
-				upgrade: ["Weak Fire Rift", "Fire", 8],
+				upgrade: ["Weak Fire Rift", "Fire", 5],
 			},
 			"Weak Fire Rift":
 			{
-				baseStats: [1, 1, false, false],
+				baseStats: [1, 0.1, false, false],
 				in: [],
 				out: [
-					["Fire", 0.1, 3e1],
+					["Fire", 1, 12, 10, ["Fire", 80]],
 				],
-				upgrade: ["Pure Fire Rift", "Fire", 1e50],
+				upgrade: ["Pure Fire Rift", "Steam", 0.1, "Magma", 0.1],
 			},
 			"Pure Fire Rift":
 			{
 				baseStats: [1, 1, false, false],
 				in: [],
 				out: [
-					["Fire", 1e2, 1e300],
+					["Fire", 2, 1200],
 				],
 			},
 			"Simple Fire Conversion":
@@ -351,129 +350,127 @@ var simplifiedMachineData = {
 					["Fire", 1, 1.1],
 				],
 				out: [
-					["Fire", 2, 11, 10, ["Fire", 10]],
+					["Fire", 2, 5.2, 4, ["Fire", 10, "GolemFire", 1]],
 				],
 				lock: ["Fire", 1],
-				upgrade: ["Improved Fire Conversion", "GolemFire", 1],
+				upgrade: ["Improved Fire Conversion", "Fire", 100],
 			},
 			"Improved Fire Conversion":
 			{
-				baseStats: [2, 1.3, false, true],
+				baseStats: [2, 1.05, false, true],
 				in: [
-					["Air", 1, 0.1],
-					["Fire", 1, 0.1],
+					["Air", 1, 80.1],
+					["Fire", 1, 80.1],
 				],
 				out: [
-					["Fire", 2, 1.1e11, 1e9, ["Fire", 1e11]],
+					["Fire", 2, 502],
 				],
-				upgrade: ["True Fire Rift", "GolemFire", 3],
+				upgrade: ["True Fire Rift", "Void", 0.1, "GolemFire", 8],
 			},
 			"True Fire Rift":
 			{
-				baseStats: [1, 1.8, false, true],
+				baseStats: [1, 1.4, false, true],
 				in: [
 					["Fire", 1, 1]
 				],
 				out: [
-					["Fire", 1, 1e300],
+					["Fire", 1, 12000],
 				],
 			},
 			"Catalized Fire Conversion":
 			{
-				baseStats: [1, 2, true, true],
+				baseStats: [2, 1.2, true, true],
 				in: [
-					["Air", 1, 1e20],
-					["Fire", 1, 1e20],
-					["Magma", 0, 2],
+					["Air", 1, 500],
+					["Fire", 1, 500],
 					["Steam", 0, 2],
-					["Void", 0, 2],
+					["Magma", 0, 2],
 				],
 				out: [
-					["Fire", 2, 1.1e51, 1e49, ["Void", 100]],
+					["Fire", 2, 12000, 4, ["Magma", 10]],
 				],
-				lock: ["Magma", 2, "Steam", 2, "Void", 2],
-				upgrade: ["Stable Fire Rift", "GolemFire", 8],
+				lock: ["Steam", 2, "Magma", 2],
+				upgrade: ["Stable Fire Rift", "Void", 10, "GolemFire", 8],
 			},
 			"Stable Fire Rift":
 			{
-				baseStats: [1, 3, false, true],
+				baseStats: [1, 1.8, false, true],
 				in: [
-					["Fire", 1, 1e20],
-					["Alkahest", 0, 1],
+					["Fire", 1, 500],
+					["Alkahest", 0, 0.1],
 				],
 				out: [
-					["Fire", 1, 1e300],
+					["Fire", 1, 52000],
 				],
 			},
 		}
 	},
 	"Golem Infuser":
 	{
-		baseStats: [200, 600],
+		baseStats: [-200, 300],
 		recipes:
 		{
 			"Earth Orb Infusion":
 			{
 				baseStats: [1, 1, true, false],
 				in: [
-					["Earth", 1e2, 1e2],
+					["Earth", 20, 20],
 				],
 				out: [
 					["GolemEarth", 1, 1],
 				],
-				lock: ["Earth", 1.1e2, "Water", 1.1e2, "Air", 1.1e2, "Fire", 1.1e2],
-				upgrade: ["Earth Golem Infusion", "Earth", 1e10],
+				lock: ["Earth", 19, "Water", 14, "Air", 14, "Fire", 14],
+				upgrade: ["Earth Golem Infusion", "Earth", 450],
 			},
 			"Earth Golem Infusion":
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Earth", 0.9e20, 1.1e20],
+					["Earth", 400, 400],
 				],
 				out: [
 					["GolemEarth", 1, 2],
 				],
-				upgrade: ["Earth Golem Creation", "Earth", 1e60],
+				upgrade: ["Earth Golem Creation", "Earth", 11000],
 			},
 			"Earth Golem Creation":
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Earth", 0.9e100, 1.1e100],
+					["Earth", 8000, 8000],
 				],
 				out: [
 					["GolemEarth", 2, 8],
 				],
-				//upgrade: ["Earth Golem", "Alkahest", 1],
 			},
 			"Water Orb Infusion":
 			{
 				baseStats: [1, 1, true, false],
 				in: [
-					["Water", 1e2, 1e2],
+					["Water", 20, 20],
 				],
 				out: [
 					["GolemWater", 1, 1],
 				],
-				lock: ["Earth", 1.1e2, "Water", 1.1e2, "Air", 1.1e2, "Fire", 1.1e2],
-				upgrade: ["Water Golem Infusion", "Water", 1e10],
+				lock: ["Earth", 14, "Water", 19, "Air", 14, "Fire", 14],
+				upgrade: ["Water Golem Infusion", "Water", 450],
 			},
 			"Water Golem Infusion":
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Water", 0.9e20, 1.1e20],
+					["Water", 400, 400],
 				],
 				out: [
 					["GolemWater", 1, 2],
 				],
-				upgrade: ["Water Golem Creation", "Water", 1e60],
+				upgrade: ["Water Golem Creation", "Water", 11000],
 			},
 			"Water Golem Creation":
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Water", 0.9e100, 1.1e100],
+					["Water", 8000, 8000],
 				],
 				out: [
 					["GolemWater", 2, 8],
@@ -484,75 +481,73 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 1, true, false],
 				in: [
-					["Air", 1e2, 1e2],
+					["Air", 20, 20],
 				],
 				out: [
 					["GolemAir", 1, 1],
 				],
-				lock: ["Earth", 1.1e2, "Water", 1.1e2, "Air", 1.1e2, "Fire", 1.1e2],
-				upgrade: ["Air Golem Infusion", "Air", 1e10],
+				lock: ["Earth", 14, "Water", 14, "Air", 19, "Fire", 14],
+				upgrade: ["Air Golem Infusion", "Air", 450],
 			},
 			"Air Golem Infusion":
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Air", 0.9e20, 1.1e20],
+					["Air", 400, 400],
 				],
 				out: [
 					["GolemAir", 1, 2],
 				],
-				upgrade: ["Air Golem Creation", "Air", 1e60],
+				upgrade: ["Air Golem Creation", "Air", 11000],
 			},
 			"Air Golem Creation":
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Air", 0.9e100, 1.1e100],
+					["Air", 8000, 8000],
 				],
 				out: [
 					["GolemAir", 2, 8],
 				],
-				//upgrade: ["Air Golem", "Alkahest", 1],
 			},
 			"Fire Orb Infusion":
 			{
 				baseStats: [1, 1, true, false],
 				in: [
-					["Fire", 1e2, 1e2],
+					["Fire", 20, 20],
 				],
 				out: [
 					["GolemFire", 1, 1],
 				],
-				lock: ["Earth", 1.1e2, "Water", 1.1e2, "Air", 1.1e2, "Fire", 1.1e2],
-				upgrade: ["Fire Golem Infusion", "Fire", 1e10],
+				lock: ["Earth", 14, "Water", 14, "Air", 14, "Fire", 19],
+				upgrade: ["Fire Golem Infusion", "Fire", 450],
 			},
 			"Fire Golem Infusion":
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Fire", 0.9e20, 1.1e20],
+					["Fire", 400, 400],
 				],
 				out: [
 					["GolemFire", 1, 2],
 				],
-				upgrade: ["Fire Golem Creation", "Fire", 1e60],
+				upgrade: ["Fire Golem Creation", "Fire", 11000],
 			},
 			"Fire Golem Creation":
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Fire", 0.9e100, 1.1e100],
+					["Fire", 8000, 8000],
 				],
 				out: [
 					["GolemFire", 2, 8],
 				],
-				//upgrade: ["Fire Golem Creation", "Alkahest", 1],
 			},
 		}
 	},
 	"Golem Merger":
 	{
-		baseStats: [600, 600],
+		baseStats: [200, 300],
 		recipes:
 		{
 			"Merge : Traces of Mud":
@@ -566,33 +561,33 @@ var simplifiedMachineData = {
 					["Mud", 1, 0.1],
 				],
 				lock: ["GolemEarth", 2, "GolemWater", 2],
-				upgrade: ["Simple Mud Extraction", "Mud", 0.1],
+				upgrade: ["Simple Mud Extraction", "Earth", 1000, "Water", 1000],
 			},
 			"Simple Mud Extraction":
 			{
-				baseStats: [1, 1, false, false],
+				baseStats: [1, 0.08, false, false],
 				in: [
 					["GolemEarth", 1, 1],
 					["GolemWater", 1, 1],
-					["Earth", 1e10, 1e10],
-					["Water", 1e10, 1e10],
+					["Earth", 700, 900],
+					["Water", 700, 900],
 				],
 				out: [
-					["Mud", 0.4, 1.5],
+					["Mud", 1, 1.2, 4, ["GolemWater", 3]],
 				],
-				upgrade: ["Intermediete Mud Extraction", "Mud", 2],
+				upgrade: ["Intermediete Mud Extraction", "Void", 0.1],
 			},
 			"Intermediete Mud Extraction":
 			{
-				baseStats: [1, 1, false, false],
+				baseStats: [1, 3.5, false, false],
 				in: [
-					["GolemEarth", 2, 2],
-					["GolemWater", 2, 2],
-					["Earth", 1e20, 1e20],
-					["Water", 1e20, 1e20],
+					["GolemEarth", 1, 5],
+					["GolemWater", 1, 5],
+					["Earth", 7000, 40000],
+					["Water", 7000, 40000],
 				],
 				out: [
-					["Mud", 1.2, 100],
+					["Mud", 1, 102],
 				],
 			},
 
@@ -648,7 +643,7 @@ var simplifiedMachineData = {
 	},
 	"Aggregator":
 	{
-		baseStats: [400, 550, "Mud"],
+		baseStats: [0, 250, "Mud"],
 		recipes:
 		{
 
@@ -656,7 +651,7 @@ var simplifiedMachineData = {
 	},
 	"Polar Vortex":
 	{
-		baseStats: [150, 350, "Ice"],
+		baseStats: [-250, 50, "Ice"],
 		recipes:
 		{
 
@@ -664,7 +659,7 @@ var simplifiedMachineData = {
 	},
 	"Combustion Engine":
 	{
-		baseStats: [250, 100, "Steam"],
+		baseStats: [-150, -200, "Steam"],
 		recipes:
 		{
 
@@ -672,7 +667,7 @@ var simplifiedMachineData = {
 	},
 	"Volcano":
 	{
-		baseStats: [650, 350, "Magma"],
+		baseStats: [250, 50, "Magma"],
 		recipes:
 		{
 
@@ -680,7 +675,7 @@ var simplifiedMachineData = {
 	},
 	"Pulverizer":
 	{
-		baseStats: [550, 100, "Sand"],
+		baseStats: [150, -200, "Sand"],
 		recipes:
 		{
 
@@ -688,7 +683,7 @@ var simplifiedMachineData = {
 	},
 	"Orb of Emptiness":
 	{
-		baseStats: [400, 150, "Void"],
+		baseStats: [0, -150, "Void"],
 		recipes:
 		{
 
@@ -696,7 +691,7 @@ var simplifiedMachineData = {
 	},
 	"Nexus of Unification":
 	{
-		baseStats: [400, 300, "Void"],
+		baseStats: [0, 0, "Alkahest"],
 		recipes:
 		{
 
@@ -791,7 +786,7 @@ function prepareTemplatedMachineData()
 					{
 						for (var j = 0; j < simplifiedIngredient[4].length; j += 2)
 						{
-							preparedIngredient.upgrades[j] = {
+							preparedIngredient.upgrades[j / 2] = {
 								costs: [
 								{
 									type: simplifiedIngredient[4][j],
@@ -832,7 +827,7 @@ function prepareTemplatedMachineData()
 					{
 						for (var j = 0; j < simplifiedIngredient[4].length; j += 2)
 						{
-							preparedIngredient.upgrades[j] = {
+							preparedIngredient.upgrades[j / 2] = {
 								costs: [
 								{
 									type: simplifiedIngredient[4][j],
@@ -866,8 +861,7 @@ function prepareTemplatedMachineData()
 		}
 		templateData[title] = preparedData;
 	}
-
-	var canvas = document.getElementById("canvasMain");
-	canvas.value = JSON.stringify(templateData);
+	return templateData;
 }
-prepareTemplatedMachineData();
+//var canvas = document.getElementById("canvasMain");
+//canvas.value = JSON.stringify(prepareTemplatedMachineData());
