@@ -22,7 +22,8 @@ var borderGlowTicks = 0;
 
 function draw()
 {
-	borderGlowRadius = 6 + Math.abs(borderGlowTicks++ % 60 / 60 - 0.5) * 8;
+	borderGlowRadius = 4; //
+	ctxActive.shadowColor = "rgba(255,0,255," + Math.max(0, Math.abs(borderGlowTicks++ % 200 / 199 - 0.5) * 2.5 - 0.25) + ")";
 
 	ctxActive.resetTransform();
 	ctxActive.clearRect(0, 0, 800, 800);
@@ -33,7 +34,7 @@ function draw()
 	ctxActive.strokeStyle = "#686868";
 	ctxActive.lineWidth = 2;
 	ctxActive.fillStyle = "#101010";
-	ctxActive.shadowColor = "#FFFFFF";
+	//ctxActive.shadowColor = "#FF0FFF";
 	ctxActive.shadowBlur = 0;
 
 	for (var i = panes.list.length - 1; i >= 0; i--)

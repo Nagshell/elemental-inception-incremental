@@ -31,10 +31,18 @@ var panes = {
 			}
 			return;
 		}
-		if (event.type == "mouseup" && panes.dragndrop)
+		if (event.type == "mouseup")
 		{
-			panes.dragndrop = null;
-			return;
+			if (panes.dragndrop)
+			{
+				panes.dragndrop = null;
+				return;
+			}
+			if (machines.drag)
+			{
+				machines.drag.drag = false;
+				machines.drag = null;
+			}
 		}
 		if (event.target.id !== "canvasMain")
 			return;

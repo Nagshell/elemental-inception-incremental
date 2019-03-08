@@ -103,7 +103,37 @@ var machines = {
 
 	machineTick: function ()
 	{
-
+		if (this.displayElement)
+		{
+			if (data.oElements[this.displayElement].amount > 1e127)
+			{
+				this.displayStep = Math.min(0.125, this.displayStep);
+			}
+			else if (data.oElements[this.displayElement].amount > 1e63)
+			{
+				this.displayStep = Math.min(0.25, this.displayStep);
+			}
+			else if (data.oElements[this.displayElement].amount > 1e31)
+			{
+				this.displayStep = Math.min(0.5, this.displayStep);
+			}
+			else if (data.oElements[this.displayElement].amount > 1e15)
+			{
+				this.displayStep = Math.min(1, this.displayStep);
+			}
+			else if (data.oElements[this.displayElement].amount > 1e7)
+			{
+				this.displayStep = Math.min(2, this.displayStep);
+			}
+			else if (data.oElements[this.displayElement].amount > 1e3)
+			{
+				this.displayStep = Math.min(4, this.displayStep);
+			}
+			else if (data.oElements[this.displayElement].amount > 1e1)
+			{
+				this.displayStep = Math.min(8, this.displayStep);
+			}
+		}
 		for (var i = 0; i < this.recipes.length; i++)
 		{
 			var temp = this.recipes[i];
@@ -134,7 +164,7 @@ var machines = {
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
-					if (data.oElements[temp.outputs[j].type].amount > temp.outputs[j].max)
+					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max)
 					{
 						state = "full";
 						temp.outputs[j].pieChart.push("full");
@@ -155,7 +185,10 @@ var machines = {
 				{
 					for (var j = 0; j < temp.inputs.length; j++)
 					{
-						amount = Math.min(amount, data.oElements[temp.inputs[j].type].amount / temp.inputs[j].ratio);
+						if (temp.inputs[j].ratio)
+						{
+							amount = Math.min(amount, data.oElements[temp.inputs[j].type].amount / temp.inputs[j].ratio);
+						}
 					}
 					amount /= 100;
 					amount *= temp.productionRate;
@@ -498,7 +531,18 @@ var machines = {
 			ctx.restore();
 			var temp = this.recipe.inputs[i];
 			ctx.fillText(temp.type, 36, y);
-			drawNumber(ctx, temp.ratio, 120, y, "fixed");
+			if (temp.ratio > 1e3)
+			{
+				drawNumber(ctx, temp.ratio, 153, y, "exp", "right");
+			}
+			else if (temp.ratio == Math.trunc(temp.ratio))
+			{
+				drawNumber(ctx, temp.ratio, 153, y, "", "right");
+			}
+			else
+			{
+				drawNumber(ctx, temp.ratio, 153, y, "fixed", "right");
+			}
 			y += 17;
 			drawNumber(ctx, data.oElements[temp.type].amount, 36, y, elementalDisplayType[temp.type]);
 			ctx.fillText("/", 95, y);
@@ -551,7 +595,18 @@ var machines = {
 			ctx.restore();
 			var temp = this.recipe.outputs[i];
 			ctx.fillText(temp.type, 36, y);
-			drawNumber(ctx, temp.ratio * this.recipe.efficiency, 120, y, "fixed");
+			if (temp.ratio * this.recipe.efficiency > 1e3)
+			{
+				drawNumber(ctx, temp.ratio * this.recipe.efficiency, 153, y, "exp", "right");
+			}
+			else if (temp.ratio * this.recipe.efficiency == Math.trunc(temp.ratio * this.recipe.efficiency))
+			{
+				drawNumber(ctx, temp.ratio * this.recipe.efficiency, 153, y, "", "right");
+			}
+			else
+			{
+				drawNumber(ctx, temp.ratio * this.recipe.efficiency, 153, y, "fixed", "right");
+			}
 			y += 17;
 			drawNumber(ctx, data.oElements[temp.type].amount, 36, y, elementalDisplayType[temp.type]);
 			ctx.fillText("/", 95, y);
@@ -603,7 +658,7 @@ var machines = {
 		{
 			if (this.target.upped && x <= 88)
 			{
-				this.target.slider = x / 44;
+				this.target.slider = Math.max(0, (x - 2)) / 43;
 				var newValue = this.target.sliderBase * Math.pow(this.target.sliderStep, (this.target.slider - 1) * this.target.upped);
 				if (this.target.min)
 				{
@@ -618,6 +673,7 @@ var machines = {
 		else if (type == "mousedown")
 		{
 			this.drag = true;
+			machines.drag = this;
 		}
 		else if (type == "mouseup")
 		{
@@ -674,11 +730,11 @@ function preprocessMachines()
 	machines.displayRegionPath = new Path2D();
 	machines.displayRegionPath.arc(0, 0, 32, 0, Math.PI * 2);
 	machines.displayPanePath = new Path2D();
-	machines.displayPanePath.rect(0, 0, 381, 493);
+	machines.displayPanePath.rect(0, 0, 400, 493);
 	machines.displayPanePathMin = new Path2D();
 	machines.displayPanePathMin.rect(0, 0, 200, 81);
 	machines.displayPanePathDemo = new Path2D();
-	machines.displayPanePathDemo.rect(0, 0, 312, 115);
+	machines.displayPanePathDemo.rect(0, 0, 362, 115);
 
 	var path = new Path2D();
 	path.rect(0, 0, 16, 16);
@@ -723,7 +779,7 @@ function preprocessMachines()
 		}
 	};
 	machines.recipeRegionPath = new Path2D();
-	machines.recipeRegionPath.rect(0, 0, 225, 16);
+	machines.recipeRegionPath.rect(0, 0, 275, 16);
 
 	machines.sliderRegionPath = new Path2D();
 	machines.sliderRegionPath.rect(0, 0, 105, 16);
@@ -741,10 +797,9 @@ function initMachine(title)
 	thisData.region = new cRegion(thisData.x, thisData.y);
 	thisData.region.machine = thisData;
 	thisData.region.mouseHandler = machines.displayRegionMouseHandler;
-	//thisData.region.boundaryPath = machines.displayRegionPath;
 	if (thisData.displayRegionCustomDraw)
 	{
-
+		thisData.region.customDraw = thisData.displayRegionCustomDraw;
 	}
 	else
 	{
@@ -764,10 +819,12 @@ function initMachine(title)
 	thisData.pane.subRegions.push(regionData.dragRegion);
 	thisData.pane.subRegions.push(regionData.minRegion);
 	thisData.pane.subRegions.push(regionData.hideRegion);
+	thisData.pane.subRegions.push(regionData.draggableTitleRegionShifted);
 	thisData.pane.subRegions.push(machines.machinePauseRegion);
 	thisData.pane.subRegionsMin.push(regionData.dragRegion);
 	thisData.pane.subRegionsMin.push(regionData.maxRegion);
 	thisData.pane.subRegionsMin.push(regionData.hideRegion);
+	thisData.pane.subRegionsMin.push(regionData.draggableTitleRegionShifted);
 	thisData.pane.subRegionsMin.push(machines.machinePauseRegionMin);
 	thisData.pane.title = title;
 	if (thisData.paneCustomDraw)
@@ -786,9 +843,10 @@ function initMachine(title)
 	thisData.pane.recipeSelectorPane = new cPane(thisData.pane, 87, 17);
 	thisData.pane.recipeSelectorPane.title = "Recipes";
 	thisData.pane.recipeSelectorPane.boundaryPath = new Path2D();
-	thisData.pane.recipeSelectorPane.boundaryPath.rect(0, 0, 225, 16 + 17 * thisData.recipes.length);
+	thisData.pane.recipeSelectorPane.boundaryPath.rect(0, 0, 275, 16 + 17 * thisData.recipes.length);
 	thisData.pane.recipeSelectorPane.subRegions.push(regionData.dragRegion);
 	thisData.pane.recipeSelectorPane.subRegions.push(regionData.hideRegion);
+	thisData.pane.recipeSelectorPane.subRegions.push(regionData.draggableTitleRegion);
 	regionData.hideRegion.action(thisData.pane.recipeSelectorPane);
 
 	for (var i = thisData.recipes.length - 1; i >= 0; i--)
@@ -805,16 +863,18 @@ function initMachine(title)
 		recipeRegion.paymentSuccess = machines.recipeRegionPaymentSuccess;
 		recipeRegion.customDraw = machines.recipeRegionDraw;
 
-		var recipePane = new cPane(thisData.pane, 191 - 17 * i, 0 * 116 + 17 + 17 * i);
+		var recipePane = new cPane(thisData.pane, 104 - 17 * i, 51 + 17 * i);
 		thisRecipe.pane = recipePane;
 		recipePane.title = thisRecipe.title;
 		recipePane.recipe = thisRecipe;
 		recipePane.boundaryPath = new Path2D();
 		var nL = 84 + 56 * thisRecipe.inputs.length + 56 * thisRecipe.outputs.length;
-		recipePane.boundaryPath.rect(0, 0, 190, nL);
+		recipePane.boundaryPath.rect(0, 0, 275, nL);
 
 		recipePane.subRegions.push(regionData.dragRegion);
 		recipePane.subRegions.push(regionData.hideRegion);
+		recipePane.subRegions.push(regionData.draggableTitleRegion);
+
 		recipePane.customDraw = machines.recipePaneDraw;
 
 		recipeRegion.pane = recipePane;
@@ -875,6 +935,7 @@ function initMachine(title)
 
 		recipePane.subRegions.push(regionData.dragRegion);
 		recipePane.subRegions.push(regionData.hideRegion);
+		recipePane.subRegions.push(regionData.draggableTitleRegion);
 		recipePane.customDraw = machines.recipePaneDraw;
 		regionData.hideRegion.action(recipePane);
 

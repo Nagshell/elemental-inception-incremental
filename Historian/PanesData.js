@@ -111,9 +111,33 @@ function preprocessRegionData()
 		}
 	}
 
+	regionData.draggableTitleRegion = new cRegion(34, 0);
+	path = new Path2D();
+	path.rect(0, 0, 400, 16);
+	regionData.draggableTitleRegion.boundaryPath = path;
+	regionData.draggableTitleRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mousedown")
+		{
+			panes.dragndrop = pane;
+		}
+	}
+	regionData.draggableTitleRegion.customDraw = function (ctx, pane)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.textAlign = "left";
+		ctx.fillText(pane.title, 5, 8);
+		ctx.restore();
+	}
+	regionData.draggableTitleRegionShifted = new cRegion(51, 0);
+	regionData.draggableTitleRegionShifted.boundaryPath = path;
+	regionData.draggableTitleRegionShifted.mouseHandler = regionData.draggableTitleRegion.mouseHandler
+	regionData.draggableTitleRegionShifted.customDraw = regionData.draggableTitleRegion.customDraw;
+
+	regionData.confirmRegion = new cRegion(17, 22);
 	path = new Path2D();
 	path.rect(0, 0, 55, 16);
-	regionData.confirmRegion = new cRegion(17, 22);
 	regionData.confirmRegion.boundaryPath = path;
 	regionData.confirmRegion.mouseHandler = function (pane, x, y, type)
 	{
@@ -156,9 +180,9 @@ function preprocessRegionData()
 
 	}
 
+	regionData.cancelRegion = new cRegion(20, 44);
 	path = new Path2D();
 	path.rect(0, 0, 49, 16);
-	regionData.cancelRegion = new cRegion(20, 44);
 	regionData.cancelRegion.addImage("buttonCancel");
 	regionData.cancelRegion.boundaryPath = path;
 	regionData.cancelRegion.mouseHandler = function (pane, x, y, type)
@@ -201,6 +225,7 @@ path = new Path2D();
 path.rect(0, 0, 306, 83);
 var paymentPane = new cPane(mainPane, 300, 0);
 paymentPane.boundaryPath = path;
+paymentPane.subRegions.push(regionData.hideRegion);
 paymentPane.subRegions.push(regionData.confirmRegion);
 paymentPane.subRegions.push(regionData.cancelRegion);
 paymentPane.subRegions.push(regionData.dragRegion);

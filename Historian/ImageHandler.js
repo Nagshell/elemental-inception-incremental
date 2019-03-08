@@ -32,6 +32,7 @@ function preprocessImages()
 		"iconGolemWater",
 		"iconGolemAir",
 		"iconGolemFire",
+		"iconMergerDisplay",
 		"buttonConfirm",
 		"buttonConfirmCrossed",
 		"buttonCancel",

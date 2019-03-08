@@ -137,7 +137,7 @@ function particle(x, y, target, size, ticks)
 	this.y = y + (Math.random() - 0.5) * 25;
 	this.size = 0.5 + size;
 	this.lifespan = ticks;
-	this.v = 0.3;
+	this.v = 0.8;
 	this.target = target;
 }
 var particleTemporaryAngle;
@@ -166,8 +166,8 @@ particle.prototype.tick = function ()
 			//this.x += this.v;
 		}
 	}
-	this.x += (Math.random() - 0.5) * 0.6;
-	this.y += (Math.random() - 0.5) * 0.6;
+	this.x += (Math.random() - 0.5) * 1.1;
+	this.y += (Math.random() - 0.5) * 1.1;
 	this.lifespan--;
 };
 
