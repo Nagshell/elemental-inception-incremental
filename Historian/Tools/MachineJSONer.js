@@ -740,7 +740,7 @@ var simplifiedMachineData = {
 					["Mud", 1,2.2],
 				],
 				lock : ["Mud",1,"Water",1000,"Fire",1000],
-				upgrade : ["Loseless Mud Conversion","Water",24000,"Earth",24000],
+				upgrade : ["Gainfull Mud Conversion","Water",24000,"Earth",24000],
 			},
 			"Gainfull Mud Conversion" : 
 			{
