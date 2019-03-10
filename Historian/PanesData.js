@@ -228,10 +228,11 @@ mainPane.customDraw = function (ctx)
 	var x = -this.centerX + canvas.width / 2;
 	var y = -this.centerY + canvas.height / 2 - 100;
 	ctx.save();
+	ctx.globalAlpha = Math.max(0, Math.abs(borderGlowTicks % 200 / 199 - 0.5) * 2.5 - 0.25)*0.75;
 	ctx.lineWidth = 0.4;
-	ctx.shadowBlur = 20;
-	ctx.strokeStyle = "#000000";
-	ctx.shadowColor = "#300030";
+	ctx.shadowBlur = Math.max(0, Math.abs(borderGlowTicks % 200 / 199 - 0.5) * 2.5 - 0.25)*8;
+	ctx.strokeStyle = "#FFFFFF";
+	ctx.shadowColor = "#AF00AF";
 	ctx.beginPath();
 	ctx.moveTo(x, y);
 	var noGlow = true;
@@ -244,7 +245,7 @@ mainPane.customDraw = function (ctx)
 			noGlow = false;
 		}
 	}
-	if (noGlow && x * x + y * y > 90000)
+	if (noGlow && x * x + y * y > 10000*data.elementsKnown*data.elementsKnown)
 	{
 		ctx.lineTo(0, 0);
 		ctx.moveTo(x, y);
@@ -287,7 +288,7 @@ paymentPane.customDraw = function (ctx)
 	{
 		for (var i = 0; i < this.costs.length; i++)
 		{
-			if (data.oElements[this.costs[i].type].amount > 0)
+			if (data.oElements[this.costs[i].type].known)
 			{
 				ctx.fillText(this.costs[i].type, 120, 8);
 				drawNumber(ctx, data.oElements[this.costs[i].type].amount, 220, 8, elementalDisplayType[this.costs[i].type], "right");

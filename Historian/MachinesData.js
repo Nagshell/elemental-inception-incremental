@@ -119,6 +119,20 @@ function preprocessMachinesData()
 			this.machine.region.customDraw(ctx);
 			ctx.restore();
 			this.regularDraw(ctx);
+			ctx.save();
+			ctx.fillStyle = ctx.strokeStyle;
+			ctx.fillText("E",175,25);
+			drawNumber(ctx,data.oElements.GolemEarth.amount,185,25);
+			ctx.fillText("W",175,42);
+			drawNumber(ctx,data.oElements.GolemWater.amount,185,42);
+			ctx.fillText("A",175,59);
+			drawNumber(ctx,data.oElements.GolemAir.amount,185,59);
+			ctx.fillText("F",175,76);
+			drawNumber(ctx,data.oElements.GolemFire.amount,185,76);
+			
+			ctx.restore();
+			
+			
 		}
 	}
 }

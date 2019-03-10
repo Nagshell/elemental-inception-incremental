@@ -46,7 +46,7 @@ var simplifiedMachineData = {
 				baseStats: [1, 1, false, false],
 				in: [],
 				out: [
-					["Earth", 2, 1200],
+					["Earth", 10, 1200,9,["GolemEarth",5]],
 				],
 			},
 			"Simple Earth Conversion":
@@ -90,15 +90,14 @@ var simplifiedMachineData = {
 				in: [
 					["Earth", 1, 500],
 					["Fire", 1, 500],
-					["Mud", 0, 2],
-					["Magma", 0, 2],
-					["Sand", 0, 2],
+					["Mud", 0, 1.5],
+					["Magma", 0, 1.5],
 				],
 				out: [
 					["Earth", 2, 12000, 4, ["Mud", 10]],
 				],
-				lock: ["Mud", 2, "Magma", 2, "Sand", 2],
-				upgrade: ["Stable Earth Rift", "Void", 10, "GolemEarth", 8],
+				lock: ["Mud", 1.5, "Magma", 1.5],
+				upgrade: ["Stable Earth Rift", "Void", 80, "GolemEarth", 8],
 			},
 			"Stable Earth Rift":
 			{
@@ -144,7 +143,7 @@ var simplifiedMachineData = {
 				baseStats: [1, 1, false, false],
 				in: [],
 				out: [
-					["Water", 2, 1200],
+					["Water", 10, 1200,9,["GolemWater",5]],
 				],
 			},
 			"Simple Water Conversion":
@@ -188,15 +187,15 @@ var simplifiedMachineData = {
 				in: [
 					["Earth", 1, 500],
 					["Water", 1, 500],
-					["Mud", 0, 2],
-					["Ice", 0, 2],
-					["Steam", 0, 2],
+					["Mud", 0, 1.5],
+					["Ice", 0, 1.5],
+					["Steam", 0, 1.5],
 				],
 				out: [
 					["Water", 2, 12000, 4, ["Ice", 10]],
 				],
-				lock: ["Mud", 2, "Ice", 2, "Steam", 2],
-				upgrade: ["Stable Water Rift", "Void", 10, "GolemWater", 8],
+				lock: ["Mud", 1.5, "Ice", 1.5, "Steam", 1.5],
+				upgrade: ["Stable Water Rift", "Void", 80, "GolemWater", 8],
 			},
 			"Stable Water Rift":
 			{
@@ -242,7 +241,7 @@ var simplifiedMachineData = {
 				baseStats: [1, 1, false, false],
 				in: [],
 				out: [
-					["Air", 2, 1200],
+					["Air", 10, 1200,9,["GolemAir",5]],
 				],
 			},
 			"Simple Air Conversion":
@@ -286,14 +285,14 @@ var simplifiedMachineData = {
 				in: [
 					["Water", 1, 500],
 					["Fire", 1, 500],
-					["Steam", 0, 2],
-					["Sand", 0, 2],
+					["Steam", 0, 1.5],
+					["Sand", 0, 0.2],
 				],
 				out: [
 					["Air", 2, 12000, 4, ["Steam", 10]],
 				],
-				lock: ["Steam", 2, "Sand", 2],
-				upgrade: ["Stable Air Rift", "Void", 10, "GolemAir", 8],
+				lock: ["Steam", 1.5, "Sand", 0.2],
+				upgrade: ["Stable Air Rift", "Void", 80, "GolemAir", 8],
 			},
 			"Stable Air Rift":
 			{
@@ -339,7 +338,7 @@ var simplifiedMachineData = {
 				baseStats: [1, 1, false, false],
 				in: [],
 				out: [
-					["Fire", 2, 1200],
+					["Fire", 10, 1200,9,["GolemFire",5]],
 				],
 			},
 			"Simple Fire Conversion":
@@ -383,14 +382,14 @@ var simplifiedMachineData = {
 				in: [
 					["Air", 1, 500],
 					["Fire", 1, 500],
-					["Steam", 0, 2],
-					["Magma", 0, 2],
+					["Steam", 0, 1.5],
+					["Magma", 0, 1.5],
 				],
 				out: [
 					["Fire", 2, 12000, 4, ["Magma", 10]],
 				],
-				lock: ["Steam", 2, "Magma", 2],
-				upgrade: ["Stable Fire Rift", "Void", 10, "GolemFire", 8],
+				lock: ["Steam", 1.5, "Magma", 1.5],
+				upgrade: ["Stable Fire Rift", "Void", 80, "GolemFire", 8],
 			},
 			"Stable Fire Rift":
 			{
@@ -426,7 +425,7 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Earth", 400, 400],
+					["Earth", 400, 480],
 				],
 				out: [
 					["GolemEarth", 1, 2],
@@ -437,10 +436,10 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Earth", 8000, 8000],
+					["Earth", 8000, 9000],
 				],
 				out: [
-					["GolemEarth", 2, 8],
+					["GolemEarth", 5, 14],
 				],
 			},
 			"Water Orb Infusion":
@@ -459,7 +458,7 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Water", 400, 400],
+					["Water", 400, 480],
 				],
 				out: [
 					["GolemWater", 1, 2],
@@ -470,12 +469,11 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Water", 8000, 8000],
+					["Water", 8000, 9000],
 				],
 				out: [
-					["GolemWater", 2, 8],
+					["GolemWater", 5, 14],
 				],
-				//upgrade: ["Water Golem", "Alkahest", 1],
 			},
 			"Air Orb Infusion":
 			{
@@ -493,7 +491,7 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Air", 400, 400],
+					["Air", 400, 480],
 				],
 				out: [
 					["GolemAir", 1, 2],
@@ -504,10 +502,10 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Air", 8000, 8000],
+					["Air", 8000, 9000],
 				],
 				out: [
-					["GolemAir", 2, 8],
+					["GolemAir", 5, 14],
 				],
 			},
 			"Fire Orb Infusion":
@@ -526,7 +524,7 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Fire", 400, 400],
+					["Fire", 400, 480],
 				],
 				out: [
 					["GolemFire", 1, 2],
@@ -537,10 +535,10 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 1, false, false],
 				in: [
-					["Fire", 8000, 8000],
+					["Fire", 8000, 9000],
 				],
 				out: [
-					["GolemFire", 2, 8],
+					["GolemFire", 5, 14],
 				],
 			},
 		}
@@ -552,7 +550,7 @@ var simplifiedMachineData = {
 		{
 			"Merge : Traces of Mud":
 			{
-				baseStats: [1, 0.01, true, false],
+				baseStats: [1, 0.02, true, false],
 				in: [
 					["GolemEarth", 1, 1],
 					["GolemWater", 1, 1],
@@ -575,7 +573,7 @@ var simplifiedMachineData = {
 				out: [
 					["Mud", 1, 1.2, 4, ["GolemWater", 3]],
 				],
-				upgrade: ["Intermediete Mud Extraction", "Void", 0.1],
+				upgrade: ["Intermediete Mud Extraction", "Void", 0.01],
 			},
 			"Intermediete Mud Extraction":
 			{
@@ -593,7 +591,7 @@ var simplifiedMachineData = {
 
 			"Merge : Traces of Ice":
 			{
-				baseStats: [1, 0.008, true, false],
+				baseStats: [1, 0.016, true, false],
 				in: [
 					["GolemWater", 1, 1],
 					["GolemAir", 1, 1],
@@ -601,11 +599,39 @@ var simplifiedMachineData = {
 				out: [
 					["Ice", 1, 0.1],
 				],
-				lock: ["GolemWater", 2, "GolemAir", 2, "Mud", 0.3],
+				lock: ["GolemWater", 2, "GolemAir", 2, "Mud", 0.03],
+				upgrade: ["Simple Ice Extraction", "GolemAir", 3],
+			},
+			"Simple Ice Extraction":
+			{
+				baseStats: [1, 0.07, false, false],
+				in: [
+					["GolemAir", 1, 1],
+					["GolemWater", 1, 1],
+					["Air", 700, 900],
+					["Water", 700, 900],
+				],
+				out: [
+					["Ice", 1, 4.8, 3, ["GolemWater", 3]],
+				],
+				upgrade: ["Intermediete Ice Extraction", "Void", 0.01],
+			},
+			"Intermediete Ice Extraction":
+			{
+				baseStats: [1, 3.5, false, false],
+				in: [
+					["GolemAir", 1, 5],
+					["GolemWater", 1, 5],
+					["Air", 7000, 40000],
+					["Water", 7000, 40000],
+				],
+				out: [
+					["Ice", 1, 102],
+				],
 			},
 			"Merge : Traces of Steam":
 			{
-				baseStats: [1, 0.006, true, false],
+				baseStats: [1, 0.012, true, false],
 				in: [
 					["GolemWater", 1, 1],
 					["GolemFire", 1, 1],
@@ -614,10 +640,38 @@ var simplifiedMachineData = {
 					["Steam", 1, 0.1],
 				],
 				lock: ["GolemWater", 2, "GolemFire", 2, "Ice", 0.03],
+				upgrade: ["Simple Steam Extraction", "GolemFire", 3],
+			},
+			"Simple Steam Extraction":
+			{
+				baseStats: [1, 0.06, false, false],
+				in: [
+					["GolemFire", 1, 1],
+					["GolemWater", 1, 1],
+					["Fire", 700, 900],
+					["Water", 700, 900],
+				],
+				out: [
+					["Steam", 1, 4.8, 3, ["GolemWater", 3]],
+				],
+				upgrade: ["Intermediete Steam Extraction", "Void", 0.01],
+			},
+			"Intermediete Steam Extraction":
+			{
+				baseStats: [1, 3.5, false, false],
+				in: [
+					["GolemFire", 1, 5],
+					["GolemWater", 1, 5],
+					["Fire", 7000, 40000],
+					["Water", 7000, 40000],
+				],
+				out: [
+					["Steam", 1, 102],
+				],
 			},
 			"Merge : Traces of Magma":
 			{
-				baseStats: [1, 0.004, true, false],
+				baseStats: [1, 0.008, true, false],
 				in: [
 					["GolemEarth", 1, 1],
 					["GolemFire", 1, 1],
@@ -626,10 +680,38 @@ var simplifiedMachineData = {
 					["Magma", 1, 0.1],
 				],
 				lock: ["GolemEarth", 2, "GolemFire", 2, "Steam", 0.03],
+				upgrade: ["Simple Magma Extraction", "GolemFire", 3],
+			},
+			"Simple Magma Extraction":
+			{
+				baseStats: [1, 0.05, false, false],
+				in: [
+					["GolemFire", 1, 1],
+					["GolemEarth", 1, 1],
+					["Fire", 700, 900],
+					["Earth", 700, 900],
+				],
+				out: [
+					["Magma", 1, 4.8, 3, ["GolemEarth", 3]],
+				],
+				upgrade: ["Intermediete Magma Extraction", "Void", 0.01],
+			},
+			"Intermediete Magma Extraction":
+			{
+				baseStats: [1, 3.5, false, false],
+				in: [
+					["GolemFire", 1, 5],
+					["GolemEarth", 1, 5],
+					["Fire", 7000, 40000],
+					["Earth", 7000, 40000],
+				],
+				out: [
+					["Magma", 1, 102],
+				],
 			},
 			"Merge : Traces of Sand":
 			{
-				baseStats: [1, 0.002, true, false],
+				baseStats: [1, 0.006, true, false],
 				in: [
 					["GolemEarth", 1, 1],
 					["GolemAir", 1, 1],
@@ -646,7 +728,45 @@ var simplifiedMachineData = {
 		baseStats: [0, 250, "Mud"],
 		recipes:
 		{
-
+			"Forcefull Mud Conversion":
+			{
+				baseStats: [1, 0.75, true, true],
+				in: [
+					["Magma", 1, 0.09,20,["Mud",1.5]],
+					["Water", 1000, 900],
+					["Fire", 1000, 900],
+				],
+				out: [
+					["Mud", 1,2.2],
+				],
+				lock : ["Mud",1,"Water",1000,"Fire",1000],
+				upgrade : ["Loseless Mud Conversion","Water",24000,"Earth",24000],
+			},
+			"Gainfull Mud Conversion" : 
+			{
+				baseStats: [1, 1.05, false, true],
+				in: [
+					["Magma", 1, 0.1,18,["Mud",1.5]],
+					["Water", 1000, 10],
+				],
+				out: [
+					["Mud", 1,52,4,["Mud",60]],
+					["Fire", 1000, -40000],
+				],
+			},
+			"Basic Mud Assimilation":
+			{
+				baseStats: [1, 1.03, true, true],
+				in: [
+					["Mud", 1, 0.05],
+					["Earth", 500, 900],
+					["Water", 500, 900],
+				],
+				out: [
+					["Mud", 1,12],
+				],
+				lock : ["Mud",4,"Earth",1000,"Water",1000],
+			},
 		}
 	},
 	"Polar Vortex":
@@ -654,7 +774,45 @@ var simplifiedMachineData = {
 		baseStats: [-250, 50, "Ice"],
 		recipes:
 		{
-
+			"Forcefull Ice Conversion":
+			{
+				baseStats: [1, 0.75, true, true],
+				in: [
+					["Mud", 1, 0.05,35,["Ice",1.5]],
+					["Earth", 1000, 900],
+					["Air", 1000, 900],
+				],
+				out: [
+					["Ice", 1,2.2],
+				],
+				lock : ["Ice",1,"Earth",1000,"Air",1000],
+				upgrade : ["Loseless Ice Conversion","Air",24000,"Water",24000],
+			},
+			"Loseless Ice Conversion" : 
+			{
+				baseStats: [1, 1, false, true],
+				in: [
+					["Mud", 1, 0.1,18,["Ice",1.5]],
+					["Air", 1000, 10],
+				],
+				out: [
+					["Ice", 1,52,4,["Ice",60]],
+					["Earth", 1000, -40000],
+				],
+			},
+			"Basic Ice Assimilation":
+			{
+				baseStats: [1, 1.03, true, true],
+				in: [
+					["Ice", 1, 0.05],
+					["Air", 500, 900],
+					["Water", 500, 900],
+				],
+				out: [
+					["Ice", 1,1.2],
+				],
+				lock : ["Water",1000,"Air",1000],
+			},
 		}
 	},
 	"Combustion Engine":
@@ -662,7 +820,45 @@ var simplifiedMachineData = {
 		baseStats: [-150, -200, "Steam"],
 		recipes:
 		{
-
+			"Forcefull Steam Conversion":
+			{
+				baseStats: [1, 0.75, true, true],
+				in: [
+					["Ice", 1, 0.05,35,["Steam",1.5]],
+					["Air", 1000, 900],
+					["Fire", 1000, 900],
+				],
+				out: [
+					["Steam", 1,2.2],
+				],
+				lock : ["Steam",1,"Air",1000,"Fire",1000],
+				upgrade : ["Loseless Steam Conversion","Water",24000,"Fire",24000],
+			},
+			"Loseless Steam Conversion" : 
+			{
+				baseStats: [1, 1, false, true],
+				in: [
+					["Ice", 1, 0.1,18,["Steam",1.5]],
+					["Fire", 1000, 10],
+				],
+				out: [
+					["Steam", 1,52,4,["Steam",60]],
+					["Air", 1000, -40000],
+				],
+			},
+			"Basic Steam Assimilation":
+			{
+				baseStats: [1, 1.03, true, true],
+				in: [
+					["Steam", 1, 0.05],
+					["Water", 500, 900],
+					["Fire", 500, 900],
+				],
+				out: [
+					["Steam", 1,1.2],
+				],
+				lock : ["Water",1000,"Fire",1000],
+			},
 		}
 	},
 	"Volcano":
@@ -670,7 +866,45 @@ var simplifiedMachineData = {
 		baseStats: [250, 50, "Magma"],
 		recipes:
 		{
-
+			"Forcefull Magma Conversion":
+			{
+				baseStats: [1, 0.75, true, true],
+				in: [
+					["Steam", 1, 0.05,35,["Magma",1.5]],
+					["Water", 1000, 900],
+					["Earth", 1000, 900],
+				],
+				out: [
+					["Magma", 1,2.2],
+				],
+				lock : ["Magma",1,"Water",1000,"Earth",1000],
+				upgrade : ["Loseless Magma Conversion","Earth",24000,"Fire",24000],
+			},
+			"Loseless Magma Conversion" : 
+			{
+				baseStats: [1, 1, false, true],
+				in: [
+					["Steam", 1, 0.1,18,["Magma",1.5]],
+					["Earth", 1000, 10],
+				],
+				out: [
+					["Magma", 1,52,4,["Magma",60]],
+					["Water", 1000, -40000],
+				],
+			},
+			"Basic Magma Assimilation":
+			{
+				baseStats: [1, 1.03, true, true],
+				in: [
+					["Magma", 1, 0.05],
+					["Earth", 500, 900],
+					["Fire", 500, 900],
+				],
+				out: [
+					["Magma", 1,1.2],
+				],
+				lock : ["Earth",1000,"Fire",1000],
+			},
 		}
 	},
 	"Pulverizer":
@@ -678,7 +912,33 @@ var simplifiedMachineData = {
 		baseStats: [150, -200, "Sand"],
 		recipes:
 		{
-
+			"Forcefull Sand Conversion":
+			{
+				baseStats: [1, 0.45, true, true],
+				in: [
+					["Magma", 1, 0.05,35,["Sand",0.2]],
+					["Air", 1000, 900],
+					["Fire", 1000, 900],
+				],
+				out: [
+					["Sand", 1,2.2],
+				],
+				lock : ["Sand",0.09,"Mud",1.5,"Ice",1.5,"Steam",1.5,"Magma",1.5],
+				upgrade : ["Losefull Sand Conversion","Air",24000,"Fire",24000],
+			},
+			"Losefull Sand Conversion" : 
+			{
+				baseStats: [1, 0.15, false, true],
+				in: [
+					["Magma", 1, 0.1,18,["Sand",0.5]],
+					["Air", 1000, 10],
+					["Fire", 1000, 10],
+				],
+				out: [
+					["Sand", 1,52,4,["Magma",180]],
+					
+				],
+			},
 		}
 	},
 	"Orb of Emptiness":
@@ -686,7 +946,46 @@ var simplifiedMachineData = {
 		baseStats: [0, -150, "Void"],
 		recipes:
 		{
-
+			"Antitype Trace" : 
+			{
+				baseStats: [1, 0.01, true, true],
+				in: [
+					["Sand", 60, 45],
+					["Steam", 60, 45],
+				],
+				out: [
+					["Void", 1,0.1],
+					["Mud", 6000,-45],
+				],
+				lock:["Sand",3,"Steam",3],
+				upgrade:["Antitype Merge","Sand",60,"Steam",120],
+			},
+			"Antitype Merge" : 
+			{
+				baseStats: [1, 0.1, false, true],
+				in: [
+					["Sand", 60, 60],
+					["Steam", 60, 120],
+				],
+				out: [
+					["Void", 1,1.2],
+					["Mud", 600,-60],
+				],
+				upgrade:["Antitype Fusion","Alkahest",0.02],
+			},
+			"Antitype Fusion" : 
+			{
+				baseStats: [1, 1, false, true],
+				in: [
+					["Sand", 60, 60],
+					["Steam", 60, 60],
+				],
+				out: [
+					["Void", 1,102],
+					["Mud", 60,-60],
+				],
+				upgrade:["Antitype Fusion","Alkahest",0.02],
+			},
 		}
 	},
 	"Nexus of Unification":
@@ -694,7 +993,37 @@ var simplifiedMachineData = {
 		baseStats: [0, 0, "Alkahest"],
 		recipes:
 		{
-
+			"Universal Solvent":
+			{
+				baseStats: [1, 0.01, true, true],
+				in: [
+					["Void",1,1],
+					["Earth", 100000, 45000],
+					["Water", 100000, 45000],
+					["Air", 100000, 45000],
+					["Fire", 100000, 45000],
+				],
+				out: [
+					["Alkahest", 1,0.01],
+				],
+				lock: ["Void",0.001]
+				
+			},
+			"Universal Solution":
+			{
+				baseStats: [1, 1, true, true],
+				in: [
+					["Void",0.001,1],
+					["Earth", 1, 50000],
+					["Water", 1, 50000],
+					["Air", 1, 50000],
+					["Fire", 1, 50000],
+				],
+				out: [
+					["Alkahest", 1,42],
+				],
+				lock:["Alkahest",0.1,"Earth",50000,"Water",50000,"Air",50000,"Fire",50000],
+			},
 		}
 	},
 };
@@ -816,6 +1145,10 @@ function prepareTemplatedMachineData()
 					ratio: simplifiedIngredient[1],
 					max: simplifiedIngredient[2],
 				};
+				if(simplifiedIngredient[2] < 0) {
+					preparedIngredient.max *= -1;
+					preparedIngredient.noLimit = true;
+				}
 				if (simplifiedIngredient[3])
 				{
 					preparedIngredient.slider = 1;

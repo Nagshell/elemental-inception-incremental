@@ -147,6 +147,8 @@ var machines = {
 			{
 				this.recipes[i] = this.hiddenRecipes[temp.upgradeTo];
 				regionData.hideRegion.action(temp.pane);
+				this.recipes[i].pane.x = temp.pane.x;
+				this.recipes[i].pane.y = temp.pane.y;
 				temp = this.recipes[i];
 			}
 			if (this.paused)
@@ -170,7 +172,7 @@ var machines = {
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
-					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max)
+					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max && !temp.outputs[j].noLimit)
 					{
 						state = "full";
 						temp.outputs[j].pieChart.push("full");
@@ -211,12 +213,14 @@ var machines = {
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
-					data.oElementsFlow[temp.outputs[j].type] += amount * temp.outputs[j].ratio * temp.efficiency;
-					particleGenerator.machineFlow(this.title, machineDisplayElements[temp.outputs[j].type], temp.outputs[j].type, amount * temp.outputs[j].ratio);
+					var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount,temp.outputs[j].max*1.4) - data.oElements[temp.outputs[j].type].amount;
+					data.oElementsFlow[temp.outputs[j].type] += flow;
+					if (this.title != "Golem Infuser")
+						particleGenerator.machineFlow(this.title, machineDisplayElements[temp.outputs[j].type], temp.outputs[j].type, flow);
 				}
 				if (this.title == "Golem Infuser")
 				{
-					particleGenerator.explosion(this.region.x, this.region.y, 1, elementalColors[temp.outputs[0].type][3], elementalColors[temp.outputs[0].type][0], 600);
+					particleGenerator.explosion(this.title, 1, temp.outputs[0].type, 600, Math.pow(10,temp.outputs[0].ratio));
 				}
 			}
 		}
@@ -295,30 +299,30 @@ var machines = {
 				ctx.translate(0, 18 + 29 / turnedOn);
 				for (var i = 0; i < this.machine.recipes.length; i++)
 				{
-					if (!this.machine.recipes[i].enabled)
+					if (this.machine.recipes[i].enabled)
 					{
-						continue;
-					}
-					var temp = this.machine.recipes[i].pieChart;
+						var temp = this.machine.recipes[i].pieChart;
 
-					ctx.save();
-					ctx.beginPath();
-					ctx.arc(40, 0, 25 / turnedOn, 0, Math.PI * 2);
-					ctx.stroke();
-					ctx.fill();
-					ctx.clip();
-					var angle = 0;
-					for (var type in temp.results)
-					{
+						ctx.save();
 						ctx.beginPath();
-						ctx.moveTo(40, 0);
-						ctx.arc(40, 0, 22 / turnedOn, angle, angle + temp.results[type] / 300 * Math.PI);
-						angle += temp.results[type] / 300 * Math.PI;
-						ctx.fillStyle = chartColors[type];
+						ctx.arc(40, 0, 25 / turnedOn, 0, Math.PI * 2);
+						ctx.stroke();
 						ctx.fill();
+						ctx.clip();
+						var angle = 0;
+						for (var type in temp.results)
+						{
+							ctx.beginPath();
+							ctx.moveTo(40, 0);
+							ctx.arc(40, 0, 22 / turnedOn, angle, angle + temp.results[type] / 300 * Math.PI);
+							angle += temp.results[type] / 300 * Math.PI;
+							ctx.fillStyle = chartColors[type];
+							ctx.fill();
+						}
+						ctx.restore();
+						ctx.translate(0, 3 + 50 / turnedOn);
 					}
-					ctx.restore();
-					ctx.translate(0, 3 + 50 / turnedOn);
+					
 				}
 			}
 
@@ -370,6 +374,10 @@ var machines = {
 				}
 
 				ctx.restore();
+				if (!this.machine.recipes[i].enabled)
+				{
+					radius *= 2;
+				}
 				ctx.translate(0, radius * 2 + 10);
 			}
 
@@ -758,7 +766,7 @@ function preprocessMachines()
 
 	var path = new Path2D();
 	path.rect(0, 0, 16, 16);
-	machines.machinePauseRegion = new cRegion(87, 17);
+	machines.machinePauseRegion = new cRegion(70, 17);
 	machines.machinePauseRegion.boundaryPath = path;
 	machines.machinePauseRegion.customDraw = machines.pauseRegionDraw;
 	machines.machinePauseRegion.mouseHandler = machines.pauseRegionMouseHandler;
@@ -767,7 +775,7 @@ function preprocessMachines()
 	machines.machinePauseRegionMin.customDraw = machines.pauseRegionDraw;
 	machines.machinePauseRegionMin.mouseHandler = machines.pauseRegionMouseHandler;
 
-	machines.recipeSelectorRegion = new cRegion(104, 17);
+	machines.recipeSelectorRegion = new cRegion(87, 17);
 	machines.recipeSelectorRegion.boundaryPath = new Path2D();
 	machines.recipeSelectorRegion.boundaryPath.rect(0, 0, 70, 16);
 	machines.recipeSelectorRegion.text = "Recipes";
@@ -832,7 +840,7 @@ function initMachine(title)
 
 	mainPane.subRegions.push(thisData.region);
 
-	thisData.pane = new cPane(mainPane, thisData.x - 50, thisData.y - 50);
+	thisData.pane = new cPane(mainPane, thisData.x + 32, thisData.y +32);
 	thisData.pane.machine = thisData;
 	thisData.pane.boundaryPath = machines.displayPanePathDemo;
 	thisData.pane.boundaryPathMin = machines.displayPanePathMin;
@@ -883,7 +891,7 @@ function initMachine(title)
 		recipeRegion.paymentSuccess = machines.recipeRegionPaymentSuccess;
 		recipeRegion.customDraw = machines.recipeRegionDraw;
 
-		var recipePane = new cPane(thisData.pane, 104 - 17 * i, 51 + 17 * i);
+		var recipePane = new cPane(thisData.pane, 104 - 17 * i, 102 + 17 * i);
 		thisRecipe.pane = recipePane;
 		recipePane.title = thisRecipe.title;
 		recipePane.recipe = thisRecipe;

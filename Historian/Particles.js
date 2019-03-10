@@ -1,9 +1,17 @@
 var particleGenerator = {
+	stopTheLag: function() {
+		this.stopLag = !this.stopLag;
+	},
 	machineFlow: function (machineOrigin, machineTarget, type, volume, delay = 0)
 	{
 
-		if (!machineOrigin || !machineTarget || machineOrigin == machineTarget)
+		if (!machineOrigin || !machineTarget)
 		{
+			return;
+		}
+		if(machineOrigin == machineTarget)
+		{
+			this.explosion(machineTarget,-0.3,type,80,volume);
 			return;
 		}
 		if (elementalDisplayType[type] == "exp")
@@ -26,11 +34,31 @@ var particleGenerator = {
 
 	},
 
-	explosion: function (x, y, v, color1, color2, lifespan)
+	explosion: function (machineTarget, v, type, lifespan,amount)
 	{
-		this.explosions.push(new cExplosion(x, y, v, color1, color2, lifespan));
+		var temp = this.explosionGenerators;
+		if(!temp[machineTarget]) {
+			temp[machineTarget] = {};
+		}
+		temp = temp[machineTarget];
+		if(!temp[type]) {
+			temp[type] = {};
+		}
+		temp = temp[type];
+		if(!temp[v]) {
+			temp[v] = 
+			{
+				amount : 0,
+				cd : 0,
+				cdMax : 40,
+				lifespan : lifespan,
+			};
+		}
+		temp = temp[v];
+		temp.amount += amount;
+		
 	},
-
+	explosionGenerators : {},
 	explosions: [],
 	particles:
 	{},
@@ -40,6 +68,9 @@ var particleGenerator = {
 
 	tick: function ()
 	{
+		if(this.stopLag) {
+			return;
+		}
 		var temp;
 		for (var origin in this.machineLinks)
 		{
@@ -54,27 +85,27 @@ var particleGenerator = {
 					}
 					if (temp.volumes[color].amount > 0)
 					{
-						if (temp.volumes[color].cd-- == 0)
+						if (temp.volumes[color].cd-- <= 0)
 						{
-							var cdMax = 20;
+							var cdMax = 5;
+							if (temp.volumes[color].amount <= 0.1)
+							{
+								cdMax *= 1.5;
+							}
 							if (temp.volumes[color].amount <= 1)
 							{
 								cdMax *= 1.5;
 							}
-							if (temp.volumes[color].amount <= 1e1)
-							{
-								cdMax *= 1.5;
-							}
-							if (temp.volumes[color].amount <= 1e4)
+							if (temp.volumes[color].amount <= 1e2)
 							{
 								cdMax *= 2;
 							}
-							if (temp.volumes[color].amount <= 1e30)
+							if (temp.volumes[color].amount <= 1e4)
 							{
 								cdMax *= 1.5;
 							}
 
-							temp.volumes[color].cd = cdMax;
+							temp.volumes[color].cd = cdMax*(1+Math.random());
 							this.particles[color].push(new particle(machineData[origin].region.x, machineData[origin].region.y, target, Math.min(5, Math.log2(1 + Math.max(1, temp.volumes[color].amount / 30))) / 2, 600));
 							temp.volumes[color].amount = 0;
 						}
@@ -101,18 +132,51 @@ var particleGenerator = {
 		for (var i = 0; i < this.explosions.length; i++)
 		{
 			this.explosions[i].r += this.explosions[i].v;
-			if (this.explosions[i].lifespan <= this.explosions[i].r)
+			if(this.explosions[i].v < 0) 
 			{
-				this.explosions[i] = this.explosions[this.explosions.length - 1];
-				this.explosions.length--;
-				i--;
+				if (this.explosions[i].r <= 24)
+				{
+					this.explosions[i] = this.explosions[this.explosions.length - 1];
+					this.explosions.length--;
+					i--;
+				}
+
+			}
+			else
+			{
+				if (this.explosions[i].lifespan <= this.explosions[i].r)
+				{
+					this.explosions[i] = this.explosions[this.explosions.length - 1];
+					this.explosions.length--;
+					i--;
+				}
+			}
+		}
+		temp = this.explosionGenerators;
+		for(var target in temp) {
+			var temp1 = temp[target];
+			var t1 = machineData[target].region;
+			for(var type in temp1) {
+				var temp2 = temp1[type];
+				for(var v in temp2) {
+					var temp3 = temp2[v];
+					if(temp3.amount > 0 && temp3.cd--<=0)
+					{
+						
+						temp3.cd = temp3.cdMax*(1+Math.random());
+						this.explosions.push(new cExplosion(t1.x, t1.y, 1*v, elementalColors[type][3],elementalColors[type][3], temp3.lifespan, Math.max(0.1,temp3.amount)));
+						temp3.amount = 0;
+					}
+				}
 			}
 		}
 	},
 
 	draw: function (ctx)
 	{
-		particleGenerator.tick();
+		if(this.stopLag) {
+			return;
+		}
 
 		ctx.save();
 		ctx.shadowBlur = 5;
@@ -145,30 +209,51 @@ var particleGenerator = {
 			ctx.fill();
 		}
 
-		ctx.shadowBlur = 25;
+		//ctx.shadowBlur = 25;
 		for (var i = 0; i < this.explosions.length; i++)
 		{
 			if (this.explosions[i].r < 0) continue;
+			//console.log(asd);
 			ctx.strokeStyle = this.explosions[i].color1;
 			ctx.shadowColor = this.explosions[i].color2;
-			ctx.globalAlpha = (this.explosions[i].lifespan - this.explosions[i].r) / this.explosions[i].lifespan;
+			ctx.lineWidth = this.explosions[i].size;
+			if(this.explosions[i].v<0) {
+				ctx.shadowBlur = 5;
+				ctx.globalAlpha = 0.3;//(this.explosions[i].lifespan - this.explosions[i].r) / this.explosions[i].lifespan;
+			} else {
+				ctx.shadowBlur = 25;
+				ctx.globalAlpha = (this.explosions[i].lifespan - this.explosions[i].r) / this.explosions[i].lifespan;
+			}
+			
 			ctx.beginPath();
-			ctx.arc(this.explosions[i].x, this.explosions[i].y, this.explosions[i].r, 0, Math.PI * 2);
+			ctx.arc(this.explosions[i].x, this.explosions[i].y, this.explosions[i].r, 0, Math.PI *2);
 			ctx.stroke();
 		}
 		ctx.restore();
 	},
 };
 
-function cExplosion(x, y, v, color1, color2, lifespan)
+function cExplosion(x, y, v, color1, color2, lifespan, amount)
 {
+	
 	this.x = x;
 	this.y = y;
 	this.v = v;
-	this.r = -Math.trunc(Math.random() * 30);
+	if(v<0) 
+	{
+		this.r = Math.trunc(lifespan)*1;
+		this.lifespan = lifespan*1;
+	}
+	else
+	{
+		this.r = -Math.trunc(Math.random() * 15)*1;
+		this.lifespan = lifespan*1;
+	}
 	this.color1 = color1;
 	this.color2 = color2;
-	this.lifespan = lifespan;
+	this.sizeBase = amount;
+	this.size = 0.4+Math.log10(1+amount);
+	
 }
 
 function particle(x, y, target, size, ticks)
@@ -199,19 +284,19 @@ particle.prototype.tick = function ()
 	{
 		if (this.x > particleTemporaryTarget.x)
 		{
-			//this.x -= this.v;
+			this.x -= this.v;
 		}
 		else
 		{
-			//this.x += this.v;
+			this.x += this.v;
 		}
 	}
 	if ((this.y - particleTemporaryTarget.y) * (this.y - particleTemporaryTarget.y) + (this.x - particleTemporaryTarget.x) * (this.x - particleTemporaryTarget.x) < 100)
 	{
 		this.lifespan = 0;
 	}
-	//this.x += (Math.random() - 0.5) * 2;
-	//this.y += (Math.random() - 0.5) * 2;
+	this.x += (Math.random() - 0.5) * 2;
+	this.y += (Math.random() - 0.5) * 2;
 	this.lifespan--;
 };
 

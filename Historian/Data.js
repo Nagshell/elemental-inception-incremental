@@ -318,6 +318,7 @@ var data = {
 	aMachines: [],
 	oMachines:
 	{},
+	elementsKnown:0,
 }
 
 function preprocess()

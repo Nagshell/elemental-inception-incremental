@@ -5,9 +5,7 @@ function canvasMouseHandler(event)
 }
 
 function documentMouseHandler(event)
-{
-	console.log(event);
-}
+{}
 
 document.addEventListener("mousemove", canvasMouseHandler);
 document.addEventListener("mousedown", canvasMouseHandler);
@@ -57,7 +55,7 @@ function draw()
 	ctxActive.font = "14px Arial";
 	ctxActive.textBaseline = "middle";
 	ctxActive.textAlign = "center";
-	ctxActive.strokeStyle = "#686868";
+	ctxActive.strokeStyle = "#989898";
 	ctxActive.lineWidth = 2;
 	ctxActive.fillStyle = "#101010";
 	//ctxActive.shadowColor = "#FF0FFF";
