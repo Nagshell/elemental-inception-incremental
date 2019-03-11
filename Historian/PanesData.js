@@ -228,9 +228,9 @@ mainPane.customDraw = function (ctx)
 	var x = -this.centerX + canvas.width / 2;
 	var y = -this.centerY + canvas.height / 2 - 100;
 	ctx.save();
-	ctx.globalAlpha = Math.max(0, Math.abs(borderGlowTicks % 200 / 199 - 0.5) * 2.5 - 0.25)*0.75;
+	ctx.globalAlpha = Math.min(1, Math.max(0, Math.abs(borderGlowTicks++ % 1000 / 999 - 0.5) * 2)) * 0.75;
 	ctx.lineWidth = 0.4;
-	ctx.shadowBlur = Math.max(0, Math.abs(borderGlowTicks % 200 / 199 - 0.5) * 2.5 - 0.25)*8;
+	ctx.shadowBlur = ctx.globalAlpha * 8;
 	ctx.strokeStyle = "#FFFFFF";
 	ctx.shadowColor = "#AF00AF";
 	ctx.beginPath();
@@ -245,7 +245,7 @@ mainPane.customDraw = function (ctx)
 			noGlow = false;
 		}
 	}
-	if (noGlow && x * x + y * y > 10000*data.elementsKnown*data.elementsKnown)
+	if (noGlow && x * x + y * y > 10000 * data.elementsKnown * data.elementsKnown)
 	{
 		ctx.lineTo(0, 0);
 		ctx.moveTo(x, y);

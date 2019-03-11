@@ -1,5 +1,6 @@
 var particleGenerator = {
-	stopTheLag: function() {
+	stopTheLag: function ()
+	{
 		this.stopLag = !this.stopLag;
 	},
 	machineFlow: function (machineOrigin, machineTarget, type, volume, delay = 0)
@@ -9,9 +10,18 @@ var particleGenerator = {
 		{
 			return;
 		}
-		if(machineOrigin == machineTarget)
+		if (machineOrigin == machineTarget)
 		{
-			this.explosion(machineTarget,-0.3,type,80,volume);
+			var r = 80;
+			var v = -0.3;
+			var vol = volume;
+			if (machineTarget == "Nexus of Unification")
+			{
+				v *= 5;
+				r *= 10;
+				vol *= 10;
+			}
+			this.explosion(machineTarget, v, type, r, vol);
 			return;
 		}
 		if (elementalDisplayType[type] == "exp")
@@ -31,34 +41,35 @@ var particleGenerator = {
 				cd: 0,
 			};
 		}
-
 	},
 
-	explosion: function (machineTarget, v, type, lifespan,amount)
+	explosion: function (machineTarget, v, type, lifespan, amount)
 	{
 		var temp = this.explosionGenerators;
-		if(!temp[machineTarget]) {
+		if (!temp[machineTarget])
+		{
 			temp[machineTarget] = {};
 		}
 		temp = temp[machineTarget];
-		if(!temp[type]) {
+		if (!temp[type])
+		{
 			temp[type] = {};
 		}
 		temp = temp[type];
-		if(!temp[v]) {
-			temp[v] = 
-			{
-				amount : 0,
-				cd : 0,
-				cdMax : 40,
-				lifespan : lifespan,
+		if (!temp[v])
+		{
+			temp[v] = {
+				amount: 0,
+				cd: 0,
+				cdMax: 40,
+				lifespan: lifespan,
 			};
 		}
 		temp = temp[v];
 		temp.amount += amount;
-		
 	},
-	explosionGenerators : {},
+	explosionGenerators:
+	{},
 	explosions: [],
 	particles:
 	{},
@@ -68,7 +79,8 @@ var particleGenerator = {
 
 	tick: function ()
 	{
-		if(this.stopLag) {
+		if (this.stopLag)
+		{
 			return;
 		}
 		var temp;
@@ -105,7 +117,7 @@ var particleGenerator = {
 								cdMax *= 1.5;
 							}
 
-							temp.volumes[color].cd = cdMax*(1+Math.random());
+							temp.volumes[color].cd = cdMax * (1 + Math.random());
 							this.particles[color].push(new particle(machineData[origin].region.x, machineData[origin].region.y, target, Math.min(5, Math.log2(1 + Math.max(1, temp.volumes[color].amount / 30))) / 2, 600));
 							temp.volumes[color].amount = 0;
 						}
@@ -132,7 +144,7 @@ var particleGenerator = {
 		for (var i = 0; i < this.explosions.length; i++)
 		{
 			this.explosions[i].r += this.explosions[i].v;
-			if(this.explosions[i].v < 0) 
+			if (this.explosions[i].v < 0)
 			{
 				if (this.explosions[i].r <= 24)
 				{
@@ -153,18 +165,21 @@ var particleGenerator = {
 			}
 		}
 		temp = this.explosionGenerators;
-		for(var target in temp) {
+		for (var target in temp)
+		{
 			var temp1 = temp[target];
 			var t1 = machineData[target].region;
-			for(var type in temp1) {
+			for (var type in temp1)
+			{
 				var temp2 = temp1[type];
-				for(var v in temp2) {
+				for (var v in temp2)
+				{
 					var temp3 = temp2[v];
-					if(temp3.amount > 0 && temp3.cd--<=0)
+					if (temp3.amount > 0 && temp3.cd-- <= 0)
 					{
-						
-						temp3.cd = temp3.cdMax*(1+Math.random());
-						this.explosions.push(new cExplosion(t1.x, t1.y, 1*v, elementalColors[type][3],elementalColors[type][3], temp3.lifespan, Math.max(0.1,temp3.amount)));
+
+						temp3.cd = temp3.cdMax * (1 + Math.random());
+						this.explosions.push(new cExplosion(t1.x, t1.y, 1 * v, elementalColors[type][3], elementalColors[type][3], temp3.lifespan, Math.max(0.1, temp3.amount)));
 						temp3.amount = 0;
 					}
 				}
@@ -174,7 +189,8 @@ var particleGenerator = {
 
 	draw: function (ctx)
 	{
-		if(this.stopLag) {
+		if (this.stopLag)
+		{
 			return;
 		}
 
@@ -217,16 +233,19 @@ var particleGenerator = {
 			ctx.strokeStyle = this.explosions[i].color1;
 			ctx.shadowColor = this.explosions[i].color2;
 			ctx.lineWidth = this.explosions[i].size;
-			if(this.explosions[i].v<0) {
+			if (this.explosions[i].v < 0)
+			{
 				ctx.shadowBlur = 5;
-				ctx.globalAlpha = 0.3;//(this.explosions[i].lifespan - this.explosions[i].r) / this.explosions[i].lifespan;
-			} else {
+				ctx.globalAlpha = Math.min(1, 2 * (this.explosions[i].lifespan - this.explosions[i].r) / this.explosions[i].lifespan);
+			}
+			else
+			{
 				ctx.shadowBlur = 25;
 				ctx.globalAlpha = (this.explosions[i].lifespan - this.explosions[i].r) / this.explosions[i].lifespan;
 			}
-			
+
 			ctx.beginPath();
-			ctx.arc(this.explosions[i].x, this.explosions[i].y, this.explosions[i].r, 0, Math.PI *2);
+			ctx.arc(this.explosions[i].x, this.explosions[i].y, this.explosions[i].r, 0, Math.PI * 2);
 			ctx.stroke();
 		}
 		ctx.restore();
@@ -235,25 +254,25 @@ var particleGenerator = {
 
 function cExplosion(x, y, v, color1, color2, lifespan, amount)
 {
-	
+
 	this.x = x;
 	this.y = y;
 	this.v = v;
-	if(v<0) 
+	if (v < 0)
 	{
-		this.r = Math.trunc(lifespan)*1;
-		this.lifespan = lifespan*1;
+		this.r = Math.trunc(lifespan) * 1;
+		this.lifespan = lifespan * 1;
 	}
 	else
 	{
-		this.r = -Math.trunc(Math.random() * 15)*1;
-		this.lifespan = lifespan*1;
+		this.r = -Math.trunc(Math.random() * 15) * 1;
+		this.lifespan = lifespan * 1;
 	}
 	this.color1 = color1;
 	this.color2 = color2;
 	this.sizeBase = amount;
-	this.size = 0.4+Math.log10(1+amount);
-	
+	this.size = 0.4 + Math.log10(1 + amount);
+
 }
 
 function particle(x, y, target, size, ticks)

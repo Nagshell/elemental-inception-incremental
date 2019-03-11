@@ -147,6 +147,8 @@ var machines = {
 			{
 				this.recipes[i] = this.hiddenRecipes[temp.upgradeTo];
 				regionData.hideRegion.action(temp.pane);
+				this.recipes[i].unlocked = temp.unlocked;
+				this.recipes[i].enabled = temp.enabled;
 				this.recipes[i].pane.x = temp.pane.x;
 				this.recipes[i].pane.y = temp.pane.y;
 				temp = this.recipes[i];
@@ -213,14 +215,14 @@ var machines = {
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
-					var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount,temp.outputs[j].max*1.4) - data.oElements[temp.outputs[j].type].amount;
+					var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.4) - data.oElements[temp.outputs[j].type].amount;
 					data.oElementsFlow[temp.outputs[j].type] += flow;
 					if (this.title != "Golem Infuser")
 						particleGenerator.machineFlow(this.title, machineDisplayElements[temp.outputs[j].type], temp.outputs[j].type, flow);
 				}
 				if (this.title == "Golem Infuser")
 				{
-					particleGenerator.explosion(this.title, 1, temp.outputs[0].type, 600, Math.pow(10,temp.outputs[0].ratio));
+					particleGenerator.explosion(this.title, 1, temp.outputs[0].type, 600, Math.pow(10, temp.outputs[0].ratio));
 				}
 			}
 		}
@@ -322,7 +324,7 @@ var machines = {
 						ctx.restore();
 						ctx.translate(0, 3 + 50 / turnedOn);
 					}
-					
+
 				}
 			}
 
@@ -686,15 +688,17 @@ var machines = {
 		{
 			if (this.target.upped && x <= 88)
 			{
-				this.target.slider = Math.max(0, (x - 2)) / 43;
-				var newValue = this.target.sliderBase * Math.pow(this.target.sliderStep, (this.target.slider - 1) * this.target.upped);
-				if (this.target.min)
+				if (x <= 8)
 				{
-					this.target.min = newValue;
+					this.target.slider = 0;
 				}
-				if (this.target.max)
+				else if (x <= 80)
 				{
-					this.target.max = newValue;
+					this.target.slider = Math.max(0, (x - 10)) / 35;
+				}
+				else
+				{
+					this.target.slider = 2;
 				}
 			}
 		}
@@ -707,14 +711,30 @@ var machines = {
 		{
 			this.drag = false;
 			var temp = this.target;
-			if (x > 88)
+			if (x <= 8)
+			{
+				this.target.slider = 0;
+			}
+			else if (x > 88)
 			{
 				if (this.target.upped < this.target.upgrades.length)
 				{
 					paymentPane.preparePayment(this.target.upgrades[this.target.upped].costs, x, y, pane, this);
 				}
-
 			}
+			else if (x > 80)
+			{
+				this.target.slider = 2;
+			}
+		}
+		var newValue = this.target.sliderBase * Math.pow(this.target.sliderStep, (this.target.slider - 1) * this.target.upped);
+		if (this.target.min)
+		{
+			this.target.min = newValue;
+		}
+		if (this.target.max)
+		{
+			this.target.max = newValue;
 		}
 	},
 	sliderRegionDraw: function (ctx)
@@ -740,16 +760,18 @@ var machines = {
 			ctx.fillStyle = "#181818";
 			ctx.fillRect(0, 0, 88, 16);
 			ctx.fillStyle = "#646464";
-			ctx.fillRect(0 + 42 * temp.slider, 0, 4, 16);
-			ctx.restore();
+			ctx.fillRect(8 + 34 * temp.slider, 0, 4, 16);
+			ctx.drawImage(images.iconLeft, 0, 0);
+			ctx.drawImage(images.iconRight, 80, 0);
 		}
 		else
 		{
 
 			ctx.fillStyle = "#080808";
 			ctx.fillRect(0, 0, 88, 16);
-			ctx.restore();
+
 		}
+		ctx.restore();
 	},
 };
 
@@ -840,7 +862,7 @@ function initMachine(title)
 
 	mainPane.subRegions.push(thisData.region);
 
-	thisData.pane = new cPane(mainPane, thisData.x + 32, thisData.y +32);
+	thisData.pane = new cPane(mainPane, thisData.x + 32, thisData.y + 32);
 	thisData.pane.machine = thisData;
 	thisData.pane.boundaryPath = machines.displayPanePathDemo;
 	thisData.pane.boundaryPathMin = machines.displayPanePathMin;

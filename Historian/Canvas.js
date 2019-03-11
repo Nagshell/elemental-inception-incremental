@@ -47,7 +47,7 @@ var borderGlowTicks = 0;
 function draw()
 {
 	borderGlowRadius = 4; //
-	ctxActive.shadowColor = "rgba(255,0,255," + Math.max(0, Math.abs(borderGlowTicks++ % 200 / 199 - 0.5) * 2.5 - 0.25) + ")";
+	ctxActive.shadowColor = "rgba(255,105,255," + Math.min(1, Math.max(0, Math.abs(borderGlowTicks++ % 1000 / 999 - 0.5) * 2 + 0.5)) + ")";
 
 	ctxActive.resetTransform();
 	ctxActive.clearRect(0, 0, 800, 800);
@@ -55,7 +55,7 @@ function draw()
 	ctxActive.font = "14px Arial";
 	ctxActive.textBaseline = "middle";
 	ctxActive.textAlign = "center";
-	ctxActive.strokeStyle = "#989898";
+	ctxActive.strokeStyle = "#A0A0A0";
 	ctxActive.lineWidth = 2;
 	ctxActive.fillStyle = "#101010";
 	//ctxActive.shadowColor = "#FF0FFF";

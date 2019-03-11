@@ -9,6 +9,8 @@ function preprocessImages()
 		"iconOff",
 		"iconUp",
 		"iconUpNot",
+		"iconLeft",
+		"iconRight",
 		"iconLock",
 		"iconShow",
 		"iconPause",
