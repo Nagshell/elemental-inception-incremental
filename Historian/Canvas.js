@@ -1,11 +1,7 @@
 function canvasMouseHandler(event)
 {
 	panes.mouseHandler(event);
-	//particleGenerator.mouseHandler(event);
 }
-
-function documentMouseHandler(event)
-{}
 
 document.addEventListener("mousemove", canvasMouseHandler);
 document.addEventListener("mousedown", canvasMouseHandler);
@@ -40,6 +36,7 @@ function resizeCanvas()
 		mainPane.centerX = Math.trunc(canvas.width / 2);
 		mainPane.centerY = Math.trunc(canvas.height / 2) - 100;
 	}
+	trackerPane.resize();
 }
 var borderGlowRadius = 5;
 var borderGlowTicks = 0;
@@ -47,7 +44,6 @@ var borderGlowTicks = 0;
 function draw()
 {
 	borderGlowRadius = 4; //
-	ctxActive.shadowColor = "rgba(255,105,255," + Math.min(1, Math.max(0, Math.abs(borderGlowTicks++ % 1000 / 999 - 0.5) * 2 + 0.5)) + ")";
 
 	ctxActive.resetTransform();
 	ctxActive.clearRect(0, 0, 800, 800);
@@ -55,11 +51,11 @@ function draw()
 	ctxActive.font = "14px Arial";
 	ctxActive.textBaseline = "middle";
 	ctxActive.textAlign = "center";
-	ctxActive.strokeStyle = "#A0A0A0";
+	ctxActive.strokeStyle = "#DDDDDD";
 	ctxActive.lineWidth = 2;
 	ctxActive.fillStyle = "#101010";
-	//ctxActive.shadowColor = "#FF0FFF";
 	ctxActive.shadowBlur = 0;
+	ctxActive.shadowColor = "rgba(255,105,255," + Math.min(1, Math.max(0, Math.abs(borderGlowTicks++ % 1000 / 999 - 0.5) * 2 + 0.5)) + ")";
 
 	for (var i = panes.list.length - 1; i >= 0; i--)
 	{
@@ -72,7 +68,7 @@ function drawNumber(ctx, num, x, y, mode = "", align = "left")
 {
 	ctx.save();
 	ctx.textAlign = align;
-	if (num < 3e2 && mode == "exp")
+	if (num < 1000 && mode == "exp")
 	{
 		mode = "fixed";
 	}

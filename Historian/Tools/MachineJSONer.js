@@ -97,14 +97,13 @@ var simplifiedMachineData = {
 					["Earth", 2, 12000, 4, ["Mud", 10]],
 				],
 				lock: ["Mud", 0.2, "Magma", 0.2],
-				upgrade: ["Stable Earth Rift", "Void", 80, "GolemEarth", 8],
+				upgrade: ["Stabilized Earth C-Rift", "Void", 80, "GolemEarth", 8],
 			},
-			"Stable Earth Rift":
+			"Stabilized Earth C-Rift":
 			{
-				baseStats: [1, 1.8, false, true],
+				baseStats: [1, 2, false, true],
 				in: [
-					["Earth", 1, 500],
-					["Alkahest", 0, 0.1],
+					["Fire", 1, 500],
 				],
 				out: [
 					["Earth", 1, 52000],
@@ -195,13 +194,13 @@ var simplifiedMachineData = {
 					["Water", 2, 12000, 4, ["Ice", 10]],
 				],
 				lock: ["Mud", 0.2, "Ice", 0.2, "Steam", 0.2],
-				upgrade: ["Stable Water Rift", "Void", 80, "GolemWater", 8],
+				upgrade: ["Stabilized Water C-Rift", "Void", 80, "GolemWater", 8],
 			},
-			"Stable Water Rift":
+			"Stabilized Water C-Rift":
 			{
-				baseStats: [1, 4, false, true],
+				baseStats: [1, 2, false, true],
 				in: [
-					["Water", 1, 500],
+					["Earth", 1, 500],
 				],
 				out: [
 					["Water", 1, 52000],
@@ -291,13 +290,13 @@ var simplifiedMachineData = {
 					["Air", 2, 12000, 4, ["Steam", 10]],
 				],
 				lock: ["Steam", 0.2, "Sand", 0.2],
-				upgrade: ["Stable Air Rift", "Void", 80, "GolemAir", 8],
+				upgrade: ["Stabilized Air C-Rift", "Void", 80, "GolemAir", 8],
 			},
-			"Stable Air Rift":
+			"Stabilized Air C-Rift":
 			{
-				baseStats: [1, 4, false, true],
+				baseStats: [1, 2, false, true],
 				in: [
-					["Air", 1, 500],
+					["Water", 1, 500],
 				],
 				out: [
 					["Air", 1, 52000],
@@ -387,13 +386,13 @@ var simplifiedMachineData = {
 					["Fire", 2, 12000, 4, ["Magma", 10]],
 				],
 				lock: ["Steam", 0.2, "Magma", 0.2],
-				upgrade: ["Stable Fire Rift", "Void", 80, "GolemFire", 8],
+				upgrade: ["Stabilized Fire C-Rift", "Void", 80, "GolemFire", 8],
 			},
-			"Stable Fire Rift":
+			"Stabilized Fire C-Rift":
 			{
-				baseStats: [1, 4, false, true],
+				baseStats: [1, 2, false, true],
 				in: [
-					["Fire", 1, 500],
+					["Air", 1, 500],
 				],
 				out: [
 					["Fire", 1, 52000],
@@ -932,8 +931,8 @@ var simplifiedMachineData = {
 				baseStats: [1, 0.15, false, true],
 				in: [
 					["Magma", 1, 0.1, 18, ["Sand", 0.5]],
-					["Air", 1000, 10],
-					["Fire", 1000, 10],
+					["Air", 400, 10],
+					["Fire", 400, 10],
 				],
 				out: [
 					["Sand", 1, 52, 4, ["Magma", 180]],
@@ -978,12 +977,12 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 1, false, true],
 				in: [
-					["Sand", 60, 150],
-					["Steam", 60, 150],
+					["Sand", 10, 150],
+					["Steam", 10, 150],
 				],
 				out: [
 					["Void", 1, 102],
-					["Mud", 60, -150],
+					["Mud", 19, -150],
 				],
 			},
 		}
@@ -1011,13 +1010,13 @@ var simplifiedMachineData = {
 			},
 			"Universal Solution":
 			{
-				baseStats: [1, 1, true, true],
+				baseStats: [10, 1, true, true],
 				in: [
 					["Void", 1, 1],
-					["Earth", 1, 50000],
-					["Water", 1, 50000],
-					["Air", 1, 50000],
-					["Fire", 1, 50000],
+					["Earth", 1000000, 50000],
+					["Water", 1000000, 50000],
+					["Air", 1000000, 50000],
+					["Fire", 1000000, 50000],
 				],
 				out: [
 					["Alkahest", 1, 42],
@@ -1040,6 +1039,8 @@ function prepareTemplatedMachineData()
 
 			recipes: [],
 			hiddenRecipes:
+			{},
+			baseRecipes:
 			{},
 		};
 		if (simplifiedData.baseStats[2])
@@ -1187,6 +1188,7 @@ function prepareTemplatedMachineData()
 			if (simplifiedRecipe.baseStats[2])
 			{
 				preparedData.recipes.push(preparedRecipe);
+				preparedData.baseRecipes[recipeTitle] = preparedRecipe;
 			}
 			else
 			{
@@ -1197,5 +1199,3 @@ function prepareTemplatedMachineData()
 	}
 	return templateData;
 }
-//var canvas = document.getElementById("canvasMain");
-//canvas.value = JSON.stringify(prepareTemplatedMachineData());

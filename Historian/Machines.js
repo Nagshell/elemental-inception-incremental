@@ -4,7 +4,7 @@ var machines = {
 
 	glowCheck: function ()
 	{
-		if (this.glowCheckCD-- == 0)
+		if (this.glowCheckCD-- <= 0)
 		{
 			this.glowCheckCD = 60;
 			var mainGlow = false;
@@ -102,9 +102,30 @@ var machines = {
 	},
 
 	draw: function (ctx) {},
-
+	upgradeRecipe: function (i)
+	{
+		var temp = this.recipes[i];
+		this.recipes[i] = this.hiddenRecipes[temp.upgradeTo];
+		regionData.hideRegion.action(temp.pane);
+		this.recipes[i].unlocked = temp.unlocked;
+		this.recipes[i].enabled = temp.enabled;
+		this.recipes[i].pane.x = temp.pane.x;
+		this.recipes[i].pane.y = temp.pane.y;
+		this.recipes[i].upData[0] = temp.upData[0];
+	},
+	upgradeTick: function ()
+	{
+		for (var i = 0; i < this.recipes.length; i++)
+		{
+			if (this.recipes[i].markedToUpgrade)
+			{
+				this.upgradeRecipe(i);
+			}
+		}
+	},
 	machineTick: function ()
 	{
+		this.upgradeTick();
 		if (this.displayElement)
 		{
 			if (data.oElements[this.displayElement].amount > 1e255)
@@ -143,16 +164,6 @@ var machines = {
 		for (var i = 0; i < this.recipes.length; i++)
 		{
 			var temp = this.recipes[i];
-			while (temp.markedToUpgrade)
-			{
-				this.recipes[i] = this.hiddenRecipes[temp.upgradeTo];
-				regionData.hideRegion.action(temp.pane);
-				this.recipes[i].unlocked = temp.unlocked;
-				this.recipes[i].enabled = temp.enabled;
-				this.recipes[i].pane.x = temp.pane.x;
-				this.recipes[i].pane.y = temp.pane.y;
-				temp = this.recipes[i];
-			}
 			if (this.paused)
 			{
 				continue;
@@ -463,10 +474,23 @@ var machines = {
 	},
 	recipeRegionPaymentSuccess: function ()
 	{
+		this.recipe.upData[0]++;
+		this.recipe.machine.upped = true;
 		if (!this.recipe.unlocked)
 		{
 			this.recipe.unlocked = true;
-			this.pane.top.boundaryPath = machines.displayPanePath;
+			if (this.pane.top.boundaryPathMax)
+			{
+				this.pane.top.boundaryPathMax = machines.displayPanePath;
+			}
+			else if (this.pane.top.hiddenPath)
+			{
+				this.pane.top.hiddenPath = machines.displayPanePath;
+			}
+			else
+			{
+				this.pane.top.boundaryPath = machines.displayPanePath;
+			}
 		}
 		else
 		{
@@ -673,6 +697,8 @@ var machines = {
 	},
 	sliderRegionPaymenentSuccess: function ()
 	{
+		this.target.upData[this.target.upDataId]++;
+		this.target.recipe.machine.upped = true;
 		this.target.upped++;
 		if (this.target.max)
 		{
@@ -779,6 +805,7 @@ function preprocessMachines()
 {
 	machines.displayRegionPath = new Path2D();
 	machines.displayRegionPath.arc(0, 0, 32, 0, Math.PI * 2);
+
 	machines.displayPanePath = new Path2D();
 	machines.displayPanePath.rect(0, 0, 400, 493);
 	machines.displayPanePathMin = new Path2D();
@@ -841,6 +868,8 @@ function initMachine(title)
 	var thisData = machineData[title];
 	machines.list.push(thisData);
 	thisData.tick = machines.machineTick;
+	thisData.upgradeTick = machines.upgradeTick;
+	thisData.upgradeRecipe = machines.upgradeRecipe;
 	thisData.title = title;
 	thisData.currentRecipes = [];
 
@@ -902,8 +931,10 @@ function initMachine(title)
 	for (var i = thisData.recipes.length - 1; i >= 0; i--)
 	{
 		var thisRecipe = thisData.recipes[i];
+		thisRecipe.upData = [0];
 		thisRecipe.machine = thisData;
 		thisRecipe.pieChart = new cEfficiencyCounter();
+
 		var recipeRegion = new cRegion(0, 17 + 17 * i);
 		thisRecipe.region = recipeRegion;
 		thisData.pane.recipeSelectorPane.subRegions.push(recipeRegion);
@@ -934,9 +965,12 @@ function initMachine(title)
 		for (var j = 0; j < thisRecipe.inputs.length; j++)
 		{
 			thisRecipe.inputs[j].pieChart = new cEfficiencyCounter();
-			thisRecipe.inputs[j].paymentSuccess = machines.recipePaneResourceUpPaymenentSuccess;
+			thisRecipe.inputs[j].recipe = thisRecipe;
 			if (thisRecipe.inputs[j].upgrades)
 			{
+				thisRecipe.inputs[j].upData = thisRecipe.upData;
+				thisRecipe.inputs[j].upDataId = thisRecipe.upData.length;
+				thisRecipe.upData.push(0);
 				var sliderRegion = new cRegion(34, y);
 				thisRecipe.inputs[j].sliderRegion = sliderRegion;
 				sliderRegion.boundaryPath = machines.sliderRegionPath;
@@ -952,30 +986,33 @@ function initMachine(title)
 		for (var j = 0; j < thisRecipe.outputs.length; j++)
 		{
 			thisRecipe.outputs[j].pieChart = new cEfficiencyCounter();
-			thisRecipe.outputs[j].paymentSuccess = machines.recipePaneResourceUpPaymenentSuccess;
+			thisRecipe.outputs[j].recipe = thisRecipe;
 			if (thisRecipe.outputs[j].upgrades)
 			{
+				thisRecipe.outputs[j].upData = thisRecipe.upData;
+				thisRecipe.outputs[j].upDataId = thisRecipe.upData.length;
+				thisRecipe.upData.push(0);
 				var sliderRegion = new cRegion(34, y);
 				thisRecipe.outputs[j].sliderRegion = sliderRegion;
 				sliderRegion.boundaryPath = machines.sliderRegionPath;
 				sliderRegion.mouseHandler = machines.sliderRegionMouseHandler;
 				sliderRegion.customDraw = machines.sliderRegionDraw;
 				sliderRegion.target = thisRecipe.outputs[j];
+				sliderRegion.recipe = thisRecipe;
 				sliderRegion.paymentSuccess = machines.sliderRegionPaymenentSuccess;
 				recipePane.subRegions.push(sliderRegion);
 			}
 			y += 56;
 		}
 	}
-
-	var num = thisData.recipes.length;
 	for (var recipeTitle in thisData.hiddenRecipes)
 	{
 		var thisRecipe = thisData.hiddenRecipes[recipeTitle];
-		thisRecipe.pieChart = new cEfficiencyCounter();
+		thisRecipe.upData = [0];
 		thisRecipe.machine = thisData;
+		thisRecipe.pieChart = new cEfficiencyCounter();
 
-		var recipePane = new cPane(thisData.pane, 191 - 17 * num, 0 * 116 + 17 + 17 * num++);
+		var recipePane = new cPane(thisData.pane, 0, 0);
 		thisRecipe.pane = recipePane;
 		recipePane.title = thisRecipe.title;
 		recipePane.recipe = thisRecipe;
@@ -993,9 +1030,12 @@ function initMachine(title)
 		for (var j = 0; j < thisRecipe.inputs.length; j++)
 		{
 			thisRecipe.inputs[j].pieChart = new cEfficiencyCounter();
-			thisRecipe.inputs[j].paymentSuccess = machines.recipePaneResourceUpPaymenentSuccess;
+			thisRecipe.inputs[j].recipe = thisRecipe;
 			if (thisRecipe.inputs[j].upgrades)
 			{
+				thisRecipe.inputs[j].upData = thisRecipe.upData;
+				thisRecipe.inputs[j].upDataId = thisRecipe.upData.length;
+				thisRecipe.upData.push(0);
 				var sliderRegion = new cRegion(34, y);
 				thisRecipe.inputs[j].sliderRegion = sliderRegion;
 				sliderRegion.boundaryPath = machines.sliderRegionPath;
@@ -1011,9 +1051,12 @@ function initMachine(title)
 		for (var j = 0; j < thisRecipe.outputs.length; j++)
 		{
 			thisRecipe.outputs[j].pieChart = new cEfficiencyCounter();
-			thisRecipe.outputs[j].paymentSuccess = machines.recipePaneResourceUpPaymenentSuccess;
+			thisRecipe.outputs[j].recipe = thisRecipe;
 			if (thisRecipe.outputs[j].upgrades)
 			{
+				thisRecipe.outputs[j].upData = thisRecipe.upData;
+				thisRecipe.outputs[j].upDataId = thisRecipe.upData.length;
+				thisRecipe.upData.push(0);
 				var sliderRegion = new cRegion(34, y);
 				thisRecipe.outputs[j].sliderRegion = sliderRegion;
 				sliderRegion.boundaryPath = machines.sliderRegionPath;

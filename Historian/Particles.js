@@ -68,14 +68,6 @@ var particleGenerator = {
 		temp = temp[v];
 		temp.amount += amount;
 	},
-	explosionGenerators:
-	{},
-	explosions: [],
-	particles:
-	{},
-
-	machineLinks:
-	{},
 
 	tick: function ()
 	{
@@ -321,6 +313,12 @@ particle.prototype.tick = function ()
 
 function preprocessParticles()
 {
+	particleGenerator.explosionGenerators = {};
+	particleGenerator.explosions = [];
+	particleGenerator.particles = {};
+
+	particleGenerator.machineLinks = {};
+
 	for (var machineOrigin in machineData)
 	{
 		if (!particleGenerator.machineLinks[machineOrigin])
@@ -343,5 +341,3 @@ function preprocessParticles()
 		}
 	}
 }
-
-preprocessParticles();

@@ -309,20 +309,21 @@ var initialData = {
 	}, ],
 }
 
-var data = {
-	aElements: [],
-	oElements:
-	{},
-	oElementsFlow:
-	{},
-	aMachines: [],
-	oMachines:
-	{},
-	elementsKnown:0,
-}
+var data;
 
-function preprocess()
+function preprocessData()
 {
+	data = {
+		aElements: [],
+		oElements:
+		{},
+		oElementsFlow:
+		{},
+		aMachines: [],
+		oMachines:
+		{},
+		elementsKnown: 0,
+	};
 	for (var i = 0; i < initialData.elements.length; i++)
 	{
 		data.oElements[initialData.elements[i]] = {
@@ -333,23 +334,4 @@ function preprocess()
 		data.aElements[i] = data.oElements[initialData.elements[i]];
 		data.oElementsFlow[initialData.elements[i]] = 0;
 	}
-
-	for (var i = 0; i < initialData.machines.length; i++)
-	{
-		data.oMachines[initialData.machines[i].name] = {
-			iTask: 0,
-			working: false,
-			power: initialData.machines[i].power,
-			tasks: initialData.machines[i].tasks,
-			name: initialData.machines[i].name,
-			index: i,
-		};
-		data.aMachines[i] = data.oMachines[initialData.machines[i].name];
-	}
-
-	initialData = null;
 }
-
-var machines = [];
-
-preprocess();

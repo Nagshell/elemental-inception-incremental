@@ -2,9 +2,6 @@ var nullCanvas = document.createElement('canvas');
 var nullCtx = nullCanvas.getContext("2d");
 
 var panes = {
-	list: [],
-	dragndrop: null,
-	lastmousemove: 0,
 	mouseHandler: function (event)
 	{
 		if (event.type == "mousemove")
@@ -338,3 +335,5 @@ cRegion.prototype.addImage = function (path)
 {
 	this.img = images[path];
 };
+
+cRegion.prototype.mouseHandler = function () {};

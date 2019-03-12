@@ -209,136 +209,203 @@ function preprocessRegionData()
 			}
 		}
 	}
+
+	regionData.saveRegion = new cRegion(20, 60);
+	path = new Path2D();
+	path.rect(0, 0, 60, 16);
+	regionData.saveRegion.text = "Save";
+	regionData.saveRegion.textX = 30;
+	regionData.saveRegion.textY = 8;
+	regionData.saveRegion.boundaryPath = path;
+	regionData.saveRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			if (saveCD - s >= 60)
+			{
+				s = saveCD;
+				savingSystem.saveData();
+			}
+		}
+	}
+	regionData.saveRegion.customDraw = function (ctx, pane)
+	{
+		if (saveCD - s <= 60)
+		{
+			ctx.save();
+			ctx.globalAlpha = 1 - (saveCD - s) / 60;
+			ctx.fillStyle = "#646464";
+			ctx.fill(this.boundaryPath);
+			ctx.restore();
+		}
+	}
 }
 preprocessRegionData();
 
-var trackerPane = new cPane(null, 0, 0);
-var path = new Path2D();
-path.rect(0, 0, 800, 99);
-trackerPane.boundaryPath = path;
+var trackerPane;
+var mainPane;
+var paymentPane;
 
-var mainPane = new cPane(null, 0, 100);
-//mainPane.subRegions.push(regionData.resetRegion);
-path = new Path2D();
-path.rect(0, 0, 800, 700);
-mainPane.boundaryPath = path;
-mainPane.customDraw = function (ctx)
+function preprocessPaneData()
 {
-	particleGenerator.draw(ctx);
-	var x = -this.centerX + canvas.width / 2;
-	var y = -this.centerY + canvas.height / 2 - 100;
-	ctx.save();
-	ctx.globalAlpha = Math.min(1, Math.max(0, Math.abs(borderGlowTicks++ % 1000 / 999 - 0.5) * 2)) * 0.75;
-	ctx.lineWidth = 0.4;
-	ctx.shadowBlur = ctx.globalAlpha * 8;
-	ctx.strokeStyle = "#FFFFFF";
-	ctx.shadowColor = "#AF00AF";
-	ctx.beginPath();
-	ctx.moveTo(x, y);
-	var noGlow = true;
-	for (var i = 0; i < this.subRegions.length; i++)
+	panes.list = [];
+	panes.dragndrop = null;
+	panes.lastmousemove = 0;
+
+	trackerPane = new cPane(null, 0, 0);
+	var path = new Path2D();
+	path.rect(0, 0, 800, 99);
+	trackerPane.boundaryPath = path;
+	trackerPane.customDraw = function (ctx)
 	{
-		if (this.subRegions[i].markedToGlow)
+		ctx.save();
+		ctx.textAlign = "left";
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText("Autosave in: " + Math.trunc(s / 3600) + ":" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60), trackerPane.savingX, 50);
+		ctx.restore();
+	}
+	trackerPane.resize = function ()
+	{
+		trackerPane.savingX = canvas.width - 150;
+		regionData.saveRegion.x = trackerPane.savingX + 22;
+	}
+	trackerPane.subRegions.push(regionData.saveRegion);
+
+	path = new Path2D();
+	path.rect(0, 0, 140, 20);
+	var rs = [];
+	for (var i = 0; i < 5; i++)
+	{
+		var r = new cRegion(50 + 160 * i, 40);
+		r.text = "Disabled";
+		r.textX = 70;
+		r.textY = 10;
+		r.boundaryPath = path;
+		trackerPane.subRegions.push(r);
+		rs.push(r);
+	}
+	rs[0].text = "Machines - Current";
+	rs[1].text = "Lore - Disabled";
+	rs[2].text = "Redacted & Disabled";
+	rs[3].text = "Redacted & Disabled";
+	rs[4].text = "Options - Disabled";
+
+	mainPane = new cPane(null, 0, 100);
+	//mainPane.subRegions.push(regionData.resetRegion);
+	path = new Path2D();
+	path.rect(0, 0, 800, 700);
+	mainPane.boundaryPath = path;
+	mainPane.customDraw = function (ctx)
+	{
+		particleGenerator.draw(ctx);
+		var x = -this.centerX + canvas.width / 2;
+		var y = -this.centerY + canvas.height / 2 - 100;
+		ctx.save();
+		ctx.globalAlpha = Math.min(1, Math.max(0, Math.abs(borderGlowTicks++ % 1000 / 999 - 0.5) * 2)) * 0.75;
+		ctx.lineWidth = 0.4;
+		ctx.shadowBlur = ctx.globalAlpha * 8;
+		ctx.strokeStyle = "#FFFFFF";
+		ctx.shadowColor = "#AF00AF";
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+		var noGlow = true;
+		for (var i = 0; i < this.subRegions.length; i++)
 		{
-			ctx.lineTo(this.subRegions[i].x, this.subRegions[i].y);
+			if (this.subRegions[i].markedToGlow)
+			{
+				ctx.lineTo(this.subRegions[i].x, this.subRegions[i].y);
+				ctx.moveTo(x, y);
+				noGlow = false;
+			}
+		}
+		if (noGlow && x * x + y * y > 10000 * data.elementsKnown * data.elementsKnown)
+		{
+			ctx.lineTo(0, 0);
 			ctx.moveTo(x, y);
 			noGlow = false;
 		}
-	}
-	if (noGlow && x * x + y * y > 10000 * data.elementsKnown * data.elementsKnown)
-	{
-		ctx.lineTo(0, 0);
-		ctx.moveTo(x, y);
-		noGlow = false;
-	}
-	if (!noGlow)
-	{
-		ctx.moveTo(x + 5, y);
-		ctx.arc(x, y, 5, 0, Math.PI * 2);
-		ctx.moveTo(x + 10, y);
-		ctx.arc(x, y, 10, 0, Math.PI * 2);
-		ctx.moveTo(x + 15, y);
-		ctx.arc(x, y, 15, 0, Math.PI * 2);
-		ctx.stroke();
-	}
-	ctx.restore();
-}
-
-trackerPane.customDraw = function (ctx)
-{
-	return;
-	ctx.save();
-	ctx.fillStyle = ctx.strokeStyle;
-	ctx.restore();
-}
-
-path = new Path2D();
-path.rect(0, 0, 306, 83);
-var paymentPane = new cPane(mainPane, 300, 0);
-paymentPane.boundaryPath = path;
-paymentPane.subRegions.push(regionData.hideRegion);
-paymentPane.subRegions.push(regionData.confirmRegion);
-paymentPane.subRegions.push(regionData.cancelRegion);
-paymentPane.subRegions.push(regionData.dragRegion);
-paymentPane.customDraw = function (ctx)
-{
-	ctx.save();
-	ctx.fillStyle = ctx.strokeStyle;
-	if (this.costs)
-	{
-		for (var i = 0; i < this.costs.length; i++)
+		if (!noGlow)
 		{
-			if (data.oElements[this.costs[i].type].known)
+			ctx.moveTo(x + 5, y);
+			ctx.arc(x, y, 5, 0, Math.PI * 2);
+			ctx.moveTo(x + 10, y);
+			ctx.arc(x, y, 10, 0, Math.PI * 2);
+			ctx.moveTo(x + 15, y);
+			ctx.arc(x, y, 15, 0, Math.PI * 2);
+			ctx.stroke();
+		}
+		ctx.restore();
+	}
+
+	path = new Path2D();
+	path.rect(0, 0, 306, 83);
+
+	paymentPane = new cPane(mainPane, 300, 0);
+	paymentPane.boundaryPath = path;
+	paymentPane.subRegions.push(regionData.hideRegion);
+	paymentPane.subRegions.push(regionData.confirmRegion);
+	paymentPane.subRegions.push(regionData.cancelRegion);
+	paymentPane.subRegions.push(regionData.dragRegion);
+	paymentPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		if (this.costs)
+		{
+			for (var i = 0; i < this.costs.length; i++)
 			{
-				ctx.fillText(this.costs[i].type, 120, 8);
-				drawNumber(ctx, data.oElements[this.costs[i].type].amount, 220, 8, elementalDisplayType[this.costs[i].type], "right");
-				ctx.fillText("/", 230, 8);
-				drawNumber(ctx, this.costs[i].amount, 236, 8, elementalDisplayType[this.costs[i].type]);
-			}
-			else
-			{
-				if (this.costs[i].amount > 0)
+				if (data.oElements[this.costs[i].type].known)
 				{
-					ctx.fillText("???", 120, 8);
+					ctx.fillText(this.costs[i].type, 120, 8);
+					drawNumber(ctx, data.oElements[this.costs[i].type].amount, 220, 8, elementalDisplayType[this.costs[i].type], "right");
+					ctx.fillText("/", 230, 8);
+					drawNumber(ctx, this.costs[i].amount, 236, 8, elementalDisplayType[this.costs[i].type]);
 				}
 				else
 				{
-					ctx.fillText("Freebie!", 120, 8);
+					if (this.costs[i].amount > 0)
+					{
+						ctx.fillText("???", 120, 8);
+					}
+					else
+					{
+						ctx.fillText("Freebie!", 120, 8);
+					}
+
 				}
 
+				ctx.translate(0, 17);
 			}
+		}
+		else
+		{
+			regionData.hideRegion.action(this);
+		}
+		ctx.restore();
+	}
+	paymentPane.preparePayment = function (costs, x, y, offsetPane, target)
+	{
+		this.costs = costs;
+		this.target = target;
+		regionData.showRegion.action(this);
 
-			ctx.translate(0, 17);
+		this.x = x + 17;
+		this.y = y + 17;
+		while (offsetPane.top !== null)
+		{
+			this.x += offsetPane.x;
+			this.y += offsetPane.y;
+			offsetPane = offsetPane.top;
 		}
 	}
-	else
+	paymentPane.isAffordable = function (costs)
 	{
-		regionData.hideRegion.action(this);
+		var possible = true;
+		for (var i = 0; i < costs.length; i++)
+		{
+			possible = possible && (data.oElements[costs[i].type].amount >= costs[i].amount);
+		}
+		return possible;
 	}
-	ctx.restore();
+	regionData.hideRegion.action(paymentPane);
 }
-paymentPane.preparePayment = function (costs, x, y, offsetPane, target)
-{
-	this.costs = costs;
-	this.target = target;
-	regionData.showRegion.action(this);
-
-	this.x = x + 17;
-	this.y = y + 17;
-	while (offsetPane.top !== null)
-	{
-		this.x += offsetPane.x;
-		this.y += offsetPane.y;
-		offsetPane = offsetPane.top;
-	}
-}
-paymentPane.isAffordable = function (costs)
-{
-	var possible = true;
-	for (var i = 0; i < costs.length; i++)
-	{
-		possible = possible && (data.oElements[costs[i].type].amount >= costs[i].amount);
-	}
-	return possible;
-}
-regionData.hideRegion.action(paymentPane);

@@ -4,11 +4,17 @@ var chartColors = {
 	full: "#A8A8A8",
 	empty: "#282828",
 };
-var machineData = prepareTemplatedMachineData();
+var machineData;
 var machineDisplayElements = {};
 
 function preprocessMachinesData()
 {
+	machines.list = [];
+	machines.dataTranslator = [];
+
+	machines.glowCheckCD = 0;
+
+	machineData = prepareTemplatedMachineData();
 	var infuser = machineData["Golem Infuser"];
 	infuser.displayRegionSwapCD = 128;
 	infuser.displayRegionCurrentGolem = -1;
@@ -90,8 +96,11 @@ function preprocessMachinesData()
 		ctx.restore();
 	}
 
+	var count = 0;
 	for (var title in machineData)
 	{
+		machineData[title].translatedID = count++;
+		machines.dataTranslator.push(title);
 		initMachine(title);
 		if (machineData[title].displayElement)
 		{
@@ -121,19 +130,17 @@ function preprocessMachinesData()
 			this.regularDraw(ctx);
 			ctx.save();
 			ctx.fillStyle = ctx.strokeStyle;
-			ctx.fillText("E",175,25);
-			drawNumber(ctx,data.oElements.GolemEarth.amount,185,25);
-			ctx.fillText("W",175,42);
-			drawNumber(ctx,data.oElements.GolemWater.amount,185,42);
-			ctx.fillText("A",175,59);
-			drawNumber(ctx,data.oElements.GolemAir.amount,185,59);
-			ctx.fillText("F",175,76);
-			drawNumber(ctx,data.oElements.GolemFire.amount,185,76);
-			
+			ctx.fillText("E", 175, 25);
+			drawNumber(ctx, data.oElements.GolemEarth.amount, 185, 25);
+			ctx.fillText("W", 175, 42);
+			drawNumber(ctx, data.oElements.GolemWater.amount, 185, 42);
+			ctx.fillText("A", 175, 59);
+			drawNumber(ctx, data.oElements.GolemAir.amount, 185, 59);
+			ctx.fillText("F", 175, 76);
+			drawNumber(ctx, data.oElements.GolemFire.amount, 185, 76);
+
 			ctx.restore();
-			
-			
+
 		}
 	}
 }
-preprocessMachinesData();
