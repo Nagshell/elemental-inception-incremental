@@ -6,7 +6,7 @@ var machines = {
 	{
 		if (this.glowCheckCD-- <= 0)
 		{
-			this.glowCheckCD = 60;
+			this.glowCheckCD = 15;
 			var mainGlow = false;
 			for (var i = 0; i < this.list.length; i++)
 			{
@@ -130,35 +130,35 @@ var machines = {
 		{
 			if (data.oElements[this.displayElement].amount > 1e255)
 			{
-				this.displayStep = Math.min(0.09, this.displayStep);
+				this.displayStep = Math.min(0.03, this.displayStep);
 			}
 			else if (data.oElements[this.displayElement].amount > 1e127)
 			{
-				this.displayStep = Math.min(0.125, this.displayStep);
+				this.displayStep = Math.min(0.06, this.displayStep);
 			}
 			else if (data.oElements[this.displayElement].amount > 1e63)
 			{
-				this.displayStep = Math.min(0.25, this.displayStep);
+				this.displayStep = Math.min(0.125, this.displayStep);
 			}
 			else if (data.oElements[this.displayElement].amount > 1e31)
 			{
-				this.displayStep = Math.min(0.5, this.displayStep);
+				this.displayStep = Math.min(0.25, this.displayStep);
 			}
 			else if (data.oElements[this.displayElement].amount > 1e15)
 			{
-				this.displayStep = Math.min(1, this.displayStep);
+				this.displayStep = Math.min(0.5, this.displayStep);
 			}
 			else if (data.oElements[this.displayElement].amount > 1e7)
 			{
-				this.displayStep = Math.min(2, this.displayStep);
+				this.displayStep = Math.min(1, this.displayStep);
 			}
 			else if (data.oElements[this.displayElement].amount > 1e3)
 			{
-				this.displayStep = Math.min(4, this.displayStep);
+				this.displayStep = Math.min(2, this.displayStep);
 			}
 			else if (data.oElements[this.displayElement].amount > 1e1)
 			{
-				this.displayStep = Math.min(8, this.displayStep);
+				this.displayStep = Math.min(4, this.displayStep);
 			}
 		}
 		for (var i = 0; i < this.recipes.length; i++)
@@ -222,18 +222,18 @@ var machines = {
 				for (var j = 0; j < temp.inputs.length; j++)
 				{
 					data.oElementsFlow[temp.inputs[j].type] -= amount * temp.inputs[j].ratio;
-					particleGenerator.machineFlow(machineDisplayElements[temp.inputs[j].type], this.title, temp.inputs[j].type, amount * temp.inputs[j].ratio);
+					particleGenerator.machineFlow(machineDisplayElements[temp.inputs[j].type], this.id, temp.inputs[j].type, amount * temp.inputs[j].ratio);
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
 					var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.4) - data.oElements[temp.outputs[j].type].amount;
 					data.oElementsFlow[temp.outputs[j].type] += flow;
-					if (this.title != "Golem Infuser")
-						particleGenerator.machineFlow(this.title, machineDisplayElements[temp.outputs[j].type], temp.outputs[j].type, flow);
+					if (this.id != "golemInfuser")
+						particleGenerator.machineFlow(this.id, machineDisplayElements[temp.outputs[j].type], temp.outputs[j].type, flow);
 				}
-				if (this.title == "Golem Infuser")
+				if (this.id == "golemInfuser")
 				{
-					particleGenerator.explosion(this.title, 1, temp.outputs[0].type, 600, Math.pow(10, temp.outputs[0].ratio));
+					particleGenerator.explosion(this.id, 1, temp.outputs[0].type, 600, Math.pow(10, temp.outputs[0].ratio));
 				}
 			}
 		}
@@ -253,6 +253,14 @@ var machines = {
 	displayRegionRegularDraw: function (ctx, pane)
 	{
 		ctx.save();
+		if (images[this.machine.id])
+		{
+			ctx.drawImage(images[this.machine.id], -32, -32);
+		}
+		else
+		{
+			ctx.drawImage(images.machineBase, -32, -32);
+		}
 
 		if (this.machine.displayElement)
 		{
@@ -262,18 +270,18 @@ var machines = {
 			var amount = data.oElements[this.machine.displayElement].amount;
 			if (amount > 0.0)
 			{
-				var radius = 1;
+				var radius = 0;
 				while (amount > 1)
 				{
 					radius += this.machine.displayStep;
 					amount /= 10;
 				}
 
-				radius = Math.min(radius, 32);
+				radius = Math.min(radius, 16);
 
 				if (this.machine.displayStep >= 1)
 				{
-					for (var rad2 = Math.min(radius + this.machine.displayStep * Math.trunc(Math.max(3, 10 / this.machine.displayStep)), 32); rad2 > radius; rad2 -= this.machine.displayStep)
+					for (var rad2 = Math.min(radius + this.machine.displayStep * Math.trunc(Math.max(3, 10 / this.machine.displayStep)), 16); rad2 > radius; rad2 -= this.machine.displayStep)
 					{
 						ctx.beginPath();
 						ctx.arc(0, 0, rad2, 0, Math.PI * 2);
@@ -399,8 +407,8 @@ var machines = {
 			ctx.fillStyle = ctx.strokeStyle;
 			if (turnedOn)
 			{
-				ctx.fillText("Efficiency", 50, 140);
-				ctx.fillText("Charts", 50, 157);
+				ctx.fillText(locale.efficiency, 50, 140);
+				ctx.fillText(locale.charts, 50, 157);
 			}
 
 			if (this.machine.displayElement)
@@ -563,7 +571,7 @@ var machines = {
 		var y = 30;
 		if (this.recipe.inputs.length > 0)
 		{
-			ctx.fillText("Inputs", 15, y);
+			ctx.fillText(locale.inputs, 15, y);
 		}
 		y += 22;
 		for (var i = 0; i < this.recipe.inputs.length; i++)
@@ -627,7 +635,7 @@ var machines = {
 		}
 		if (this.recipe.outputs.length > 0)
 		{
-			ctx.fillText("Outputs", 15, y);
+			ctx.fillText(locale.outputs, 15, y);
 		}
 		y += 22;
 		for (var i = 0; i < this.recipe.outputs.length; i++)
@@ -690,7 +698,7 @@ var machines = {
 			ctx.restore();
 			y += 22;
 		}
-		ctx.fillText("Efficiency " + this.recipe.efficiency * 100 + "%", 15, y);
+		ctx.fillText(locale.efficiency + " " + Math.trunc(this.recipe.efficiency * 10000) / 100 + "%", 15, y);
 		y += 22;
 
 		ctx.restore();
@@ -870,7 +878,8 @@ function initMachine(title)
 	thisData.tick = machines.machineTick;
 	thisData.upgradeTick = machines.upgradeTick;
 	thisData.upgradeRecipe = machines.upgradeRecipe;
-	thisData.title = title;
+	thisData.id = title;
+	thisData.title = locale.oMachines[title];
 	thisData.currentRecipes = [];
 
 	thisData.region = new cRegion(thisData.x, thisData.y);
@@ -905,7 +914,7 @@ function initMachine(title)
 	thisData.pane.subRegionsMin.push(regionData.hideRegion);
 	thisData.pane.subRegionsMin.push(regionData.draggableTitleRegionShifted);
 	thisData.pane.subRegionsMin.push(machines.machinePauseRegionMin);
-	thisData.pane.title = title;
+	thisData.pane.title = thisData.title;
 	if (thisData.paneCustomDraw)
 	{
 		thisData.pane.customDraw = thisData.paneCustomDraw;
@@ -920,7 +929,7 @@ function initMachine(title)
 	thisData.pane.subRegions.push(machines.recipeSelectorRegion);
 
 	thisData.pane.recipeSelectorPane = new cPane(thisData.pane, 87, 17);
-	thisData.pane.recipeSelectorPane.title = "Recipes";
+	thisData.pane.recipeSelectorPane.title = locale.recipes;
 	thisData.pane.recipeSelectorPane.boundaryPath = new Path2D();
 	thisData.pane.recipeSelectorPane.boundaryPath.rect(0, 0, 275, 16 + 17 * thisData.recipes.length);
 	thisData.pane.recipeSelectorPane.subRegions.push(regionData.dragRegion);

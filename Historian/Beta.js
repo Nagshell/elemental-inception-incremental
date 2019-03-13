@@ -65,6 +65,11 @@ var savingSystem = {
 	},
 	loadData: function ()
 	{
+		if (!initialData || !machines || !machineDisplayElements || !panes || !regionData || !canvas || !particleGenerator || !images)
+		{
+			alert("Game data did not load properly. Please try refreshing the page or contact me if problem persists.");
+			return;
+		}
 		this.reloadData();
 		dataToLoad = JSON.parse(localStorage.getItem("saveData"));
 
@@ -172,6 +177,9 @@ var savingSystem = {
 		{
 			loopId = requestAnimationFrame(loop);
 		}
+		c = 7201;
+		saveCD = 540;
+		s = saveCD / 2;
 	},
 	toConsole: function ()
 	{
@@ -179,22 +187,30 @@ var savingSystem = {
 	},
 	load: function (data)
 	{
-		if (confirm("Loading from exchange string is experimental feature. Providing incorrect string can break the game. Use savingSystem.hardReset() in case of troubles."))
+		if (confirm(locale.exchangeStringLoad))
 		{
 			localStorage.setItem("saveData", atob(data));
 			this.loadData();
 		}
 	},
+	initiateLoad: function ()
+	{
+		this.attemptedPaste = 1800;
+	},
 	hardReset: function ()
 	{
-		this.reloadData();
-		this.saveData();
-	}
+		if (confirm(locale.hardReset))
+		{
+			this.reloadData();
+			this.saveData();
+		}
+	},
+	attemptedPaste: 0,
 }
 
-var c = 7201;
-var saveCD = 540;
-var s = saveCD / 2;
+var c;
+var saveCD;
+var s;
 
 function tick()
 {
@@ -213,7 +229,7 @@ function tick()
 		data.oElementsFlow[element] = 0;
 	}
 
-	if (data.oElements.Alkahest.amount >= 42)
+	if (data.oElements.Alkahest.amount >= 42 || c < 7201)
 	{
 		c -= 1;
 	}
@@ -223,11 +239,11 @@ function tick()
 	}
 	else if (c == 3600)
 	{
-		particleGenerator.explosions.push(new cExplosion(0, 0, 1, elementalColors["Alkahest"][2], elementalColors["Alkahest"][2], 7200, 1e10));
+		particleGenerator.explosions.push(new cExplosion(0, 0, 2, elementalColors["Alkahest"][2], elementalColors["Alkahest"][2], 7200, 1e10));
 	}
 	else if (c == 1800)
 	{
-		particleGenerator.explosions.push(new cExplosion(0, 0, 1, elementalColors["Alkahest"][3], elementalColors["Alkahest"][3], 7200, 1e10));
+		particleGenerator.explosions.push(new cExplosion(0, 0, 4, elementalColors["Alkahest"][3], elementalColors["Alkahest"][3], 7200, 1e10));
 	}
 	else if (c > 1280 && c < 7200 && c % 256 == 0)
 	{
@@ -263,13 +279,13 @@ function tick()
 				machineData[i].recipes[j].enabled = false;
 			}
 		}
-		particleGenerator.explosions.push(new cExplosion(0, 0, 1, elementalColors["Alkahest"][0], elementalColors["Alkahest"][0], 7200, 1e10));
+		particleGenerator.explosions.push(new cExplosion(0, 0, 10, elementalColors["Alkahest"][0], elementalColors["Alkahest"][0], 7200, 1e20));
 	}
 }
 
 function testPaste(event)
 {
-	if (savingSystem.attemptedPaste)
+	if (savingSystem.attemptedPaste > 0)
 	{
 		navigator.clipboard.readText().then(
 			clipText => console.log(clipText));
@@ -299,6 +315,10 @@ function loop(timestamp)
 	{
 		s = saveCD;
 		savingSystem.saveData();
+	}
+	if (savingSystem.attemptedPaste > 0)
+	{
+		savingSystem.attemptedPaste--;
 	}
 	draw();
 	loopId = requestAnimationFrame(loop);

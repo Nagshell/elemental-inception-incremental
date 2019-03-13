@@ -15,7 +15,7 @@ var particleGenerator = {
 			var r = 80;
 			var v = -0.3;
 			var vol = volume;
-			if (machineTarget == "Nexus of Unification")
+			if (machineTarget == "machineNexus")
 			{
 				v *= 5;
 				r *= 10;
@@ -61,7 +61,7 @@ var particleGenerator = {
 			temp[v] = {
 				amount: 0,
 				cd: 0,
-				cdMax: 40,
+				cdMax: 60,
 				lifespan: lifespan,
 			};
 		}
@@ -110,7 +110,7 @@ var particleGenerator = {
 							}
 
 							temp.volumes[color].cd = cdMax * (1 + Math.random());
-							this.particles[color].push(new particle(machineData[origin].region.x, machineData[origin].region.y, target, Math.min(5, Math.log2(1 + Math.max(1, temp.volumes[color].amount / 30))) / 2, 600));
+							this.particles[color].push(new particle(machineData[origin].region.x, machineData[origin].region.y, target, Math.min(5, Math.log2(1 + Math.max(1, temp.volumes[color].amount / 30))) / 2, 6000));
 							temp.volumes[color].amount = 0;
 						}
 					}
@@ -170,8 +170,13 @@ var particleGenerator = {
 					if (temp3.amount > 0 && temp3.cd-- <= 0)
 					{
 
-						temp3.cd = temp3.cdMax * (1 + Math.random());
-						this.explosions.push(new cExplosion(t1.x, t1.y, 1 * v, elementalColors[type][3], elementalColors[type][3], temp3.lifespan, Math.max(0.1, temp3.amount)));
+						temp3.cd = temp3.cdMax;
+						var delay = 0;
+						if (target == "golemInfuser")
+						{
+							delay += Math.random() * 8;
+						}
+						this.explosions.push(new cExplosion(t1.x, t1.y, 1 * v, elementalColors[type][3], elementalColors[type][3], temp3.lifespan, Math.max(0.1, temp3.amount), delay));
 						temp3.amount = 0;
 					}
 				}
@@ -244,7 +249,7 @@ var particleGenerator = {
 	},
 };
 
-function cExplosion(x, y, v, color1, color2, lifespan, amount)
+function cExplosion(x, y, v, color1, color2, lifespan, amount, delay = 0)
 {
 
 	this.x = x;
@@ -257,7 +262,7 @@ function cExplosion(x, y, v, color1, color2, lifespan, amount)
 	}
 	else
 	{
-		this.r = -Math.trunc(Math.random() * 15) * 1;
+		this.r = -delay;
 		this.lifespan = lifespan * 1;
 	}
 	this.color1 = color1;

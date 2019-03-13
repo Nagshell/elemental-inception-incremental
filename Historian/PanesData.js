@@ -2,24 +2,9 @@ var regionData = {};
 
 function preprocessRegionData()
 {
-	regionData.resetRegion = new cRegion(750, 0);
-	var path = new Path2D();
-	path.rect(0, 0, 50, 50);
-	regionData.resetRegion.boundaryPath = path;
-	regionData.resetRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			panes.resetPositions();
-		}
-	}
-	regionData.resetRegion.text = "Unhide";
-	regionData.resetRegion.textX = 25;
-	regionData.resetRegion.textY = 25;
-
 	regionData.dragRegion = new cRegion(0, 0);
 	regionData.dragRegion.addImage("iconDrag");
-	path = new Path2D();
+	var path = new Path2D();
 	path.rect(0, 0, 16, 16);
 	regionData.dragRegion.boundaryPath = path;
 	regionData.dragRegion.mouseHandler = function (pane, x, y, type)
@@ -210,10 +195,10 @@ function preprocessRegionData()
 		}
 	}
 
-	regionData.saveRegion = new cRegion(20, 60);
+	regionData.saveRegion = new cRegion(20, 58);
 	path = new Path2D();
 	path.rect(0, 0, 60, 16);
-	regionData.saveRegion.text = "Save";
+	regionData.saveRegion.text = locale.save;
 	regionData.saveRegion.textX = 30;
 	regionData.saveRegion.textY = 8;
 	regionData.saveRegion.boundaryPath = path;
@@ -239,6 +224,21 @@ function preprocessRegionData()
 			ctx.restore();
 		}
 	}
+
+	regionData.resetRegion = new cRegion(20, 25);
+	path = new Path2D();
+	path.rect(0, 0, 80, 16);
+	regionData.resetRegion.text = locale.reset;
+	regionData.resetRegion.textX = 40;
+	regionData.resetRegion.textY = 8;
+	regionData.resetRegion.boundaryPath = path;
+	regionData.resetRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			savingSystem.hardReset();
+		}
+	}
 }
 preprocessRegionData();
 
@@ -261,15 +261,17 @@ function preprocessPaneData()
 		ctx.save();
 		ctx.textAlign = "left";
 		ctx.fillStyle = ctx.strokeStyle;
-		ctx.fillText("Autosave in: " + Math.trunc(s / 3600) + ":" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60), trackerPane.savingX, 50);
+		ctx.fillText(locale.autosave + ": " + Math.trunc(s / 3600) + ":" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60), trackerPane.savingX, 50);
 		ctx.restore();
 	}
 	trackerPane.resize = function ()
 	{
 		trackerPane.savingX = canvas.width - 150;
 		regionData.saveRegion.x = trackerPane.savingX + 22;
+		regionData.resetRegion.x = trackerPane.savingX + 12;
 	}
 	trackerPane.subRegions.push(regionData.saveRegion);
+	trackerPane.subRegions.push(regionData.resetRegion);
 
 	path = new Path2D();
 	path.rect(0, 0, 140, 20);
@@ -277,26 +279,37 @@ function preprocessPaneData()
 	for (var i = 0; i < 5; i++)
 	{
 		var r = new cRegion(50 + 160 * i, 40);
-		r.text = "Disabled";
+		r.text = locale.aTabNames[i];
 		r.textX = 70;
 		r.textY = 10;
 		r.boundaryPath = path;
 		trackerPane.subRegions.push(r);
 		rs.push(r);
 	}
-	rs[0].text = "Machines - Current";
-	rs[1].text = "Lore - Disabled";
-	rs[2].text = "Redacted & Disabled";
-	rs[3].text = "Redacted & Disabled";
-	rs[4].text = "Options - Disabled";
 
 	mainPane = new cPane(null, 0, 100);
-	//mainPane.subRegions.push(regionData.resetRegion);
 	path = new Path2D();
 	path.rect(0, 0, 800, 700);
 	mainPane.boundaryPath = path;
 	mainPane.customDraw = function (ctx)
 	{
+		if (machineData.machineNexus.recipes[1].enabled)
+		{
+			ctx.drawImage(images.mainBackground4, -400, -400);
+		}
+		else if (machineData.machineVoid.recipes[0].enabled)
+		{
+			ctx.drawImage(images.mainBackground3, -400, -400);
+		}
+		else if (machineData.golemMerger.recipes[0].enabled)
+		{
+			ctx.drawImage(images.mainBackground2, -400, -400);
+		}
+		else
+		{
+			ctx.drawImage(images.mainBackground1, -400, -400);
+		}
+
 		particleGenerator.draw(ctx);
 		var x = -this.centerX + canvas.width / 2;
 		var y = -this.centerY + canvas.height / 2 - 100;
@@ -322,6 +335,7 @@ function preprocessPaneData()
 		{
 			ctx.lineTo(0, 0);
 			ctx.moveTo(x, y);
+			ctx.shadowColor = "#00AFAF";
 			noGlow = false;
 		}
 		if (!noGlow)
@@ -337,10 +351,9 @@ function preprocessPaneData()
 		ctx.restore();
 	}
 
+	paymentPane = new cPane(mainPane, 300, 0);
 	path = new Path2D();
 	path.rect(0, 0, 306, 83);
-
-	paymentPane = new cPane(mainPane, 300, 0);
 	paymentPane.boundaryPath = path;
 	paymentPane.subRegions.push(regionData.hideRegion);
 	paymentPane.subRegions.push(regionData.confirmRegion);
@@ -369,7 +382,7 @@ function preprocessPaneData()
 					}
 					else
 					{
-						ctx.fillText("Freebie!", 120, 8);
+						ctx.fillText(locale.free, 120, 8);
 					}
 
 				}

@@ -15,7 +15,7 @@ function preprocessMachinesData()
 	machines.glowCheckCD = 0;
 
 	machineData = prepareTemplatedMachineData();
-	var infuser = machineData["Golem Infuser"];
+	var infuser = machineData.golemInfuser;
 	infuser.displayRegionSwapCD = 128;
 	infuser.displayRegionCurrentGolem = -1;
 	infuser.displayRegionNextGolem = -1;
@@ -87,7 +87,7 @@ function preprocessMachinesData()
 			}
 		}
 	}
-	var merger = machineData["Golem Merger"];
+	var merger = machineData.golemMerger;
 	merger.displayRegionCustomDraw = function (ctx)
 	{
 		ctx.save();
@@ -107,10 +107,10 @@ function preprocessMachinesData()
 			machineDisplayElements[machineData[title].displayElement] = title;
 		}
 	}
-	machineDisplayElements["GolemEarth"] = "Golem Infuser";
-	machineDisplayElements["GolemWater"] = "Golem Infuser";
-	machineDisplayElements["GolemAir"] = "Golem Infuser";
-	machineDisplayElements["GolemFire"] = "Golem Infuser";
+	machineDisplayElements.GolemEarth = "golemInfuser";
+	machineDisplayElements.GolemWater = "golemInfuser";
+	machineDisplayElements.GolemAir = "golemInfuser";
+	machineDisplayElements.GolemFire = "golemInfuser";
 
 	infuser.pane.regularDraw = infuser.pane.customDraw;
 	infuser.pane.customDraw = function (ctx)
@@ -130,13 +130,13 @@ function preprocessMachinesData()
 			this.regularDraw(ctx);
 			ctx.save();
 			ctx.fillStyle = ctx.strokeStyle;
-			ctx.fillText("E", 175, 25);
+			ctx.fillText(locale.oGolemShorthand.GolemEarth, 175, 25);
 			drawNumber(ctx, data.oElements.GolemEarth.amount, 185, 25);
-			ctx.fillText("W", 175, 42);
+			ctx.fillText(locale.oGolemShorthand.GolemWater, 175, 42);
 			drawNumber(ctx, data.oElements.GolemWater.amount, 185, 42);
-			ctx.fillText("A", 175, 59);
+			ctx.fillText(locale.oGolemShorthand.GolemAir, 175, 59);
 			drawNumber(ctx, data.oElements.GolemAir.amount, 185, 59);
-			ctx.fillText("F", 175, 76);
+			ctx.fillText(locale.oGolemShorthand.GolemFire, 175, 76);
 			drawNumber(ctx, data.oElements.GolemFire.amount, 185, 76);
 
 			ctx.restore();

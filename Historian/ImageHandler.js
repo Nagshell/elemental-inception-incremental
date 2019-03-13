@@ -1,6 +1,4 @@
-var images = {
-
-}
+var images = {};
 
 function preprocessImages()
 {
@@ -38,6 +36,23 @@ function preprocessImages()
 		"buttonConfirm",
 		"buttonConfirmCrossed",
 		"buttonCancel",
+		"machineBase",
+		"machineEarth",
+		"machineWater",
+		"machineAir",
+		"machineFire",
+		"machineMud",
+		"machineIce",
+		"machineSteam",
+		"machineMagma",
+		"machineSand",
+
+		"machineVoid",
+		"machineNexus",
+		"mainBackground1",
+		"mainBackground2",
+		"mainBackground3",
+		"mainBackground4",
 	];
 	for (var i = 0; i < imageList.length; i++)
 	{

@@ -3,10 +3,16 @@ function canvasMouseHandler(event)
 	panes.mouseHandler(event);
 }
 
+function canvasKeyHandler(event)
+{
+	console.log("huh " + event.code);
+}
+
 document.addEventListener("mousemove", canvasMouseHandler);
 document.addEventListener("mousedown", canvasMouseHandler);
 document.addEventListener("mouseup", canvasMouseHandler);
 document.addEventListener("click", canvasMouseHandler);
+document.addEventListener("keydown", canvasKeyHandler);
 
 var canvas = document.getElementById("canvasMain");
 var ctxActive = canvas.getContext("2d");
