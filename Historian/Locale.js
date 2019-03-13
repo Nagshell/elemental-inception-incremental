@@ -10,12 +10,17 @@ var locale = {
 	save: "Save",
 	autosave: "Autosave in",
 	free: "Freebie!",
+	recipeType: "Type",
+	recipeTypeScaling: "Scaling",
+	recipeTypeFixed: "Fixed",
+	page: "Page",
+	outOf: "out of",
 
 	aTabNames: [
-		"Machines - Current",
+		"Machine Map",
 		"Lore - Disabled",
 		"Redacted & Disabled",
-		"Redacted & Disabled",
+		"Educational Corner",
 		"Options - Disabled"
 	],
 	oMachines:

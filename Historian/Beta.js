@@ -1,5 +1,5 @@
 var loopId = null;
-var gameVersion = 1;
+var gameVersion = 2;
 var savingSystem = {
 	saveData: function ()
 	{
@@ -43,6 +43,10 @@ var savingSystem = {
 							recipeData[0]++;
 						}
 					}
+					for (var k = 1; k < recipeData.length; k++)
+					{
+						recipeData[k]--;
+					}
 					while (recipeData.length > 0 && recipeData[recipeData.length - 1] == 0)
 					{
 						recipeData.length--;
@@ -77,7 +81,8 @@ var savingSystem = {
 		{
 			if (gameVersion != dataToLoad[0])
 			{
-				alert("Game has beed updated.");
+				alert("Game has beed updated. There is high chance previous save could not work properly. If that's the case, please consider hard resetting.");
+				dataToLoad = versionMigrator(dataToLoad);
 			}
 			var z = 0;
 			var eCount = 0;
@@ -125,6 +130,7 @@ var savingSystem = {
 						var slider = null;
 						for (var j = 1; j < rec.length; j++)
 						{
+							rec[j]++;
 							while (searchNext)
 							{
 								if (iCount < recipe.inputs.length)
@@ -152,10 +158,12 @@ var savingSystem = {
 									}
 								}
 							}
-							while (rec[j]-- > 0)
+							while (rec[j] > 2)
 							{
 								slider.paymentSuccess();
+								rec[j] -= 3;
 							}
+							slider.mouseHandler(null, slider.target.sliderRegion.x + 10 + 35 * (rec[j]), 0, "mouseup");
 							iCount++;
 							searchNext = true;
 						}
@@ -164,6 +172,7 @@ var savingSystem = {
 			}
 			machines.glowCheckCD = 0;
 			machines.glowCheck();
+			educationalPane.region.superGlow = !machineData.golemInfuser.recipes[0].unlocked;
 		}
 	},
 	reloadData: function ()
@@ -271,13 +280,6 @@ function tick()
 		for (var i = 0; i < data.aElements.length; i++)
 		{
 			data.aElements[i].amount = 0;
-		}
-		for (var i = 0; i < machineData.length; i++)
-		{
-			for (var j = 0; j < machineData[i].recipes.length; j++)
-			{
-				machineData[i].recipes[j].enabled = false;
-			}
 		}
 		particleGenerator.explosions.push(new cExplosion(0, 0, 10, elementalColors["Alkahest"][0], elementalColors["Alkahest"][0], 7200, 1e20));
 	}

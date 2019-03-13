@@ -5,7 +5,7 @@ function canvasMouseHandler(event)
 
 function canvasKeyHandler(event)
 {
-	console.log("huh " + event.code);
+	panes.keyHandler(event);
 }
 
 document.addEventListener("mousemove", canvasMouseHandler);
@@ -32,6 +32,9 @@ function resizeCanvas()
 	path = new Path2D();
 	path.rect(0, 0, canvas.width, canvas.height - 100);
 	mainPane.boundaryPath = path;
+	path = new Path2D();
+	path.rect(0, 0, canvas.width, canvas.height);
+	panes.mainBoundary = path;
 	if (mainPane.centerX)
 	{
 		mainPane.centerX += Math.trunc(canvas.width / 2);

@@ -133,7 +133,7 @@ function preprocessData()
 			type: initialData.elements[i],
 			index: i,
 		};
-		data.aElements[i] = data.oElements[initialData.elements[i]];
+		data.aElements.push(data.oElements[initialData.elements[i]]);
 		data.oElementsFlow[initialData.elements[i]] = 0;
 	}
 }

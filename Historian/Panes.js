@@ -2,6 +2,55 @@ var nullCanvas = document.createElement('canvas');
 var nullCtx = nullCanvas.getContext("2d");
 
 var panes = {
+	dragMove: function (dx, dy)
+	{
+		if (!panes.dragndrop)
+			return;
+		var top = panes.dragndrop.top;
+		var x = 10 + top.x + panes.dragndrop.x;
+		var y = 10 + top.y + panes.dragndrop.y;
+		if (top.centerX)
+		{
+			x += top.centerX;
+			y += top.centerY;
+		}
+		if (!top.checkBoundary(x, y, "mousemove"))
+		{
+			panes.dragndrop.x = panes.dragndrop.defaultX;
+			panes.dragndrop.y = panes.dragndrop.defaultY;
+			return;
+		}
+		x += dx;
+		if (!top || top.checkBoundary(x, y, "mousemove"))
+		{
+			panes.dragndrop.x += dx;
+		}
+		x -= dx;
+		y += dy;
+		if (!top || top.checkBoundary(x, y, "mousemove"))
+		{
+			panes.dragndrop.y += dy;
+		}
+	},
+	keyHandler: function (event)
+	{
+		//console.log(event.code);
+		switch (event.code)
+		{
+			case "ArrowUp":
+				panes.dragMove(0, -1);
+				break;
+			case "ArrowDown":
+				panes.dragMove(0, 1);
+				break;
+			case "ArrowLeft":
+				panes.dragMove(-1, 0);
+				break;
+			case "ArrowRight":
+				panes.dragMove(1, 0);
+				break;
+		}
+	},
 	mouseHandler: function (event)
 	{
 		if (event.type == "mousemove")
@@ -17,37 +66,21 @@ var panes = {
 		var type = event.type;
 		if (event.type == "mousemove" && panes.dragndrop)
 		{
-			var top = panes.dragndrop.top;
-			var x = 10 + top.x + panes.dragndrop.x;
-			var y = 10 + top.y + panes.dragndrop.y;
-			if (top.centerX)
-			{
-				x += top.centerX;
-				y += top.centerY;
-			}
-			if (!top.checkBoundary(x, y, "mousemove"))
-			{
-				panes.dragndrop.x = panes.dragndrop.defaultX;
-				panes.dragndrop.y = panes.dragndrop.defaultY;
-				return;
-			}
-			x += event.movementX;
-			if (!top || top.checkBoundary(x, y, "mousemove"))
-			{
-				panes.dragndrop.x += event.movementX;
-			}
-			x -= event.movementX;
-			y += event.movementY;
-			if (!top || top.checkBoundary(x, y, "mousemove"))
-			{
-				panes.dragndrop.y += event.movementY;
-			}
+			panes.dragMove(event.movementX, event.movementY);
 			return;
 		}
 		if (event.type == "mousemove" && panes.dragndropcenter)
 		{
 			panes.dragndropcenter.centerX += event.movementX;
 			panes.dragndropcenter.centerY += event.movementY;
+			if (panes.dragndropcenter.centerPanes)
+			{
+				for (var i = 0; i < panes.dragndropcenter.centerPanes.length; i++)
+				{
+					panes.dragndropcenter.centerPanes[i].x -= event.movementX;
+					panes.dragndropcenter.centerPanes[i].y -= event.movementY;
+				}
+			}
 			return;
 		}
 		if (event.type == "mouseup")
@@ -318,6 +351,15 @@ cRegion.prototype.draw = function (ctx, pane)
 		{
 			ctx.save();
 			ctx.strokeStyle = "#000000";
+			ctx.shadowBlur = borderGlowRadius;
+			ctx.stroke(this.boundaryPath);
+			ctx.restore();
+		}
+		if (this.superGlow)
+		{
+			ctx.save();
+			ctx.strokeStyle = "#FFFF00";
+			ctx.shadowColor = "#FFFF00";
 			ctx.shadowBlur = borderGlowRadius;
 			ctx.stroke(this.boundaryPath);
 			ctx.restore();

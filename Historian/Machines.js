@@ -573,6 +573,14 @@ var machines = {
 		{
 			ctx.fillText(locale.inputs, 15, y);
 		}
+		if (this.recipe.scaling)
+		{
+			ctx.fillText(locale.recipeType + " - " + locale.recipeTypeScaling, 80, y);
+		}
+		else
+		{
+			ctx.fillText(locale.recipeType + " - " + locale.recipeTypeFixed, 80, y);
+		}
 		y += 22;
 		for (var i = 0; i < this.recipe.inputs.length; i++)
 		{
@@ -705,7 +713,7 @@ var machines = {
 	},
 	sliderRegionPaymenentSuccess: function ()
 	{
-		this.target.upData[this.target.upDataId]++;
+		this.target.upData[this.target.upDataId] += 3;
 		this.target.recipe.machine.upped = true;
 		this.target.upped++;
 		if (this.target.max)
@@ -734,6 +742,7 @@ var machines = {
 				{
 					this.target.slider = 2;
 				}
+
 			}
 		}
 		else if (type == "mousedown")
@@ -760,7 +769,13 @@ var machines = {
 			{
 				this.target.slider = 2;
 			}
+			else
+			{
+				this.target.slider = Math.max(0, (x - 10)) / 35;
+			}
 		}
+		this.target.upData[this.target.upDataId] = Math.floor(this.target.upData[this.target.upDataId] / 3) * 3;
+		this.target.upData[this.target.upDataId] += this.target.slider;
 		var newValue = this.target.sliderBase * Math.pow(this.target.sliderStep, (this.target.slider - 1) * this.target.upped);
 		if (this.target.min)
 		{
@@ -827,10 +842,10 @@ function preprocessMachines()
 	machines.machinePauseRegion.boundaryPath = path;
 	machines.machinePauseRegion.customDraw = machines.pauseRegionDraw;
 	machines.machinePauseRegion.mouseHandler = machines.pauseRegionMouseHandler;
-	machines.machinePauseRegionMin = new cRegion(0, 17);
-	machines.machinePauseRegionMin.boundaryPath = path;
-	machines.machinePauseRegionMin.customDraw = machines.pauseRegionDraw;
-	machines.machinePauseRegionMin.mouseHandler = machines.pauseRegionMouseHandler;
+	// machines.machinePauseRegionMin = new cRegion(0, 17);
+	// machines.machinePauseRegionMin.boundaryPath = path;
+	// machines.machinePauseRegionMin.customDraw = machines.pauseRegionDraw;
+	// machines.machinePauseRegionMin.mouseHandler = machines.pauseRegionMouseHandler;
 
 	machines.recipeSelectorRegion = new cRegion(87, 17);
 	machines.recipeSelectorRegion.boundaryPath = new Path2D();
@@ -909,11 +924,13 @@ function initMachine(title)
 	thisData.pane.subRegions.push(regionData.hideRegion);
 	thisData.pane.subRegions.push(regionData.draggableTitleRegionShifted);
 	thisData.pane.subRegions.push(machines.machinePauseRegion);
+	thisData.pane.subRegions.push(regionData.pinRegion);
 	thisData.pane.subRegionsMin.push(regionData.dragRegion);
 	thisData.pane.subRegionsMin.push(regionData.maxRegion);
 	thisData.pane.subRegionsMin.push(regionData.hideRegion);
 	thisData.pane.subRegionsMin.push(regionData.draggableTitleRegionShifted);
-	thisData.pane.subRegionsMin.push(machines.machinePauseRegionMin);
+	thisData.pane.subRegionsMin.push(machines.machinePauseRegion);
+	thisData.pane.subRegionsMin.push(regionData.pinRegion);
 	thisData.pane.title = thisData.title;
 	if (thisData.paneCustomDraw)
 	{

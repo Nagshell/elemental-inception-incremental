@@ -6,7 +6,7 @@ var simplifiedMachineData = {
 		{
 			earthStart1:
 			{
-				baseStats: [1, 0.0008, true, false],
+				baseStats: [1, 0.001, true, false],
 				in: [],
 				out: [
 					["Earth", 1, 1.2],
@@ -16,7 +16,7 @@ var simplifiedMachineData = {
 			},
 			earthStart2:
 			{
-				baseStats: [1, 0.0015, false, false],
+				baseStats: [1, 0.002, false, false],
 				in: [],
 				out: [
 					["Earth", 1, 1.2],
@@ -155,7 +155,7 @@ var simplifiedMachineData = {
 				out: [
 					["Water", 2, 5.2, 4, ["Water", 10, "GolemWater", 1]],
 				],
-				lock: ["Water", 1],
+				lock: ["Air", 0.1],
 				upgrade: ["waterConversion2", "Water", 100],
 			},
 			waterConversion2:
@@ -222,7 +222,7 @@ var simplifiedMachineData = {
 				out: [
 					["Air", 1, 1.2],
 				],
-				lock: ["Water", 4],
+				lock: ["Water", 1],
 				upgrade: ["airRift1", "Air", 5],
 			},
 			airRift1:
@@ -414,7 +414,7 @@ var simplifiedMachineData = {
 				out: [
 					["GolemEarth", 1, 1],
 				],
-				lock: ["Earth", 4, "Water", 1, "Air", 1, "Fire", 1],
+				lock: ["Earth", 1, "Water", 1, "Air", 1, "Fire", 1],
 				upgrade: ["golemEarth2", "Earth", 450],
 			},
 			golemEarth2:
@@ -739,7 +739,7 @@ var simplifiedMachineData = {
 			},
 			mudConversion2:
 			{
-				baseStats: [4, 2, false, true],
+				baseStats: [2, 1.44, false, true],
 				in: [
 					["Magma", 1, 0.1, 18, ["Mud", 1.5]],
 					["Earth", 0, 10000],

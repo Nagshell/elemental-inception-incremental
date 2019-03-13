@@ -17,6 +17,11 @@ function preprocessImages()
 		"iconDrag",
 		"iconMin",
 		"iconMax",
+		"iconPin",
+		"iconPinNot",
+		"iconNext",
+		"iconPrev",
+
 		"iconEarth",
 		"iconWater",
 		"iconAir",
@@ -33,9 +38,11 @@ function preprocessImages()
 		"iconGolemAir",
 		"iconGolemFire",
 		"iconMergerDisplay",
+
 		"buttonConfirm",
 		"buttonConfirmCrossed",
 		"buttonCancel",
+
 		"machineBase",
 		"machineEarth",
 		"machineWater",
@@ -49,10 +56,20 @@ function preprocessImages()
 
 		"machineVoid",
 		"machineNexus",
+
 		"mainBackground1",
 		"mainBackground2",
 		"mainBackground3",
 		"mainBackground4",
+
+		"tutorialPage0",
+		"tutorialPage1",
+		"tutorialPage2",
+		"tutorialPage3",
+		"tutorialPage4",
+		"tutorialPage5",
+		"tutorialPage6",
+		"tutorialPage7",
 	];
 	for (var i = 0; i < imageList.length; i++)
 	{

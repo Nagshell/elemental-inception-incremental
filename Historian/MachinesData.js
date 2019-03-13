@@ -142,5 +142,19 @@ function preprocessMachinesData()
 			ctx.restore();
 
 		}
+		else
+		{
+			ctx.save();
+			ctx.translate(49, 49);
+			ctx.beginPath();
+			ctx.arc(0, 0, 30, 0, Math.PI * 2);
+			ctx.stroke();
+			ctx.fill();
+			ctx.clip();
+
+			this.machine.region.customDraw(ctx);
+			ctx.restore();
+			this.regularDraw(ctx);
+		}
 	}
 }

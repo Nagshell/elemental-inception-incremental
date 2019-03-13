@@ -110,6 +110,10 @@ var particleGenerator = {
 							}
 
 							temp.volumes[color].cd = cdMax * (1 + Math.random());
+							if (target == "machineNexus")
+							{
+								temp.volumes[color].amount *= 10e5;
+							}
 							this.particles[color].push(new particle(machineData[origin].region.x, machineData[origin].region.y, target, Math.min(5, Math.log2(1 + Math.max(1, temp.volumes[color].amount / 30))) / 2, 6000));
 							temp.volumes[color].amount = 0;
 						}

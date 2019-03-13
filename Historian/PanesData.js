@@ -134,7 +134,7 @@ function preprocessRegionData()
 	regionData.draggableTitleRegionShifted.mouseHandler = regionData.draggableTitleRegion.mouseHandler
 	regionData.draggableTitleRegionShifted.customDraw = regionData.draggableTitleRegion.customDraw;
 
-	regionData.confirmRegion = new cRegion(17, 22);
+	regionData.confirmRegion = new cRegion(22, 39);
 	path = new Path2D();
 	path.rect(0, 0, 55, 16);
 	regionData.confirmRegion.boundaryPath = path;
@@ -179,7 +179,7 @@ function preprocessRegionData()
 
 	}
 
-	regionData.cancelRegion = new cRegion(20, 44);
+	regionData.cancelRegion = new cRegion(25, 63);
 	path = new Path2D();
 	path.rect(0, 0, 49, 16);
 	regionData.cancelRegion.addImage("buttonCancel");
@@ -239,12 +239,92 @@ function preprocessRegionData()
 			savingSystem.hardReset();
 		}
 	}
+
+	regionData.pinRegion = new cRegion(0, 17);
+	path = new Path2D();
+	path.rect(0, 0, 16, 16);
+	regionData.pinRegion.boundaryPath = path;
+	regionData.pinRegion.customDraw = function (ctx, pane)
+	{
+		if (pane.pinned)
+		{
+			ctx.drawImage(images.iconPinNot, 0, 0);
+		}
+		else
+		{
+			ctx.drawImage(images.iconPin, 0, 0);
+		}
+	}
+	regionData.pinRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			var list = pane.top.centerPanes;
+			if (list)
+			{
+				if (pane.pinned)
+				{
+					list[pane.pinID] = list[list.length - 1];
+					list[pane.pinID].pinID = pane.pinID;
+					list.length--;
+					pane.pinned = false;
+				}
+				else
+				{
+					pane.pinID = list.length;
+					pane.pinned = true;
+					list.push(pane);
+				}
+			}
+		}
+	}
+
+	regionData.nextPageRegion = new cRegion(34, 17);
+	regionData.nextPageRegion.boundaryPath = path;
+	regionData.nextPageRegion.customDraw = function (ctx, pane)
+	{
+		if (pane.currentPage < pane.maxPages)
+		{
+			ctx.drawImage(images.iconNext, 0, 0);
+		}
+	}
+	regionData.nextPageRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			if (pane.currentPage < pane.maxPages)
+			{
+				pane.currentPage++;
+			}
+		}
+	}
+
+	regionData.prevPageRegion = new cRegion(17, 17);
+	regionData.prevPageRegion.boundaryPath = path;
+	regionData.prevPageRegion.customDraw = function (ctx, pane)
+	{
+		if (pane.currentPage > 0)
+		{
+			ctx.drawImage(images.iconPrev, 0, 0);
+		}
+	}
+	regionData.prevPageRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			if (pane.currentPage > 0)
+			{
+				pane.currentPage--;
+			}
+		}
+	}
 }
 preprocessRegionData();
 
 var trackerPane;
 var mainPane;
 var paymentPane;
+var educationalPane;
 
 function preprocessPaneData()
 {
@@ -252,45 +332,11 @@ function preprocessPaneData()
 	panes.dragndrop = null;
 	panes.lastmousemove = 0;
 
-	trackerPane = new cPane(null, 0, 0);
-	var path = new Path2D();
-	path.rect(0, 0, 800, 99);
-	trackerPane.boundaryPath = path;
-	trackerPane.customDraw = function (ctx)
-	{
-		ctx.save();
-		ctx.textAlign = "left";
-		ctx.fillStyle = ctx.strokeStyle;
-		ctx.fillText(locale.autosave + ": " + Math.trunc(s / 3600) + ":" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60), trackerPane.savingX, 50);
-		ctx.restore();
-	}
-	trackerPane.resize = function ()
-	{
-		trackerPane.savingX = canvas.width - 150;
-		regionData.saveRegion.x = trackerPane.savingX + 22;
-		regionData.resetRegion.x = trackerPane.savingX + 12;
-	}
-	trackerPane.subRegions.push(regionData.saveRegion);
-	trackerPane.subRegions.push(regionData.resetRegion);
-
-	path = new Path2D();
-	path.rect(0, 0, 140, 20);
-	var rs = [];
-	for (var i = 0; i < 5; i++)
-	{
-		var r = new cRegion(50 + 160 * i, 40);
-		r.text = locale.aTabNames[i];
-		r.textX = 70;
-		r.textY = 10;
-		r.boundaryPath = path;
-		trackerPane.subRegions.push(r);
-		rs.push(r);
-	}
-
 	mainPane = new cPane(null, 0, 100);
-	path = new Path2D();
+	var path = new Path2D();
 	path.rect(0, 0, 800, 700);
 	mainPane.boundaryPath = path;
+	mainPane.centerPanes = [];
 	mainPane.customDraw = function (ctx)
 	{
 		var tempBackground;
@@ -310,7 +356,7 @@ function preprocessPaneData()
 		{
 			tempBackground = "mainBackground2";
 		}
-		else
+		else if (machineData.machineWater.recipes[1].unlocked)
 		{
 			tempBackground = "mainBackground1";
 		}
@@ -390,6 +436,7 @@ function preprocessPaneData()
 	paymentPane.subRegions.push(regionData.confirmRegion);
 	paymentPane.subRegions.push(regionData.cancelRegion);
 	paymentPane.subRegions.push(regionData.dragRegion);
+	paymentPane.subRegions.push(regionData.pinRegion);
 	paymentPane.customDraw = function (ctx)
 	{
 		ctx.save();
@@ -433,13 +480,16 @@ function preprocessPaneData()
 		this.target = target;
 		regionData.showRegion.action(this);
 
-		this.x = x + 17;
-		this.y = y + 17;
-		while (offsetPane.top !== null)
+		if (!this.pinned)
 		{
-			this.x += offsetPane.x;
-			this.y += offsetPane.y;
-			offsetPane = offsetPane.top;
+			this.x = x + 17;
+			this.y = y + 17;
+			while (offsetPane.top !== null)
+			{
+				this.x += offsetPane.x;
+				this.y += offsetPane.y;
+				offsetPane = offsetPane.top;
+			}
 		}
 	}
 	paymentPane.isAffordable = function (costs)
@@ -452,4 +502,90 @@ function preprocessPaneData()
 		return possible;
 	}
 	regionData.hideRegion.action(paymentPane);
+
+	trackerPane = new cPane(null, 0, 0);
+	path = new Path2D();
+	path.rect(0, 0, 800, 99);
+	trackerPane.boundaryPath = path;
+	trackerPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.textAlign = "left";
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(locale.autosave + ": " + Math.trunc(s / 3600) + ":" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60), trackerPane.savingX, 50);
+		ctx.restore();
+	}
+	trackerPane.resize = function ()
+	{
+		trackerPane.savingX = canvas.width - 150;
+		regionData.saveRegion.x = trackerPane.savingX + 22;
+		regionData.resetRegion.x = trackerPane.savingX + 12;
+	}
+	trackerPane.subRegions.push(regionData.saveRegion);
+	trackerPane.subRegions.push(regionData.resetRegion);
+
+	path = new Path2D();
+	path.rect(0, 0, 140, 20);
+	var rs = [];
+	for (var i = 0; i < 5; i++)
+	{
+		var r = new cRegion(50 + 160 * i, 40);
+		r.text = locale.aTabNames[i];
+		r.textX = 70;
+		r.textY = 10;
+		r.boundaryPath = path;
+		trackerPane.subRegions.push(r);
+		rs.push(r);
+	}
+	rs[3].mouseHandler = function (mainPane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			if (this.pane.boundaryPath)
+			{
+				regionData.hideRegion.mouseHandler(this.pane, x, y, type);
+			}
+			else
+			{
+				regionData.showRegion.mouseHandler(this.pane, x, y, type);
+				this.superGlow = false;
+				this.pane.x = 50 - this.pane.top.centerX;
+				this.pane.y = 50 - this.pane.top.centerY;
+			}
+		}
+	};
+
+	educationalPane = new cPane(mainPane, 200, 200);
+	rs[3].superGlow = true;
+	rs[3].pane = educationalPane;
+	educationalPane.region = rs[3];
+	path = new Path2D();
+	path.rect(0, 0, 300, 230);
+	educationalPane.boundaryPath = path;
+	educationalPane.subRegions.push(regionData.dragRegion);
+	educationalPane.subRegions.push(regionData.pinRegion);
+	educationalPane.subRegions.push(regionData.hideRegion);
+	educationalPane.subRegions.push(regionData.nextPageRegion);
+	educationalPane.subRegions.push(regionData.prevPageRegion);
+	educationalPane.currentPage = 0;
+	educationalPane.maxPages = 7;
+	educationalPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(locale.page + " " + (this.currentPage + 1) + " " + locale.outOf + " " + (this.maxPages + 1), 50, 42);
+		if (images["tutorialPage" + this.currentPage])
+		{
+			ctx.drawImage(images["tutorialPage" + this.currentPage], 0, 50);
+		}
+		switch (this.currentPage)
+		{
+			case 0:
+				break;
+		}
+		ctx.restore();
+	}
+
+	regionData.pinRegion.action(educationalPane);
+	regionData.hideRegion.action(educationalPane);
 }
