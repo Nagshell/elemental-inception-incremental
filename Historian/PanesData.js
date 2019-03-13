@@ -293,21 +293,52 @@ function preprocessPaneData()
 	mainPane.boundaryPath = path;
 	mainPane.customDraw = function (ctx)
 	{
-		if (machineData.machineNexus.recipes[1].enabled)
+		var tempBackground;
+		if (mainPane.background)
 		{
-			ctx.drawImage(images.mainBackground4, -400, -400);
+			mainPane.backgroundR++;
 		}
-		else if (machineData.machineVoid.recipes[0].enabled)
+		if (machineData.machineNexus.recipes[1].unlocked)
 		{
-			ctx.drawImage(images.mainBackground3, -400, -400);
+			tempBackground = "mainBackground4";
 		}
-		else if (machineData.golemMerger.recipes[0].enabled)
+		else if (machineData.machineVoid.recipes[0].unlocked)
 		{
-			ctx.drawImage(images.mainBackground2, -400, -400);
+			tempBackground = "mainBackground3";
+		}
+		else if (machineData.golemMerger.recipes[0].unlocked)
+		{
+			tempBackground = "mainBackground2";
 		}
 		else
 		{
-			ctx.drawImage(images.mainBackground1, -400, -400);
+			tempBackground = "mainBackground1";
+		}
+		if (tempBackground != mainPane.background)
+		{
+			mainPane.backgroundR = 0;
+			mainPane.backgroundLast = mainPane.background;
+			mainPane.background = tempBackground;
+		}
+		if (mainPane.background)
+		{
+			ctx.save();
+			if (mainPane.backgroundR < 600)
+			{
+				mainPane.backgroundR++;
+				if (mainPane.backgroundLast)
+				{
+					ctx.drawImage(images[mainPane.backgroundLast], -400, -400);
+				}
+				ctx.beginPath();
+				ctx.arc(0, 0, mainPane.backgroundR, 0, Math.PI * 2);
+				ctx.globalAlpha = (600 - mainPane.backgroundR) / 600;
+				ctx.stroke();
+				ctx.globalAlpha = 1;
+				ctx.clip();
+			}
+			ctx.drawImage(images[mainPane.background], -400, -400);
+			ctx.restore();
 		}
 
 		particleGenerator.draw(ctx);

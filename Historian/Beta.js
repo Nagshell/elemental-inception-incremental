@@ -173,10 +173,10 @@ var savingSystem = {
 		preprocessMachinesData();
 		preprocessParticles();
 		resizeCanvas();
-		if (!loopId)
-		{
-			loopId = requestAnimationFrame(loop);
-		}
+
+		cancelAnimationFrame(loopId);
+		loopId = requestAnimationFrame(loop);
+
 		c = 7201;
 		saveCD = 540;
 		s = saveCD / 2;
@@ -265,7 +265,7 @@ function tick()
 	{
 		particleGenerator.explosions.push(new cExplosion(0, 0, -16, elementalColors["Alkahest"][0], elementalColors["Alkahest"][0], 1280, 0.01));
 	}
-	else if (c == 0)
+	else if (c <= 0)
 	{
 		c = 7201;
 		for (var i = 0; i < data.aElements.length; i++)
@@ -299,6 +299,7 @@ var maxRounds = 500;
 
 function loop(timestamp)
 {
+	loopId = null;
 	if (!lastTimestamp)
 	{
 		lastTimestamp = timestamp;
