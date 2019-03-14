@@ -2,19 +2,39 @@ var nullCanvas = document.createElement('canvas');
 var nullCtx = nullCanvas.getContext("2d");
 
 var panes = {
+	highlightDragged: function (pane)
+	{
+		pane.superGlow = panes.dragndrop != null;
+		if (pane.independentVisible)
+		{
+			for (var i = pane.subPanes.length - 1; i >= 0; i--)
+			{
+				if (pane.subPanes[i].independent)
+				{
+					panes.highlightDragged(pane.subPanes[i]);
+				}
+			}
+		}
+	},
 	dragMove: function (dx, dy)
 	{
 		if (!panes.dragndrop)
 			return;
 		var top = panes.dragndrop.top;
-		var x = 10 + top.x + panes.dragndrop.x;
-		var y = 10 + top.y + panes.dragndrop.y;
+		var x = 25 + top.x + panes.dragndrop.x;
+		var y = 8 + top.y + panes.dragndrop.y;
+		if (panes.dragndrop.independent)
+		{
+			top = top.top;
+			x += top.x;
+			y += top.y;
+		}
 		if (top.centerX)
 		{
 			x += top.centerX;
 			y += top.centerY;
 		}
-		if (!top.checkBoundary(x, y, "mousemove"))
+		if (!top.checkBoundary(x, y, "mousemove") && !top.centerX)
 		{
 			panes.dragndrop.x = panes.dragndrop.defaultX;
 			panes.dragndrop.y = panes.dragndrop.defaultY;
@@ -24,12 +44,26 @@ var panes = {
 		if (!top || top.checkBoundary(x, y, "mousemove"))
 		{
 			panes.dragndrop.x += dx;
+			if (panes.dragndrop.centerPanes)
+			{
+				for (var i = 0; i < panes.dragndrop.centerPanes.length; i++)
+				{
+					panes.dragndrop.centerPanes[i].x -= dx;
+				}
+			}
 		}
 		x -= dx;
 		y += dy;
 		if (!top || top.checkBoundary(x, y, "mousemove"))
 		{
 			panes.dragndrop.y += dy;
+			if (panes.dragndrop.centerPanes)
+			{
+				for (var i = 0; i < panes.dragndrop.centerPanes.length; i++)
+				{
+					panes.dragndrop.centerPanes[i].y -= dy;
+				}
+			}
 		}
 	},
 	keyHandler: function (event)
@@ -62,7 +96,10 @@ var panes = {
 			}
 			this.lastmousemove = now;
 		}
-
+		if (event.type == "click")
+		{
+			return;
+		}
 		var type = event.type;
 		if (event.type == "mousemove" && panes.dragndrop)
 		{
@@ -87,7 +124,9 @@ var panes = {
 		{
 			if (panes.dragndrop)
 			{
+				var tempPane = panes.dragndrop;
 				panes.dragndrop = null;
+				panes.highlightDragged(tempPane);
 				return;
 			}
 			if (panes.dragndropcenter)
@@ -145,9 +184,15 @@ var panes = {
 				{
 					panes.dragndropcenter = targetPane;
 				}
-				return;
+				break;
 			}
 		}
+
+		for (var i = 0; i < panes.postMouseHandlerShow.length; i++)
+		{
+			regionData.showRegion.action(panes.postMouseHandlerShow[i]);
+		}
+		panes.postMouseHandlerShow = [];
 	},
 	resetPositions: function ()
 	{
@@ -201,7 +246,7 @@ cPane.prototype.checkBoundary = function (x, y, type)
 			var target = this.subPanes[i].checkBoundary(x, y, type);
 			if (target)
 			{
-				if (type == "mousedown")
+				if (type != "mousemove")
 				{
 					var temp = this.subPanes[i];
 					while (i-- > 0)
@@ -214,6 +259,35 @@ cPane.prototype.checkBoundary = function (x, y, type)
 			}
 		}
 		return this;
+	}
+	else if (this.independentVisible)
+	{
+		if (this.centerX)
+		{
+			x -= this.centerX;
+			y -= this.centerY;
+		}
+		for (var i = 0; i < this.subPanes.length; i++)
+		{
+			if (!this.subPanes[i].independent)
+			{
+				continue;
+			}
+			var target = this.subPanes[i].checkBoundary(x, y, type);
+			if (target)
+			{
+				if (type != "mousemove")
+				{
+					var temp = this.subPanes[i];
+					while (i-- > 0)
+					{
+						this.subPanes[i + 1] = this.subPanes[i];
+					}
+					this.subPanes[0] = temp;
+				}
+				return target;
+			}
+		}
 	}
 };
 
@@ -244,7 +318,7 @@ cPane.prototype.draw = function (ctx)
 	ctx.translate(this.x, this.y);
 	if (this.boundaryPath)
 	{
-
+		ctx.save();
 		ctx.stroke(this.boundaryPath);
 		ctx.fill(this.boundaryPath);
 		ctx.clip(this.boundaryPath);
@@ -286,10 +360,39 @@ cPane.prototype.draw = function (ctx)
 			ctx.stroke(this.boundaryPath);
 			ctx.restore();
 		}
+		if (this.superGlow)
+		{
+			ctx.save();
+			if (this.centerX)
+			{
+				ctx.translate(-this.centerX, -this.centerY);
+			}
+			ctx.strokeStyle = "#FFFF00";
+			ctx.shadowColor = "#FFFF00";
+			ctx.shadowBlur = borderGlowRadius;
+			ctx.stroke(this.boundaryPath);
+			ctx.restore();
+		}
 		for (var i = this.subPanes.length - 1; i >= 0; i--)
 		{
-			this.subPanes[i].draw(ctx);
+			if (!this.subPanes[i].independent)
+			{
+				this.subPanes[i].draw(ctx);
+			}
 		}
+
+		ctx.restore();
+		ctx.save();
+		this.independentVisible = false;
+		for (var i = this.subPanes.length - 1; i >= 0; i--)
+		{
+			if (this.subPanes[i].independent)
+			{
+				this.subPanes[i].draw(ctx);
+				this.independentVisible = true;
+			}
+		}
+		ctx.restore();
 	}
 	ctx.restore();
 };

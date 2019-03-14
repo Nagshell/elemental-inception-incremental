@@ -3,7 +3,8 @@ var locale = {
 	hardReset: "This will erase all of your progress. Proceed?",
 	reset: "Hard Reset",
 	efficiency: "Efficiency",
-	charts: "Charts",
+	production: "Production",
+	chart: "Chart",
 	inputs: "Inputs",
 	outputs: "Outputs",
 	recipes: "Recipes",
@@ -50,7 +51,7 @@ var locale = {
 		earthConversion2: "Improved Earth Conversion",
 		earthRift3: "True Earth Rift",
 		earthCConversion1: "Catalyzed Earth Conversion",
-		earthCRift1: "Stabilized Earth CRift",
+		earthCRift1: "Stabilized Earth C-Rift",
 
 		waterStart1: "Water Forced Conversion",
 		waterRift1: "Weak Water Rift",
@@ -59,7 +60,7 @@ var locale = {
 		waterConversion2: "Improved Water Conversion",
 		waterRift3: "True Water Rift",
 		waterCConversion1: "Catalyzed Water Conversion",
-		waterCRift1: "Stabilized Water CRift",
+		waterCRift1: "Stabilized Water C-Rift",
 
 		airStart1: "Air Forced Conversion",
 		airRift1: "Weak Air Rift",
@@ -68,7 +69,7 @@ var locale = {
 		airConversion2: "Improved Air Conversion",
 		airRift3: "True Air Rift",
 		airCConversion1: "Catalyzed Air Conversion",
-		airCRift1: "Stabilized Air CRift",
+		airCRift1: "Stabilized Air C-Rift",
 
 		fireStart1: "Fire Forced Conversion",
 		fireRift1: "Weak Fire Rift",
@@ -77,7 +78,7 @@ var locale = {
 		fireConversion2: "Improved Fire Conversion",
 		fireRift3: "True Fire Rift",
 		fireCConversion1: "Catalyzed Fire Conversion",
-		fireCRift1: "Stabilized Fire CRift",
+		fireCRift1: "Stabilized Fire C-Rift",
 
 		golemEarth1: "Earth Orb Infusion",
 		golemEarth2: "Earth Golem Infusion",
@@ -129,8 +130,8 @@ var locale = {
 		voidClash2: "Antitype Merge",
 		voidClash3: "Antitype Fusion",
 
-		alkahest1traces: "Universal Solvent",
-		alkahest1merge: "Universal Solution",
+		alkahest1traces: "Universal Solution",
+		alkahest1merge: "Universal Solvent",
 
 		n: "",
 	},

@@ -12,6 +12,7 @@ function preprocessRegionData()
 		if (type == "mousedown")
 		{
 			panes.dragndrop = pane;
+			panes.highlightDragged(pane);
 		}
 	}
 
@@ -114,13 +115,7 @@ function preprocessRegionData()
 	path = new Path2D();
 	path.rect(0, 0, 400, 16);
 	regionData.draggableTitleRegion.boundaryPath = path;
-	regionData.draggableTitleRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mousedown")
-		{
-			panes.dragndrop = pane;
-		}
-	}
+	regionData.draggableTitleRegion.mouseHandler = regionData.dragRegion.mouseHandler;
 	regionData.draggableTitleRegion.customDraw = function (ctx, pane)
 	{
 		ctx.save();
@@ -131,7 +126,7 @@ function preprocessRegionData()
 	}
 	regionData.draggableTitleRegionShifted = new cRegion(51, 0);
 	regionData.draggableTitleRegionShifted.boundaryPath = path;
-	regionData.draggableTitleRegionShifted.mouseHandler = regionData.draggableTitleRegion.mouseHandler
+	regionData.draggableTitleRegionShifted.mouseHandler = regionData.dragRegion.mouseHandler;
 	regionData.draggableTitleRegionShifted.customDraw = regionData.draggableTitleRegion.customDraw;
 
 	regionData.confirmRegion = new cRegion(22, 39);
@@ -329,6 +324,7 @@ var educationalPane;
 function preprocessPaneData()
 {
 	panes.list = [];
+	panes.postMouseHandlerShow = [];
 	panes.dragndrop = null;
 	panes.lastmousemove = 0;
 
@@ -478,7 +474,7 @@ function preprocessPaneData()
 	{
 		this.costs = costs;
 		this.target = target;
-		regionData.showRegion.action(this);
+		panes.postMouseHandlerShow.push(this);
 
 		if (!this.pinned)
 		{

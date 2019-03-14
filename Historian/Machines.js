@@ -106,12 +106,23 @@ var machines = {
 	{
 		var temp = this.recipes[i];
 		this.recipes[i] = this.hiddenRecipes[temp.upgradeTo];
-		regionData.hideRegion.action(temp.pane);
+		if (temp.pane.boundaryPath)
+		{
+			regionData.hideRegion.action(temp.pane);
+			regionData.showRegion.action(this.recipes[i].pane);
+		}
+
 		this.recipes[i].unlocked = temp.unlocked;
 		this.recipes[i].enabled = temp.enabled;
 		this.recipes[i].pane.x = temp.pane.x;
 		this.recipes[i].pane.y = temp.pane.y;
 		this.recipes[i].upData[0] = temp.upData[0];
+		if (temp.pane.pinned)
+		{
+			regionData.pinRegion.action(temp.pane);
+			regionData.pinRegion.action(this.recipes[i].pane);
+
+		}
 	},
 	upgradeTick: function ()
 	{
@@ -359,60 +370,9 @@ var machines = {
 		}
 		else
 		{
-			ctx.save();
-			var turnedOn = false;
-			ctx.translate(12, 200);
-			for (var i = 0; i < this.machine.recipes.length; i++)
-			{
-				if (this.machine.recipes[i].pieChart.results.null == 600)
-				{
-					continue;
-				}
-				turnedOn = true;
-				var temp = this.machine.recipes[i].pieChart;
-
-				var radius = 31 - this.machine.recipes.length;
-				ctx.save();
-				ctx.beginPath();
-				ctx.arc(40, 0, radius, 0, Math.PI * 2);
-				ctx.stroke();
-				ctx.fill();
-				ctx.clip();
-				var angle = 0;
-				radius -= 3;
-				if (!this.machine.recipes[i].enabled)
-				{
-					radius /= 2;
-				}
-				for (var type in temp.results)
-				{
-					ctx.beginPath();
-					ctx.moveTo(40, 0);
-					ctx.arc(40, 0, radius, angle, angle + temp.results[type] / 300 * Math.PI);
-					angle += temp.results[type] / 300 * Math.PI;
-					ctx.fillStyle = chartColors[type];
-					ctx.fill();
-				}
-
-				ctx.restore();
-				if (!this.machine.recipes[i].enabled)
-				{
-					radius *= 2;
-				}
-				ctx.translate(0, radius * 2 + 10);
-			}
-
-			ctx.restore();
-
-			ctx.fillStyle = ctx.strokeStyle;
-			if (turnedOn)
-			{
-				ctx.fillText(locale.efficiency, 50, 140);
-				ctx.fillText(locale.charts, 50, 157);
-			}
-
 			if (this.machine.displayElement)
 			{
+				ctx.fillStyle = ctx.strokeStyle;
 				ctx.drawImage(images["icon" + this.machine.displayElement], 17, 17);
 				ctx.fillText(this.machine.displayElement, 49, 90);
 				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, 32, 107, elementalDisplayType[this.machine.displayElement], "left");
@@ -487,18 +447,18 @@ var machines = {
 		if (!this.recipe.unlocked)
 		{
 			this.recipe.unlocked = true;
-			if (this.pane.top.boundaryPathMax)
-			{
-				this.pane.top.boundaryPathMax = machines.displayPanePath;
-			}
-			else if (this.pane.top.hiddenPath)
-			{
-				this.pane.top.hiddenPath = machines.displayPanePath;
-			}
-			else
-			{
-				this.pane.top.boundaryPath = machines.displayPanePath;
-			}
+			// if (this.pane.top.boundaryPathMax)
+			// {
+			// 	this.pane.top.boundaryPathMax = machines.displayPanePath;
+			// }
+			// else if (this.pane.top.hiddenPath)
+			// {
+			// 	this.pane.top.hiddenPath = machines.displayPanePath;
+			// }
+			// else
+			// {
+			// 	this.pane.top.boundaryPath = machines.displayPanePath;
+			// }
 		}
 		else
 		{
@@ -564,14 +524,39 @@ var machines = {
 	{
 		ctx.save();
 		ctx.lineWidth = 1;
+		ctx.save();
+		ctx.translate(170, 100);
+		var temp = this.recipe.pieChart;
+
+		var radius = 31;
 		ctx.beginPath();
+		ctx.arc(40, 0, radius, 0, Math.PI * 2);
+		ctx.stroke();
+		ctx.fill();
+		ctx.clip();
+		var angle = 0;
+		radius -= 3;
+		if (!this.recipe.enabled)
+		{
+			radius /= 2;
+		}
+		for (var type in temp.results)
+		{
+			ctx.beginPath();
+			ctx.moveTo(40, 0);
+			ctx.arc(40, 0, radius, angle, angle + temp.results[type] / 300 * Math.PI);
+			angle += temp.results[type] / 300 * Math.PI;
+			ctx.fillStyle = chartColors[type];
+			ctx.fill();
+		}
+		ctx.restore();
 
 		ctx.textAlign = "left";
 		ctx.fillStyle = ctx.strokeStyle;
 		var y = 30;
 		if (this.recipe.inputs.length > 0)
 		{
-			ctx.fillText(locale.inputs, 15, y);
+			ctx.fillText(locale.inputs, 25, y);
 		}
 		if (this.recipe.scaling)
 		{
@@ -674,7 +659,14 @@ var machines = {
 			}
 			y += 17;
 			drawNumber(ctx, data.oElements[temp.type].amount, 36, y, elementalDisplayType[temp.type]);
-			ctx.fillText("/", 95, y);
+			if (temp.noLimit)
+			{
+				ctx.fillText("|", 95, y);
+			}
+			else
+			{
+				ctx.fillText("/", 95, y);
+			}
 			drawNumber(ctx, temp.max, 105, y, elementalDisplayType[temp.type]);
 			y += 17;
 			ctx.save();
@@ -708,6 +700,10 @@ var machines = {
 		}
 		ctx.fillText(locale.efficiency + " " + Math.trunc(this.recipe.efficiency * 10000) / 100 + "%", 15, y);
 		y += 22;
+
+		ctx.textAlign = "center";
+		ctx.fillText(locale.production, 210, 40);
+		ctx.fillText(locale.chart, 210, 57);
 
 		ctx.restore();
 	},
@@ -917,6 +913,7 @@ function initMachine(title)
 
 	thisData.pane = new cPane(mainPane, thisData.x + 32, thisData.y + 32);
 	thisData.pane.machine = thisData;
+	thisData.pane.centerPanes = [];
 	thisData.pane.boundaryPath = machines.displayPanePathDemo;
 	thisData.pane.boundaryPathMin = machines.displayPanePathMin;
 	thisData.pane.subRegions.push(regionData.dragRegion);
@@ -947,11 +944,12 @@ function initMachine(title)
 
 	thisData.pane.recipeSelectorPane = new cPane(thisData.pane, 87, 17);
 	thisData.pane.recipeSelectorPane.title = locale.recipes;
+	thisData.pane.recipeSelectorPane.independent = true;
 	thisData.pane.recipeSelectorPane.boundaryPath = new Path2D();
 	thisData.pane.recipeSelectorPane.boundaryPath.rect(0, 0, 275, 16 + 17 * thisData.recipes.length);
-	thisData.pane.recipeSelectorPane.subRegions.push(regionData.dragRegion);
+	//thisData.pane.recipeSelectorPane.subRegions.push(regionData.dragRegion);
 	thisData.pane.recipeSelectorPane.subRegions.push(regionData.hideRegion);
-	thisData.pane.recipeSelectorPane.subRegions.push(regionData.draggableTitleRegion);
+	//thisData.pane.recipeSelectorPane.subRegions.push(regionData.draggableTitleRegion);
 	regionData.hideRegion.action(thisData.pane.recipeSelectorPane);
 
 	for (var i = thisData.recipes.length - 1; i >= 0; i--)
@@ -970,15 +968,17 @@ function initMachine(title)
 		recipeRegion.paymentSuccess = machines.recipeRegionPaymentSuccess;
 		recipeRegion.customDraw = machines.recipeRegionDraw;
 
-		var recipePane = new cPane(thisData.pane, 104 - 17 * i, 102 + 17 * i);
+		var recipePane = new cPane(thisData.pane, 362 + 17 * thisData.recipes.length - 17 * i, 34 + 17 * i);
 		thisRecipe.pane = recipePane;
 		recipePane.title = thisRecipe.title;
+		recipePane.independent = true;
 		recipePane.recipe = thisRecipe;
 		recipePane.boundaryPath = new Path2D();
 		var nL = 84 + 56 * thisRecipe.inputs.length + 56 * thisRecipe.outputs.length;
 		recipePane.boundaryPath.rect(0, 0, 275, nL);
 
 		recipePane.subRegions.push(regionData.dragRegion);
+		recipePane.subRegions.push(regionData.pinRegion);
 		recipePane.subRegions.push(regionData.hideRegion);
 		recipePane.subRegions.push(regionData.draggableTitleRegion);
 
@@ -1041,12 +1041,14 @@ function initMachine(title)
 		var recipePane = new cPane(thisData.pane, 0, 0);
 		thisRecipe.pane = recipePane;
 		recipePane.title = thisRecipe.title;
+		recipePane.independent = true;
 		recipePane.recipe = thisRecipe;
 		recipePane.boundaryPath = new Path2D();
 		var nL = 84 + 56 * thisRecipe.inputs.length + 56 * thisRecipe.outputs.length;
-		recipePane.boundaryPath.rect(0, 0, 190, nL);
+		recipePane.boundaryPath.rect(0, 0, 275, nL);
 
 		recipePane.subRegions.push(regionData.dragRegion);
+		recipePane.subRegions.push(regionData.pinRegion);
 		recipePane.subRegions.push(regionData.hideRegion);
 		recipePane.subRegions.push(regionData.draggableTitleRegion);
 		recipePane.customDraw = machines.recipePaneDraw;
