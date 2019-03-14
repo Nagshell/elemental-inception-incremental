@@ -559,7 +559,7 @@ var simplifiedMachineData = {
 			},
 			mergeMud2:
 			{
-				baseStats: [1, 0.5, false, false],
+				baseStats: [1, 0.25, false, false],
 				in: [
 					["GolemEarth", 1, 1],
 					["GolemWater", 1, 1],
@@ -607,7 +607,7 @@ var simplifiedMachineData = {
 					["Water", 700, 900],
 				],
 				out: [
-					["Ice", 1, 4.8, 3, ["GolemWater", 3]],
+					["Ice", 1, 4.8, 3, ["GolemWater", 13]],
 				],
 				upgrade: ["mergeIce3", "Void", 0.01],
 			},
@@ -647,7 +647,7 @@ var simplifiedMachineData = {
 					["Water", 700, 900],
 				],
 				out: [
-					["Steam", 1, 4.8, 3, ["GolemWater", 3]],
+					["Steam", 1, 4.8, 3, ["GolemWater", 13]],
 				],
 				upgrade: ["mergeSteam3", "Void", 0.01],
 			},
@@ -687,7 +687,7 @@ var simplifiedMachineData = {
 					["Earth", 700, 900],
 				],
 				out: [
-					["Magma", 1, 4.8, 3, ["GolemEarth", 3]],
+					["Magma", 1, 4.8, 3, ["GolemEarth", 13]],
 				],
 				upgrade: ["mergeMagma3", "Void", 0.01],
 			},
