@@ -223,10 +223,6 @@ var s;
 
 function tick()
 {
-	for (var i = 0; i < data.aElements.length; i++)
-	{
-		data.aElements[i].amount += 0.01;
-	}
 
 	particleGenerator.tick();
 	machines.tick();
