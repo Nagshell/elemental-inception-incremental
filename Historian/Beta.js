@@ -179,7 +179,7 @@ var savingSystem = {
 	{
 		preprocessData();
 		preprocessPaneData();
-		preprocessMachinesData();
+		preprocessMachinesData(simplifiedMachineData);
 		preprocessParticles();
 		resizeCanvas();
 

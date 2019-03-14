@@ -2,7 +2,7 @@ var regionData = {};
 
 function preprocessRegionData()
 {
-	regionData.dragRegion = new cRegion(0, 0);
+	regionData.dragRegion = new cRegion(17, 0);
 	regionData.dragRegion.addImage("iconDrag");
 	var path = new Path2D();
 	path.rect(0, 0, 16, 16);
@@ -15,7 +15,7 @@ function preprocessRegionData()
 		}
 	}
 
-	regionData.hideRegion = new cRegion(17, 0);
+	regionData.hideRegion = new cRegion(0, 0);
 	regionData.hideRegion.addImage("iconHide");
 	regionData.hideRegion.boundaryPath = path;
 	regionData.hideRegion.mouseHandler = function (pane, x, y, type)
@@ -30,7 +30,7 @@ function preprocessRegionData()
 		}
 	}
 
-	regionData.showRegion = new cRegion(17, 0);
+	regionData.showRegion = new cRegion(0, 0);
 	regionData.showRegion.addImage("iconShow");
 	regionData.showRegion.boundaryPath = path;
 	regionData.showRegion.mouseHandler = function (pane, x, y, type)

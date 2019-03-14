@@ -7,14 +7,14 @@ var chartColors = {
 var machineData;
 var machineDisplayElements = {};
 
-function preprocessMachinesData()
+function preprocessMachinesData(simplifiedDataToBeProcessed)
 {
 	machines.list = [];
 	machines.dataTranslator = [];
 
 	machines.glowCheckCD = 0;
 
-	machineData = prepareTemplatedMachineData();
+	machineData = prepareTemplatedMachineData(simplifiedDataToBeProcessed);
 	var infuser = machineData.golemInfuser;
 	infuser.displayRegionSwapCD = 128;
 	infuser.displayRegionCurrentGolem = -1;
