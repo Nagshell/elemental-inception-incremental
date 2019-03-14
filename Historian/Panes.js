@@ -367,7 +367,7 @@ cPane.prototype.draw = function (ctx)
 			{
 				ctx.translate(-this.centerX, -this.centerY);
 			}
-			ctx.strokeStyle = "#FFFF00";
+			ctx.strokeStyle = "#000000";
 			ctx.shadowColor = "#FFFF00";
 			ctx.shadowBlur = borderGlowRadius;
 			ctx.stroke(this.boundaryPath);
