@@ -29,7 +29,8 @@ button {
 	margin:auto;
 	display: block;
 	background-color: #000000;
-	border:2px solid rgba(200,200,200,0.2);
+	position: absolute;
+	
 }
 .what {
 	@media all and (orientation:portrait) {

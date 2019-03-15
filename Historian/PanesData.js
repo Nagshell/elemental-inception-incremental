@@ -387,10 +387,10 @@ function preprocessPaneData()
 		var x = -this.centerX + canvas.width / 2;
 		var y = -this.centerY + canvas.height / 2 - 100;
 		ctx.save();
-		ctx.globalAlpha = Math.min(1, Math.max(0, Math.abs(borderGlowTicks++ % 1000 / 999 - 0.5) * 2)) * 0.75;
-		ctx.lineWidth = 0.4;
-		ctx.shadowBlur = ctx.globalAlpha * 8;
-		ctx.strokeStyle = "#FFFFFF";
+		ctx.globalAlpha = borderGlowAlpha;
+		ctx.lineWidth = 1;
+		ctx.shadowBlur = borderGlowRadius * 3;
+		ctx.strokeStyle = ctx.shadowColor;
 		ctx.shadowColor = "#AF00AF";
 		ctx.beginPath();
 		ctx.moveTo(x, y);

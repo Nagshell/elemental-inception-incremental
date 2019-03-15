@@ -355,8 +355,10 @@ cPane.prototype.draw = function (ctx)
 			{
 				ctx.translate(-this.centerX, -this.centerY);
 			}
-			ctx.strokeStyle = "#000000";
+			ctx.strokeStyle = borderGlowLineColor;
+			ctx.lineWidth = 3;
 			ctx.shadowBlur = borderGlowRadius;
+			ctx.globalAlpha = borderGlowAlpha;
 			ctx.stroke(this.boundaryPath);
 			ctx.restore();
 		}
@@ -453,8 +455,10 @@ cRegion.prototype.draw = function (ctx, pane)
 		if (this.markedToGlow)
 		{
 			ctx.save();
-			ctx.strokeStyle = "#000000";
+			ctx.strokeStyle = borderGlowLineColor;
 			ctx.shadowBlur = borderGlowRadius;
+			ctx.globalAlpha = borderGlowAlpha;
+			ctx.lineWidth = 3;
 			ctx.stroke(this.boundaryPath);
 			ctx.restore();
 		}

@@ -24,8 +24,8 @@ function resizeCanvas()
 		mainPane.centerX -= Math.trunc(canvas.width / 2);
 		mainPane.centerY -= Math.trunc(canvas.height / 2) - 100;
 	}
-	canvas.width = document.body.clientWidth - 50;
-	canvas.height = document.body.clientHeight - 50;
+	canvas.width = document.body.clientWidth - 20;
+	canvas.height = document.body.clientHeight - 20;
 	var path = new Path2D();
 	path.rect(0, 0, canvas.width, 99);
 	trackerPane.boundaryPath = path;
@@ -47,12 +47,14 @@ function resizeCanvas()
 	}
 	trackerPane.resize();
 }
-var borderGlowRadius = 5;
+var borderGlowRadius = 4;
 var borderGlowTicks = 0;
+var borderGlowAlpha = 1;
+var borderGlowCycleTime = 240;
+var borderGlowLineColor;
 
 function draw()
 {
-	borderGlowRadius = 4; //
 
 	ctxActive.resetTransform();
 	ctxActive.clearRect(0, 0, 800, 800);
@@ -64,7 +66,12 @@ function draw()
 	ctxActive.lineWidth = 2;
 	ctxActive.fillStyle = "#101010";
 	ctxActive.shadowBlur = 0;
-	ctxActive.shadowColor = "rgba(255,105,255," + Math.min(1, Math.max(0, Math.abs(borderGlowTicks++ % 1000 / 999 - 0.5) * 2 + 0.5)) + ")";
+	var tempGlowCycleTime = borderGlowTicks++ % (borderGlowCycleTime + 1) / borderGlowCycleTime;
+	tempGlowCycleTime *= Math.PI * 2;
+	tempGlowCycleTime = (Math.sin(tempGlowCycleTime) + 1) / 2;
+	ctxActive.shadowColor = "rgba(255,55,205," + tempGlowCycleTime + ")";
+	borderGlowLineColor = "rgba(105,5,105," + tempGlowCycleTime + ")";
+	borderGlowAlpha = tempGlowCycleTime / 2;
 
 	for (var i = panes.list.length - 1; i >= 0; i--)
 	{
