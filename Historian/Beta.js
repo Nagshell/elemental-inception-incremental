@@ -6,6 +6,7 @@ var savingSystem = {
 		var returnData = {
 			x: pane.x,
 			y: pane.y,
+			pinned: pane.pinned,
 			subPanes:
 			{},
 		};
@@ -14,12 +15,25 @@ var savingSystem = {
 			returnData.centerX = pane.ceterX;
 			returnData.centerY = pane.ceterY;
 		}
+		if (pane.boundaryPathMax)
+		{
+			returnData.minimized = true;
+			regionData.maxRegion.action(pane);
+		}
+		if (pane.boundaryPath)
+		{
+			returnData.visible = true;
+		}
 		for (var i = 0; i < pane.subPanes.length; i++)
 		{
 			if (pane.subPanes[i].id)
 			{
 				returnData.subPanes[pane.subPanes[i].id] = this.reccurentPaneSave(pane.subPanes[i]);
 			}
+		}
+		if (returnData.minimized)
+		{
+			regionData.minRegion.action(pane);
 		}
 		return returnData;
 	},
@@ -110,6 +124,22 @@ var savingSystem = {
 			if (pane.subPanes[i].id && data.subPanes[pane.subPanes[i].id])
 			{
 				this.reccurentPaneLoad(data.subPanes[pane.subPanes[i].id], pane.subPanes[i]);
+			}
+		}
+		if (data.pinned)
+		{
+			regionData.pinRegion.action(pane);
+		}
+		if (data.minimized)
+		{
+			regionData.minRegion.action(pane);
+		}
+		if (data.visible)
+		{
+			if (pane.hiddenPath)
+			{
+				pane.boundaryPath = pane.hiddenPath;
+				pane.hiddenPath = null;
 			}
 		}
 	},

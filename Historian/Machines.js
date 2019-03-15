@@ -1043,6 +1043,7 @@ function initMachine(title)
 	thisData.pane.recipeSelectorPane = new cPane(thisData.pane, 87, 17);
 	thisData.pane.recipeSelectorPane.title = locale.recipes;
 	thisData.pane.recipeSelectorPane.independent = true;
+	thisData.pane.recipeSelectorPane.id = "recipeSelector";
 	thisData.pane.recipeSelectorPane.boundaryPath = new Path2D();
 	thisData.pane.recipeSelectorPane.boundaryPath.rect(0, 0, 275, 16 + 17 * thisData.recipes.length);
 	thisData.pane.recipeSelectorPane.subRegions.push(regionData.hideRegion);

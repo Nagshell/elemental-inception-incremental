@@ -87,8 +87,16 @@ function preprocessRegionData()
 			pane.subRegionsMax = pane.subRegions;
 			pane.subRegions = pane.subRegionsMin;
 
-			pane.boundaryPathMax = pane.boundaryPath;
-			pane.boundaryPath = pane.boundaryPathMin;
+			if (pane.boundaryPath)
+			{
+				pane.boundaryPathMax = pane.boundaryPath;
+				pane.boundaryPath = pane.boundaryPathMin;
+			}
+			else
+			{
+				pane.boundaryPathMax = pane.hiddenPath;
+				pane.hiddenPath = pane.boundaryPathMin;
+			}
 		}
 	}
 
@@ -105,8 +113,17 @@ function preprocessRegionData()
 			pane.subRegionsMin = pane.subRegions;
 			pane.subRegions = pane.subRegionsMax;
 
-			pane.boundaryPathMin = pane.boundaryPath;
-			pane.boundaryPath = pane.boundaryPathMax;
+			if (pane.boundaryPath)
+			{
+				pane.boundaryPathMin = pane.boundaryPath;
+				pane.boundaryPath = pane.boundaryPathMax;
+			}
+			else
+			{
+				pane.boundaryPathMin = pane.hiddenPath;
+				pane.hiddenPath = pane.boundaryPathMax;
+			}
+
 			pane.boundaryPathMax = null;
 		}
 	}
