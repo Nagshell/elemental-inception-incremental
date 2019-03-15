@@ -1,6 +1,28 @@
 var loopId = null;
 var gameVersion = 2;
 var savingSystem = {
+	reccurentPaneSave: function (pane)
+	{
+		var returnData = {
+			x: pane.x,
+			y: pane.y,
+			subPanes:
+			{},
+		};
+		if (pane.centerX)
+		{
+			returnData.centerX = pane.ceterX;
+			returnData.centerY = pane.ceterY;
+		}
+		for (var i = 0; i < pane.subPanes.length; i++)
+		{
+			if (pane.subPanes[i].id)
+			{
+				returnData.subPanes[pane.subPanes[i].id] = this.reccurentPaneSave(pane.subPanes[i]);
+			}
+		}
+		return returnData;
+	},
 	saveData: function ()
 	{
 		var dataToSave = [gameVersion];
@@ -65,7 +87,31 @@ var savingSystem = {
 			}
 		}
 		localStorage.setItem("saveData", JSON.stringify(dataToSave));
+
+		var localDataToSave = {
+			pP: this.reccurentPaneSave(mainPane),
+			options: optionData,
+		};
+		localStorage.setItem("localSaveData", JSON.stringify(localDataToSave));
+
 		return dataToSave;
+	},
+	reccurentPaneLoad: function (data, pane)
+	{
+		pane.x = data.x;
+		pane.y = data.y;
+		if (data.centerX)
+		{
+			pane.centerX = data.ceterX;
+			pane.centerY = data.ceterY;
+		}
+		for (var i = 0; i < pane.subPanes.length; i++)
+		{
+			if (pane.subPanes[i].id && data.subPanes[pane.subPanes[i].id])
+			{
+				this.reccurentPaneLoad(data.subPanes[pane.subPanes[i].id], pane.subPanes[i]);
+			}
+		}
 	},
 	loadData: function ()
 	{
@@ -173,6 +219,14 @@ var savingSystem = {
 			machines.glowCheckCD = 0;
 			machines.glowCheck();
 			educationalPane.region.markedToSuperGlow = !machineData.golemInfuser.recipes[0].unlocked;
+
+			localDataToLoad = JSON.parse(localStorage.getItem("localSaveData"));
+			if (localDataToLoad)
+			{
+				resizeCanvas();
+				this.reccurentPaneLoad(localDataToLoad.pP, mainPane);
+				console.log(localDataToLoad);
+			}
 		}
 	},
 	reloadData: function ()

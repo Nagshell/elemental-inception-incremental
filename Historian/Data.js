@@ -89,7 +89,7 @@ var elementalColors = {
 		"#46003B",
 		"#23001D",
 	],
-}
+};
 var elementalDisplayType = {
 	Earth: "exp",
 	Air: "exp",
@@ -106,12 +106,14 @@ var elementalDisplayType = {
 	GolemAir: "",
 	GolemWater: "",
 	GolemFire: "",
-}
+};
 
 var initialData = {
 	elements: ["Earth", "Water", "Air", "Fire", "Mud", "Ice", "Steam", "Sand", "Magma", "Void", "Alkahest", "GolemEarth", "GolemWater", "GolemAir", "GolemFire"],
-}
+};
 var data;
+
+var optionData = {};
 
 function preprocessData()
 {

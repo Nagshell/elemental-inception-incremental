@@ -145,7 +145,7 @@ function preprocessMachinesData(simplifiedDataToBeProcessed)
 		else
 		{
 			ctx.save();
-			ctx.translate(49, 49);
+			ctx.translate(43, 51);
 			ctx.beginPath();
 			ctx.arc(0, 0, 30, 0, Math.PI * 2);
 			ctx.stroke();

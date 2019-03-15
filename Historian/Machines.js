@@ -6,7 +6,7 @@ var machines = {
 	{
 		if (this.glowCheckCD-- <= 0)
 		{
-			this.glowCheckCD = 30;
+			this.glowCheckCD = 20;
 
 			for (var i = 0; i < this.list.length; i++)
 			{
@@ -1026,6 +1026,7 @@ function initMachine(title)
 	thisData.pane.subRegionsMin.push(machines.machinePauseRegion);
 	thisData.pane.subRegionsMin.push(regionData.pinRegion);
 	thisData.pane.title = thisData.title;
+	thisData.pane.id = title;
 	if (thisData.paneCustomDraw)
 	{
 		thisData.pane.customDraw = thisData.paneCustomDraw;
@@ -1044,9 +1045,7 @@ function initMachine(title)
 	thisData.pane.recipeSelectorPane.independent = true;
 	thisData.pane.recipeSelectorPane.boundaryPath = new Path2D();
 	thisData.pane.recipeSelectorPane.boundaryPath.rect(0, 0, 275, 16 + 17 * thisData.recipes.length);
-	//thisData.pane.recipeSelectorPane.subRegions.push(regionData.dragRegion);
 	thisData.pane.recipeSelectorPane.subRegions.push(regionData.hideRegion);
-	//thisData.pane.recipeSelectorPane.subRegions.push(regionData.draggableTitleRegion);
 	regionData.hideRegion.action(thisData.pane.recipeSelectorPane);
 
 	for (var i = thisData.recipes.length - 1; i >= 0; i--)
@@ -1068,6 +1067,7 @@ function initMachine(title)
 		var recipePane = new cPane(thisData.pane, 362 + 17 * thisData.recipes.length - 17 * i, 34 + 17 * i);
 		thisRecipe.pane = recipePane;
 		recipePane.title = thisRecipe.title;
+		recipePane.id = thisRecipe.id;
 		recipePane.independent = true;
 		recipePane.recipe = thisRecipe;
 		recipePane.boundaryPath = new Path2D();
@@ -1138,6 +1138,7 @@ function initMachine(title)
 		var recipePane = new cPane(thisData.pane, 0, 0);
 		thisRecipe.pane = recipePane;
 		recipePane.title = thisRecipe.title;
+		recipePane.id = thisRecipe.id;
 		recipePane.independent = true;
 		recipePane.recipe = thisRecipe;
 		recipePane.boundaryPath = new Path2D();
