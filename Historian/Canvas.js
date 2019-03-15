@@ -70,7 +70,7 @@ function draw()
 	tempGlowCycleTime *= Math.PI * 2;
 	tempGlowCycleTime = (Math.sin(tempGlowCycleTime) + 1) / 2;
 	ctxActive.shadowColor = "rgba(255,55,205," + tempGlowCycleTime + ")";
-	borderGlowLineColor = "rgba(105,5,105," + tempGlowCycleTime + ")";
+	borderGlowLineColor = "rgba(155,5,155," + tempGlowCycleTime + ")";
 	borderGlowAlpha = tempGlowCycleTime / 2;
 
 	for (var i = panes.list.length - 1; i >= 0; i--)
