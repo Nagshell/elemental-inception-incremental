@@ -12,8 +12,8 @@ var savingSystem = {
 		};
 		if (pane.centerX)
 		{
-			returnData.centerX = pane.ceterX;
-			returnData.centerY = pane.ceterY;
+			returnData.centerX = pane.centerX;
+			returnData.centerY = pane.centerY;
 		}
 		if (pane.boundaryPathMax)
 		{
@@ -116,8 +116,8 @@ var savingSystem = {
 		pane.y = data.y;
 		if (data.centerX)
 		{
-			pane.centerX = data.ceterX;
-			pane.centerY = data.ceterY;
+			pane.centerX = data.centerX;
+			pane.centerY = data.centerY;
 		}
 		for (var i = 0; i < pane.subPanes.length; i++)
 		{
