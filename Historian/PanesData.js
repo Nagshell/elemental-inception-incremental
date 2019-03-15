@@ -384,31 +384,36 @@ function preprocessPaneData()
 		}
 
 		particleGenerator.draw(ctx);
+
 		var x = -this.centerX + canvas.width / 2;
 		var y = -this.centerY + canvas.height / 2 - 100;
+
 		ctx.save();
-		ctx.globalAlpha = borderGlowAlpha;
+		ctx.globalAlpha = borderGlow.alpha;
+
+		ctx.shadowBlur = borderGlow.radius * 2;
+		ctx.strokeStyle = borderGlow.colors.brightfill;
+		ctx.shadowColor = borderGlow.colors.purple;
+
 		ctx.lineWidth = 1;
-		ctx.shadowBlur = borderGlowRadius * 3;
-		ctx.strokeStyle = ctx.shadowColor;
-		ctx.shadowColor = "#AF00AF";
 		ctx.beginPath();
 		ctx.moveTo(x, y);
 		var noGlow = true;
 		for (var i = 0; i < this.subRegions.length; i++)
 		{
-			if (this.subRegions[i].markedToGlow)
+			if (this.subRegions[i].markedToReadyGlow && this.subRegions[i].glowColor == "purple")
 			{
 				ctx.lineTo(this.subRegions[i].x, this.subRegions[i].y);
 				ctx.moveTo(x, y);
 				noGlow = false;
 			}
 		}
-		if (noGlow && x * x + y * y > 10000 * data.elementsKnown * data.elementsKnown)
+		if (noGlow && x * x + y * y > 10000 * (1 + data.elementsKnown * data.elementsKnown))
 		{
 			ctx.lineTo(0, 0);
 			ctx.moveTo(x, y);
-			ctx.shadowColor = "#00AFAF";
+			ctx.shadowColor = borderGlow.colors.blue;
+			ctx.strokeStyle = borderGlow.colors.blue;
 			noGlow = false;
 		}
 		if (!noGlow)
@@ -497,6 +502,15 @@ function preprocessPaneData()
 		}
 		return possible;
 	}
+	paymentPane.isPotentiallyAffordable = function (costs)
+	{
+		var possible = true;
+		for (var i = 0; i < costs.length; i++)
+		{
+			possible = possible && (data.oElements[costs[i].type].possibleAmount >= costs[i].amount);
+		}
+		return possible;
+	}
 	regionData.hideRegion.action(paymentPane);
 
 	trackerPane = new cPane(null, 0, 0);
@@ -544,7 +558,7 @@ function preprocessPaneData()
 			else
 			{
 				regionData.showRegion.mouseHandler(this.pane, x, y, type);
-				this.superGlow = false;
+				this.markedToSuperGlow = false;
 				this.pane.x = 50 - this.pane.top.centerX;
 				this.pane.y = 50 - this.pane.top.centerY;
 			}
@@ -552,7 +566,7 @@ function preprocessPaneData()
 	};
 
 	educationalPane = new cPane(mainPane, 200, 200);
-	rs[3].superGlow = true;
+	rs[3].markedToSuperGlow = true;
 	rs[3].pane = educationalPane;
 	educationalPane.region = rs[3];
 	path = new Path2D();

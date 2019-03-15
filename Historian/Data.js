@@ -130,6 +130,7 @@ function preprocessData()
 	{
 		data.oElements[initialData.elements[i]] = {
 			amount: 0,
+			possibleAmount: 0,
 			type: initialData.elements[i],
 			index: i,
 		};

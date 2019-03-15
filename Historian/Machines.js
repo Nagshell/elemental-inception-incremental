@@ -6,24 +6,52 @@ var machines = {
 	{
 		if (this.glowCheckCD-- <= 0)
 		{
-			this.glowCheckCD = 15;
-			var mainGlow = false;
+			this.glowCheckCD = 30;
+
 			for (var i = 0; i < this.list.length; i++)
 			{
 				var tempMachine = this.list[i];
-				var machineGlow = false;
 				for (var j = 0; j < tempMachine.recipes.length; j++)
 				{
 					var tempRecipe = tempMachine.recipes[j];
-					var recipeGlow = false;
+					if (tempRecipe.pieChart.results.working)
+					{
+						for (var k = 0; k < tempRecipe.outputs.length; k++)
+						{
+							var tempIngredient = tempRecipe.outputs[k];
+							var tempMax = tempIngredient.max;
+							if (tempIngredient.sliderRegion)
+							{
+								tempMax = tempIngredient.sliderBase * Math.pow(tempIngredient.sliderStep, tempIngredient.upped);
+							}
+							data.oElements[tempIngredient.type].possibleAmount = Math.max(tempMax, data.oElements[tempIngredient.type].possibleAmount);
+						}
+					}
+				}
+			}
+
+			var mainFullGlow = false;
+			for (var i = 0; i < this.list.length; i++)
+			{
+				var tempMachine = this.list[i];
+				var machineFullGlow = false;
+				var machineWeakGlow = false;
+				for (var j = 0; j < tempMachine.recipes.length; j++)
+				{
+					var tempRecipe = tempMachine.recipes[j];
+					var recipeFullGlow = false;
+					var recipeWeakGlow = false;
 					if (tempRecipe.unlocked)
 					{
-
 						if (tempRecipe.upgradeTo)
 						{
 							if (paymentPane.isAffordable(tempRecipe.upgradeCosts))
 							{
-								recipeGlow = true;
+								recipeFullGlow = true;
+							}
+							else if (paymentPane.isPotentiallyAffordable(tempRecipe.upgradeCosts))
+							{
+								recipeWeakGlow = true;
 							}
 						}
 						for (var k = 0; k < tempRecipe.inputs.length; k++)
@@ -31,17 +59,34 @@ var machines = {
 							var tempIngredient = tempRecipe.inputs[k];
 							if (tempIngredient.sliderRegion)
 							{
-								var sliderGlow = false;
+								var sliderFullGlow = false;
+								var sliderWeakGlow = false;
 								if (tempIngredient.upped < tempIngredient.upgrades.length)
 								{
 									if (paymentPane.isAffordable(tempIngredient.upgrades[tempIngredient.upped].costs))
 									{
-										sliderGlow = true;
-
+										sliderFullGlow = true;
+									}
+									else if (paymentPane.isPotentiallyAffordable(tempIngredient.upgrades[tempIngredient.upped].costs))
+									{
+										sliderWeakGlow = true;
 									}
 								}
-								tempIngredient.sliderRegion.markedToGlow = sliderGlow;
-								recipeGlow = recipeGlow || sliderGlow;
+								if (sliderFullGlow)
+								{
+									tempIngredient.sliderRegion.glowColor = "purple";
+								}
+								else if (sliderWeakGlow)
+								{
+									tempIngredient.sliderRegion.glowColor = "blue";
+								}
+								else
+								{
+									tempIngredient.sliderRegion.glowColor = null;
+								}
+								tempIngredient.sliderRegion.markedToReadyGlow = sliderFullGlow || sliderWeakGlow;
+								recipeFullGlow = recipeFullGlow || sliderFullGlow;
+								recipeWeakGlow = recipeWeakGlow || sliderWeakGlow;
 							}
 						}
 						for (var k = 0; k < tempRecipe.outputs.length; k++)
@@ -49,17 +94,34 @@ var machines = {
 							var tempIngredient = tempRecipe.outputs[k];
 							if (tempIngredient.sliderRegion)
 							{
-								var sliderGlow = false;
+								var sliderFullGlow = false;
+								var sliderWeakGlow = false;
 								if (tempIngredient.upped < tempIngredient.upgrades.length)
 								{
 									if (paymentPane.isAffordable(tempIngredient.upgrades[tempIngredient.upped].costs))
 									{
-										sliderGlow = true;
-
+										sliderFullGlow = true;
+									}
+									else if (paymentPane.isPotentiallyAffordable(tempIngredient.upgrades[tempIngredient.upped].costs))
+									{
+										sliderWeakGlow = true;
 									}
 								}
-								tempIngredient.sliderRegion.markedToGlow = sliderGlow;
-								recipeGlow = recipeGlow || sliderGlow;
+								if (sliderFullGlow)
+								{
+									tempIngredient.sliderRegion.glowColor = "purple";
+								}
+								else if (sliderWeakGlow)
+								{
+									tempIngredient.sliderRegion.glowColor = "blue";
+								}
+								else
+								{
+									tempIngredient.sliderRegion.glowColor = null;
+								}
+								tempIngredient.sliderRegion.markedToReadyGlow = sliderFullGlow || sliderWeakGlow;
+								recipeFullGlow = recipeFullGlow || sliderFullGlow;
+								recipeWeakGlow = recipeWeakGlow || sliderWeakGlow;
 							}
 						}
 					}
@@ -67,22 +129,55 @@ var machines = {
 					{
 						if (paymentPane.isAffordable(tempRecipe.unlockCosts))
 						{
-							recipeGlow = true;
+							recipeFullGlow = true;
+						}
+						else if (paymentPane.isPotentiallyAffordable(tempRecipe.unlockCosts))
+						{
+							recipeWeakGlow = true;
 						}
 					}
-					tempRecipe.region.markedToGlow = recipeGlow;
-					machineGlow = machineGlow || recipeGlow;
+					if (recipeFullGlow)
+					{
+						tempRecipe.region.glowColor = "purple";
+					}
+					else if (recipeWeakGlow)
+					{
+						tempRecipe.region.glowColor = "blue";
+					}
+					else
+					{
+						tempRecipe.region.glowColor = null;
+					}
+					tempRecipe.region.markedToReadyGlow = recipeFullGlow || recipeWeakGlow;
+					machineFullGlow = machineFullGlow || recipeFullGlow;
+					machineWeakGlow = machineWeakGlow || recipeWeakGlow;
 				}
-				tempMachine.pane.markedToGlow = machineGlow;
-				if (machineGlow && !tempMachine.region.boundaryPath)
+				if (machineFullGlow)
+				{
+					tempMachine.pane.glowColor = "purple";
+					tempMachine.region.glowColor = "purple";
+				}
+				else if (machineWeakGlow)
+				{
+					tempMachine.pane.glowColor = "blue";
+					tempMachine.region.glowColor = "blue";
+				}
+				else
+				{
+					tempMachine.pane.glowColor = null;
+					tempMachine.region.glowColor = null;
+				}
+
+				tempMachine.pane.markedToReadyGlow = machineFullGlow || machineWeakGlow;
+				tempMachine.region.markedToReadyGlow = machineFullGlow || machineWeakGlow;
+				mainFullGlow = mainFullGlow || machineFullGlow;
+				if (tempMachine.pane.markedToReadyGlow && !tempMachine.region.boundaryPath)
 				{
 					tempMachine.region.boundaryPath = machines.displayRegionPath;
 				}
-				tempMachine.region.markedToGlow = machineGlow;
-				mainGlow = mainGlow || machineGlow;
 
 			}
-			mainPane.markedToGlow = mainGlow;
+			mainPane.markedToReadyGlow = mainFullGlow;
 		}
 	},
 	tick: function ()
@@ -237,10 +332,12 @@ var machines = {
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
-					var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.4) - data.oElements[temp.outputs[j].type].amount;
+					var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.2) - data.oElements[temp.outputs[j].type].amount;
 					data.oElementsFlow[temp.outputs[j].type] += flow;
 					if (this.id != "golemInfuser")
+					{
 						particleGenerator.machineFlow(this.id, machineDisplayElements[temp.outputs[j].type], temp.outputs[j].type, flow);
+					}
 				}
 				if (this.id == "golemInfuser")
 				{

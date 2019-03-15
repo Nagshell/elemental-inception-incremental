@@ -172,7 +172,7 @@ var savingSystem = {
 			}
 			machines.glowCheckCD = 0;
 			machines.glowCheck();
-			educationalPane.region.superGlow = !machineData.golemInfuser.recipes[0].unlocked;
+			educationalPane.region.markedToSuperGlow = !machineData.golemInfuser.recipes[0].unlocked;
 		}
 	},
 	reloadData: function ()

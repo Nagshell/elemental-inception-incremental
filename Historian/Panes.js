@@ -4,7 +4,7 @@ var nullCtx = nullCanvas.getContext("2d");
 var panes = {
 	highlightDragged: function (pane)
 	{
-		pane.superGlow = panes.dragndrop != null;
+		pane.markedToSuperGlow = panes.dragndrop != null;
 		if (pane.independentVisible)
 		{
 			for (var i = pane.subPanes.length - 1; i >= 0; i--)
@@ -203,6 +203,53 @@ var panes = {
 	},
 }
 
+function doGlows(ctx, target)
+{
+	ctx.save();
+
+	if (target.markedToSuperGlow)
+	{
+		ctx.strokeStyle = "#000000";
+		ctx.shadowColor = borderGlow.colors.yellow;
+	}
+	else if (target.markedToReadyGlow)
+	{
+		if (target.glowColor)
+		{
+			ctx.strokeStyle = borderGlow.colors[target.glowColor];
+			ctx.shadowColor = borderGlow.colors[target.glowColor];
+		}
+		else
+		{
+			ctx.strokeStyle = borderGlow.colors.purple;
+			ctx.shadowColor = borderGlow.colors.purple;
+		}
+		ctx.globalAlpha = borderGlow.alpha;
+	}
+	else
+	{
+		ctx.restore();
+		return;
+	}
+
+	if (target.centerX)
+	{
+		ctx.translate(-target.centerX, -target.centerY);
+	}
+	ctx.shadowBlur = borderGlow.radius;
+	ctx.lineWidth = 3;
+	if (target.glowPath)
+	{
+		ctx.stroke(target.glowPath);
+	}
+	else
+	{
+		ctx.stroke(target.boundaryPath);
+	}
+
+	ctx.restore();
+}
+
 function cPane(top, x, y)
 {
 	this.x = x;
@@ -348,33 +395,8 @@ cPane.prototype.draw = function (ctx)
 			this.subRegions[i].draw(ctx, this);
 		}
 
-		if (this.markedToGlow)
-		{
-			ctx.save();
-			if (this.centerX)
-			{
-				ctx.translate(-this.centerX, -this.centerY);
-			}
-			ctx.strokeStyle = borderGlowLineColor;
-			ctx.lineWidth = 3;
-			ctx.shadowBlur = borderGlowRadius;
-			ctx.globalAlpha = borderGlowAlpha;
-			ctx.stroke(this.boundaryPath);
-			ctx.restore();
-		}
-		if (this.superGlow)
-		{
-			ctx.save();
-			if (this.centerX)
-			{
-				ctx.translate(-this.centerX, -this.centerY);
-			}
-			ctx.strokeStyle = "#000000";
-			ctx.shadowColor = "#FFFF00";
-			ctx.shadowBlur = borderGlowRadius;
-			ctx.stroke(this.boundaryPath);
-			ctx.restore();
-		}
+		doGlows(ctx, this);
+
 		for (var i = this.subPanes.length - 1; i >= 0; i--)
 		{
 			if (!this.subPanes[i].independent)
@@ -382,8 +404,8 @@ cPane.prototype.draw = function (ctx)
 				this.subPanes[i].draw(ctx);
 			}
 		}
-
 		ctx.restore();
+
 		ctx.save();
 		this.independentVisible = false;
 		for (var i = this.subPanes.length - 1; i >= 0; i--)
@@ -452,25 +474,7 @@ cRegion.prototype.draw = function (ctx, pane)
 		{
 			this.customDraw(ctx, pane);
 		}
-		if (this.markedToGlow)
-		{
-			ctx.save();
-			ctx.strokeStyle = borderGlowLineColor;
-			ctx.shadowBlur = borderGlowRadius;
-			ctx.globalAlpha = borderGlowAlpha;
-			ctx.lineWidth = 3;
-			ctx.stroke(this.boundaryPath);
-			ctx.restore();
-		}
-		if (this.superGlow)
-		{
-			ctx.save();
-			ctx.strokeStyle = "#FFFF00";
-			ctx.shadowColor = "#FFFF00";
-			ctx.shadowBlur = borderGlowRadius;
-			ctx.stroke(this.boundaryPath);
-			ctx.restore();
-		}
+		doGlows(ctx, this);
 	}
 	ctx.restore();
 };

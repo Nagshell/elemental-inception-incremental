@@ -47,14 +47,42 @@ function resizeCanvas()
 	}
 	trackerPane.resize();
 }
-var borderGlowRadius = 4;
-var borderGlowTicks = 0;
-var borderGlowAlpha = 1;
-var borderGlowCycleTime = 240;
-var borderGlowLineColor;
+var borderGlow = {
+	precolors:
+	{
+		purple: "rgba(255,55,205,",
+		blue: "rgba(5,55,255,",
+		yellow: "rgba(255,255,0,",
+	},
+	colors:
+	{
+		darkfill: "#101010",
+		brightfill: "686868"
+	},
+	radius: 4,
+	ticks: 0,
+	alpha: 1,
+	cycleTime: 240,
+	prepareColor: function (color, alpha)
+	{
+		return this.precolors[color] + alpha + ")";
+	},
+	preparationTick: function ()
+	{
+		var tempGlowCycleTime = this.ticks++ % (this.cycleTime + 1) / this.cycleTime;
+		tempGlowCycleTime *= Math.PI * 2;
+		tempGlowCycleTime = (Math.sin(tempGlowCycleTime) + 1) / 2;
+		this.alpha = tempGlowCycleTime / 2;
+		for (var col in this.precolors)
+		{
+			this.colors[col] = this.prepareColor(col, tempGlowCycleTime);
+		}
+	},
+};
 
 function draw()
 {
+	borderGlow.preparationTick();
 
 	ctxActive.resetTransform();
 	ctxActive.clearRect(0, 0, 800, 800);
@@ -65,19 +93,11 @@ function draw()
 	ctxActive.strokeStyle = "#DDDDDD";
 	ctxActive.lineWidth = 2;
 	ctxActive.fillStyle = "#101010";
-	ctxActive.shadowBlur = 0;
-	var tempGlowCycleTime = borderGlowTicks++ % (borderGlowCycleTime + 1) / borderGlowCycleTime;
-	tempGlowCycleTime *= Math.PI * 2;
-	tempGlowCycleTime = (Math.sin(tempGlowCycleTime) + 1) / 2;
-	ctxActive.shadowColor = "rgba(255,55,205," + tempGlowCycleTime + ")";
-	borderGlowLineColor = "rgba(155,5,155," + tempGlowCycleTime + ")";
-	borderGlowAlpha = tempGlowCycleTime / 2;
 
 	for (var i = panes.list.length - 1; i >= 0; i--)
 	{
 		panes.list[i].draw(ctxActive);
 	}
-	ctxActive.globalAlpha = 1;
 }
 
 function drawNumber(ctx, num, x, y, mode = "", align = "left")
