@@ -1,6 +1,11 @@
+var savingSystem;
+
 function canvasMouseHandler(event)
 {
-	panes.mouseHandler(event);
+	if (savingSystem && savingSystem.loadingEnded)
+	{
+		panes.mouseHandler(event);
+	}
 }
 
 function canvasKeyHandler(event)
@@ -24,17 +29,18 @@ function resizeCanvas()
 		mainPane.centerX -= Math.trunc(canvas.width / 2);
 		mainPane.centerY -= Math.trunc(canvas.height / 2) - 100;
 	}
+
 	canvas.width = document.body.clientWidth - 20;
 	canvas.height = document.body.clientHeight - 20;
-	var path = new Path2D();
-	path.rect(0, 0, canvas.width, 99);
-	trackerPane.boundaryPath = path;
+
 	path = new Path2D();
 	path.rect(0, 0, canvas.width, canvas.height - 100);
 	mainPane.boundaryPath = path;
+
 	path = new Path2D();
 	path.rect(0, 0, canvas.width, canvas.height);
 	panes.mainBoundary = path;
+
 	if (mainPane.centerX)
 	{
 		mainPane.centerX += Math.trunc(canvas.width / 2);
@@ -45,6 +51,10 @@ function resizeCanvas()
 		mainPane.centerX = Math.trunc(canvas.width / 2);
 		mainPane.centerY = Math.trunc(canvas.height / 2) - 100;
 	}
+
+	var path = new Path2D();
+	path.rect(0, 0, canvas.width, 99);
+	trackerPane.boundaryPath = path;
 	trackerPane.resize();
 }
 var borderGlow = {
@@ -72,6 +82,7 @@ var borderGlow = {
 		var tempGlowCycleTime = this.ticks++ % (this.cycleTime + 1) / this.cycleTime;
 		tempGlowCycleTime *= Math.PI * 2;
 		tempGlowCycleTime = (Math.sin(tempGlowCycleTime) + 1) / 2;
+		tempGlowCycleTime = tempGlowCycleTime * 0.98 + 0.02;
 		this.alpha = tempGlowCycleTime / 2;
 		for (var col in this.precolors)
 		{
@@ -100,7 +111,7 @@ function draw()
 	}
 }
 
-function drawNumber(ctx, num, x, y, mode = "", align = "left")
+function drawNumber(ctx, num, x, y, mode = "", align = "left", prefix = "", suffix = "")
 {
 	ctx.save();
 	ctx.textAlign = align;
@@ -116,15 +127,15 @@ function drawNumber(ctx, num, x, y, mode = "", align = "left")
 			e++;
 			num /= 10;
 		}
-		ctx.fillText((Math.trunc(num * 100) / 100).toFixed(2) + "e" + e, x, y);
+		ctx.fillText(prefix + (Math.trunc(num * 100) / 100).toFixed(2) + "e" + e + suffix, x, y);
 	}
 	else if (mode == "fixed")
 	{
-		ctx.fillText((Math.trunc(num * 1000) / 1000).toFixed(3), x, y);
+		ctx.fillText(prefix + (Math.trunc(num * 1000) / 1000).toFixed(3) + suffix, x, y);
 	}
 	else
 	{
-		ctx.fillText(Math.trunc(num), x, y);
+		ctx.fillText(prefix + Math.trunc(num) + suffix, x, y);
 	}
 
 	ctx.restore();

@@ -118,7 +118,7 @@ function preprocessMachinesData(simplifiedDataToBeProcessed)
 		if (this.boundaryPathMax)
 		{
 			ctx.save();
-			ctx.translate(132, 49);
+			ctx.translate(optionData.iconSize * 2 + 1, optionData.iconSize * 2 + 25);
 			ctx.beginPath();
 			ctx.arc(0, 0, 30, 0, Math.PI * 2);
 			ctx.stroke();
@@ -130,14 +130,14 @@ function preprocessMachinesData(simplifiedDataToBeProcessed)
 			this.regularDraw(ctx);
 			ctx.save();
 			ctx.fillStyle = ctx.strokeStyle;
-			ctx.fillText(locale.oGolemShorthand.GolemEarth, 175, 25);
-			drawNumber(ctx, data.oElements.GolemEarth.amount, 185, 25);
-			ctx.fillText(locale.oGolemShorthand.GolemWater, 175, 42);
-			drawNumber(ctx, data.oElements.GolemWater.amount, 185, 42);
-			ctx.fillText(locale.oGolemShorthand.GolemAir, 175, 59);
-			drawNumber(ctx, data.oElements.GolemAir.amount, 185, 59);
-			ctx.fillText(locale.oGolemShorthand.GolemFire, 175, 76);
-			drawNumber(ctx, data.oElements.GolemFire.amount, 185, 76);
+			ctx.fillText(locale.oGolemShorthand.GolemEarth, optionData.iconSize * 4 + 15, optionData.iconSize * 1.5 + 2);
+			drawNumber(ctx, data.oElements.GolemEarth.amount, optionData.iconSize * 4 + 25, optionData.iconSize * 1.5 + 2);
+			ctx.fillText(locale.oGolemShorthand.GolemWater, optionData.iconSize * 4 + 15, optionData.iconSize * 2.5 + 2);
+			drawNumber(ctx, data.oElements.GolemWater.amount, optionData.iconSize * 4 + 25, optionData.iconSize * 2.5 + 2);
+			ctx.fillText(locale.oGolemShorthand.GolemAir, optionData.iconSize * 4 + 15, optionData.iconSize * 3.5 + 2);
+			drawNumber(ctx, data.oElements.GolemAir.amount, optionData.iconSize * 4 + 25, optionData.iconSize * 3.5 + 2);
+			ctx.fillText(locale.oGolemShorthand.GolemFire, optionData.iconSize * 4 + 15, optionData.iconSize * 4.5 + 2);
+			drawNumber(ctx, data.oElements.GolemFire.amount, optionData.iconSize * 4 + 25, optionData.iconSize * 4.5 + 2);
 
 			ctx.restore();
 
@@ -145,7 +145,7 @@ function preprocessMachinesData(simplifiedDataToBeProcessed)
 		else
 		{
 			ctx.save();
-			ctx.translate(43, 51);
+			ctx.translate(optionData.iconSize * 2 + 1, optionData.iconSize * 2 + 25);
 			ctx.beginPath();
 			ctx.arc(0, 0, 30, 0, Math.PI * 2);
 			ctx.stroke();

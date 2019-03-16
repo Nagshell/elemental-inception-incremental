@@ -21,8 +21,8 @@ var panes = {
 		if (!panes.dragndrop)
 			return;
 		var top = panes.dragndrop.top;
-		var x = 25 + top.x + panes.dragndrop.x;
-		var y = 8 + top.y + panes.dragndrop.y;
+		var x = optionData.iconSize * 3 / 2 + top.x + panes.dragndrop.x;
+		var y = optionData.iconSize / 2 + top.y + panes.dragndrop.y;
 		if (panes.dragndrop.independent)
 		{
 			top = top.top;
@@ -89,6 +89,7 @@ var panes = {
 	{
 		if (event.type == "mousemove")
 		{
+			regionData.hideRegion.action(tooltipPane);
 			var now = new Date().getTime();
 			if (now - this.lastmousemove < 100)
 			{
@@ -193,6 +194,13 @@ var panes = {
 			regionData.showRegion.action(panes.postMouseHandlerShow[i]);
 		}
 		panes.postMouseHandlerShow = [];
+		if (tooltipPane.readyToShow)
+		{
+			regionData.showRegion.action(tooltipPane);
+			tooltipPane.x = event.offsetX + 15;
+			tooltipPane.y = event.offsetY + 15;
+			tooltipPane.readyToShow = false;
+		}
 	},
 	resetPositions: function ()
 	{
@@ -378,11 +386,11 @@ cPane.prototype.draw = function (ctx)
 			ctx.save();
 			ctx.fillStyle = ctx.strokeStyle;
 			ctx.textAlign = "left";
-			ctx.fillText(this.title, 52, 8);
+			ctx.fillText(this.title, optionData.iconSize * 3 + 5, optionData.iconSize / 2);
 			ctx.lineWidth = 1;
 			ctx.beginPath();
-			ctx.moveTo(0, 16.5);
-			ctx.lineTo(999, 16.5);
+			ctx.moveTo(0, optionData.iconSize + 0.5);
+			ctx.lineTo(999, optionData.iconSize + 0.5);
 			ctx.stroke();
 			ctx.restore();
 		}
@@ -453,7 +461,7 @@ cRegion.prototype.draw = function (ctx, pane)
 		ctx.clip(this.boundaryPath);
 		if (this.img)
 		{
-			ctx.drawImage(this.img, 0, 0);
+			ctx.drawImage(images[this.img], 0, 0);
 		}
 		if (this.text)
 		{
@@ -483,10 +491,5 @@ cRegion.prototype.action = function (pane)
 {
 	this.mouseHandler(pane, 0, 0, "mouseup");
 }
-
-cRegion.prototype.addImage = function (path)
-{
-	this.img = images[path];
-};
 
 cRegion.prototype.mouseHandler = function () {};

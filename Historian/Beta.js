@@ -1,6 +1,6 @@
 var loopId = null;
-var gameVersion = 2;
-var savingSystem = {
+var gameVersion = 3;
+savingSystem = {
 	reccurentPaneSave: function (pane)
 	{
 		var returnData = {
@@ -104,7 +104,7 @@ var savingSystem = {
 
 		var localDataToSave = {
 			pP: this.reccurentPaneSave(mainPane),
-			options: optionData,
+			oD: optionData,
 		};
 		localStorage.setItem("localSaveData", JSON.stringify(localDataToSave));
 
@@ -150,6 +150,12 @@ var savingSystem = {
 			alert("Game data did not load properly. Please try refreshing the page or contact me if problem persists.");
 			return;
 		}
+		localDataToLoad = JSON.parse(localStorage.getItem("localSaveData"));
+		if (localDataToLoad && localDataToLoad.oD)
+		{
+			optionData = localDataToLoad.oD;
+		}
+
 		this.reloadData();
 		dataToLoad = JSON.parse(localStorage.getItem("saveData"));
 
@@ -239,7 +245,7 @@ var savingSystem = {
 								slider.paymentSuccess();
 								rec[j] -= 3;
 							}
-							slider.mouseHandler(null, slider.target.sliderRegion.x + 10 + 35 * (rec[j]), 0, "mouseup");
+							slider.mouseHandler(null, slider.target.sliderRegion.x + 10 + 40 * (rec[j]), 0, "mouseup");
 							iCount++;
 							searchNext = true;
 						}
@@ -250,19 +256,21 @@ var savingSystem = {
 			machines.glowCheck();
 			educationalPane.region.markedToSuperGlow = !machineData.golemInfuser.recipes[0].unlocked;
 
-			localDataToLoad = JSON.parse(localStorage.getItem("localSaveData"));
 			if (localDataToLoad)
 			{
 				resizeCanvas();
 				this.reccurentPaneLoad(localDataToLoad.pP, mainPane);
-				console.log(localDataToLoad);
 			}
 		}
+		savingSystem.loadingEnded = true;
 	},
 	reloadData: function ()
 	{
+		preprocessIcons();
 		preprocessData();
+		preprocessRegionData();
 		preprocessPaneData();
+		preprocessMachines();
 		preprocessMachinesData(simplifiedMachineData);
 		preprocessParticles();
 		resizeCanvas();

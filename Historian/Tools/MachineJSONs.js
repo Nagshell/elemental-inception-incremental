@@ -955,7 +955,7 @@ var simplifiedMachineData = {
 				],
 				out: [
 					["Void", 1, 0.1],
-					["Mud", 6000, -45],
+					["Mud", 11900, -45],
 				],
 				lock: ["Sand", 3, "Steam", 3],
 				upgrade: ["voidClash2", "Sand", 60, "Steam", 120],
@@ -969,7 +969,7 @@ var simplifiedMachineData = {
 				],
 				out: [
 					["Void", 1, 1.2],
-					["Mud", 600, -60],
+					["Mud", 1190, -60],
 				],
 				upgrade: ["voidClash3", "Alkahest", 0.02],
 			},

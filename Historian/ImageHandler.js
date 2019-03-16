@@ -1,8 +1,8 @@
 var images = {};
 
-function preprocessImages()
+function preprocessIcons()
 {
-	var imageList = [
+	var resizabledIconList = [
 		"iconOn",
 		"iconOff",
 		"iconUp",
@@ -21,7 +21,19 @@ function preprocessImages()
 		"iconPinNot",
 		"iconNext",
 		"iconPrev",
+	];
+	var size = optionData.iconSize;
+	for (var i = 0; i < resizabledIconList.length; i++)
+	{
+		var img = new Image();
+		images[resizabledIconList[i]] = img;
+		img.src = "img/icon" + size + "/" + resizabledIconList[i] + ".png";
+	}
+}
 
+function preprocessImages()
+{
+	var imageList = [
 		"iconEarth",
 		"iconWater",
 		"iconAir",
@@ -37,6 +49,7 @@ function preprocessImages()
 		"iconGolemWater",
 		"iconGolemAir",
 		"iconGolemFire",
+
 		"iconMergerDisplay",
 
 		"buttonConfirm",

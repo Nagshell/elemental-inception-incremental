@@ -18,11 +18,17 @@ var locale = {
 	outOf: "out of",
 
 	aTabNames: [
-		"Machine Map",
-		"Lore - Disabled",
 		"Redacted & Disabled",
+		"Redacted & Disabled",
+		"Redacted & Disabled",
+		"Lore - Disabled",
 		"Educational Corner",
-		"Options - Disabled"
+		"Redacted & Disabled",
+		null,
+		null,
+		null,
+		"Options",
+		"Redacted & Disabled",
 	],
 	oMachines:
 	{
@@ -95,16 +101,16 @@ var locale = {
 
 		mergeMud1: "Merge : Traces of Mud",
 		mergeMud2: "Simple Mud Extraction",
-		mergeMud3: "Intermediete Mud Extraction",
+		mergeMud3: "Intermediate Mud Extraction",
 		mergeIce1: "Merge : Traces of Ice",
 		mergeIce2: "Simple Ice Extraction",
-		mergeIce3: "Intermediete Ice Extraction",
+		mergeIce3: "Intermediate Ice Extraction",
 		mergeSteam1: "Merge : Traces of Steam",
 		mergeSteam2: "Simple Steam Extraction",
-		mergeSteam3: "Intermediete Steam Extraction",
+		mergeSteam3: "Intermediate Steam Extraction",
 		mergeMagma1: "Merge : Traces of Magma",
 		mergeMagma2: "Simple Magma Extraction",
-		mergeMagma3: "Intermediete Magma Extraction",
+		mergeMagma3: "Intermediate Magma Extraction",
 		mergeSand1: "Merge : Traces of Sand",
 
 		mudConversion1: "Forceful Mud Conversion",

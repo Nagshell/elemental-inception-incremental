@@ -6,7 +6,7 @@ var machines = {
 	{
 		if (this.glowCheckCD-- <= 0)
 		{
-			this.glowCheckCD = 20;
+			this.glowCheckCD = 20 * optionData.glowCheckCDMultiplier;
 
 			for (var i = 0; i < this.list.length; i++)
 			{
@@ -282,11 +282,6 @@ var machines = {
 					if (data.oElements[temp.inputs[j].type].amount < temp.inputs[j].min)
 					{
 						state = "empty";
-						temp.inputs[j].pieChart.push("empty");
-					}
-					else
-					{
-						temp.inputs[j].pieChart.push("working");
 					}
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
@@ -294,11 +289,6 @@ var machines = {
 					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max && !temp.outputs[j].noLimit)
 					{
 						state = "full";
-						temp.outputs[j].pieChart.push("full");
-					}
-					else
-					{
-						temp.outputs[j].pieChart.push("working");
 					}
 				}
 				temp.pieChart.push(state);
@@ -365,10 +355,6 @@ var machines = {
 		{
 			ctx.drawImage(images[this.machine.id], -32, -32);
 		}
-		else
-		{
-			ctx.drawImage(images.machineBase, -32, -32);
-		}
 
 		if (this.machine.displayElement)
 		{
@@ -414,65 +400,80 @@ var machines = {
 		ctx.save();
 		if (this.boundaryPathMax)
 		{
-			ctx.save();
+
 			var turnedOn = 0;
 			for (var i = 0; i < this.machine.recipes.length; i++)
 			{
-				if (this.machine.recipes[i].enabled)
+				if (this.machine.recipes[i].unlocked)
 				{
 					turnedOn++;
 				}
 			}
+			ctx.save();
+			ctx.fillStyle = chartColors["null"];
+			ctx.lineWidth = 1;
 			if (turnedOn > 0)
 			{
-				ctx.translate(0, 18 + 29 / turnedOn);
+				ctx.translate(optionData.iconSize * 5 + 60, optionData.iconSize + 1);
+				var radius = optionData.iconSize * 2 + 2;
+				radius /= turnedOn;
+				radius = Math.min(radius, optionData.iconSize);
 				for (var i = 0; i < this.machine.recipes.length; i++)
 				{
-					if (this.machine.recipes[i].enabled)
+					if (this.machine.recipes[i].unlocked)
 					{
 						var temp = this.machine.recipes[i].pieChart;
-
+						ctx.translate(0, radius);
 						ctx.save();
 						ctx.beginPath();
-						ctx.arc(40, 0, 25 / turnedOn, 0, Math.PI * 2);
-						ctx.stroke();
+						ctx.arc(0, 0, radius - 1, 0, Math.PI * 2);
 						ctx.fill();
+						if (!this.machine.recipes[i].enabled)
+						{
+							ctx.globalAlpha = Math.min(1, borderGlow.alpha + 0.25);
+						}
+						ctx.stroke();
+
 						ctx.clip();
+
 						var angle = 0;
 						for (var type in temp.results)
 						{
 							ctx.beginPath();
-							ctx.moveTo(40, 0);
-							ctx.arc(40, 0, 22 / turnedOn, angle, angle + temp.results[type] / 300 * Math.PI);
+							ctx.moveTo(0, 0);
+							ctx.arc(0, 0, radius - 3, angle, angle + temp.results[type] / 300 * Math.PI);
 							angle += temp.results[type] / 300 * Math.PI;
 							ctx.fillStyle = chartColors[type];
 							ctx.fill();
 						}
 						ctx.restore();
-						ctx.translate(0, 3 + 50 / turnedOn);
+						ctx.translate(0, radius);
 					}
 
 				}
 			}
-
 			ctx.restore();
-
-			ctx.fillStyle = ctx.strokeStyle;
 			if (this.machine.displayElement)
 			{
-				ctx.drawImage(images["icon" + this.machine.displayElement], 70, 17);
-				ctx.fillText(this.machine.displayElement, 158, 30);
-				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, 147, 47, elementalDisplayType[this.machine.displayElement]);
+				ctx.drawImage(images["icon" + this.machine.displayElement], optionData.iconSize * 2 - 31, optionData.iconSize + 6);
+				ctx.fillStyle = ctx.strokeStyle;
+				ctx.textAlign = "left";
+				ctx.fillText(this.machine.displayElement, optionData.iconSize * 4, optionData.iconSize * 4.5 - 14);
+				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, optionData.iconSize * 4, optionData.iconSize * 4.5 + 4, elementalDisplayType[this.machine.displayElement], "left");
 			}
 		}
 		else
 		{
 			if (this.machine.displayElement)
 			{
+				if (optionData.iconSize > 16)
+				{
+					ctx.drawImage(images["icon" + this.machine.displayElement], optionData.iconSize * 2 - 31, optionData.iconSize + 6);
+				}
 				ctx.fillStyle = ctx.strokeStyle;
-				ctx.drawImage(images["icon" + this.machine.displayElement], 17, 17);
-				ctx.fillText(this.machine.displayElement, 49, 90);
-				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, 32, 107, elementalDisplayType[this.machine.displayElement], "left");
+				ctx.textAlign = "left";
+				ctx.fillText(this.machine.displayElement, 5, optionData.iconSize * 4.5 - 14);
+				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, 5, optionData.iconSize * 4.5 + 4, elementalDisplayType[this.machine.displayElement], "left");
 			}
 		}
 		ctx.restore();
@@ -486,14 +487,17 @@ var machines = {
 	},
 	pauseRegionDraw: function (ctx, pane)
 	{
+		ctx.save();
 		if (pane.machine.paused)
 		{
+			ctx.globalAlpha = borderGlow.alpha * 1.5 + 0.25;
 			ctx.drawImage(images.iconResume, 0, 0);
 		}
 		else
 		{
 			ctx.drawImage(images.iconPause, 0, 0);
 		}
+		ctx.restore();
 	},
 	recipeRegionMouseHandler: function (pane, x, y, type)
 	{
@@ -501,11 +505,11 @@ var machines = {
 		{
 			if (this.recipe.unlocked)
 			{
-				if (x < 17)
+				if (x < optionData.iconSize + 1)
 				{
 					this.recipe.enabled = !this.recipe.enabled;
 				}
-				else if (x < 34)
+				else if (x < optionData.iconSize * 2 + 2)
 				{
 					if (this.pane.boundaryPath)
 					{
@@ -516,7 +520,7 @@ var machines = {
 						regionData.showRegion.action(this.pane);
 					}
 				}
-				else if (x < 51)
+				else if (x < optionData.iconSize * 3 + 3)
 				{
 					if (this.recipe.upgradeTo)
 					{
@@ -577,43 +581,53 @@ var machines = {
 			}
 			else
 			{
+				ctx.globalAlpha = borderGlow.alpha * 1.5 + 0.25;
 				ctx.drawImage(images.iconOff, 0, 0);
 			}
-			if (this.pane.boundaryPath)
-			{
-				ctx.drawImage(images.iconHide, 17, 0);
-			}
-			else
-			{
-				ctx.drawImage(images.iconShow, 17, 0);
-			}
+			ctx.globalAlpha = 1;
 			if (this.recipe.upgradeTo)
 			{
 				if (paymentPane.isAffordable(this.recipe.upgradeCosts))
 				{
-					ctx.drawImage(images.iconUp, 34, 0);
+					ctx.globalAlpha = borderGlow.alpha * 1.5 + 0.25;
+					ctx.drawImage(images.iconUp, optionData.iconSize * 2 + 2, 0);
+					ctx.globalAlpha = 1;
 				}
 				else
 				{
-					ctx.drawImage(images.iconUpNot, 34, 0);
+					ctx.drawImage(images.iconUpNot, optionData.iconSize * 2 + 2, 0);
+					if (this.markedToReadyGlow)
+					{
+						ctx.globalAlpha = borderGlow.alpha * 1.5 + 0.25;
+					}
 				}
+			}
+			if (this.pane.boundaryPath)
+			{
+				ctx.globalAlpha = 1;
+				ctx.drawImage(images.iconHide, optionData.iconSize + 1, 0);
+			}
+			else
+			{
+				ctx.drawImage(images.iconShow, optionData.iconSize + 1, 0);
+				ctx.globalAlpha = 1;
 			}
 			ctx.lineWidth = 1;
 			ctx.beginPath();
-			ctx.moveTo(16.5, 0);
-			ctx.lineTo(16.5, 17);
-			ctx.moveTo(33.5, 0);
-			ctx.lineTo(33.5, 17);
-			ctx.moveTo(50.5, 0);
-			ctx.lineTo(50.5, 17);
+			ctx.moveTo(optionData.iconSize + 0.5, 0);
+			ctx.lineTo(optionData.iconSize + 0.5, optionData.iconSize + 1);
+			ctx.moveTo(optionData.iconSize * 2 + 1.5, 0);
+			ctx.lineTo(optionData.iconSize * 2 + 1.5, optionData.iconSize + 1);
+			ctx.moveTo(optionData.iconSize * 3 + 2.5, 0);
+			ctx.lineTo(optionData.iconSize * 3 + 2.5, optionData.iconSize + 1);
 			ctx.stroke();
 			ctx.textAlign = "left";
 			ctx.fillStyle = ctx.strokeStyle;
-			ctx.fillText(this.recipe.title, 55, 8);
+			ctx.fillText(this.recipe.title, optionData.iconSize * 3 + 6, optionData.iconSize / 2);
 		}
 		else
 		{
-			ctx.drawImage(images.iconLock, 17, 0);
+			ctx.drawImage(images.iconLock, optionData.iconSize * 2 + 2, 0);
 		}
 		ctx.restore();
 	},
@@ -622,186 +636,141 @@ var machines = {
 		ctx.save();
 		ctx.lineWidth = 1;
 		ctx.save();
-		ctx.translate(170, 100);
+
 		var temp = this.recipe.pieChart;
 
-		var radius = 31;
+		var radius = Math.min(optionData.iconSize + 14, this.finalY / 2 - optionData.iconSize - 12);
+		//ctx.translate(optionData.iconSize * 3 + 200 - radius, optionData.iconSize * 2 + 19 + radius);
+		ctx.translate(optionData.iconSize + 172 + radius, optionData.iconSize * 2 + 21 + radius);
 		ctx.beginPath();
-		ctx.arc(40, 0, radius, 0, Math.PI * 2);
+		ctx.arc(0, 0, radius, 0, Math.PI * 2);
 		ctx.stroke();
 		ctx.fill();
 		ctx.clip();
 		var angle = 0;
 		radius -= 3;
+
 		if (!this.recipe.enabled)
 		{
-			radius /= 2;
+			radius -= 6;
 		}
 		for (var type in temp.results)
 		{
 			ctx.beginPath();
-			ctx.moveTo(40, 0);
-			ctx.arc(40, 0, radius, angle, angle + temp.results[type] / 300 * Math.PI);
+			ctx.moveTo(0, 0);
+			ctx.arc(0, 0, radius, angle, angle + temp.results[type] / 300 * Math.PI);
 			angle += temp.results[type] / 300 * Math.PI;
 			ctx.fillStyle = chartColors[type];
 			ctx.fill();
 		}
 		ctx.restore();
 
-		ctx.textAlign = "left";
 		ctx.fillStyle = ctx.strokeStyle;
-		var y = 30;
-		if (this.recipe.inputs.length > 0)
-		{
-			ctx.fillText(locale.inputs, 25, y);
-		}
+		ctx.textAlign = "center";
 		if (this.recipe.scaling)
 		{
-			ctx.fillText(locale.recipeType + " - " + locale.recipeTypeScaling, 80, y);
+			ctx.fillText(locale.recipeType + " - " + locale.recipeTypeScaling, optionData.iconSize * 2 + 152, optionData.iconSize + 9);
 		}
 		else
 		{
-			ctx.fillText(locale.recipeType + " - " + locale.recipeTypeFixed, 80, y);
+			ctx.fillText(locale.recipeType + " - " + locale.recipeTypeFixed, optionData.iconSize * 2 + 152, optionData.iconSize + 9);
 		}
-		y += 22;
-		for (var i = 0; i < this.recipe.inputs.length; i++)
+		ctx.fillText(locale.efficiency + " " + Math.trunc(this.recipe.efficiency * 10000) / 100 + "%", optionData.iconSize * 2 + 152, optionData.iconSize * 2 + 9);
+		ctx.beginPath();
+		ctx.moveTo(optionData.iconSize + 100, optionData.iconSize * 2 + 18.5);
+		ctx.lineTo(optionData.iconSize * 3 + 203, optionData.iconSize * 2 + 18.5);
+		ctx.stroke();
+		if (this.recipe.inputs.length > 0)
 		{
-			ctx.save();
-			ctx.strokeRect(34, y - 8, 122, 50);
-			ctx.fillStyle = "#080808";
-			ctx.fillRect(34, y - 8, 122, 50);
-			ctx.restore();
-			ctx.strokeRect(34, y - 8, 122, 33);
-			ctx.save();
-			ctx.fillStyle = "#080808";
-			ctx.fillRect(34, y - 8, 122, 33);
-			ctx.restore();
-			var temp = this.recipe.inputs[i];
-			ctx.fillText(temp.type, 36, y);
-			if (temp.ratio > 1e3)
-			{
-				drawNumber(ctx, temp.ratio, 153, y, "exp", "right");
-			}
-			else if (temp.ratio == Math.trunc(temp.ratio))
-			{
-				drawNumber(ctx, temp.ratio, 153, y, "", "right");
-			}
-			else
-			{
-				drawNumber(ctx, temp.ratio, 153, y, "fixed", "right");
-			}
-			y += 17;
-			drawNumber(ctx, data.oElements[temp.type].amount, 36, y, elementalDisplayType[temp.type]);
-			ctx.fillText("/", 95, y);
-			drawNumber(ctx, temp.min, 105, y, elementalDisplayType[temp.type]);
-			y += 17;
-			ctx.save();
-			ctx.strokeRect(140, y - 8, 16, 16);
-			ctx.fillStyle = "#080808";
-			ctx.fillRect(140, y - 8, 16, 16);
-			var temp = temp.pieChart;
-
-			ctx.save();
-			ctx.beginPath();
-			ctx.arc(148, y, 6, 0, Math.PI * 2);
-			ctx.stroke();
-			ctx.fill();
-			ctx.clip();
-			var angle = 0;
-			for (var type in temp.results)
-			{
-				ctx.beginPath();
-				ctx.moveTo(148, y);
-				ctx.arc(148, y, 5, angle, angle + temp.results[type] / 300 * Math.PI);
-				angle += temp.results[type] / 300 * Math.PI;
-				ctx.fillStyle = chartColors[type];
-				ctx.fill();
-			}
-
-			ctx.restore();
-			ctx.restore();
-
-			y += 22;
+			ctx.fillText(locale.inputs, optionData.iconSize * 0.5 + 50, optionData.iconSize * 1.5 + 1);
+			ctx.strokeRect(optionData.iconSize - 0.5, optionData.iconSize + 0.5, 101, optionData.iconSize + 1);
 		}
 		if (this.recipe.outputs.length > 0)
 		{
-			ctx.fillText(locale.outputs, 15, y);
+			ctx.fillText(locale.outputs, optionData.iconSize * 0.5 + 50, this.outputY);
+			ctx.strokeRect(-0.5, this.outputY - 8.5, optionData.iconSize + 101, 17);
 		}
-		y += 22;
-		for (var i = 0; i < this.recipe.outputs.length; i++)
+		ctx.textAlign = "left";
+		ctx.fillText(locale.production, optionData.iconSize + 102, optionData.iconSize * 2 + 27);
+		ctx.fillText(locale.chart, optionData.iconSize + 102, optionData.iconSize * 2 + 44);
+		ctx.restore();
+	},
+	ingredientRegionMouseHandler: function (pane, x, y, type)
+	{
+		x -= this.x;
+		y -= this.y;
+		if (type == "mousemove")
 		{
-			ctx.save();
-			ctx.strokeRect(34, y - 8, 122, 50);
-			ctx.fillStyle = "#080808";
-			ctx.fillRect(34, y - 8, 122, 50);
-			ctx.restore();
-			ctx.strokeRect(34, y - 8, 122, 33);
-			ctx.save();
-			ctx.fillStyle = "#080808";
-			ctx.fillRect(34, y - 8, 122, 33);
-			ctx.restore();
-			var temp = this.recipe.outputs[i];
-			ctx.fillText(temp.type, 36, y);
-			if (temp.ratio * this.recipe.efficiency > 1e3)
+			if (x < 50)
 			{
-				drawNumber(ctx, temp.ratio * this.recipe.efficiency, 153, y, "exp", "right");
+				if (y > 17)
+				{
+					tooltipPane.showText("Current");
+				}
 			}
-			else if (temp.ratio * this.recipe.efficiency == Math.trunc(temp.ratio * this.recipe.efficiency))
+			else if (x > 65)
 			{
-				drawNumber(ctx, temp.ratio * this.recipe.efficiency, 153, y, "", "right");
-			}
-			else
-			{
-				drawNumber(ctx, temp.ratio * this.recipe.efficiency, 153, y, "fixed", "right");
-			}
-			y += 17;
-			drawNumber(ctx, data.oElements[temp.type].amount, 36, y, elementalDisplayType[temp.type]);
-			if (temp.noLimit)
-			{
-				ctx.fillText("|", 95, y);
-			}
-			else
-			{
-				ctx.fillText("/", 95, y);
-			}
-			drawNumber(ctx, temp.max, 105, y, elementalDisplayType[temp.type]);
-			y += 17;
-			ctx.save();
-			ctx.strokeRect(140, y - 8, 16, 16);
-			ctx.fillStyle = "#080808";
-			ctx.fillRect(140, y - 8, 16, 16);
+				if (y <= 17)
+				{
+					if (this.ingredient.noLimit)
+					{
+						tooltipPane.showText("NonBlock Ratio");
+					}
+					else
+					{
+						tooltipPane.showText("Ratio");
+					}
+				}
+				else
+				{
+					if (this.ingredient.min)
+					{
+						tooltipPane.showText("Required");
+					}
+					else
+					{
+						if (this.ingredient.noLimit)
+						{
+							tooltipPane.showText("NonBlock Max");
+						}
+						else
+						{
+							tooltipPane.showText("Maximal");
+						}
 
-			var temp = temp.pieChart;
+					}
 
-			ctx.save();
-			ctx.beginPath();
-			ctx.arc(148, y, 6, 0, Math.PI * 2);
-			ctx.stroke();
-			ctx.fill();
-			ctx.clip();
-			var angle = 0;
-			for (var type in temp.results)
-			{
-				ctx.beginPath();
-				ctx.moveTo(148, y);
-				ctx.arc(148, y, 5, angle, angle + temp.results[type] / 300 * Math.PI);
-				angle += temp.results[type] / 300 * Math.PI;
-				ctx.fillStyle = chartColors[type];
-				ctx.fill();
+				}
 			}
 
-			ctx.restore();
-
-			ctx.restore();
-			y += 22;
 		}
-		ctx.fillText(locale.efficiency + " " + Math.trunc(this.recipe.efficiency * 10000) / 100 + "%", 15, y);
-		y += 22;
+	},
+	ingredientRegionDraw: function (ctx)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.textAlign = "left";
+		var temp = this.ingredient;
+		ctx.fillText(temp.type, 3, 8);
 
-		ctx.textAlign = "center";
-		ctx.fillText(locale.production, 210, 40);
-		ctx.fillText(locale.chart, 210, 57);
-
+		var displayStyle = "fixed";
+		var resultRatio = temp.ratio;
+		if (temp.max)
+		{
+			resultRatio *= temp.recipe.efficiency;
+		}
+		if (resultRatio > 1e3)
+		{
+			displayStyle = "exp";
+		}
+		else if (resultRatio == Math.trunc(resultRatio))
+		{
+			displayStyle = "";
+		}
+		drawNumber(ctx, resultRatio, optionData.iconSize + 98, 8, displayStyle, "right", temp.noLimit ? "0 - " : "");
+		drawNumber(ctx, data.oElements[temp.type].amount, 3, 25, elementalDisplayType[temp.type]);
+		ctx.fillText("/", optionData.iconSize / 2 + 50, 25);
+		drawNumber(ctx, temp.min || temp.max, optionData.iconSize + 98, 25, elementalDisplayType[temp.type], "right");
 		ctx.restore();
 	},
 	sliderRegionPaymenentSuccess: function ()
@@ -819,23 +788,12 @@ var machines = {
 	{
 		x -= this.x;
 		y -= this.y;
+		var sliderMoved = false;
 		if (this.drag && type == "mousemove")
 		{
-			if (this.target.upped && x <= 88)
+			if (this.target.upped && x < 100)
 			{
-				if (x <= 8)
-				{
-					this.target.slider = 0;
-				}
-				else if (x <= 80)
-				{
-					this.target.slider = Math.max(0, (x - 10)) / 35;
-				}
-				else
-				{
-					this.target.slider = 2;
-				}
-
+				sliderMoved = true;
 			}
 		}
 		else if (type == "mousedown")
@@ -847,71 +805,74 @@ var machines = {
 		{
 			this.drag = false;
 			var temp = this.target;
-			if (x <= 8)
-			{
-				this.target.slider = 0;
-			}
-			else if (x > 88)
+			if (x >= 100)
 			{
 				if (this.target.upped < this.target.upgrades.length)
 				{
 					paymentPane.preparePayment(this.target.upgrades[this.target.upped].costs, x, y, pane, this);
 				}
 			}
-			else if (x > 80)
+			else if (this.target.upped)
 			{
-				this.target.slider = 2;
+				sliderMoved = true;
+			}
+		}
+		if (sliderMoved)
+		{
+			if (x <= 10)
+			{
+				this.target.slider = 0;
+			}
+			else if (x <= 90)
+			{
+				this.target.slider = Math.max(0, (x - 10)) / 40;
 			}
 			else
 			{
-				this.target.slider = Math.max(0, (x - 10)) / 35;
+				this.target.slider = 2;
 			}
-		}
-		this.target.upData[this.target.upDataId] = Math.floor(this.target.upData[this.target.upDataId] / 3) * 3;
-		this.target.upData[this.target.upDataId] += this.target.slider;
-		var newValue = this.target.sliderBase * Math.pow(this.target.sliderStep, (this.target.slider - 1) * this.target.upped);
-		if (this.target.min)
-		{
-			this.target.min = newValue;
-		}
-		if (this.target.max)
-		{
-			this.target.max = newValue;
+			this.target.upData[this.target.upDataId] = Math.floor(this.target.upData[this.target.upDataId] / 3) * 3;
+			this.target.upData[this.target.upDataId] += this.target.slider;
+			var newValue = this.target.sliderBase * Math.pow(this.target.sliderStep, (this.target.slider - 1) * this.target.upped);
+			if (this.target.min)
+			{
+				this.target.min = newValue;
+			}
+			if (this.target.max)
+			{
+				this.target.max = newValue;
+			}
 		}
 	},
 	sliderRegionDraw: function (ctx)
 	{
 		var temp = this.target;
+		ctx.beginPath();
+		ctx.moveTo(100, 0);
+		ctx.lineTo(100, optionData.iconSize);
+		ctx.stroke();
 		if (temp.upped < temp.upgrades.length)
 		{
-			ctx.strokeRect(89, 0, 16, 16);
+
 			if (paymentPane.isAffordable(temp.upgrades[temp.upped].costs))
 			{
 
-				ctx.drawImage(images.iconUp, 89, 0);
+				ctx.drawImage(images.iconUp, 100, 0);
 			}
 			else
 			{
-				ctx.drawImage(images.iconUpNot, 89, 0);
+				ctx.drawImage(images.iconUpNot, 100, 0);
 			}
 		}
 		ctx.save();
-		ctx.strokeRect(0, 0, 88, 16);
 		if (temp.upped)
 		{
 			ctx.fillStyle = "#181818";
-			ctx.fillRect(0, 0, 88, 16);
+			ctx.fillRect(0, 0, 92, optionData.iconSize);
 			ctx.fillStyle = "#646464";
-			ctx.fillRect(8 + 34 * temp.slider, 0, 4, 16);
+			ctx.fillRect(8 + 40 * temp.slider, 0, 4, optionData.iconSize);
 			ctx.drawImage(images.iconLeft, 0, 0);
-			ctx.drawImage(images.iconRight, 80, 0);
-		}
-		else
-		{
-
-			ctx.fillStyle = "#080808";
-			ctx.fillRect(0, 0, 88, 16);
-
+			ctx.drawImage(images.iconRight, 92, 0);
 		}
 		ctx.restore();
 	},
@@ -922,30 +883,24 @@ function preprocessMachines()
 	machines.displayRegionPath = new Path2D();
 	machines.displayRegionPath.arc(0, 0, 32, 0, Math.PI * 2);
 
-	machines.displayPanePath = new Path2D();
-	machines.displayPanePath.rect(0, 0, 400, 493);
 	machines.displayPanePathMin = new Path2D();
-	machines.displayPanePathMin.rect(0, 0, 200, 81);
+	machines.displayPanePathMin.rect(0, 0, optionData.iconSize * 4 + 120, optionData.iconSize * 5 + 4);
 	machines.displayPanePathDemo = new Path2D();
-	machines.displayPanePathDemo.rect(0, 0, 362, 115);
+	machines.displayPanePathDemo.rect(0, 0, optionData.iconSize * 7 + 207, optionData.iconSize * 5 + 4);
 
 	var path = new Path2D();
-	path.rect(0, 0, 16, 16);
-	machines.machinePauseRegion = new cRegion(70, 17);
+	path.rect(0, 0, optionData.iconSize, optionData.iconSize);
+	machines.machinePauseRegion = new cRegion(optionData.iconSize * 3 + 3, optionData.iconSize + 1);
 	machines.machinePauseRegion.boundaryPath = path;
 	machines.machinePauseRegion.customDraw = machines.pauseRegionDraw;
 	machines.machinePauseRegion.mouseHandler = machines.pauseRegionMouseHandler;
-	// machines.machinePauseRegionMin = new cRegion(0, 17);
-	// machines.machinePauseRegionMin.boundaryPath = path;
-	// machines.machinePauseRegionMin.customDraw = machines.pauseRegionDraw;
-	// machines.machinePauseRegionMin.mouseHandler = machines.pauseRegionMouseHandler;
 
-	machines.recipeSelectorRegion = new cRegion(87, 17);
+	machines.recipeSelectorRegion = new cRegion(optionData.iconSize * 4 + 4, optionData.iconSize + 1);
 	machines.recipeSelectorRegion.boundaryPath = new Path2D();
-	machines.recipeSelectorRegion.boundaryPath.rect(0, 0, 70, 16);
+	machines.recipeSelectorRegion.boundaryPath.rect(0, 0, optionData.iconSize + 53, optionData.iconSize);
 	machines.recipeSelectorRegion.text = "Recipes";
-	machines.recipeSelectorRegion.textX = 42;
-	machines.recipeSelectorRegion.textY = 8;
+	machines.recipeSelectorRegion.textX = optionData.iconSize + 25;
+	machines.recipeSelectorRegion.textY = optionData.iconSize / 2;
 	machines.recipeSelectorRegion.customDraw = function (ctx, pane)
 	{
 		if (pane.recipeSelectorPane.boundaryPath)
@@ -971,13 +926,16 @@ function preprocessMachines()
 			}
 		}
 	};
+
 	machines.recipeRegionPath = new Path2D();
-	machines.recipeRegionPath.rect(0, 0, 275, 16);
+	machines.recipeRegionPath.rect(0, 0, optionData.iconSize * 3 + 203, optionData.iconSize);
 
 	machines.sliderRegionPath = new Path2D();
-	machines.sliderRegionPath.rect(0, 0, 105, 16);
+	machines.sliderRegionPath.rect(0, 0, optionData.iconSize + 100, optionData.iconSize);
+
+	machines.ingredientRegionPath = new Path2D();
+	machines.ingredientRegionPath.rect(0, 0, optionData.iconSize + 100, 33);
 }
-preprocessMachines();
 
 function initMachine(title)
 {
@@ -1040,23 +998,22 @@ function initMachine(title)
 
 	thisData.pane.subRegions.push(machines.recipeSelectorRegion);
 
-	thisData.pane.recipeSelectorPane = new cPane(thisData.pane, 87, 17);
+	thisData.pane.recipeSelectorPane = new cPane(thisData.pane, optionData.iconSize * 4 + 4, optionData.iconSize + 1);
 	thisData.pane.recipeSelectorPane.title = locale.recipes;
 	thisData.pane.recipeSelectorPane.independent = true;
-	thisData.pane.recipeSelectorPane.id = "recipeSelector";
+	//thisData.pane.recipeSelectorPane.id = "recipeSelector";
 	thisData.pane.recipeSelectorPane.boundaryPath = new Path2D();
-	thisData.pane.recipeSelectorPane.boundaryPath.rect(0, 0, 275, 16 + 17 * thisData.recipes.length);
+	thisData.pane.recipeSelectorPane.boundaryPath.rect(0, 0, optionData.iconSize * 3 + 203, (optionData.iconSize + 1) * (thisData.recipes.length + 1) - 1);
 	thisData.pane.recipeSelectorPane.subRegions.push(regionData.hideRegion);
 	regionData.hideRegion.action(thisData.pane.recipeSelectorPane);
 
 	for (var i = thisData.recipes.length - 1; i >= 0; i--)
 	{
 		var thisRecipe = thisData.recipes[i];
-		thisRecipe.upData = [0];
 		thisRecipe.machine = thisData;
-		thisRecipe.pieChart = new cEfficiencyCounter();
+		prepareRecipe(thisRecipe);
 
-		var recipeRegion = new cRegion(0, 17 + 17 * i);
+		var recipeRegion = new cRegion(0, (optionData.iconSize + 1) * (i + 1));
 		thisRecipe.region = recipeRegion;
 		thisData.pane.recipeSelectorPane.subRegions.push(recipeRegion);
 		recipeRegion.recipe = thisRecipe;
@@ -1064,136 +1021,80 @@ function initMachine(title)
 		recipeRegion.mouseHandler = machines.recipeRegionMouseHandler;
 		recipeRegion.paymentSuccess = machines.recipeRegionPaymentSuccess;
 		recipeRegion.customDraw = machines.recipeRegionDraw;
-
-		var recipePane = new cPane(thisData.pane, 362 + 17 * thisData.recipes.length - 17 * i, 34 + 17 * i);
-		thisRecipe.pane = recipePane;
-		recipePane.title = thisRecipe.title;
-		recipePane.id = thisRecipe.id;
-		recipePane.independent = true;
-		recipePane.recipe = thisRecipe;
-		recipePane.boundaryPath = new Path2D();
-		var nL = 84 + 56 * thisRecipe.inputs.length + 56 * thisRecipe.outputs.length;
-		recipePane.boundaryPath.rect(0, 0, 275, nL);
-
-		recipePane.subRegions.push(regionData.dragRegion);
-		recipePane.subRegions.push(regionData.pinRegion);
-		recipePane.subRegions.push(regionData.hideRegion);
-		recipePane.subRegions.push(regionData.draggableTitleRegion);
-
-		recipePane.customDraw = machines.recipePaneDraw;
-
-		recipeRegion.pane = recipePane;
-		regionData.hideRegion.action(recipePane);
-
-		var y = 78;
-		for (var j = 0; j < thisRecipe.inputs.length; j++)
-		{
-			thisRecipe.inputs[j].pieChart = new cEfficiencyCounter();
-			thisRecipe.inputs[j].recipe = thisRecipe;
-			if (thisRecipe.inputs[j].upgrades)
-			{
-				thisRecipe.inputs[j].upData = thisRecipe.upData;
-				thisRecipe.inputs[j].upDataId = thisRecipe.upData.length;
-				thisRecipe.upData.push(0);
-				var sliderRegion = new cRegion(34, y);
-				thisRecipe.inputs[j].sliderRegion = sliderRegion;
-				sliderRegion.boundaryPath = machines.sliderRegionPath;
-				sliderRegion.mouseHandler = machines.sliderRegionMouseHandler;
-				sliderRegion.customDraw = machines.sliderRegionDraw;
-				sliderRegion.target = thisRecipe.inputs[j];
-				sliderRegion.paymentSuccess = machines.sliderRegionPaymenentSuccess;
-				recipePane.subRegions.push(sliderRegion);
-			}
-			y += 56;
-		}
-		y += 22;
-		for (var j = 0; j < thisRecipe.outputs.length; j++)
-		{
-			thisRecipe.outputs[j].pieChart = new cEfficiencyCounter();
-			thisRecipe.outputs[j].recipe = thisRecipe;
-			if (thisRecipe.outputs[j].upgrades)
-			{
-				thisRecipe.outputs[j].upData = thisRecipe.upData;
-				thisRecipe.outputs[j].upDataId = thisRecipe.upData.length;
-				thisRecipe.upData.push(0);
-				var sliderRegion = new cRegion(34, y);
-				thisRecipe.outputs[j].sliderRegion = sliderRegion;
-				sliderRegion.boundaryPath = machines.sliderRegionPath;
-				sliderRegion.mouseHandler = machines.sliderRegionMouseHandler;
-				sliderRegion.customDraw = machines.sliderRegionDraw;
-				sliderRegion.target = thisRecipe.outputs[j];
-				sliderRegion.recipe = thisRecipe;
-				sliderRegion.paymentSuccess = machines.sliderRegionPaymenentSuccess;
-				recipePane.subRegions.push(sliderRegion);
-			}
-			y += 56;
-		}
+		recipeRegion.pane = thisRecipe.pane;
+		thisRecipe.pane.x = (optionData.iconSize + 1) * (7 + thisData.recipes.length - i) + 200;
+		thisRecipe.pane.y = (optionData.iconSize + 1) * (2 + i);
 	}
 	for (var recipeTitle in thisData.hiddenRecipes)
 	{
 		var thisRecipe = thisData.hiddenRecipes[recipeTitle];
-		thisRecipe.upData = [0];
 		thisRecipe.machine = thisData;
-		thisRecipe.pieChart = new cEfficiencyCounter();
-
-		var recipePane = new cPane(thisData.pane, 0, 0);
-		thisRecipe.pane = recipePane;
-		recipePane.title = thisRecipe.title;
-		recipePane.id = thisRecipe.id;
-		recipePane.independent = true;
-		recipePane.recipe = thisRecipe;
-		recipePane.boundaryPath = new Path2D();
-		var nL = 84 + 56 * thisRecipe.inputs.length + 56 * thisRecipe.outputs.length;
-		recipePane.boundaryPath.rect(0, 0, 275, nL);
-
-		recipePane.subRegions.push(regionData.dragRegion);
-		recipePane.subRegions.push(regionData.pinRegion);
-		recipePane.subRegions.push(regionData.hideRegion);
-		recipePane.subRegions.push(regionData.draggableTitleRegion);
-		recipePane.customDraw = machines.recipePaneDraw;
-		regionData.hideRegion.action(recipePane);
-
-		var y = 78;
-		for (var j = 0; j < thisRecipe.inputs.length; j++)
-		{
-			thisRecipe.inputs[j].pieChart = new cEfficiencyCounter();
-			thisRecipe.inputs[j].recipe = thisRecipe;
-			if (thisRecipe.inputs[j].upgrades)
-			{
-				thisRecipe.inputs[j].upData = thisRecipe.upData;
-				thisRecipe.inputs[j].upDataId = thisRecipe.upData.length;
-				thisRecipe.upData.push(0);
-				var sliderRegion = new cRegion(34, y);
-				thisRecipe.inputs[j].sliderRegion = sliderRegion;
-				sliderRegion.boundaryPath = machines.sliderRegionPath;
-				sliderRegion.mouseHandler = machines.sliderRegionMouseHandler;
-				sliderRegion.customDraw = machines.sliderRegionDraw;
-				sliderRegion.target = thisRecipe.inputs[j];
-				sliderRegion.paymentSuccess = machines.sliderRegionPaymenentSuccess;
-				recipePane.subRegions.push(sliderRegion);
-			}
-			y += 56;
-		}
-		y += 22;
-		for (var j = 0; j < thisRecipe.outputs.length; j++)
-		{
-			thisRecipe.outputs[j].pieChart = new cEfficiencyCounter();
-			thisRecipe.outputs[j].recipe = thisRecipe;
-			if (thisRecipe.outputs[j].upgrades)
-			{
-				thisRecipe.outputs[j].upData = thisRecipe.upData;
-				thisRecipe.outputs[j].upDataId = thisRecipe.upData.length;
-				thisRecipe.upData.push(0);
-				var sliderRegion = new cRegion(34, y);
-				thisRecipe.outputs[j].sliderRegion = sliderRegion;
-				sliderRegion.boundaryPath = machines.sliderRegionPath;
-				sliderRegion.mouseHandler = machines.sliderRegionMouseHandler;
-				sliderRegion.customDraw = machines.sliderRegionDraw;
-				sliderRegion.target = thisRecipe.outputs[j];
-				sliderRegion.paymentSuccess = machines.sliderRegionPaymenentSuccess;
-				recipePane.subRegions.push(sliderRegion);
-			}
-			y += 56;
-		}
+		prepareRecipe(thisRecipe);
 	}
+}
+
+function prepareRecipe(thisRecipe)
+{
+	thisRecipe.upData = [0];
+	thisRecipe.pieChart = new cEfficiencyCounter();
+
+	var recipePane = new cPane(thisRecipe.machine.pane, 0, 0);
+	thisRecipe.pane = recipePane;
+
+	recipePane.title = thisRecipe.title;
+	recipePane.id = thisRecipe.id;
+	recipePane.independent = true;
+	recipePane.recipe = thisRecipe;
+
+	recipePane.subRegions.push(regionData.dragRegion);
+	recipePane.subRegions.push(regionData.pinRegion);
+	recipePane.subRegions.push(regionData.hideRegion);
+	recipePane.subRegions.push(regionData.draggableTitleRegion);
+	recipePane.customDraw = machines.recipePaneDraw;
+
+	var y = optionData.iconSize * 2 + 2;
+	for (var j = 0; j < thisRecipe.inputs.length; j++)
+	{
+		y += prepareIngredient(thisRecipe.inputs[j], thisRecipe, 0, y) + 1;
+	}
+	recipePane.outputY = y + 8;
+	y += 17;
+	for (var j = 0; j < thisRecipe.outputs.length; j++)
+	{
+		y += prepareIngredient(thisRecipe.outputs[j], thisRecipe, 0, y) + 1;
+	}
+	recipePane.finalY = y - 1;
+	recipePane.boundaryPath = new Path2D();
+	recipePane.boundaryPath.rect(0, 0, optionData.iconSize * 3 + 203, y - 1);
+	regionData.hideRegion.action(recipePane);
+}
+
+function prepareIngredient(thisIngredient, thisRecipe, x, y)
+{
+	var h = 33;
+	thisIngredient.recipe = thisRecipe;
+	thisIngredient.ingredientRegion = new cRegion(x, y);
+	thisIngredient.ingredientRegion.ingredient = thisIngredient;
+	thisIngredient.ingredientRegion.boundaryPath = machines.ingredientRegionPath;
+	thisIngredient.ingredientRegion.mouseHandler = machines.ingredientRegionMouseHandler;
+	thisIngredient.ingredientRegion.customDraw = machines.ingredientRegionDraw;
+
+	thisRecipe.pane.subRegions.push(thisIngredient.ingredientRegion);
+
+	if (thisIngredient.upgrades)
+	{
+		thisIngredient.upData = thisRecipe.upData;
+		thisIngredient.upDataId = thisRecipe.upData.length;
+		thisRecipe.upData.push(0);
+		var sliderRegion = new cRegion(x, y + 34);
+		thisIngredient.sliderRegion = sliderRegion;
+		sliderRegion.boundaryPath = machines.sliderRegionPath;
+		sliderRegion.mouseHandler = machines.sliderRegionMouseHandler;
+		sliderRegion.customDraw = machines.sliderRegionDraw;
+		sliderRegion.target = thisIngredient;
+		sliderRegion.paymentSuccess = machines.sliderRegionPaymenentSuccess;
+		thisRecipe.pane.subRegions.push(sliderRegion);
+		h += optionData.iconSize + 1;
+	}
+	return h;
 }

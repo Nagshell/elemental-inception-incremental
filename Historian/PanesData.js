@@ -2,11 +2,11 @@ var regionData = {};
 
 function preprocessRegionData()
 {
-	regionData.dragRegion = new cRegion(17, 0);
-	regionData.dragRegion.addImage("iconDrag");
-	var path = new Path2D();
-	path.rect(0, 0, 16, 16);
-	regionData.dragRegion.boundaryPath = path;
+	regionData.iconPath = new Path2D();
+	regionData.iconPath.rect(0, 0, optionData.iconSize, optionData.iconSize);
+	regionData.dragRegion = new cRegion(optionData.iconSize + 1, 0);
+	regionData.dragRegion.img = "iconDrag";
+	regionData.dragRegion.boundaryPath = regionData.iconPath;
 	regionData.dragRegion.mouseHandler = function (pane, x, y, type)
 	{
 		if (type == "mousedown")
@@ -17,8 +17,8 @@ function preprocessRegionData()
 	}
 
 	regionData.hideRegion = new cRegion(0, 0);
-	regionData.hideRegion.addImage("iconHide");
-	regionData.hideRegion.boundaryPath = path;
+	regionData.hideRegion.img = "iconHide";
+	regionData.hideRegion.boundaryPath = regionData.iconPath;
 	regionData.hideRegion.mouseHandler = function (pane, x, y, type)
 	{
 		if (type == "mouseup")
@@ -32,8 +32,8 @@ function preprocessRegionData()
 	}
 
 	regionData.showRegion = new cRegion(0, 0);
-	regionData.showRegion.addImage("iconShow");
-	regionData.showRegion.boundaryPath = path;
+	regionData.showRegion.img = "iconShow";
+	regionData.showRegion.boundaryPath = regionData.iconPath;
 	regionData.showRegion.mouseHandler = function (pane, x, y, type)
 	{
 		if (type == "mouseup")
@@ -57,8 +57,8 @@ function preprocessRegionData()
 				}
 				pane.top.subPanes[i] = pane;
 
-				var mx = 10 + pane.top.x + pane.x;
-				var my = 10 + pane.top.y + pane.y;
+				var mx = optionData.iconSize * 3 / 2 + pane.top.x + pane.x;
+				var my = optionData.iconSize / 2 + pane.top.y + pane.y;
 				if (pane.top.centerX)
 				{
 					mx += pane.top.centerX;
@@ -71,12 +71,26 @@ function preprocessRegionData()
 					return;
 				}
 			}
+			else
+			{
+				var i = 0;
+				while (panes.list[i] !== pane)
+				{
+					i++;
+				}
+				while (i > 0)
+				{
+					i--;
+					panes.list[i + 1] = panes.list[i];
+				}
+				panes.list[i] = pane;
+			}
 		}
 	}
 
-	regionData.minRegion = new cRegion(34, 0);
-	regionData.minRegion.addImage("iconMin");
-	regionData.minRegion.boundaryPath = path;
+	regionData.minRegion = new cRegion(optionData.iconSize * 2 + 2, 0);
+	regionData.minRegion.img = "iconMin";
+	regionData.minRegion.boundaryPath = regionData.iconPath;
 	regionData.minRegion.mouseHandler = function (pane, x, y, type)
 	{
 		if (type == "mouseup")
@@ -100,9 +114,9 @@ function preprocessRegionData()
 		}
 	}
 
-	regionData.maxRegion = new cRegion(34, 0);
-	regionData.maxRegion.addImage("iconMax");
-	regionData.maxRegion.boundaryPath = path;
+	regionData.maxRegion = new cRegion(optionData.iconSize * 2 + 2, 0);
+	regionData.maxRegion.img = "iconMax";
+	regionData.maxRegion.boundaryPath = regionData.iconPath;
 	regionData.maxRegion.mouseHandler = function (pane, x, y, type)
 	{
 		if (type == "mouseup")
@@ -128,9 +142,9 @@ function preprocessRegionData()
 		}
 	}
 
-	regionData.draggableTitleRegion = new cRegion(34, 0);
-	path = new Path2D();
-	path.rect(0, 0, 400, 16);
+	regionData.draggableTitleRegion = new cRegion(optionData.iconSize * 2 + 2, 0);
+	var path = new Path2D();
+	path.rect(0, 0, 400, optionData.iconSize);
 	regionData.draggableTitleRegion.boundaryPath = path;
 	regionData.draggableTitleRegion.mouseHandler = regionData.dragRegion.mouseHandler;
 	regionData.draggableTitleRegion.customDraw = function (ctx, pane)
@@ -138,15 +152,15 @@ function preprocessRegionData()
 		ctx.save();
 		ctx.fillStyle = ctx.strokeStyle;
 		ctx.textAlign = "left";
-		ctx.fillText(pane.title, 5, 8);
+		ctx.fillText(pane.title, 5, optionData.iconSize / 2);
 		ctx.restore();
 	}
-	regionData.draggableTitleRegionShifted = new cRegion(51, 0);
+	regionData.draggableTitleRegionShifted = new cRegion(optionData.iconSize * 3 + 3, 0);
 	regionData.draggableTitleRegionShifted.boundaryPath = path;
 	regionData.draggableTitleRegionShifted.mouseHandler = regionData.dragRegion.mouseHandler;
 	regionData.draggableTitleRegionShifted.customDraw = regionData.draggableTitleRegion.customDraw;
 
-	regionData.confirmRegion = new cRegion(22, 39);
+	regionData.confirmRegion = new cRegion(optionData.iconSize + 5, optionData.iconSize + 14);
 	path = new Path2D();
 	path.rect(0, 0, 55, 16);
 	regionData.confirmRegion.boundaryPath = path;
@@ -191,10 +205,10 @@ function preprocessRegionData()
 
 	}
 
-	regionData.cancelRegion = new cRegion(25, 63);
+	regionData.cancelRegion = new cRegion(optionData.iconSize + 8, optionData.iconSize + 38);
 	path = new Path2D();
 	path.rect(0, 0, 49, 16);
-	regionData.cancelRegion.addImage("buttonCancel");
+	regionData.cancelRegion.img = "buttonCancel";
 	regionData.cancelRegion.boundaryPath = path;
 	regionData.cancelRegion.mouseHandler = function (pane, x, y, type)
 	{
@@ -252,10 +266,8 @@ function preprocessRegionData()
 		}
 	}
 
-	regionData.pinRegion = new cRegion(0, 17);
-	path = new Path2D();
-	path.rect(0, 0, 16, 16);
-	regionData.pinRegion.boundaryPath = path;
+	regionData.pinRegion = new cRegion(0, optionData.iconSize + 1);
+	regionData.pinRegion.boundaryPath = regionData.iconPath;
 	regionData.pinRegion.customDraw = function (ctx, pane)
 	{
 		if (pane.pinned)
@@ -291,8 +303,8 @@ function preprocessRegionData()
 		}
 	}
 
-	regionData.nextPageRegion = new cRegion(34, 17);
-	regionData.nextPageRegion.boundaryPath = path;
+	regionData.nextPageRegion = new cRegion(optionData.iconSize * 2 + 2, optionData.iconSize + 1);
+	regionData.nextPageRegion.boundaryPath = regionData.iconPath;
 	regionData.nextPageRegion.customDraw = function (ctx, pane)
 	{
 		if (pane.currentPage < pane.maxPages)
@@ -311,8 +323,8 @@ function preprocessRegionData()
 		}
 	}
 
-	regionData.prevPageRegion = new cRegion(17, 17);
-	regionData.prevPageRegion.boundaryPath = path;
+	regionData.prevPageRegion = new cRegion(optionData.iconSize + 1, optionData.iconSize + 1);
+	regionData.prevPageRegion.boundaryPath = regionData.iconPath;
 	regionData.prevPageRegion.customDraw = function (ctx, pane)
 	{
 		if (pane.currentPage > 0)
@@ -331,12 +343,12 @@ function preprocessRegionData()
 		}
 	}
 }
-preprocessRegionData();
 
 var trackerPane;
 var mainPane;
 var paymentPane;
 var educationalPane;
+var optionsPane;
 
 function preprocessPaneData()
 {
@@ -448,7 +460,7 @@ function preprocessPaneData()
 
 	paymentPane = new cPane(mainPane, 300, 0);
 	path = new Path2D();
-	path.rect(0, 0, 306, 83);
+	path.rect(0, 0, 306, optionData.iconSize + 66);
 	paymentPane.boundaryPath = path;
 	paymentPane.subRegions.push(regionData.hideRegion);
 	paymentPane.subRegions.push(regionData.confirmRegion);
@@ -539,7 +551,7 @@ function preprocessPaneData()
 		ctx.save();
 		ctx.textAlign = "left";
 		ctx.fillStyle = ctx.strokeStyle;
-		ctx.fillText(locale.autosave + ": " + Math.trunc(s / 3600) + ":" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60), trackerPane.savingX, 50);
+		ctx.fillText(locale.autosave + ": " + Math.trunc(s / 3600) + ":" + ("0" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60)).slice(-2), trackerPane.savingX, 50);
 		ctx.restore();
 	}
 	trackerPane.resize = function ()
@@ -552,19 +564,49 @@ function preprocessPaneData()
 	trackerPane.subRegions.push(regionData.resetRegion);
 
 	path = new Path2D();
-	path.rect(0, 0, 140, 20);
-	var rs = [];
-	for (var i = 0; i < 5; i++)
+	path.rect(0, 0, 140, 24);
+	var tabRegions = [];
+	for (var i = 0; i < 18; i++)
 	{
-		var r = new cRegion(50 + 160 * i, 40);
+		var r = new cRegion(5 + 148 * Math.floor(i / 3), 5 + 32 * (i % 3));
 		r.text = locale.aTabNames[i];
 		r.textX = 70;
-		r.textY = 10;
-		r.boundaryPath = path;
+		r.textY = 12;
+		r.boundaryPath = locale.aTabNames[i] ? path : null;
 		trackerPane.subRegions.push(r);
-		rs.push(r);
+		tabRegions.push(r);
 	}
-	rs[3].mouseHandler = function (mainPane, x, y, type)
+
+	educationalPane = new cPane(mainPane, 200, 200);
+	path = new Path2D();
+	path.rect(0, 0, 300, 230);
+	educationalPane.boundaryPath = path;
+	educationalPane.subRegions.push(regionData.dragRegion);
+	educationalPane.subRegions.push(regionData.pinRegion);
+	educationalPane.subRegions.push(regionData.hideRegion);
+	educationalPane.subRegions.push(regionData.nextPageRegion);
+	educationalPane.subRegions.push(regionData.prevPageRegion);
+	educationalPane.subRegions.push(regionData.draggableTitleRegion);
+	educationalPane.currentPage = 0;
+	educationalPane.maxPages = 7;
+	educationalPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		this.title = locale.page + " " + (this.currentPage + 1) + " " + locale.outOf + " " + (this.maxPages + 1);
+		if (images["tutorialPage" + this.currentPage])
+		{
+			ctx.drawImage(images["tutorialPage" + this.currentPage], 0, 50);
+		}
+		switch (this.currentPage)
+		{
+			case 0:
+				break;
+		}
+		ctx.restore();
+	}
+	educationalPane.region = tabRegions[4];
+	educationalPane.region.mouseHandler = function (pane, x, y, type)
 	{
 		if (type == "mouseup")
 		{
@@ -582,37 +624,141 @@ function preprocessPaneData()
 		}
 	};
 
-	educationalPane = new cPane(mainPane, 200, 200);
-	rs[3].markedToSuperGlow = true;
-	rs[3].pane = educationalPane;
-	educationalPane.region = rs[3];
-	path = new Path2D();
-	path.rect(0, 0, 300, 230);
-	educationalPane.boundaryPath = path;
-	educationalPane.subRegions.push(regionData.dragRegion);
-	educationalPane.subRegions.push(regionData.pinRegion);
-	educationalPane.subRegions.push(regionData.hideRegion);
-	educationalPane.subRegions.push(regionData.nextPageRegion);
-	educationalPane.subRegions.push(regionData.prevPageRegion);
-	educationalPane.currentPage = 0;
-	educationalPane.maxPages = 7;
-	educationalPane.customDraw = function (ctx)
-	{
-		ctx.save();
-		ctx.fillStyle = ctx.strokeStyle;
-		ctx.fillText(locale.page + " " + (this.currentPage + 1) + " " + locale.outOf + " " + (this.maxPages + 1), 50, 42);
-		if (images["tutorialPage" + this.currentPage])
-		{
-			ctx.drawImage(images["tutorialPage" + this.currentPage], 0, 50);
-		}
-		switch (this.currentPage)
-		{
-			case 0:
-				break;
-		}
-		ctx.restore();
-	}
+	educationalPane.region.markedToSuperGlow = true;
+	educationalPane.region.pane = educationalPane;
 
 	regionData.pinRegion.action(educationalPane);
 	regionData.hideRegion.action(educationalPane);
+
+	tooltipPane = new cPane(null, 0, 0);
+	path = new Path2D();
+	path.rect(0, 0, 60, 17);
+	tooltipPane.boundaryPath = path;
+	tooltipPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.textAlign = "left";
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(this.text, 4, 8);
+		ctx.restore();
+	}
+	tooltipPane.showText = function (text)
+	{
+		this.readyToShow = true;
+		if (this.text != text)
+		{
+			this.text = text;
+			var path = new Path2D();
+			path.rect(0, 0, Math.ceil(ctxActive.measureText(text).width) + 8, 16);
+			if (this.hiddenPath)
+			{
+				this.hiddenPath = path;
+			}
+			else
+			{
+				this.boundaryPath = path;
+			}
+		}
+	}
+	regionData.hideRegion.action(tooltipPane);
+
+	optionsPane = new cPane(mainPane, 300, 100);
+	var path = new Path2D();
+	path.rect(0, 0, 400, 300);
+	optionsPane.boundaryPath = path;
+	optionsPane.title = "Options - Don't forget to apply your settings!";
+
+	optionsPane.maxPages = 0;
+	if (optionsPane.maxPages > 0)
+	{
+		optionsPane.currentPage = 0;
+		optionsPane.subRegions.push(regionData.nextPageRegion);
+		optionsPane.subRegions.push(regionData.prevPageRegion);
+	}
+	optionsPane.subRegions.push(regionData.dragRegion);
+	optionsPane.subRegions.push(regionData.pinRegion);
+	optionsPane.subRegions.push(regionData.hideRegion);
+
+	optionsPane.subRegions.push(regionData.draggableTitleRegion);
+	regionData.hideRegion.action(optionsPane);
+
+	optionsPane.region = tabRegions[9];
+	optionsPane.region.pane = optionsPane;
+	optionsPane.region.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			if (this.pane.boundaryPath)
+			{
+				regionData.hideRegion.mouseHandler(this.pane, x, y, type);
+			}
+			else
+			{
+				regionData.showRegion.mouseHandler(this.pane, x, y, type);
+				this.markedToSuperGlow = false;
+				if (!this.pane.pinned)
+				{
+					this.pane.x = canvas.width / 2 - 200 - mainPane.centerX;
+					this.pane.y = 150 - mainPane.centerY;
+				}
+			}
+		}
+	};
+	preprocessOptions();
+}
+
+function preprocessOptions()
+{
+	optionsPane.optionData = JSON.parse(JSON.stringify(optionData));
+
+	var applyRegion = new cRegion(95, 270);
+	var path = new Path2D();
+	path.rect(0, 0, 100, 20);
+	applyRegion.boundaryPath = path;
+	applyRegion.text = "Apply Settings";
+	applyRegion.textX = 50;
+	applyRegion.textY = 10;
+
+	applyRegion.customDraw = function (ctx)
+	{
+		this.markedToSuperGlow = JSON.stringify(optionData) != JSON.stringify(optionsPane.optionData);
+	}
+	applyRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			if (JSON.stringify(optionData) != JSON.stringify(optionsPane.optionData) && confirm("This will require to save your game and soft-reset the game's page. Continue?"))
+			{
+				optionData = JSON.parse(JSON.stringify(optionsPane.optionData));
+				savingSystem.saveData();
+				savingSystem.loadData();
+			}
+		}
+	};
+	optionsPane.apply = applyRegion;
+	optionsPane.subRegions.push(applyRegion);
+
+	var revertRegion = new cRegion(205, 270);
+	revertRegion.boundaryPath = path;
+	revertRegion.text = "Revert changes";
+	revertRegion.textX = 50;
+	revertRegion.textY = 10;
+	optionsPane.subRegions.push(revertRegion);
+
+	var iconSizeRegion = new cRegion(25, 75);
+	iconSizeRegion.text = "Toggle UI size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
+	iconSizeRegion.textX = 100;
+	iconSizeRegion.textY = 10;
+	var path = new Path2D();
+	path.rect(0, 0, iconSizeRegion.textX * 2, 20);
+	iconSizeRegion.boundaryPath = path;
+	iconSizeRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			pane.optionData.iconSize = 40 - pane.optionData.iconSize;
+			this.text = "Toggle UI size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
+		}
+	};
+	optionsPane.subRegions.push(iconSizeRegion);
 }

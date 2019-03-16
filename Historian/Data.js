@@ -1,3 +1,4 @@
+imagesPreload = false;
 var elementalColors = {
 	Earth: [
 		"#008E4B",
@@ -112,8 +113,11 @@ var initialData = {
 	elements: ["Earth", "Water", "Air", "Fire", "Mud", "Ice", "Steam", "Sand", "Magma", "Void", "Alkahest", "GolemEarth", "GolemWater", "GolemAir", "GolemFire"],
 };
 var data;
-
-var optionData = {};
+var optionData = {
+	iconSize: 24,
+	particleCDMultiplier: 1,
+	glowCheckCDMultiplier: 1,
+};
 
 function preprocessData()
 {

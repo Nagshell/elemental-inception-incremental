@@ -91,7 +91,7 @@ var particleGenerator = {
 					{
 						if (temp.volumes[color].cd-- <= 0)
 						{
-							var cdMax = 5;
+							var cdMax = 5 * optionData.particleCDMultiplier;
 							if (temp.volumes[color].amount <= 0.1)
 							{
 								cdMax *= 1.5;
@@ -174,7 +174,7 @@ var particleGenerator = {
 					if (temp3.amount > 0 && temp3.cd-- <= 0)
 					{
 
-						temp3.cd = temp3.cdMax;
+						temp3.cd = temp3.cdMax * optionData.particleCDMultiplier;
 						var delay = 0;
 						if (target == "golemInfuser")
 						{
