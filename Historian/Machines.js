@@ -869,7 +869,7 @@ var machines = {
 		{
 			ctx.fillStyle = "#181818";
 			ctx.fillRect(0, 0, 92, optionData.iconSize);
-			ctx.fillStyle = "#646464";
+			ctx.fillStyle = "#DDDDAD";
 			ctx.fillRect(8 + 40 * temp.slider, 0, 4, optionData.iconSize);
 			ctx.drawImage(images.iconLeft, 0, 0);
 			ctx.drawImage(images.iconRight, 92, 0);
