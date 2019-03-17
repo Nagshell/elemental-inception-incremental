@@ -18,9 +18,9 @@ var locale = {
 	outOf: "out of",
 
 	aTabNames: [
-		"Redacted & Disabled",
-		"Redacted & Disabled",
-		"Redacted & Disabled",
+		"Waypoints",
+		"Minimap",
+		"Map Control",
 		"Lore - Disabled",
 		"Educational Corner",
 		"Redacted & Disabled",

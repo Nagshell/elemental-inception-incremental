@@ -352,6 +352,9 @@ var mainPane;
 var paymentPane;
 var educationalPane;
 var optionsPane;
+var waypointPane;
+var minimapPane;
+var mapControlPane;
 
 function preprocessPaneData()
 {
@@ -575,8 +578,10 @@ function preprocessPaneData()
 	trackerPane.subRegions.push(regionData.saveRegion);
 	trackerPane.subRegions.push(regionData.resetRegion);
 
+	var tabWidth = 140;
+	var tabHeight = 24;
 	path = new Path2D();
-	path.rect(0, 0, 140, 24);
+	path.rect(0, 0, tabWidth, tabHeight);
 	var tabRegions = [];
 	for (var i = 0; i < 18; i++)
 	{
@@ -585,7 +590,10 @@ function preprocessPaneData()
 		r.textX = 70;
 		r.textY = 12;
 		r.boundaryPath = locale.aTabNames[i] ? path : null;
-		trackerPane.subRegions.push(r);
+		if (i > 2)
+		{
+			trackerPane.subRegions.push(r);
+		}
 		tabRegions.push(r);
 	}
 
@@ -673,6 +681,135 @@ function preprocessPaneData()
 		}
 	}
 	regionData.hideRegion.action(tooltipPane);
+
+	waypointPane = new cPane(trackerPane, tabRegions[0].x, tabRegions[0].y);
+	waypointPane.modelRegion = tabRegions[0];
+	waypointPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
+	waypointPane.maxGrowth = 15;
+	waypointPane.independent = true;
+	waypointPane.growth = 0;
+	waypointPane.growthX = 148;
+	waypointPane.growthY = 120;
+	waypointPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+
+		var rePath = false;
+		if (this.growing && this.growth < this.maxGrowth)
+		{
+			this.growth++;
+			regionData.showRegion.action(this.top);
+			rePath = true;
+		}
+		else if (!this.growing && this.growth > 0)
+		{
+			this.growth--;
+			rePath = true;
+		}
+		if (rePath)
+		{
+			path = new Path2D();
+			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			this.boundaryPath = path;
+		}
+
+		ctx.restore();
+	}
+	waypointPane.mouseHandler = function (pane, x, y, type)
+	{
+		if (this.recentlyGrowing || type == "mouseup")
+		{
+			this.growing = true;
+		}
+	}
+
+	minimapPane = new cPane(trackerPane, tabRegions[1].x, tabRegions[1].y);
+	minimapPane.modelRegion = tabRegions[1];
+	minimapPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
+	minimapPane.maxGrowth = 15;
+	minimapPane.independent = true;
+	minimapPane.growth = 0;
+	minimapPane.growthX = 148;
+	minimapPane.growthY = 120;
+	minimapPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+
+		var rePath = false;
+		if (this.growing && this.growth < this.maxGrowth)
+		{
+			this.growth++;
+			//regionData.showRegion.action(this.top);
+			rePath = true;
+		}
+		else if (!this.growing && this.growth > 0)
+		{
+			this.growth--;
+			rePath = true;
+		}
+		if (rePath)
+		{
+			path = new Path2D();
+			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			this.boundaryPath = path;
+		}
+
+		ctx.restore();
+	}
+	minimapPane.mouseHandler = function (pane, x, y, type)
+	{
+		if (this.recentlyGrowing || type == "mouseup")
+		{
+			this.growing = true;
+		}
+	}
+
+	mapControlPane = new cPane(trackerPane, tabRegions[2].x, tabRegions[2].y);
+	mapControlPane.modelRegion = tabRegions[2];
+	mapControlPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
+	mapControlPane.maxGrowth = 15;
+	mapControlPane.independent = true;
+	mapControlPane.growth = 0;
+	mapControlPane.growthX = 148;
+	mapControlPane.growthY = 120;
+	mapControlPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+
+		var rePath = false;
+		if (this.growing && this.growth < this.maxGrowth)
+		{
+			this.growth++;
+			regionData.showRegion.action(this.top);
+			rePath = true;
+		}
+		else if (!this.growing && this.growth > 0)
+		{
+			this.growth--;
+			rePath = true;
+		}
+		if (rePath)
+		{
+			path = new Path2D();
+			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			this.boundaryPath = path;
+		}
+
+		ctx.restore();
+	}
+	mapControlPane.mouseHandler = function (pane, x, y, type)
+	{
+		if (this.recentlyGrowing || type == "mouseup")
+		{
+			this.growing = true;
+		}
+	}
 
 	optionsPane = new cPane(mainPane, 300, 100);
 	var path = new Path2D();

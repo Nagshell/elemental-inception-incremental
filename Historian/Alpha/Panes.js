@@ -101,6 +101,13 @@ var panes = {
 		{
 			return;
 		}
+		waypointPane.recentlyGrowing = waypointPane.growing;
+		waypointPane.growing = false;
+		minimapPane.recentlyGrowing = minimapPane.growing;
+		minimapPane.growing = false;
+		mapControlPane.recentlyGrowing = mapControlPane.growing;
+		mapControlPane.growing = false;
+
 		var type = event.type;
 		if (event.type == "mousemove" && panes.dragndrop)
 		{
