@@ -87,9 +87,9 @@ var panes = {
 	},
 	mouseHandler: function (event)
 	{
+		regionData.hideRegion.action(tooltipPane);
 		if (event.type == "mousemove")
 		{
-			regionData.hideRegion.action(tooltipPane);
 			var now = new Date().getTime();
 			if (now - this.lastmousemove < 100)
 			{
@@ -172,18 +172,23 @@ var panes = {
 					temp = temp.top;
 				}
 				var nohit = true;
+				var targetRegion;
 				for (var j = 0; j < targetPane.subRegions.length; j++)
 				{
-					var targetRegion = targetPane.subRegions[j].checkBoundary(x, y, type);
-					if (targetRegion)
+					var tempTarget = targetPane.subRegions[j].checkBoundary(x, y, type);
+					if (tempTarget)
 					{
-						nohit = false;
-						targetRegion.mouseHandler(targetPane, x, y, type);
+						targetRegion = tempTarget;
 					}
 				}
-				if (nohit && targetPane.centerX && type == "mousedown")
+				if (targetRegion)
 				{
-					panes.dragndropcenter = targetPane;
+					nohit = false;
+					targetRegion.mouseHandler(targetPane, x, y, type);
+				}
+				if (nohit && targetPane.mouseHandler)
+				{
+					targetPane.mouseHandler(targetPane, x, y, type);
 				}
 				break;
 			}

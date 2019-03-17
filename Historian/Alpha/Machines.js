@@ -410,86 +410,180 @@ var machines = {
 		}
 		ctx.restore();
 	},
-	displayArrayDraw: function (ctx) {
+	paneChartDraw: function (ctx, recipes)
+	{
+		ctx.save();
+		var turnedOn = 0;
+		for (var i = 0; i < recipes.length; i++)
+		{
+			if (recipes[i].unlocked)
+			{
+				turnedOn++;
+			}
+		}
+		ctx.fillStyle = chartColors["null"];
+		ctx.lineWidth = 1;
+		if (turnedOn > 0)
+		{
+			var radius = optionData.iconSize * 2 + 2;
+			radius /= turnedOn;
+			radius = Math.min(radius, optionData.iconSize);
+			for (var i = 0; i < recipes.length; i++)
+			{
+				if (recipes[i].unlocked)
+				{
+					var temp = recipes[i].pieChart;
+					ctx.translate(0, radius);
+					ctx.save();
+					ctx.beginPath();
+					ctx.arc(0, 0, radius - 1, 0, Math.PI * 2);
+					ctx.fill();
+					if (!recipes[i].enabled)
+					{
+						ctx.globalAlpha = Math.min(1, borderGlow.alpha + 0.25);
+					}
+					ctx.stroke();
 
-	}
+					ctx.clip();
+
+					var angle = 0;
+					for (var type in temp.results)
+					{
+						ctx.beginPath();
+						ctx.moveTo(0, 0);
+						ctx.arc(0, 0, radius - 3, angle, angle + temp.results[type] / 300 * Math.PI);
+						angle += temp.results[type] / 300 * Math.PI;
+						ctx.fillStyle = chartColors[type];
+						ctx.fill();
+					}
+					ctx.restore();
+					ctx.translate(0, radius);
+				}
+
+			}
+		}
+		ctx.restore();
+	},
+
+	displayArrayDraw: function (ctx)
+	{
+		ctx.save();
+		ctx.translate(optionData.iconSize / 2, optionData.iconSize * 4 - 45);
+		ctx.beginPath();
+		ctx.arc(32, 32, 32, 0, Math.PI * 2);
+		ctx.stroke();
+		ctx.fill();
+		ctx.clip();
+
+		var next = (this.displayArrayCurrent + 1) % this.displayArray.length;
+
+		ctx.drawImage(images["icon" + this.displayArray[this.displayArrayCurrent]], 0, 0);
+		ctx.beginPath();
+		ctx.moveTo(0, 0);
+		ctx.lineTo(128 - this.displayArrayCD / 2, 0);
+		ctx.lineTo(0, 128 - this.displayArrayCD / 2);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.fill();
+		ctx.clip();
+		ctx.drawImage(images["icon" + this.displayArray[next]], 0, 0);
+
+		if (this.displayArrayCD-- <= 0)
+		{
+			this.displayArrayCD = this.displayArrayCDMax;
+			this.displayArrayCurrent = next;
+		}
+		ctx.restore();
+	},
+	regularArrayPaneMouseHandler: function (pane, x, y, type)
+	{
+		if (type == "mousemove")
+		{
+			var additionalPauseTranslation = 0;
+			var displayStyle = 4;
+			if (optionData.iconSize == 16)
+			{
+				additionalPauseTranslation = 38;
+				displayStyle = 3;
+			}
+			x -= additionalPauseTranslation;
+			if (x > optionData.iconSize * (displayStyle - 1) && x < optionData.iconSize * displayStyle + 44)
+			{
+				var dY = optionData.iconSize * 4.5 - 4 - (this.machine.displayArray.length - 1) * 17;
+				if (y > dY)
+				{
+					var i = Math.floor((y - dY) / 17);
+					if (this.machine.displayArray[i] && locale.oElementsShorthand[this.machine.displayArray[i]])
+					{
+						tooltipPane.showText(this.machine.displayArray[i]);
+					}
+				}
+			}
+		}
+	},
+	regularArrayPaneDraw: function (ctx)
+	{
+		ctx.save();
+		var additionalPauseTranslation = 0;
+		var displayStep = 4;
+		if (optionData.iconSize == 16)
+		{
+			additionalPauseTranslation = 38;
+			displayStep = 3;
+		}
+		if (this.boundaryPathMax)
+		{
+			ctx.translate(optionData.iconSize * 5 + 110 + additionalPauseTranslation, optionData.iconSize + 1);
+			machines.paneChartDraw(ctx, this.machine.recipes);
+			ctx.restore();
+			ctx.save();
+		}
+		this.machine.displayArrayDraw(ctx);
+		ctx.fillStyle = ctx.strokeStyle;
+		for (var i = 0; i < this.machine.displayArray.length; i++)
+		{
+			ctx.textAlign = "right";
+			var textToShow;
+			if (locale.oElementsShorthand[this.machine.displayArray[i]])
+			{
+				textToShow = locale.oElementsShorthand[this.machine.displayArray[i]];
+			}
+			else
+			{
+				textToShow = this.machine.displayArray[i];
+			}
+			ctx.fillText(textToShow,
+				optionData.iconSize * displayStep + 44 + additionalPauseTranslation, optionData.iconSize * 4.5 + 4 - (this.machine.displayArray.length - i - 1) * 17);
+			ctx.textAlign = "left";
+			drawNumber(ctx, data.oElements[this.machine.displayArray[i]].amount,
+				optionData.iconSize * displayStep + 48 + additionalPauseTranslation, optionData.iconSize * 4.5 + 4 - (this.machine.displayArray.length - i - 1) * 17,
+				elementalDisplayType[this.machine.displayArray[i]], "left");
+		}
+
+		ctx.restore();
+	},
 	regularPaneDraw: function (ctx)
 	{
 		ctx.save();
 		if (this.boundaryPathMax)
 		{
-
-			var turnedOn = 0;
-			for (var i = 0; i < this.machine.recipes.length; i++)
-			{
-				if (this.machine.recipes[i].unlocked)
-				{
-					turnedOn++;
-				}
-			}
 			ctx.save();
-			ctx.fillStyle = chartColors["null"];
-			ctx.lineWidth = 1;
-			if (turnedOn > 0)
-			{
-				ctx.translate(optionData.iconSize * 5 + 60, optionData.iconSize + 1);
-				var radius = optionData.iconSize * 2 + 2;
-				radius /= turnedOn;
-				radius = Math.min(radius, optionData.iconSize);
-				for (var i = 0; i < this.machine.recipes.length; i++)
-				{
-					if (this.machine.recipes[i].unlocked)
-					{
-						var temp = this.machine.recipes[i].pieChart;
-						ctx.translate(0, radius);
-						ctx.save();
-						ctx.beginPath();
-						ctx.arc(0, 0, radius - 1, 0, Math.PI * 2);
-						ctx.fill();
-						if (!this.machine.recipes[i].enabled)
-						{
-							ctx.globalAlpha = Math.min(1, borderGlow.alpha + 0.25);
-						}
-						ctx.stroke();
-
-						ctx.clip();
-
-						var angle = 0;
-						for (var type in temp.results)
-						{
-							ctx.beginPath();
-							ctx.moveTo(0, 0);
-							ctx.arc(0, 0, radius - 3, angle, angle + temp.results[type] / 300 * Math.PI);
-							angle += temp.results[type] / 300 * Math.PI;
-							ctx.fillStyle = chartColors[type];
-							ctx.fill();
-						}
-						ctx.restore();
-						ctx.translate(0, radius);
-					}
-
-				}
-			}
+			ctx.translate(optionData.iconSize * 5 + 60, optionData.iconSize + 1);
+			machines.paneChartDraw(ctx, this.machine.recipes);
 			ctx.restore();
-			if (this.machine.displayElement)
+		}
+		if (this.machine.displayElement)
+		{
+			ctx.drawImage(images["icon" + this.machine.displayElement], optionData.iconSize * 2 - 31, optionData.iconSize + 6);
+			ctx.fillStyle = ctx.strokeStyle;
+			ctx.textAlign = "left";
+			if (optionData.iconSize == 16)
 			{
-				ctx.drawImage(images["icon" + this.machine.displayElement], optionData.iconSize * 2 - 31, optionData.iconSize + 6);
-				ctx.fillStyle = ctx.strokeStyle;
-				ctx.textAlign = "left";
 				ctx.fillText(this.machine.displayElement, optionData.iconSize * 4, optionData.iconSize * 4.5 - 14);
 				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, optionData.iconSize * 4, optionData.iconSize * 4.5 + 4, elementalDisplayType[this.machine.displayElement], "left");
 			}
-		}
-		else
-		{
-			if (this.machine.displayElement)
+			else
 			{
-				if (optionData.iconSize > 16)
-				{
-					ctx.drawImage(images["icon" + this.machine.displayElement], optionData.iconSize * 2 - 31, optionData.iconSize + 6);
-				}
-				ctx.fillStyle = ctx.strokeStyle;
-				ctx.textAlign = "left";
 				ctx.fillText(this.machine.displayElement, 5, optionData.iconSize * 4.5 - 14);
 				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, 5, optionData.iconSize * 4.5 + 4, elementalDisplayType[this.machine.displayElement], "left");
 			}
@@ -725,7 +819,11 @@ var machines = {
 		{
 			if (x < 50)
 			{
-				if (y > 17)
+				if (y <= 17)
+				{
+					tooltipPane.showText("Type - " + this.ingredient.type);
+				}
+				else
 				{
 					tooltipPane.showText("Current");
 				}
@@ -773,7 +871,14 @@ var machines = {
 		ctx.fillStyle = ctx.strokeStyle;
 		ctx.textAlign = "left";
 		var temp = this.ingredient;
-		ctx.fillText(temp.type, 3, 8);
+		if (locale.oElementsShorthand[temp.type])
+		{
+			ctx.fillText(locale.oElementsShorthand[temp.type], 3, 8);
+		}
+		else
+		{
+			ctx.fillText(temp.type, 3, 8);
+		}
 
 		var displayStyle = "fixed";
 		var resultRatio = temp.ratio;
@@ -902,22 +1007,41 @@ var machines = {
 
 function preprocessMachines()
 {
+	var additionalPauseTranslation = 0;
+	var displayStep = 3;
+	if (optionData.iconSize == 16)
+	{
+		additionalPauseTranslation = 38;
+		displayStep = 4;
+	}
 	machines.displayRegionPath = new Path2D();
 	machines.displayRegionPath.arc(0, 0, 32, 0, Math.PI * 2);
 
 	machines.displayPanePathMin = new Path2D();
 	machines.displayPanePathMin.rect(0, 0, optionData.iconSize * 4 + 120, optionData.iconSize * 5 + 4);
+
+	machines.displayArrayPanePathMin = new Path2D();
+	machines.displayArrayPanePathMin.rect(0, 0, optionData.iconSize * 7 + 106 + additionalPauseTranslation, optionData.iconSize * 5 + 4);
+
 	machines.displayPanePathDemo = new Path2D();
-	machines.displayPanePathDemo.rect(0, 0, optionData.iconSize * 7 + 207, optionData.iconSize * 5 + 4);
+	machines.displayPanePathDemo.rect(0, 0, optionData.iconSize * (4 + displayStep) + 207 + additionalPauseTranslation, optionData.iconSize * 5 + 4);
+
+	machines.displayArrayPanePathDemo = new Path2D();
+	machines.displayArrayPanePathDemo.rect(0, 0, optionData.iconSize * 7 + 307 + additionalPauseTranslation, optionData.iconSize * 5 + 4);
 
 	var path = new Path2D();
 	path.rect(0, 0, optionData.iconSize, optionData.iconSize);
-	machines.machinePauseRegion = new cRegion(optionData.iconSize * 3 + 3, optionData.iconSize + 1);
+	machines.machinePauseRegion = new cRegion(optionData.iconSize * displayStep + 3 + additionalPauseTranslation, optionData.iconSize + 1);
 	machines.machinePauseRegion.boundaryPath = path;
 	machines.machinePauseRegion.customDraw = machines.pauseRegionDraw;
 	machines.machinePauseRegion.mouseHandler = machines.pauseRegionMouseHandler;
 
-	machines.recipeSelectorRegion = new cRegion(optionData.iconSize * 4 + 4, optionData.iconSize + 1);
+	machines.machineArrayPauseRegion = new cRegion(optionData.iconSize * 3 + 103 + additionalPauseTranslation, optionData.iconSize + 1);
+	machines.machineArrayPauseRegion.boundaryPath = path;
+	machines.machineArrayPauseRegion.customDraw = machines.pauseRegionDraw;
+	machines.machineArrayPauseRegion.mouseHandler = machines.pauseRegionMouseHandler;
+
+	machines.recipeSelectorRegion = new cRegion(optionData.iconSize * (displayStep + 1) + 4 + additionalPauseTranslation, optionData.iconSize + 1);
 	machines.recipeSelectorRegion.boundaryPath = new Path2D();
 	machines.recipeSelectorRegion.boundaryPath.rect(0, 0, optionData.iconSize + 53, optionData.iconSize);
 	machines.recipeSelectorRegion.text = "Recipes";
@@ -949,6 +1073,14 @@ function preprocessMachines()
 		}
 	};
 
+	machines.recipeArraySelectorRegion = new cRegion(optionData.iconSize * 4 + 104 + additionalPauseTranslation, optionData.iconSize + 1);
+	machines.recipeArraySelectorRegion.boundaryPath = machines.recipeSelectorRegion.boundaryPath;
+	machines.recipeArraySelectorRegion.text = machines.recipeSelectorRegion.text;
+	machines.recipeArraySelectorRegion.textX = machines.recipeSelectorRegion.textX;
+	machines.recipeArraySelectorRegion.textY = machines.recipeSelectorRegion.textY;
+	machines.recipeArraySelectorRegion.customDraw = machines.recipeSelectorRegion.customDraw;
+	machines.recipeArraySelectorRegion.mouseHandler = machines.recipeSelectorRegion.mouseHandler;
+
 	machines.recipeRegionPath = new Path2D();
 	machines.recipeRegionPath.rect(0, 0, optionData.iconSize * 3 + 203, optionData.iconSize);
 
@@ -969,6 +1101,10 @@ function initMachine(title)
 	thisData.id = title;
 	thisData.title = locale.oMachines[title] || title;
 	thisData.currentRecipes = [];
+	if (thisData.displayArray)
+	{
+		machineData[title].displayArrayDraw = machines.displayArrayDraw;
+	}
 
 	thisData.region = new cRegion(thisData.x, thisData.y);
 	thisData.region.machine = thisData;
@@ -991,19 +1127,34 @@ function initMachine(title)
 	thisData.pane = new cPane(mainPane, thisData.x + 32, thisData.y + 32);
 	thisData.pane.machine = thisData;
 	thisData.pane.centerPanes = [];
-	thisData.pane.boundaryPath = machines.displayPanePathDemo;
-	thisData.pane.boundaryPathMin = machines.displayPanePathMin;
+	if (thisData.displayArray)
+	{
+		thisData.pane.mouseHandler = machines.regularArrayPaneMouseHandler;
+		thisData.pane.boundaryPath = machines.displayArrayPanePathDemo;
+		thisData.pane.boundaryPathMin = machines.displayArrayPanePathMin;
+
+		thisData.pane.subRegions.push(machines.machineArrayPauseRegion);
+		thisData.pane.subRegions.push(machines.recipeArraySelectorRegion);
+		thisData.pane.subRegionsMin.push(machines.machineArrayPauseRegion);
+	}
+	else
+	{
+		thisData.pane.boundaryPath = machines.displayPanePathDemo;
+		thisData.pane.boundaryPathMin = machines.displayPanePathMin;
+
+		thisData.pane.subRegions.push(machines.machinePauseRegion);
+		thisData.pane.subRegions.push(machines.recipeSelectorRegion);
+		thisData.pane.subRegionsMin.push(machines.machinePauseRegion);
+	}
 	thisData.pane.subRegions.push(regionData.dragRegion);
 	thisData.pane.subRegions.push(regionData.minRegion);
 	thisData.pane.subRegions.push(regionData.hideRegion);
 	thisData.pane.subRegions.push(regionData.draggableTitleRegionShifted);
-	thisData.pane.subRegions.push(machines.machinePauseRegion);
 	thisData.pane.subRegions.push(regionData.pinRegion);
 	thisData.pane.subRegionsMin.push(regionData.dragRegion);
 	thisData.pane.subRegionsMin.push(regionData.maxRegion);
 	thisData.pane.subRegionsMin.push(regionData.hideRegion);
 	thisData.pane.subRegionsMin.push(regionData.draggableTitleRegionShifted);
-	thisData.pane.subRegionsMin.push(machines.machinePauseRegion);
 	thisData.pane.subRegionsMin.push(regionData.pinRegion);
 	thisData.pane.title = thisData.title;
 	thisData.pane.id = title;
@@ -1013,14 +1164,27 @@ function initMachine(title)
 	}
 	else
 	{
-		thisData.pane.customDraw = machines.regularPaneDraw;
+		if (thisData.displayArray)
+		{
+			thisData.pane.customDraw = machines.regularArrayPaneDraw;
+		}
+		else
+		{
+			thisData.pane.customDraw = machines.regularPaneDraw;
+		}
 	}
 
 	regionData.hideRegion.action(thisData.pane);
 
-	thisData.pane.subRegions.push(machines.recipeSelectorRegion);
+	if (thisData.displayArray)
+	{
+		thisData.pane.recipeSelectorPane = new cPane(thisData.pane, machines.recipeArraySelectorRegion.x, machines.recipeArraySelectorRegion.y);
+	}
+	else
+	{
+		thisData.pane.recipeSelectorPane = new cPane(thisData.pane, machines.recipeSelectorRegion.x, machines.recipeSelectorRegion.y);
+	}
 
-	thisData.pane.recipeSelectorPane = new cPane(thisData.pane, optionData.iconSize * 4 + 4, optionData.iconSize + 1);
 	thisData.pane.recipeSelectorPane.title = locale.recipes;
 	thisData.pane.recipeSelectorPane.independent = true;
 	//thisData.pane.recipeSelectorPane.id = "recipeSelector";

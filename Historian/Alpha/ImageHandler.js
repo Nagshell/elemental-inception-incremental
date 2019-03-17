@@ -50,8 +50,6 @@ function preprocessImages()
 		"iconGolemAir",
 		"iconGolemFire",
 
-		"iconMergerDisplay",
-
 		"buttonConfirm",
 		"buttonConfirmCrossed",
 		"buttonCancel",
@@ -61,6 +59,9 @@ function preprocessImages()
 		"machineWater",
 		"machineAir",
 		"machineFire",
+
+		"golemMerger",
+
 		"machineMud",
 		"machineIce",
 		"machineSteam",

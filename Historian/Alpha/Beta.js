@@ -20,6 +20,10 @@ savingSystem = {
 			returnData.minimized = true;
 			regionData.maxRegion.action(pane);
 		}
+		else
+		{
+			returnData.minimized = false;
+		}
 		if (pane.boundaryPath)
 		{
 			returnData.visible = true;
@@ -321,17 +325,17 @@ var s;
 
 function tick()
 {
-
 	particleGenerator.tick();
 	machines.tick();
 	for (var element in data.oElements)
 	{
+		data.oElements[element].amount += 1e11;
 		data.oElements[element].amount += data.oElementsFlow[element];
 		data.oElements[element].amount = Math.min(1e300, Math.max(0, data.oElements[element].amount));
 		data.oElementsFlow[element] = 0;
 	}
 
-	if (data.oElements.Alkahest.amount >= 42 || c < 7201)
+	if (data.oElements.Alkahest.amount >= 42e99 || c < 7201)
 	{
 		c -= 1;
 	}

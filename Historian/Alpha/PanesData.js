@@ -9,6 +9,10 @@ function preprocessRegionData()
 	regionData.dragRegion.boundaryPath = regionData.iconPath;
 	regionData.dragRegion.mouseHandler = function (pane, x, y, type)
 	{
+		if (type == "mousemove" && pane.title)
+		{
+			tooltipPane.showText(pane.title);
+		}
 		if (type == "mousedown")
 		{
 			panes.dragndrop = pane;
@@ -137,14 +141,13 @@ function preprocessRegionData()
 				pane.boundaryPathMin = pane.hiddenPath;
 				pane.hiddenPath = pane.boundaryPathMax;
 			}
-
 			pane.boundaryPathMax = null;
 		}
 	}
 
 	regionData.draggableTitleRegion = new cRegion(optionData.iconSize * 2 + 2, 0);
 	var path = new Path2D();
-	path.rect(0, 0, 400, optionData.iconSize);
+	path.rect(0, 0, optionData.iconSize * 7 + 350, optionData.iconSize);
 	regionData.draggableTitleRegion.boundaryPath = path;
 	regionData.draggableTitleRegion.mouseHandler = regionData.dragRegion.mouseHandler;
 	regionData.draggableTitleRegion.customDraw = function (ctx, pane)
@@ -458,6 +461,13 @@ function preprocessPaneData()
 			ctx.stroke();
 		}
 		ctx.restore();
+	};
+	mainPane.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mousedown")
+		{
+			panes.dragndropcenter = this;
+		}
 	}
 
 	paymentPane = new cPane(mainPane, 300, 0);
@@ -700,7 +710,7 @@ function preprocessPaneData()
 				this.markedToSuperGlow = false;
 				if (!this.pane.pinned)
 				{
-					this.pane.x = canvas.width / 2 - 200 - mainPane.centerX;
+					this.pane.x = Math.floor(canvas.width / 2) - 200 - mainPane.centerX;
 					this.pane.y = 150 - mainPane.centerY;
 				}
 			}

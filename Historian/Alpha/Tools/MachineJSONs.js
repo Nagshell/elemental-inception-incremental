@@ -1142,7 +1142,7 @@ preprocessAdditionalCircles = function ()
 	//Life Circle
 	if (true)
 	{
-		var lifeElementsC = ["Water", "Fire"];
+		var lifeElementsC = ["Water", "Fire", "Earth", "Air"];
 
 		var lifeElements = [];
 		var lifeCircle = {
@@ -1154,25 +1154,25 @@ preprocessAdditionalCircles = function ()
 			},
 			machineCompressor:
 			{
-				baseStats: [100, 300, ],
+				baseStats: [100, 300, []],
 				recipes:
 				{},
 			},
 			machineLifeInfuser:
 			{
-				baseStats: [100, 500, ],
+				baseStats: [100, 500, []],
 				recipes:
 				{},
 			},
 			machinePlanter:
 			{
-				baseStats: [-100, 500, ],
+				baseStats: [-100, 500, []],
 				recipes:
 				{},
 			},
 			machineHarvester:
 			{
-				baseStats: [0, 400, ],
+				baseStats: [0, 400, []],
 				recipes:
 				{},
 			},
@@ -1180,12 +1180,13 @@ preprocessAdditionalCircles = function ()
 
 		for (var i = 0; i < lifeElementsC.length; i++)
 		{
+			locale.oElementsShorthand[lifeElementsC[i] + "PureEssence"] = lifeElementsC[i] + "PE";
+			locale.oElementsShorthand[lifeElementsC[i] + "Essence"] = lifeElementsC[i] + "E";
 			lifeElements.push(lifeElementsC[i] + "Essence");
 			lifeElements.push(lifeElementsC[i] + "Soil");
 			lifeElements.push(lifeElementsC[i] + "Seed");
 			lifeElements.push(lifeElementsC[i] + "Plant");
 			lifeElements.push(lifeElementsC[i] + "PureEssence");
-			lifeElements.push(lifeElementsC[i] + "Essence");
 			lifeCircle.machineExtractor.baseStats[2].push(lifeElementsC[i] + "Essence");
 			lifeCircle.machineExtractor.recipes["extract" + lifeElementsC[i]] = {
 				baseStats: [1, 1e-3, true, true],
@@ -1235,7 +1236,7 @@ preprocessAdditionalCircles = function ()
 				lock: [lifeElementsC[i] + "Soil", 1],
 			};
 
-			lifeCircle.machineHarvester.baseStats[2] = lifeElementsC[i] + "PureEssence";
+			lifeCircle.machineHarvester.baseStats[2].push(lifeElementsC[i] + "PureEssence");
 			lifeCircle.machineHarvester.recipes["harvest" + lifeElementsC[i]] = {
 				baseStats: [1, 1, true, false],
 				in: [
@@ -1253,7 +1254,7 @@ preprocessAdditionalCircles = function ()
 		{
 			initialData.elements.push(lifeElements[i]);
 			elementalColors[lifeElements[i]] = colorDummy;
-			images["icon" + lifeElements[i]] = images.iconVoid;
+			images["icon" + lifeElements[i]] = images["icon" + lifeElementsC[i % 4]];
 			elementalDisplayType[lifeElements[i]] = "exp";
 		}
 		for (var machine in lifeCircle)

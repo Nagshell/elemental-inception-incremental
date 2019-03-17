@@ -96,7 +96,6 @@ function draw()
 	borderGlow.preparationTick();
 
 	ctxActive.resetTransform();
-	ctxActive.clearRect(0, 0, 800, 800);
 
 	ctxActive.font = "14px Arial";
 	ctxActive.textBaseline = "middle";

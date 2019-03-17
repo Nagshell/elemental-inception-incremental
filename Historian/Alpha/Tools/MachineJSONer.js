@@ -20,6 +20,8 @@ function prepareTemplatedMachineData(simplifiedDataToBeProcessed)
 			{
 				preparedData.displayArray = simplifiedData.baseStats[2];
 				preparedData.displayArrayCurrent = 0;
+				preparedData.displayArrayCD = 0;
+				preparedData.displayArrayCDMax = 256;
 				preparedData.displayElement = simplifiedData.baseStats[2][0];
 			}
 			else
