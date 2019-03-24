@@ -107,10 +107,12 @@ var elementalDisplayType = {
 	GolemAir: "",
 	GolemWater: "",
 	GolemFire: "",
+	Time: "exp",
 };
 
 var initialData = {
-	elements: ["Earth", "Water", "Air", "Fire", "Mud", "Ice", "Steam", "Sand", "Magma", "Void", "Alkahest", "GolemEarth", "GolemWater", "GolemAir", "GolemFire"],
+	betaElements: ["Earth", "Water", "Air", "Fire", "Mud", "Ice", "Steam", "Sand", "Magma", "Void", "GolemEarth", "GolemWater", "GolemAir", "GolemFire", "Alkahest"],
+	elements: ["Earth", "Water", "Air", "Fire", "Mud", "Ice", "Steam", "Sand", "Magma", "Void", "GolemEarth", "GolemWater", "GolemAir", "GolemFire", "Alkahest"],
 };
 var data;
 var optionData = {

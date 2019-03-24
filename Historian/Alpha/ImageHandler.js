@@ -3,6 +3,7 @@ var images = {};
 function preprocessIcons()
 {
 	var resizabledIconList = [
+		"iconOk",
 		"iconOn",
 		"iconOff",
 		"iconUp",
@@ -71,6 +72,7 @@ function preprocessImages()
 		"machineVoid",
 		"machineNexus",
 
+		"mainBackground",
 		"mainBackground1",
 		"mainBackground2",
 		"mainBackground3",

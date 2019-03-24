@@ -127,6 +127,7 @@ var machines = {
 					}
 					else
 					{
+
 						if (paymentPane.isAffordable(tempRecipe.unlockCosts))
 						{
 							recipeFullGlow = true;
@@ -171,11 +172,31 @@ var machines = {
 				tempMachine.pane.markedToReadyGlow = machineFullGlow || machineWeakGlow;
 				tempMachine.region.markedToReadyGlow = machineFullGlow || machineWeakGlow;
 				mainFullGlow = mainFullGlow || machineFullGlow;
-				if (tempMachine.pane.markedToReadyGlow && !tempMachine.region.boundaryPath)
+				if (!tempMachine.region.boundaryPath)
 				{
-					tempMachine.region.boundaryPath = machines.displayRegionPath;
-				}
+					if (tempMachine.pane.markedToReadyGlow)
+					{
+						tempMachine.region.boundaryPath = machines.displayRegionPath;
+					}
+					else if (tempMachine.displayElement && tempMachine.id != "machineTime")
+					{
+						if (tempMachine.displayArray)
+						{
 
+							for (var j = 0; j < tempMachine.displayArray.length; j++)
+							{
+								if (data.oElements[tempMachine.displayArray[j]].amount > 0)
+								{
+									tempMachine.region.boundaryPath = machines.displayRegionPath;
+								}
+							}
+						}
+						else if (data.oElements[tempMachine.displayElement].amount > 0)
+						{
+							tempMachine.region.boundaryPath = machines.displayRegionPath;
+						}
+					}
+				}
 			}
 			mainPane.markedToReadyGlow = mainFullGlow;
 		}
@@ -187,7 +208,7 @@ var machines = {
 		{
 			if (!this.list[i].region.boundaryPath && this.list[i].displayElement)
 			{
-				if (data.oElements[this.list[i].displayElement].amount > 0)
+				if (data.oElements[this.list[i].displayElement].amount > 0 && !this.list[i].id == "machineTime")
 				{
 					this.list[i].region.boundaryPath = machines.displayRegionPath;
 				}
@@ -333,20 +354,28 @@ var machines = {
 				for (var j = 0; j < temp.inputs.length; j++)
 				{
 					data.oElementsFlow[temp.inputs[j].type] -= amount * temp.inputs[j].ratio;
-					particleGenerator.machineFlow(this.id, machineDisplayElements[temp.inputs[j].type], temp.inputs[j].type, -amount * temp.inputs[j].ratio);
+					if (temp.inputs[j].ratio == 0)
+					{
+						if (temp.inputs[j].effectReference.sources > 1)
+						{
+							console.log("particleWhoops");
+						}
+						temp.inputs[j].effectReference.volume -= 0.001;
+					}
+					else
+					{
+						temp.inputs[j].effectReference.volume -= amount * temp.inputs[j].ratio;
+					}
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
+					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max)
+					{
+						continue;
+					}
 					var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.2) - data.oElements[temp.outputs[j].type].amount;
 					data.oElementsFlow[temp.outputs[j].type] += flow;
-					if (this.id != "golemInfuser")
-					{
-						particleGenerator.machineFlow(this.id, machineDisplayElements[temp.outputs[j].type], temp.outputs[j].type, flow);
-					}
-				}
-				if (this.id == "golemInfuser")
-				{
-					particleGenerator.explosion(this.id, 1, temp.outputs[0].type, 600, Math.pow(10, temp.outputs[0].ratio));
+					temp.outputs[j].effectReference.volume += flow;
 				}
 			}
 		}
@@ -492,6 +521,7 @@ var machines = {
 		{
 			this.displayArrayCD = this.displayArrayCDMax;
 			this.displayArrayCurrent = next;
+			this.displayElement = this.displayArray[next];
 		}
 		ctx.restore();
 	},
@@ -517,6 +547,25 @@ var machines = {
 					{
 						tooltipPane.showText(this.machine.displayArray[i]);
 					}
+				}
+			}
+		}
+	},
+	regularPaneMouseHandler: function (pane, x, y, type)
+	{
+		if (type == "mousemove")
+		{
+			if (this.machine.displayElement && locale.oElementsShorthand[this.machine.displayElement])
+			{
+				var additionalPauseTranslation = 5;
+				if (optionData.iconSize == 16)
+				{
+					additionalPauseTranslation = -5 + optionData.iconSize * 4;
+				}
+				x -= additionalPauseTranslation;
+				if (x > 0 && x < 44 && y > optionData.iconSize * 4.5 - 26)
+				{
+					tooltipPane.showText(this.machine.displayElement);
 				}
 			}
 		}
@@ -577,14 +626,15 @@ var machines = {
 			ctx.drawImage(images["icon" + this.machine.displayElement], optionData.iconSize * 2 - 31, optionData.iconSize + 6);
 			ctx.fillStyle = ctx.strokeStyle;
 			ctx.textAlign = "left";
+			var text = (locale.oElementsShorthand[this.machine.displayElement]) ? locale.oElementsShorthand[this.machine.displayElement] : this.machine.displayElement;
 			if (optionData.iconSize == 16)
 			{
-				ctx.fillText(this.machine.displayElement, optionData.iconSize * 4, optionData.iconSize * 4.5 - 14);
+				ctx.fillText(text, optionData.iconSize * 4, optionData.iconSize * 4.5 - 14);
 				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, optionData.iconSize * 4, optionData.iconSize * 4.5 + 4, elementalDisplayType[this.machine.displayElement], "left");
 			}
 			else
 			{
-				ctx.fillText(this.machine.displayElement, 5, optionData.iconSize * 4.5 - 14);
+				ctx.fillText(text, 5, optionData.iconSize * 4.5 - 14);
 				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, 5, optionData.iconSize * 4.5 + 4, elementalDisplayType[this.machine.displayElement], "left");
 			}
 		}
@@ -615,6 +665,7 @@ var machines = {
 	{
 		if (type == "mouseup")
 		{
+
 			if (this.recipe.unlocked)
 			{
 				if (x < optionData.iconSize + 1)
@@ -712,7 +763,7 @@ var machines = {
 				else
 				{
 					ctx.drawImage(images.iconUpNot, optionData.iconSize * 2 + 2, 0);
-					if (this.markedToReadyGlow)
+					if (this.markedToReadyGlow && this.glowColor != "blue")
 					{
 						ctx.globalAlpha = borderGlow.alpha * 1.5 + 0.25;
 					}
@@ -907,8 +958,7 @@ var machines = {
 		this.target.upped++;
 		if (this.target.max)
 		{
-			this.target.slider = 2;
-			this.target.max = this.target.sliderBase * Math.pow(this.target.sliderStep, this.target.upped);
+			this.mouseHandler(null, this.x + 90, 0, "mouseup");
 		}
 	},
 	sliderRegionMouseHandler: function (pane, x, y, type)
@@ -1139,6 +1189,7 @@ function initMachine(title)
 	}
 	else
 	{
+		thisData.pane.mouseHandler = machines.regularPaneMouseHandler;
 		thisData.pane.boundaryPath = machines.displayPanePathDemo;
 		thisData.pane.boundaryPathMin = machines.displayPanePathMin;
 

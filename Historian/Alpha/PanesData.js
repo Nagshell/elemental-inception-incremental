@@ -31,6 +31,8 @@ function preprocessRegionData()
 			{
 				pane.hiddenPath = pane.boundaryPath;
 				pane.boundaryPath = null;
+				pane.blockShow = true;
+				pane.postShow = false;
 			}
 		}
 	}
@@ -46,6 +48,7 @@ function preprocessRegionData()
 			{
 				pane.boundaryPath = pane.hiddenPath;
 				pane.hiddenPath = null;
+				pane.blockShow = false;
 			}
 			if (pane.top)
 			{
@@ -355,6 +358,12 @@ var optionsPane;
 var waypointPane;
 var minimapPane;
 var mapControlPane;
+var waypointsBase = [
+{
+	name: locale.waypoints.center,
+	x: 0,
+	y: 0,
+}, ];
 
 function preprocessPaneData()
 {
@@ -371,13 +380,13 @@ function preprocessPaneData()
 	mainPane.customDraw = function (ctx)
 	{
 		var tempBackground;
-		if (machineData.machineNexus)
+		if (false && machineData.machineNexus)
 		{
 			if (mainPane.background)
 			{
 				mainPane.backgroundR++;
 			}
-			if (machineData.machineNexus.recipes[1].unlocked)
+			if (machineData.machineNexus.recipes[0].unlocked)
 			{
 				tempBackground = "mainBackground4";
 			}
@@ -389,7 +398,7 @@ function preprocessPaneData()
 			{
 				tempBackground = "mainBackground2";
 			}
-			else if (machineData.machineWater.recipes[1].unlocked)
+			else if (machineData.machineWater.recipes[0].unlocked)
 			{
 				tempBackground = "mainBackground1";
 			}
@@ -411,19 +420,17 @@ function preprocessPaneData()
 					}
 					ctx.beginPath();
 					ctx.arc(0, 0, mainPane.backgroundR, 0, Math.PI * 2);
-					ctx.globalAlpha = (600 - mainPane.backgroundR) / 600;
-					ctx.stroke();
-					ctx.globalAlpha = 1;
 					ctx.clip();
 				}
 				ctx.drawImage(images[mainPane.background], -400, -400);
 				ctx.restore();
 			}
 		}
-		particleGenerator.draw(ctx);
+		ctx.drawImage(images.mainBackground, -1200, -1200);
+		effectSystem.draw(ctx);
 
-		var x = -this.centerX + canvas.width / 2;
-		var y = -this.centerY + canvas.height / 2 - 100;
+		var x = -this.centerX + Math.trunc(canvas.width / 2);
+		var y = -this.centerY + Math.trunc(canvas.height / 2) - 100;
 
 		ctx.save();
 		ctx.globalAlpha = borderGlow.alpha;
@@ -524,6 +531,7 @@ function preprocessPaneData()
 		this.costs = costs;
 		this.target = target;
 		panes.postMouseHandlerShow.push(this);
+		this.blockShow = false;
 
 		if (!this.pinned)
 		{
@@ -567,6 +575,13 @@ function preprocessPaneData()
 		ctx.textAlign = "left";
 		ctx.fillStyle = ctx.strokeStyle;
 		ctx.fillText(locale.autosave + ": " + Math.trunc(s / 3600) + ":" + ("0" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60)).slice(-2), trackerPane.savingX, 50);
+		ctx.fillText("TPF:" + tpf, trackerPane.savingX - 50, 33);
+		ctx.fillText("FPS:" + fps, trackerPane.savingX - 50, 50);
+		ctx.fillText("TPS:" + tps, trackerPane.savingX - 50, 67);
+		if (lim)
+		{
+			ctx.fillText("Capped", trackerPane.savingX - 50, 84);
+		}
 		ctx.restore();
 	}
 	trackerPane.resize = function ()
@@ -585,10 +600,10 @@ function preprocessPaneData()
 	var tabRegions = [];
 	for (var i = 0; i < 18; i++)
 	{
-		var r = new cRegion(5 + 148 * Math.floor(i / 3), 5 + 32 * (i % 3));
+		var r = new cRegion(5 + (tabWidth + 8) * Math.floor(i / 3), 5 + (tabHeight + 8) * (i % 3));
 		r.text = locale.aTabNames[i];
-		r.textX = 70;
-		r.textY = 12;
+		r.textX = tabWidth / 2;
+		r.textY = tabHeight / 2;
 		r.boundaryPath = locale.aTabNames[i] ? path : null;
 		if (i > 2)
 		{
@@ -688,14 +703,11 @@ function preprocessPaneData()
 	waypointPane.maxGrowth = 15;
 	waypointPane.independent = true;
 	waypointPane.growth = 0;
-	waypointPane.growthX = 148;
-	waypointPane.growthY = 120;
+	waypointPane.growthX = 0;
+	waypointPane.growthY = optionData.iconSize * waypointsBase.length;
 	waypointPane.customDraw = function (ctx)
 	{
 		ctx.save();
-		ctx.fillStyle = ctx.strokeStyle;
-		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
-
 		var rePath = false;
 		if (this.growing && this.growth < this.maxGrowth)
 		{
@@ -714,31 +726,62 @@ function preprocessPaneData()
 			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
 			this.boundaryPath = path;
 		}
+		ctx.fillStyle = ctx.strokeStyle;
+		if (this.growth > 0)
+		{
+			ctx.save();
+			ctx.translate(0, tabHeight);
+			ctx.textAlign = "left";
+			for (var i = 0; i < waypointsBase.length; i++)
+			{
+				ctx.fillText(waypointsBase[i].name, optionData.iconSize + 5, optionData.iconSize / 2 + 1);
+				ctx.stroke(regionData.iconPath);
+				ctx.drawImage(images.iconNext, 0, 0);
+				ctx.translate(0, optionData.iconSize);
+			}
+			ctx.restore();
+		}
 
+		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
 		ctx.restore();
-	}
+	};
 	waypointPane.mouseHandler = function (pane, x, y, type)
 	{
 		if (this.recentlyGrowing || type == "mouseup")
 		{
 			this.growing = true;
 		}
-	}
+		if (type == "mouseup")
+		{
+			if (x < optionData.iconSize)
+			{
+				y -= tabHeight;
+				if (y > 0)
+				{
+					y = Math.trunc(y / optionData.iconSize);
+					x = waypointsBase[y].x;
+					y = waypointsBase[y].y;
+					panes.moveCenterMap(-x + Math.trunc(canvas.width / 2), -y + Math.trunc(canvas.height / 2) - 100);
+				}
+			}
+		}
+	};
 
 	minimapPane = new cPane(trackerPane, tabRegions[1].x, tabRegions[1].y);
 	minimapPane.modelRegion = tabRegions[1];
 	minimapPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
-	minimapPane.maxGrowth = 15;
+	minimapPane.maxGrowth = 10;
 	minimapPane.independent = true;
 	minimapPane.growth = 0;
-	minimapPane.growthX = 148;
-	minimapPane.growthY = 120;
+	minimapPane.growthX = 300 - tabWidth;
+	minimapPane.growthY = 300;
+	minimapPane.load = 0;
+	minimapPane.maxLoad = 50;
+	minimapPane.scale = 4.2;
+
 	minimapPane.customDraw = function (ctx)
 	{
 		ctx.save();
-		ctx.fillStyle = ctx.strokeStyle;
-		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
-
 		var rePath = false;
 		if (this.growing && this.growth < this.maxGrowth)
 		{
@@ -758,6 +801,47 @@ function preprocessPaneData()
 			this.boundaryPath = path;
 		}
 
+		if (this.growth >= this.maxGrowth)
+		{
+			if (this.load < this.maxLoad)
+			{
+				this.load++;
+			}
+			if (this.load > 0)
+			{
+				ctx.save();
+				ctx.translate((this.growthX + tabWidth) / 2, this.growthY / 2 + tabHeight);
+
+				ctx.beginPath();
+				ctx.arc(0, 0, Math.max(0, this.load / this.maxLoad * (this.growthX + tabWidth) / 2 - 5), 0, Math.PI * 2);
+				ctx.stroke();
+				ctx.fill();
+				ctx.clip();
+				ctx.scale(1 / this.scale, 1 / this.scale);
+				for (var machineTitle in machineData)
+				{
+					var mach = machineData[machineTitle];
+					if (mach.region.boundaryPath)
+					{
+						ctx.save();
+						ctx.translate(mach.region.x, mach.region.y);
+						ctx.stroke(mach.region.boundaryPath);
+						ctx.clip(mach.region.boundaryPath);
+						doGlows(ctx, mach.region, "solid");
+						ctx.restore();
+					}
+				}
+
+				ctx.restore();
+			}
+		}
+		else
+		{
+			this.load = 0;
+		}
+
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
 		ctx.restore();
 	}
 	minimapPane.mouseHandler = function (pane, x, y, type)
@@ -765,6 +849,16 @@ function preprocessPaneData()
 		if (this.recentlyGrowing || type == "mouseup")
 		{
 			this.growing = true;
+		}
+		if (type == "mouseup")
+		{
+			x -= (this.growthX + tabWidth) / 2;
+			y -= this.growthY / 2 + tabHeight;
+			var r = this.load / this.maxLoad * (this.growthX + tabWidth) / 2 - 5;
+			if (x * x + y * y < r * r)
+			{
+				panes.moveCenterMap(-x * this.scale + Math.trunc(canvas.width / 2), -y * this.scale + Math.trunc(canvas.height / 2) - 100);
+			}
 		}
 	}
 
@@ -816,6 +910,14 @@ function preprocessPaneData()
 	path.rect(0, 0, 400, 300);
 	optionsPane.boundaryPath = path;
 	optionsPane.title = "Options - Don't forget to apply your settings!";
+	optionsPane.customDraw = function (ctx)
+	{
+		if (!this.postShow)
+		{
+			panes.postMouseHandlerShow.push(this);
+			this.postShow = true;
+		}
+	}
 
 	optionsPane.maxPages = 0;
 	if (optionsPane.maxPages > 0)
@@ -825,11 +927,11 @@ function preprocessPaneData()
 		optionsPane.subRegions.push(regionData.prevPageRegion);
 	}
 	optionsPane.subRegions.push(regionData.dragRegion);
-	optionsPane.subRegions.push(regionData.pinRegion);
 	optionsPane.subRegions.push(regionData.hideRegion);
 
 	optionsPane.subRegions.push(regionData.draggableTitleRegion);
 	regionData.hideRegion.action(optionsPane);
+	regionData.pinRegion.action(optionsPane);
 
 	optionsPane.region = tabRegions[9];
 	optionsPane.region.pane = optionsPane;
@@ -845,11 +947,8 @@ function preprocessPaneData()
 			{
 				regionData.showRegion.mouseHandler(this.pane, x, y, type);
 				this.markedToSuperGlow = false;
-				if (!this.pane.pinned)
-				{
-					this.pane.x = Math.floor(canvas.width / 2) - 200 - mainPane.centerX;
-					this.pane.y = 150 - mainPane.centerY;
-				}
+				this.pane.x = Math.floor(canvas.width / 2) - 200 - mainPane.centerX;
+				this.pane.y = 150 - mainPane.centerY;
 			}
 		}
 	};
@@ -892,6 +991,15 @@ function preprocessOptions()
 	revertRegion.text = "Revert changes";
 	revertRegion.textX = 50;
 	revertRegion.textY = 10;
+	revertRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			optionsPane.optionData = JSON.parse(JSON.stringify(optionData));
+			pane.iconSizeRegion.text = "Toggle UI size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
+			pane.particleCDRegion.text = "Toggle particle limiter. x" + optionData.particleCDMultiplier + " -> x" + optionsPane.optionData.particleCDMultiplier;
+		}
+	};
 	optionsPane.subRegions.push(revertRegion);
 
 	var iconSizeRegion = new cRegion(25, 75);
@@ -909,5 +1017,24 @@ function preprocessOptions()
 			this.text = "Toggle UI size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
 		}
 	};
+	optionsPane.iconSizeRegion = iconSizeRegion;
 	optionsPane.subRegions.push(iconSizeRegion);
+
+	var particleCDRegion = new cRegion(25, 100);
+	particleCDRegion.text = "Toggle particle limiter. x" + optionData.particleCDMultiplier + " -> x" + optionsPane.optionData.particleCDMultiplier;
+	particleCDRegion.textX = 100;
+	particleCDRegion.textY = 10;
+	var path = new Path2D();
+	path.rect(0, 0, particleCDRegion.textX * 2, 20);
+	particleCDRegion.boundaryPath = path;
+	particleCDRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			pane.optionData.particleCDMultiplier = 1 + (pane.optionData.particleCDMultiplier) % 9;
+			this.text = "Toggle particle limiter. x" + optionData.particleCDMultiplier + " -> x" + optionsPane.optionData.particleCDMultiplier;
+		}
+	};
+	optionsPane.particleCDRegion = particleCDRegion;
+	optionsPane.subRegions.push(particleCDRegion);
 }

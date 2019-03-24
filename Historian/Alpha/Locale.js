@@ -20,7 +20,7 @@ var locale = {
 	aTabNames: [
 		"Waypoints",
 		"Minimap",
-		"Map Control",
+		"Pane Controls",
 		"Lore - Disabled",
 		"Educational Corner",
 		"Redacted & Disabled",
@@ -148,5 +148,10 @@ var locale = {
 		GolemWater: "W",
 		GolemAir: "A",
 		GolemFire: "F",
+		Ice: "I",
 	},
+	waypoints:
+	{
+		center: "Central Point",
+	}
 };

@@ -18,8 +18,6 @@ var panes = {
 	},
 	dragMove: function (dx, dy)
 	{
-		if (!panes.dragndrop)
-			return;
 		var top = panes.dragndrop.top;
 		var x = optionData.iconSize * 3 / 2 + top.x + panes.dragndrop.x;
 		var y = optionData.iconSize / 2 + top.y + panes.dragndrop.y;
@@ -66,22 +64,69 @@ var panes = {
 			}
 		}
 	},
+	dragCenterMove: function (dx, dy)
+	{
+		panes.dragndropcenter.centerX += dx;
+		panes.dragndropcenter.centerY += dy;
+		if (panes.dragndropcenter.centerPanes)
+		{
+			for (var i = 0; i < panes.dragndropcenter.centerPanes.length; i++)
+			{
+				panes.dragndropcenter.centerPanes[i].x -= dx;
+				panes.dragndropcenter.centerPanes[i].y -= dy;
+			}
+		}
+	},
+	moveCenterMap: function (x, y)
+	{
+		panes.dragndropcenter = mainPane;
+		panes.dragCenterMove(x - mainPane.centerX, y - mainPane.centerY);
+		panes.dragndropcenter = null;
+	},
 	keyHandler: function (event)
 	{
 		//console.log(event.code);
 		switch (event.code)
 		{
 			case "ArrowUp":
-				panes.dragMove(0, -1);
+				if (panes.dragndrop)
+				{
+					panes.dragMove(0, -1);
+				}
+				else if (panes.dragndropcenter)
+				{
+					panes.dragCenterMove(0, -1);
+				}
 				break;
 			case "ArrowDown":
-				panes.dragMove(0, 1);
+				if (panes.dragndrop)
+				{
+					panes.dragMove(0, 1);
+				}
+				else if (panes.dragndropcenter)
+				{
+					panes.dragCenterMove(0, 1);
+				}
 				break;
 			case "ArrowLeft":
-				panes.dragMove(-1, 0);
+				if (panes.dragndrop)
+				{
+					panes.dragMove(-1, 0);
+				}
+				else if (panes.dragndropcenter)
+				{
+					panes.dragCenterMove(-1, 0);
+				}
 				break;
 			case "ArrowRight":
-				panes.dragMove(1, 0);
+				if (panes.dragndrop)
+				{
+					panes.dragMove(1, 0);
+				}
+				else if (panes.dragndropcenter)
+				{
+					panes.dragCenterMove(1, 0);
+				}
 				break;
 		}
 	},
@@ -116,16 +161,7 @@ var panes = {
 		}
 		if (event.type == "mousemove" && panes.dragndropcenter)
 		{
-			panes.dragndropcenter.centerX += event.movementX;
-			panes.dragndropcenter.centerY += event.movementY;
-			if (panes.dragndropcenter.centerPanes)
-			{
-				for (var i = 0; i < panes.dragndropcenter.centerPanes.length; i++)
-				{
-					panes.dragndropcenter.centerPanes[i].x -= event.movementX;
-					panes.dragndropcenter.centerPanes[i].y -= event.movementY;
-				}
-			}
+			panes.dragCenterMove(event.movementX, event.movementY);
 			return;
 		}
 		if (event.type == "mouseup")
@@ -203,7 +239,11 @@ var panes = {
 
 		for (var i = 0; i < panes.postMouseHandlerShow.length; i++)
 		{
-			regionData.showRegion.action(panes.postMouseHandlerShow[i]);
+			if (!panes.postMouseHandlerShow[i].blockShow)
+			{
+				regionData.showRegion.action(panes.postMouseHandlerShow[i]);
+				panes.postMouseHandlerShow[i].postShow = false;
+			}
 		}
 		panes.postMouseHandlerShow = [];
 		if (tooltipPane.readyToShow)
@@ -223,28 +263,28 @@ var panes = {
 	},
 }
 
-function doGlows(ctx, target)
+function doGlows(ctx, target, colModifier = "")
 {
 	ctx.save();
 
 	if (target.markedToSuperGlow)
 	{
 		ctx.strokeStyle = "#000000";
-		ctx.shadowColor = borderGlow.colors.yellow;
+		ctx.shadowColor = borderGlow.colors[colModifier + "yellow"];
 	}
 	else if (target.markedToReadyGlow)
 	{
 		if (target.glowColor)
 		{
-			ctx.strokeStyle = borderGlow.colors[target.glowColor];
-			ctx.shadowColor = borderGlow.colors[target.glowColor];
+			ctx.strokeStyle = borderGlow.colors[colModifier + target.glowColor];
+			ctx.shadowColor = borderGlow.colors[colModifier + target.glowColor];
 		}
 		else
 		{
-			ctx.strokeStyle = borderGlow.colors.purple;
-			ctx.shadowColor = borderGlow.colors.purple;
+			ctx.strokeStyle = borderGlow.colors[colModifier + "purple"];
+			ctx.shadowColor = borderGlow.colors[colModifier + "purple"];
 		}
-		ctx.globalAlpha = borderGlow.alpha;
+		ctx.globalAlpha = borderGlow[colModifier + "alpha"];
 	}
 	else
 	{

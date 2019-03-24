@@ -1,33 +1,470 @@
 var simplifiedMachineData = {
-	"machineFire":
+	"machineEarth":
 	{
-		baseStats: [100, -100, "Fire"],
+		baseStats: [100, 100, "Earth"],
 		recipes:
 		{
-			fireStart1:
+			earthRift2:
 			{
-				baseStats: [1, 1, true, false],
+				baseStats: [1, 1.4, true, false],
 				in: [],
 				out: [
-					["Fire", 1, 1e10],
+					["Earth", 1, 12000],
 				],
-				lock: ["Fire", 0],
+				lock: ["Earth", 0],
+			},
+			earthRift3:
+			{
+				baseStats: [1, 1.4, true, true],
+				in: [
+					["Earth", 1, 1]
+				],
+				out: [
+					["Earth", 1, 12000 * 4],
+				],
+				lock: ["Earth", 0],
+			},
+			earthCRift1:
+			{
+				baseStats: [1, 2, true, true],
+				in: [
+					["Fire", 1, 500],
+				],
+				out: [
+					["Earth", 1, 52000],
+				],
+				lock: ["Earth", 0],
 			},
 		}
 	},
 	"machineWater":
 	{
-		baseStats: [-100, -100, "Water"],
+		baseStats: [-100, 100, "Water"],
 		recipes:
 		{
-			waterStart1:
+			waterRift2:
+			{
+				baseStats: [1, 1.4, true, false],
+				in: [],
+				out: [
+					["Water", 1, 12000],
+				],
+				lock: ["Earth", 0],
+			},
+			waterRift3:
+			{
+				baseStats: [1, 1.4, true, true],
+				in: [
+					["Water", 1, 1]
+				],
+				out: [
+					["Water", 1, 12000 * 4],
+				],
+				lock: ["Earth", 0],
+			},
+			waterCRift1:
+			{
+				baseStats: [1, 2, true, true],
+				in: [
+					["Earth", 1, 500],
+				],
+				out: [
+					["Water", 1, 52000],
+				],
+				lock: ["Earth", 0],
+			},
+		}
+	},
+	"machineAir":
+	{
+		baseStats: [-100, -100, "Air"],
+		recipes:
+		{
+			airRift2:
+			{
+				baseStats: [1, 1.4, true, false],
+				in: [],
+				out: [
+					["Air", 1, 12000],
+				],
+				lock: ["Earth", 0],
+			},
+			airRift3:
+			{
+				baseStats: [1, 1.4, true, true],
+				in: [
+					["Air", 1, 1]
+				],
+				out: [
+					["Air", 1, 12000 * 4],
+				],
+				lock: ["Earth", 0],
+			},
+			airCRift1:
+			{
+				baseStats: [1, 2, true, true],
+				in: [
+					["Water", 1, 500],
+				],
+				out: [
+					["Air", 1, 52000],
+				],
+				lock: ["Earth", 0],
+			},
+		}
+	},
+	"machineFire":
+	{
+		baseStats: [100, -100, "Fire"],
+		recipes:
+		{
+			fireRift2:
+			{
+				baseStats: [1, 1.4, true, false],
+				in: [],
+				out: [
+					["Fire", 1, 12000],
+				],
+				lock: ["Earth", 0],
+			},
+			fireRift3:
+			{
+				baseStats: [1, 1.4, true, true],
+				in: [
+					["Fire", 1, 1]
+				],
+				out: [
+					["Fire", 1, 12000 * 4],
+				],
+				lock: ["Earth", 0],
+			},
+			fireCRift1:
+			{
+				baseStats: [1, 2, true, true],
+				in: [
+					["Air", 1, 500],
+				],
+				out: [
+					["Fire", 1, 52000],
+				],
+				lock: ["Earth", 0],
+			},
+		}
+	},
+	"golemInfuser":
+	{
+		baseStats: [-200, 200, ["GolemEarth", "GolemWater", "GolemAir", "GolemFire"]],
+		recipes:
+		{
+			golemEarth3:
+			{
+				baseStats: [1, 1, true, false],
+				in: [
+					["Earth", 8000, 9000],
+				],
+				out: [
+					["GolemEarth", 5, 14],
+				],
+				lock: ["Earth", 0],
+			},
+			golemWater3:
+			{
+				baseStats: [1, 1, true, false],
+				in: [
+					["Water", 8000, 9000],
+				],
+				out: [
+					["GolemWater", 5, 14],
+				],
+				lock: ["Earth", 0],
+			},
+			golemAir3:
+			{
+				baseStats: [1, 1, true, false],
+				in: [
+					["Air", 8000, 9000],
+				],
+				out: [
+					["GolemAir", 5, 14],
+				],
+				lock: ["Earth", 0],
+			},
+			golemFire3:
+			{
+				baseStats: [1, 1, true, false],
+				in: [
+					["Fire", 8000, 9000],
+				],
+				out: [
+					["GolemFire", 5, 14],
+				],
+				lock: ["Earth", 0],
+			},
+		}
+	},
+	"golemMerger":
+	{
+		baseStats: [200, 200],
+		recipes:
+		{
+			mergeMud3:
+			{
+				baseStats: [1, 4, true, false],
+				in: [
+					["GolemEarth", 1, 5],
+					["GolemWater", 1, 5],
+					["Earth", 7000, 40000],
+					["Water", 7000, 40000],
+				],
+				out: [
+					["Mud", 1, 102],
+				],
+				lock: ["Earth", 0],
+			},
+			mergeIce3:
+			{
+				baseStats: [1, 4, true, false],
+				in: [
+					["GolemAir", 1, 5],
+					["GolemWater", 1, 5],
+					["Air", 7000, 40000],
+					["Water", 7000, 40000],
+				],
+				out: [
+					["Ice", 1, 102],
+				],
+				lock: ["Earth", 0],
+			},
+			mergeSteam3:
+			{
+				baseStats: [1, 4, true, false],
+				in: [
+					["GolemFire", 1, 5],
+					["GolemWater", 1, 5],
+					["Fire", 7000, 40000],
+					["Water", 7000, 40000],
+				],
+				out: [
+					["Steam", 1, 102],
+				],
+				lock: ["Earth", 0],
+			},
+			mergeMagma3:
+			{
+				baseStats: [1, 4, true, false],
+				in: [
+					["GolemFire", 1, 5],
+					["GolemEarth", 1, 5],
+					["Fire", 7000, 40000],
+					["Earth", 7000, 40000],
+				],
+				out: [
+					["Magma", 1, 102],
+				],
+				lock: ["Earth", 0],
+			},
+			mergeSand1:
+			{
+				baseStats: [1, 0.006, true, false],
+				in: [
+					["GolemEarth", 1, 1],
+					["GolemAir", 1, 1],
+				],
+				out: [
+					["Sand", 1, 0.1],
+				],
+				lock: ["Earth", 0],
+			},
+		}
+	},
+	"machineMud":
+	{
+		baseStats: [0, 275, "Mud"],
+		recipes:
+		{
+			mudConversion2:
+			{
+				baseStats: [2, 1.44, true, true],
+				in: [
+					["Magma", 1, 1.8],
+					["Earth", 0, 10000],
+					["Water", 0, 10000],
+					["Fire", 0, 10000],
+				],
+				out: [
+					["Mud", 1, 208, 4, ["Glass", 0.8]],
+				],
+				lock: ["Earth", 0],
+			},
+			mudRift1:
 			{
 				baseStats: [1, 1, true, false],
 				in: [],
 				out: [
-					["Water", 1, 1e10],
+					["Mud", 1, 800],
 				],
-				lock: ["Water", 0],
+				lock: ["Silver", 2],
+			},
+		}
+	},
+	"machineIce":
+	{
+		baseStats: [-275, 0, "Ice"],
+		recipes:
+		{
+			iceConversion2:
+			{
+				baseStats: [3, 1, true, true],
+				in: [
+					["Mud", 1, 1.8],
+					["Earth", 0, 10000],
+					["Water", 0, 10000],
+					["Air", 0, 10000],
+				],
+				out: [
+					["Ice", 1, 208, 4, ["Glass", 0.8]],
+				],
+				lock: ["Earth", 0],
+			},
+			mudRift1:
+			{
+				baseStats: [1, 1, true, false],
+				in: [],
+				out: [
+					["Ice", 1, 800],
+				],
+				lock: ["Silver", 2],
+			},
+		}
+	},
+	"machineSteam":
+	{
+		baseStats: [-200, -200, "Steam"],
+		recipes:
+		{
+			steamConversion2:
+			{
+				baseStats: [2, 1, true, true],
+				in: [
+					["Ice", 1, 1.8],
+					["Water", 0, 10000],
+					["Air", 0, 10000],
+					["Fire", 0, 10000],
+				],
+				out: [
+					["Steam", 1, 208, 4, ["Glass", 0.8]],
+				],
+				lock: ["Earth", 0],
+			},
+			mudRift1:
+			{
+				baseStats: [1, 1, true, false],
+				in: [],
+				out: [
+					["Steam", 1, 800],
+				],
+				lock: ["Silver", 2],
+			},
+		}
+	},
+	"machineMagma":
+	{
+		baseStats: [275, 0, "Magma"],
+		recipes:
+		{
+			magmaConversion2:
+			{
+				baseStats: [1, 1, true, true],
+				in: [
+					["Steam", 1, 1.8],
+					["Earth", 0, 10000],
+					["Water", 0, 10000],
+					["Fire", 0, 10000],
+				],
+				out: [
+					["Magma", 1, 208, 4, ["Glass", 0.8]],
+				],
+				lock: ["Earth", 0],
+			},
+			mudRift1:
+			{
+				baseStats: [1, 1, true, false],
+				in: [],
+				out: [
+					["Magma", 1, 800],
+				],
+				lock: ["Silver", 2],
+			},
+		}
+	},
+	"machineSand":
+	{
+		baseStats: [200, -200, "Sand"],
+		recipes:
+		{
+			sandConversion2:
+			{
+				baseStats: [1, 0.15, true, true],
+				in: [
+					["Magma", 1, 1.8],
+					["Air", 400, 10],
+					["Fire", 400, 10],
+				],
+				out: [
+					["Sand", 1, 208, 4, ["Soil", 1.6]],
+				],
+				lock: ["Earth", 0],
+			},
+			mudRift1:
+			{
+				baseStats: [1, 1, true, false],
+				in: [],
+				out: [
+					["Sand", 0.5, 800],
+				],
+				lock: ["Silver", 2],
+			},
+		}
+	},
+	"machineVoid":
+	{
+		baseStats: [0, -275, "Void"],
+		recipes:
+		{
+			voidClash3:
+			{
+				baseStats: [1, 1, true, true],
+				in: [
+					["Sand", 10, 150],
+					["Steam", 10, 150],
+				],
+				out: [
+					["Void", 1, 102, 8, ["Glass", 0.8]],
+					["Mud", 19, -150],
+				],
+				lock: ["Earth", 0],
+			},
+		}
+	},
+	"machineNexus":
+	{
+		baseStats: [0, 0, "Alkahest"],
+		recipes:
+		{
+			alkahest1merge:
+			{
+				baseStats: [10, 1, true, true],
+				in: [
+					["Void", 1, 1],
+					["Earth", 100000, 50000],
+					["Water", 100000, 50000],
+					["Air", 100000, 50000],
+					["Fire", 100000, 50000],
+				],
+				out: [
+					["Alkahest", 1, 42],
+				],
+				lock: ["Earth", 0],
 			},
 		}
 	},
@@ -1061,206 +1498,2571 @@ var backupBetaMachineData = {
 	},
 };
 
-//var unreachableElements = ["Space", "Spatial", "Temporal", "Parallel"];
+var midCircle = {
+	elements: [
+		"Revelation", "Knowledge",
+		"Essence", "Soil", "Obsidian", "Lava", "Oil", "Force", "Space", "Glass", "Gold", "Snow", "Cryogen",
+		"Solution", "DistilledEarth", "DistilledWater", "DistilledAir", "DistilledFire",
+		"Pressure", "CompressedEarth", "CompressedWater", "CompressedAir", "CompressedFire",
+	],
+	machines:
+	{
+		machineKnowledge:
+		{
+			baseStats: [0, -400, ["Revelation", "Knowledge"]],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Revelation", 1, 0.01],
+					],
+					out: [
+						["Revelation", 1, -1],
+						["Knowledge", 0.03, 7],
+					],
+					lock: ["Revelation", 0.1],
+					upgrade: ["earthRift1", "Gold", 1],
+				},
+				earthRift1:
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Revelation", 1, 0.01],
+					],
+					out: [
+						["Revelation", 1, -5],
+						["Knowledge", 0.05, 9, 1.3, ["DistilledEarth", 0.1, "DistilledWater", 0.1, "DistilledAir", 0.1, "DistilledFire", 0.1]],
+					],
+					upgrade: ["earthRift2", "Knowledge", 25],
+				},
+				earthRift2:
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Revelation", 1, 0.01],
+					],
+					out: [
+						["Revelation", 1, -5],
+						["Knowledge", 0.8, 79],
+					],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Gold", 1, 0.3],
+					],
+					out: [
+						["Revelation", 1, 1.2, 4, ["Knowledge", 8]],
+					],
+					lock: ["Gold", 0.1],
+					upgrade: ["earthStart3", "Knowledge", 75],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 0.01, false, true],
+					in: [
+						["Knowledge", 1, 0.3],
+					],
+					out: [
+						["Revelation", 1, 4.8],
+					],
+				},
+			}
+		},
+		machineEssence:
+		{
+			baseStats: [-100, 650, "Essence"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Mud", 1, 37],
+						["Water", 200, 7900],
+					],
+					out: [
+						["Essence", 1, 1.2, 2, ["Glass", 1.1]],
+					],
+					lock: ["Knowledge", 0.5, "Space", 1],
+				},
+			}
+		},
+		machineSoil:
+		{
+			baseStats: [100, 650, "Soil"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Mud", 1, 37],
+						["Earth", 200, 7900],
+					],
+					out: [
+						["Soil", 1, 1.2, 2, ["Force", 0.2]],
+					],
+					lock: ["Knowledge", 0.1],
+					upgrade: ["earthStart2", "Knowledge", 36],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.01, false, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Mud", 1, 37],
+						["Earth", 200, 7900],
+					],
+					out: [
+						["Soil", 1, 12],
+					],
+				},
+			}
+		},
+		machineObsidian:
+		{
+			baseStats: [650, 100, "Obsidian"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Magma", 1, 37],
+						["Earth", 200, 7900],
+					],
+					out: [
+						["Obsidian", 1, 1.2],
+					],
+					lock: ["Knowledge", 0.2],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Lava", 0.1, 0.6],
+						["Gale", 0, 3.4],
+					],
+					out: [
+						["Obsidian", 0.1, 2.4],
+					],
+					lock: ["Stone", 1],
+				},
+			}
+		},
+		machineLava:
+		{
+			baseStats: [650, -100, "Lava"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Magma", 1, 37],
+						["Fire", 200, 7900],
+					],
+					out: [
+						["Lava", 1, 1.2],
+					],
+					lock: ["Knowledge", 3.3, "Obsidian", 1, "Force", 1],
+				},
+			}
+		},
+		machineSpace:
+		{
+			baseStats: [0, -650, "Space"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Void", 1, 100],
+						["Air", 10000, 27900],
+						["Fire", 10000, 27900],
+					],
+					out: [
+						["Space", 1, 1.2],
+					],
+					lock: ["Knowledge", 1.5],
+				},
+			}
+		},
+		machineSnow:
+		{
+			baseStats: [-650, -100, "Snow"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Ice", 1, 37],
+						["Air", 200, 7900],
+					],
+					out: [
+						["Snow", 1, 1.2],
+					],
+					lock: ["Knowledge", 0.3],
+				},
+			}
+		},
+		machineCryogen:
+		{
+			baseStats: [-650, 100, "Cryogen"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Ice", 1, 37],
+						["Water", 200, 7900],
+					],
+					out: [
+						["Cryogen", 1, 1.2],
+					],
+					lock: ["Knowledge", 7, "Essence", 1.5, "Ice", 600],
+				},
+			}
+		},
+		machineGlass:
+		{
+			baseStats: [-400, -500, "Glass"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Sand", 1, 37],
+						["Fire", 2000, 7900],
+						["Lava", 0, 1.1],
+					],
+					out: [
+						["Glass", 1, 1.2, 2, ["Knowledge", 36]],
+					],
+					lock: ["Knowledge", 2, "Sand", 300],
+				},
+			}
+		},
+		machineGold:
+		{
+			baseStats: [-500, -400, "Gold"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Force", 0.01, 0.3],
+						["Sand", 1, 37],
+						["Water", 2000, 7900],
+					],
+					out: [
+						["Gold", 1, 1.2],
+					],
+					lock: ["Knowledge", 7, "Cryogen", 0.4, "Force", 1.1, "Sand", 700],
+					upgrade: ["earthStart2", "Iron", 0.01],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.001, false, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Sand", 1, 37],
+						["Water", 2000, 7900],
+					],
+					out: [
+						["Gold", 1, 1.2],
+					],
+					upgrade: ["earthStart3", "Silver", 1.01],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 0.002, false, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Sand", 1, 37],
+						["Water", 2000, 7900],
+					],
+					out: [
+						["Gold", 1, 1.2],
+					],
+					upgrade: ["earthStart4", "Bronze", 1.01],
+				},
+				earthStart4:
+				{
+					baseStats: [1, 0.004, false, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Sand", 1, 37],
+						["Water", 2000, 7900],
+					],
+					out: [
+						["Gold", 1, 1.2],
+					],
+					upgrade: ["earthStart5", "Copper", 1.01],
+				},
+				earthStart5:
+				{
+					baseStats: [1, 0.006, false, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Sand", 1, 37],
+						["Water", 2000, 7900],
+					],
+					out: [
+						["Gold", 1, 1.2],
+					],
+					upgrade: ["earthStart6", "Tin", 1.01],
+				},
+				earthStart6:
+				{
+					baseStats: [1, 0.008, false, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Sand", 1, 37],
+						["Water", 2000, 7900],
+					],
+					out: [
+						["Gold", 1, 1.2],
+					],
+					upgrade: ["earthStart7", "Aluminum", 1.01],
+				},
+				earthStart7:
+				{
+					baseStats: [1, 0.01, false, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Sand", 1, 37],
+						["Water", 2000, 7900],
+					],
+					out: [
+						["Gold", 1, 1.2],
+					],
+					upgrade: ["earthStart8", "Iron", 1.01],
+				},
+				earthStart8:
+				{
+					baseStats: [1, 0.01, false, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Sand", 1, 37],
+						["Water", 2000, 7900],
+					],
+					out: [
+						["Gold", 1, 4.8],
+					],
+				},
+			}
+		},
+		machineForce:
+		{
+			baseStats: [400, -500, "Force"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Steam", 1, 37],
+						["Air", 200, 7900],
+					],
+					out: [
+						["Force", 1, 1.2],
+					],
+					lock: ["Knowledge", 0.8, "Space", 1],
+				},
+			}
+		},
+		machineOil:
+		{
+			baseStats: [500, -400, "Oil"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Steam", 1, 37],
+						["Earth", 200, 7900],
+					],
+					out: [
+						["Oil", 1, 1.2],
+					],
+					lock: ["Knowledge", 0.4],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.02, true, true],
+					in: [
+						["Energy", 0.001, 0.2],
+						["Earth", 200, 7900],
+						["Water", 200, 7900],
+					],
+					out: [
+						["Oil", 1, 3.6],
+					],
+					lock: ["Silver", 0.4],
+				},
+			}
+		},
+		machineSolution:
+		{
+			baseStats: [-500, 400, "Solution"],
+			recipes:
+			{
+				solutionStart1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Alkahest", 1, 42],
+						["Earth", 10000, 51000],
+						["Water", 10000, 51000],
+						["Air", 10000, 51000],
+						["Fire", 10000, 51000],
+					],
+					out: [
+						["Solution", 10, 120],
+					],
+					lock: ["Knowledge", 8],
+				},
+			}
+		},
+		machineDistill:
+		{
+			baseStats: [-400, 500, ["DistilledEarth", "DistilledWater", "DistilledAir", "DistilledFire"]],
+			recipes:
+			{
+				distillEarth1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Solution", 10, 0.1],
+						["Cryogen", 1, 0.1],
+						["Lava", 1, 0.1],
+					],
+					out: [
+						["Solution", 10, 140],
+						["DistilledEarth", 1, 0.8],
+					],
+					lock: ["Solution", 1],
+					upgrade: ["distillEarth2", "Knowledge", 36],
+				},
+				distillEarth2:
+				{
+					baseStats: [1, 0.1, false, true],
+					in: [
+						["Solution", 8, 0.1],
+						["Cryogen", 0.1, 0.1],
+						["Lava", 0.1, 0.1],
+					],
+					out: [
+						["Solution", 10, 140],
+						["DistilledEarth", 1, 8],
+					],
+				},
+				distillWater1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Solution", 10, 0.1],
+						["Cryogen", 1, 0.1],
+						["Lava", 1, 0.1],
+					],
+					out: [
+						["Solution", 10, 140],
+						["DistilledWater", 1, 0.8],
+					],
+					lock: ["Solution", 1],
+					upgrade: ["distillWater2", "Knowledge", 36],
+				},
+				distillWater2:
+				{
+					baseStats: [1, 0.1, false, true],
+					in: [
+						["Solution", 8, 0.1],
+						["Cryogen", 0.1, 0.1],
+						["Lava", 0.1, 0.1],
+					],
+					out: [
+						["Solution", 10, 140],
+						["DistilledWater", 1, 8],
+					],
+				},
+				distillAir1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Solution", 10, 0.1],
+						["Cryogen", 1, 0.1],
+						["Lava", 1, 0.1],
+					],
+					out: [
+						["Solution", 10, 140],
+						["DistilledAir", 1, 0.8],
+					],
+					lock: ["Solution", 1],
+					upgrade: ["distillAir2", "Knowledge", 36],
+				},
+				distillAir2:
+				{
+					baseStats: [1, 0.1, false, true],
+					in: [
+						["Solution", 8, 0.1],
+						["Cryogen", 0.1, 0.1],
+						["Lava", 0.1, 0.1],
+					],
+					out: [
+						["Solution", 10, 140],
+						["DistilledAir", 1, 8],
+					],
+				},
+				distillFire1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Solution", 10, 0.1],
+						["Cryogen", 1, 0.1],
+						["Lava", 1, 0.1],
+					],
+					out: [
+						["Solution", 10, 140],
+						["DistilledFire", 1, 0.8],
+					],
+					lock: ["Solution", 1],
+					upgrade: ["distillFire2", "Knowledge", 36],
+				},
+				distillFire2:
+				{
+					baseStats: [1, 0.1, false, true],
+					in: [
+						["Solution", 8, 0.1],
+						["Cryogen", 0.1, 0.1],
+						["Lava", 0.1, 0.1],
+					],
+					out: [
+						["Solution", 10, 140],
+						["DistilledFire", 1, 8],
+					],
+				},
+			}
+		},
+		machinePressure:
+		{
+			baseStats: [500, 400, "Pressure"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Steam", 100, 100],
+						["Force", 0.1, 0.1],
+						["Space", 1, 10.5]
+					],
+					out: [
+						["Pressure", 5, 12],
+					],
+					lock: ["Knowledge", 8, "Pebbles", 0.02, "Space", 2],
+				},
+			}
+		},
+		machineCompress:
+		{
+			baseStats: [400, 500, ["CompressedEarth", "CompressedWater", "CompressedAir", "CompressedFire"]],
+			recipes:
+			{
+				compressEarth1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Pressure", 1, 0.1],
+						["Earth", 1e7, 120],
+					],
+					out: [
+						["CompressedEarth", 5, 0.8],
+					],
+					lock: ["Pressure", 0.1],
+					upgrade: ["compressEarth2", "Knowledge", 36],
+				},
+				compressEarth2:
+				{
+					baseStats: [1, 0.1, false, true],
+					in: [
+						["Pressure", 1, 0.1],
+						["Earth", 1e6, 120],
+					],
+					out: [
+						["CompressedEarth", 5, 8],
+					],
+				},
+				compressWater1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Pressure", 1, 0.1],
+						["Water", 1e7, 120],
+					],
+					out: [
+						["CompressedWater", 5, 0.8],
+					],
+					lock: ["Pressure", 0.1],
+					upgrade: ["compressWater2", "Knowledge", 36],
+				},
+				compressWater2:
+				{
+					baseStats: [1, 0.1, false, true],
+					in: [
+						["Pressure", 1, 0.1],
+						["Water", 1e6, 120],
+					],
+					out: [
+						["CompressedWater", 5, 8],
+					],
+				},
+				compressAir1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Pressure", 1, 0.1],
+						["Air", 1e7, 120],
+					],
+					out: [
+						["CompressedAir", 5, 0.8],
+					],
+					lock: ["Pressure", 0.1],
+					upgrade: ["compressAir2", "Knowledge", 36],
+				},
+				compressAir2:
+				{
+					baseStats: [1, 0.1, false, true],
+					in: [
+						["Pressure", 1, 0.1],
+						["Air", 1e6, 120],
+					],
+					out: [
+						["CompressedAir", 5, 8],
+					],
+				},
+				compressFire1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Pressure", 1, 0.1],
+						["Fire", 1e7, 120],
+					],
+					out: [
+						["CompressedFire", 5, 0.8],
+					],
+					lock: ["Pressure", 0.1],
+					upgrade: ["compressFire2", "Knowledge", 36],
+				},
+				compressFire2:
+				{
+					baseStats: [1, 0.1, false, true],
+					in: [
+						["Pressure", 1, 0.1],
+						["Fire", 1e6, 120],
+					],
+					out: [
+						["CompressedFire", 5, 8],
+					],
+				},
+			}
+		},
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+}
+var lifeCircle = {
+	elements: [],
+	baseElements: ["Earth", "Water", "Air", "Fire"],
+	prefixElements: ["Essence", "Soil", "Seed", "Plant", "PureEssence", "Pure"],
+	machines:
+	{
+		machineEssenceElements:
+		{
+			baseStats: [-250, 750, 1],
+			reciconv:
+			{
+				essenceElement:
+				{
+					baseStats: [1, 0.5, true, true],
+					in: [
+						["Essence", 10, 1],
+						["Distilled", -1, 0.01],
+					],
+					out: [
+						["Essence", -1, 140],
+					],
+					lock: ["Distilled", -1],
+				},
+			},
+			recipes:
+			{},
+		},
+		machineSoilElements:
+		{
+			baseStats: [250, 750, 2],
+			reciconv:
+			{
+				soilElement:
+				{
+					baseStats: [1, 0.5, true, true],
+					in: [
+						["Soil", 100, 1],
+						["Compressed", -1, 0.01],
+					],
+					out: [
+						["Soil", -1, 140],
+					],
+					lock: ["Compressed", -1],
+				},
+			},
+			recipes:
+			{},
+		},
+		machineSeedElements:
+		{
+			baseStats: [0, 800],
+			reciconv:
+			{
+				seed:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Soil", -1, 1, 100, ["Space", 175]],
+						["Essence", -1, 1.1],
+					],
+					out: [
+						["Seed", -1, 107],
+					],
+					lock: ["Essence", -9.01],
+				},
+			},
+			recipes:
+			{},
+		},
+		machinePureEssenceElements:
+		{
+			baseStats: [-250, 1250, 5],
+			recipes:
+			{},
+		},
+		machineUnPureSoilElements:
+		{
+			baseStats: [250, 1250],
+			reciconv:
+			{
+				infuseSoil:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Soil", 250, 1],
+						["PureEssence", -1, 0.01],
+					],
+					out: [
+						["Soil", -500, 230],
+					],
+					lock: ["PureEssence", -0.01, "Glass", 2.2, "Space", 120],
+				},
+			},
+			recipes:
+			{}
+		},
+		machinePlantEarth:
+		{
+			baseStats: [100, 1100, ["SeedEarth", "PlantEarth"]],
+			recipes:
+			{
+				growEarth:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["SoilEarth", 0.04, 1.1],
+						["SeedEarth", 1, 1],
+					],
+					out: [
+						["SeedEarth", 1, 111],
+						["PlantEarth", 1, 10000],
+					],
+					lock: ["SeedEarth", 1],
+				},
+				harvestEarth1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["PlantEarth", 100, 10],
+					],
+					out: [
+						["EssenceEarth", 1, 7, 7, ["FoldedSpace", 0.01]],
+					],
+					lock: ["PlantEarth", 1],
+				},
+				uprootEarth2:
+				{
+					baseStats: [1, 0.03, true, false],
+					in: [
+						["PlantEarth", 100, 100],
+						["SeedEarth", 1, 1],
+					],
+					out: [
+						["PureEssenceEarth", 1, 12],
+					],
+					lock: ["PlantEarth", 20],
+				},
+			},
+		},
+		machinePlantWater:
+		{
+			baseStats: [-100, 1100, ["SeedWater", "PlantWater"]],
+			recipes:
+			{
+				growWater:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["SoilWater", 0.04, 1.1],
+						["Cryogen", 0.004, 1.1],
+						["SeedWater", 1, 1],
+						["Cryospire", 0, 1],
+					],
+					out: [
+						["SeedWater", 1.01, -111],
+						["PlantWater", 1, 10000],
+					],
+					lock: ["Cryospire", 1],
+				},
+				harvestWater1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["PlantWater", 100, 10],
+					],
+					out: [
+						["EssenceWater", 1, 7, 7, ["Force", 1]],
+					],
+					lock: ["PlantWater", 1],
+				},
+				uprootWater2:
+				{
+					baseStats: [1, 0.03, true, true],
+					in: [
+						["PlantWater", 100, 100],
+						["SeedWater", 0.7, 1],
+					],
+					out: [
+						["PureEssenceWater", 1, 12],
+					],
+					lock: ["PlantWater", 20],
+				},
+			},
+		},
+		machinePlantAir:
+		{
+			baseStats: [-100, 900, ["SeedAir", "PlantAir"]],
+			recipes:
+			{
+				growAir:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["SoilAir", 1, 1.1],
+						["SeedAir", 1, 1],
+					],
+					out: [
+						["SoilAir", 1, -250],
+						["SeedAir", 1, 111],
+						["PlantAir", 0.2, 10000],
+					],
+					lock: ["SeedAir", 1],
+				},
+				harvestAir1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["PlantAir", 100, 10],
+					],
+					out: [
+						["EssenceAir", 1, 7, 7, ["Force", 1]],
+					],
+					lock: ["PlantAir", 1],
+				},
+				uprootAir2:
+				{
+					baseStats: [1, 0.03, true, false],
+					in: [
+						["PlantAir", 100, 100],
+						["SeedAir", 1, 1],
+					],
+					out: [
+						["PureEssenceAir", 1, 12],
+					],
+					lock: ["PlantAir", 20],
+				},
+			},
+		},
+		machinePlantFire:
+		{
+			baseStats: [100, 900, ["SeedFire", "PlantFire"]],
+			recipes:
+			{
+				growFire:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["SoilFire", 0.04, 1.1],
+						["SeedFire", 1, 1],
+						["Lava", 0.001, 1],
+					],
+					out: [
+						["SeedFire", 0.99, 111],
+						["PlantFire", 1, 10000],
+					],
+					lock: ["Sulphur", 4, "Coal", 4],
+				},
+				harvestFire1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["PlantFire", 10, 10],
+					],
+					out: [
+						["EssenceFire", 1, 7, 7, ["Force", 1]],
+					],
+					lock: ["PlantFire", 1],
+				},
+				uprootFire2:
+				{
+					baseStats: [1, 0.03, true, false],
+					in: [
+						["PlantFire", 100, 100],
+						["SeedFire", 1, 1],
+					],
+					out: [
+						["PureEssenceFire", 1, 12],
+					],
+					lock: ["PlantFire", 20],
+				},
+			},
+		},
+	},
+	preprocess: function ()
+	{
+		for (var i = 0; i < this.prefixElements.length; i++)
+		{
+			for (var j = 0; j < this.baseElements.length; j++)
+			{
+				var elem = this.prefixElements[i] + this.baseElements[j];
+				this.elements.push(elem);
+			}
+		}
+		addCircleElements(this.elements);
+		for (var i = 0; i < this.prefixElements.length; i++)
+		{
+			for (var j = 0; j < this.baseElements.length; j++)
+			{
+				var elem = this.prefixElements[i] + this.baseElements[j];
+				elementalColors[elem] = elementalColors[this.baseElements[j]];
+			}
+		}
+		elementalDisplayType["SeedEarth"] = "";
+		elementalDisplayType["SeedAir"] = "";
+		for (var mach in this.machines)
+		{
+			for (var rec in this.machines[mach].reciconv)
+			{
+				for (var j = 0; j < this.baseElements.length; j++)
+				{
+					var recipe = JSON.parse(JSON.stringify(this.machines[mach].reciconv[rec]));
+
+					for (var i = 0; i < recipe.in.length; i++)
+					{
+						if (recipe.in[i][1] < 0)
+						{
+							recipe.in[i][1] *= -1;
+							recipe.in[i][0] += this.baseElements[j];
+						}
+					}
+					for (var i = 0; i < recipe.out.length; i++)
+					{
+						if (recipe.out[i][1] < 0)
+						{
+							recipe.out[i][1] *= -1;
+							recipe.out[i][0] += this.baseElements[j];
+						}
+					}
+					if (recipe.lock[1] < 0)
+					{
+						recipe.lock[1] *= -1;
+						recipe.lock[0] += this.baseElements[j];
+					}
+					this.machines[mach].recipes[rec + this.baseElements[j]] = recipe;
+				}
+				this.machines[mach].reciconv = null;
+			}
+		}
+		this.machines["machineSeedElements"].recipes["seedEarth"].lock[1] = 0.01;
+		this.machines["machineSeedElements"].recipes["seedWater"].lock[1] = 2.01;
+		this.machines["machineSeedElements"].recipes["seedWater"].lock.push("Cryospire");
+		this.machines["machineSeedElements"].recipes["seedWater"].lock.push(1);
+		this.machines["machineSeedElements"].recipes["seedAir"].lock[1] = 1.01;
+		this.machines["machineSeedElements"].recipes["seedAir"].lock.push("Space");
+		this.machines["machineSeedElements"].recipes["seedAir"].lock.push(1e6);
+		this.machines["machineSeedElements"].recipes["seedFire"].lock[1] = 3.01;
+		this.machines["machineSeedElements"].recipes["seedFire"].lock.push("Blast");
+		this.machines["machineSeedElements"].recipes["seedFire"].lock.push(0.2);
+		this.machines["machineSeedElements"].recipes["seedFire"].in.push(["Blast", 0, 0.3]);
+		this.machines["machineUnPureSoilElements"].recipes["infuseSoilFire"].out[0][1] = 1250;
+		for (var mach in this.machines)
+		{
+			var machine = this.machines[mach];
+			if (machine.baseStats[2] && !machine.baseStats[2].length)
+			{
+				var pref = this.prefixElements[machine.baseStats[2] - 1];
+				machine.baseStats[2] = [];
+				for (var j = 0; j < this.baseElements.length; j++)
+				{
+					machine.baseStats[2].push(pref + this.baseElements[j]);
+				}
+			}
+			simplifiedMachineData[mach] = this.machines[mach];
+		}
+	}
+};
+var coldCircle = {
+	elements: ["Coolant", "Gale", "Cryospire", "Vortex"],
+	machines:
+	{
+		machineCoolant:
+		{
+			baseStats: [-750, 0, "Coolant"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.2, true, true],
+					in: [
+						["Ice", 100, 100],
+						["Snow", 0.1, 0.4],
+						["Cryogen", 0.1, 0.4]
+					],
+					out: [
+						["Coolant", 5, 1080],
+					],
+					lock: ["Knowledge", 36],
+				},
+			}
+		},
+		machineGale:
+		{
+			baseStats: [-850, -250, "Gale"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Snow", 4, 0.1],
+						["Coolant", 1, 2],
+					],
+					out: [
+						["Gale", 10, 12],
+					],
+					lock: ["Knowledge", 36, "Coolant", 12],
+				},
+				earthDecay1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Gale", 1, 0.001],
+						["Coolant", 1, 13],
+					],
+					out: [
+						["Gale", 1, 12],
+						["Coolant", 0.95, 1100],
+					],
+					lock: ["Gale", 1e99],
+				},
+				earthDecay2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Gale", 1, 0.001],
+					],
+					out: [
+						["Gale", 0.95, 12],
+						["Coolant", 0.05, 13],
+					],
+					lock: ["Gale", 1e99],
+				},
+			}
+		},
+		machineCryospire:
+		{
+			baseStats: [-850, 250, "Cryospire"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.5, true, true],
+					in: [
+						["Gale", 1, 1],
+						["Coolant", 200, 100],
+					],
+					out: [
+						["Cryospire", 2, 12],
+					],
+					lock: ["Knowledge", 36, "Silver", 2],
+				},
+				earthDecay1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Cryospire", 1, 0.001],
+						["Coolant", 1, 13],
+					],
+					out: [
+						["Cryospire", 1, 12],
+						["Coolant", 0.80, 1100],
+					],
+					lock: ["Cryospire", 1e99],
+				},
+				earthDecay2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Cryospire", 1, 0.001],
+					],
+					out: [
+						["Cryospire", 0.95, 12],
+						["Coolant", 0.05, 13],
+					],
+					lock: ["Cryospire", 1e99],
+				},
+			}
+		},
+		machineVortex:
+		{
+			baseStats: [-1100, 0, "Vortex"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Cryospire", 1, 2],
+						["Gale", 1, 2],
+						["Ice", 10000, 200],
+					],
+					out: [
+						["Vortex", 1, 12],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+	decay: function ()
+	{
+		var temp;
+		for (var i = 1; i < this.elements.length; i++)
+		{
+			if (data.oElements[this.elements[i]].amount > 0)
+			{
+				if (machineData["machine" + this.elements[i]].paused)
+				{
+					machineData["machine" + this.elements[i]].paused = false;
+				}
+				var dec1 = machineData["machine" + this.elements[i]].recipes[1];
+
+				if (!dec1.unlocked)
+				{
+					dec1.region.paymentSuccess();
+				}
+				dec1.enabled = true;
+
+				var dec2 = machineData["machine" + this.elements[i]].recipes[2];
+				if (!dec2.unlocked)
+				{
+					dec2.region.paymentSuccess();
+				}
+				dec2.enabled = true;
+			}
+		}
+	},
+};
+var hotCircle = {
+	elements: ["Blaze", "Blast", "Pyro", "Coal", "Sulphur", "Propane", "Ash", "Dust", "Carbon"],
+	machines:
+	{
+		machineBlaze:
+		{
+			baseStats: [900, 0, "Blaze"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Coal", 0.03, 0.3],
+					],
+					out: [
+						["Blaze", 0.024, 0.1],
+					],
+					lock: ["Coal", 0.1],
+				},
+				earthDecay1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Blaze", 1, 0.001],
+					],
+					out: [
+						["Blaze", 0.99, -12],
+						["Ash", 0.01, -12],
+					],
+					lock: ["Ash", 1e99],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Coal", 1, 0.1],
+						["Blaze", 1, 0.1],
+					],
+					out: [
+						["Blaze", 1.98, 1.1],
+						["Ash", 0.02, -12],
+					],
+					lock: ["Knowledge", 36, "Energy", 0.01],
+				},
+			}
+		},
+		machineBlast:
+		{
+			baseStats: [950, 250, "Blast"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.5, true, false],
+					in: [
+						["Sulphur", 0.3, 0.1],
+					],
+					out: [
+						["Blast", 0.3, 0.8],
+						["Dust", 0.3, -12],
+					],
+					lock: ["Iron", 120],
+				},
+				earthDecay1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Blast", 1, 0.001],
+					],
+					out: [
+						["Blast", 0.995, -12],
+						["Dust", 0.005, -12],
+					],
+					lock: ["Dust", 1e99],
+				},
+			}
+		},
+		machinePyro:
+		{
+			baseStats: [950, -250, "Pyro"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Propane", 1, 0.1],
+					],
+					out: [
+						["Pyro", 1, 12],
+						["Carbon", 1, -12],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineCoal:
+		{
+			baseStats: [750, 0, "Coal"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Space", 1, 0.1],
+						["Void", 1, 0.1],
+						["EssenceFire", 0.1, 0.1],
+					],
+					out: [
+						["Coal", 1, 12],
+					],
+					lock: ["Knowledge", 36],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.25, true, true],
+					in: [
+						["Ash", 1, 0.1],
+						["Obsidian", 0.1, 0.1],
+					],
+					out: [
+						["Coal", 1, 12],
+					],
+					lock: ["Ash", 0.1],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 0.25, true, true],
+					in: [
+						["Stone", 0.1, 0.1],
+						["Obsidian", 0.1, 0.1],
+					],
+					out: [
+						["Coal", 1, 12],
+					],
+					lock: ["Obsidian", 2.1],
+				},
+			}
+		},
+		machineSulphur:
+		{
+			baseStats: [800, 150, "Sulphur"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.3, true, true],
+					in: [
+						["Coal", 1, 0.1],
+						["Water", 1e5, 0.1],
+					],
+					out: [
+						["Sulphur", 1, 12],
+					],
+					lock: ["Bronze", 34],
+				},
+			}
+		},
+		machineCarbon:
+		{
+			baseStats: [800, -150, "Carbon"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Carbon", 1, 0.1],
+						["CompressedEarth", 1, 0.1],
+					],
+					out: [
+						["Coal", 10, 12],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineHotWaste:
+		{
+			baseStats: [1100, 0, ["Ash", "Dust"]],
+			recipes:
+			{}
+		},
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+	decay: function ()
+	{
+		var temp;
+		for (var i = 0; i < 3; i++)
+		{
+			if (data.oElements[this.elements[i]].amount > 0)
+			{
+				if (machineData["machine" + this.elements[i]].paused)
+				{
+					machineData["machine" + this.elements[i]].paused = false;
+				}
+				var dec = machineData["machine" + this.elements[i]].recipes[1];
+				if (!dec.unlocked)
+				{
+					dec.region.paymentSuccess();
+				}
+				dec.enabled = true;
+			}
+		}
+	},
+};
+var powerCircle = {
+	elements: ["Power", "Energy", "Fuel", "Diesel", "Petrol", "Propane"],
+	machines:
+	{
+		machineRefinery:
+		{
+			baseStats: [600, -350, "Fuel"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.01, true, true],
+					in: [
+						["Oil", 1, 1],
+						["Blaze", 0, 0.01],
+					],
+					out: [
+						["Fuel", 1, 12],
+					],
+					lock: ["Knowledge", 36],
+				},
+			}
+		},
+		machineAdvancedRefinery:
+		{
+			baseStats: [700, -450, ["Diesel", "Petrol", "Propane"]],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.8, true, true],
+					in: [
+						["Oil", 100, 1],
+						["Blaze", 1, 1],
+						["Cryospire", 0, 1],
+					],
+					out: [
+						["Diesel", 90, 12],
+						["Petrol", 9, 12],
+						["Propane", 1, 12],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineFuel:
+		{
+			baseStats: [500, -500],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Fuel", 1, 0.001],
+						["Gale", 0, 1],
+					],
+					out: [
+						["Energy", 100, -12],
+					],
+					lock: ["Knowledge", 36],
+					upgrade: ["earthStart2", "Copper", 6],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.2, false, true],
+					in: [
+						["Fuel", 1, 0.001],
+						["Gale", 0, 1],
+					],
+					out: [
+						["Energy", 100, 12],
+					],
+				},
+			}
+		},
+		machineDiesel:
+		{
+			baseStats: [575, -575],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0, true, false],
+					in: [
+						["Diesel", 1, 0.01],
+					],
+					out: [],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePetrol:
+		{
+			baseStats: [650, -650],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0, true, false],
+					in: [
+						["Petrol", 1, 0.01],
+					],
+					out: [],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePropane:
+		{
+			baseStats: [725, -725],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0, true, false],
+					in: [
+						["Propane", 1, 0.01],
+					],
+					out: [],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineEnergy:
+		{
+			baseStats: [350, -600, "Energy"],
+			recipes:
+			{}
+		},
+		machinePower:
+		{
+			baseStats: [450, -700, "Power"],
+			recipes:
+			{}
+		},
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+};
+var reachCircle = {
+	elements: ["Spatial", "Temporal", "Parallel", "FoldedSpace", "FoldedSpatial", "FoldedTemporal", "Time", "NormalLimit", "TurboLimit"],
+	machines:
+	{
+		machineSpatial:
+		{
+			baseStats: [-100, -900, "Spatial"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.01, true, true],
+					in: [
+						["Space", 1, 1.1],
+					],
+					out: [
+						["Spatial", 1, 1.2],
+					],
+					lock: ["Glass", 1],
+				},
+				earthRift1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["Spatial", 1, 0.1],
+					],
+					out: [
+						["Spatial", 10, -1e10],
+						["Space", 0.4, 1e10],
+					],
+					lock: ["Spatial", 0.01],
+				},
+			}
+		},
+		machineTemporal:
+		{
+			baseStats: [150, -800, "Temporal"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.01, true, true],
+					in: [
+						["Space", 2, 11],
+					],
+					out: [
+						["Temporal", 1, 1.2],
+					],
+					lock: ["Spatial", 1, "Space", 10, "Gold", 1, ],
+				},
+				earthRift1:
+				{
+					baseStats: [1, 0.05, true, true],
+					in: [
+						["Temporal", 1, 0.1],
+						["Space", 1, 10.5],
+					],
+					out: [
+						["Temporal", 20, -1e10],
+						["Spatial", 1, 1e10],
+					],
+					lock: ["Temporal", 0.01],
+				},
+				earthRift2:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Temporal", 0.0005, 4],
+					],
+					out: [
+						["Time", 4, -1e20],
+					],
+					lock: ["Parallel", 0.01],
+				},
+			}
+		},
+		machineParallel:
+		{
+			baseStats: [-100, -700, "Parallel"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.01, true, true],
+					in: [
+						["Space", 4, 110],
+					],
+					out: [
+						["Parallel", 1, 1.2],
+					],
+					lock: ["Temporal", 1, "Space", 100],
+				},
+				earthRift1:
+				{
+					baseStats: [1, 0.05, true, true],
+					in: [
+						["Parallel", 1, 0.1],
+						["Spatial", 1, 105],
+					],
+					out: [
+						["Parallel", 20, -1e10],
+						["Temporal", 1, 1e10],
+					],
+					lock: ["Parallel", 0.01],
+				},
+			}
+		},
+		machineFoldedSpace:
+		{
+			baseStats: [100, -700, "FoldedSpace"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.01, true, true],
+					in: [
+						["Parallel", 1, 1.1],
+						["Space", 1, 0.1],
+					],
+					out: [
+						["FoldedSpace", 1, 1.2],
+					],
+					lock: ["Knowledge", 36, "Parallel", 1, "Space", 1],
+				},
+			}
+		},
+		machineFoldedSpatial:
+		{
+			baseStats: [100, -900, "FoldedSpatial"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["FoldedSpace", 1, 0.1],
+					],
+					out: [
+						["FoldedSpatial", 1, 1.2],
+					],
+					lock: ["FoldedSpace", 1],
+				},
+				earthRift1:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["FoldedSpatial", 1, 0.1],
+					],
+					out: [
+						["FoldedSpatial", 10, -1e10],
+						["FoldedSpace", 0.4, 1e10],
+					],
+					lock: ["FoldedSpatial", 0.01],
+				},
+			}
+		},
+		machineFoldedTemporal:
+		{
+			baseStats: [-150, -800, "FoldedTemporal"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.01, true, true],
+					in: [
+						["FoldedSpace", 3, 1.1],
+					],
+					out: [
+						["FoldedTemporal", 1, 1.2],
+					],
+					lock: ["FoldedSpatial", 1, "FoldedSpace", 10],
+				},
+				earthRift1:
+				{
+					baseStats: [1, 0.05, true, true],
+					in: [
+						["FoldedTemporal", 1, 0.1],
+						["FoldedSpace", 1, 11],
+					],
+					out: [
+						["FoldedTemporal", 20, -1e10],
+						["FoldedSpatial", 1, 150],
+					],
+					lock: ["FoldedTemporal", 0.01],
+				},
+				earthRift2:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["FoldedTemporal", 0.0006, 1.1],
+					],
+					out: [
+						["Time", 21, -1e20],
+					],
+					lock: ["FoldedTemporal", 1],
+				},
+			}
+		},
+		machineTime:
+		{
+			baseStats: [-0, -950, ["Time", "NormalLimit", "TurboLimit"]],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Time", 80, 0.01],
+					],
+					out: [],
+					lock: ["Knowledge", 0.001],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Time", 1, 0.01],
+					],
+					out: [],
+					lock: ["Knowledge", 0.4, "Gold", 0.4],
+				},
+			}
+		},
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		elementalDisplayType["Time"] = "";
+		elementalDisplayType["NormalLimit"] = "fixed";
+		elementalDisplayType["TurboLimit"] = "fixed";
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+};
+var rarityCircle = {
+	elements: ["Silver", "Bronze", "Copper", "Tin", "Aluminum", "Iron", "Steel", "Clay", "Plastic", "Silicon", "Acid", "Mayo"],
+	machines:
+	{
+		machineSilver:
+		{
+			baseStats: [-740, -400, "Silver"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Gold", 2, 1.2],
+						["Alkahest", 2, 1.2],
+					],
+					out: [
+						["Silver", 1, 1.2],
+					],
+					lock: ["Knowledge", 36],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Gold", 1, 2.4],
+						["Gale", 0, 4.8],
+					],
+					out: [
+						["Silver", 2, 16.3],
+					],
+					lock: ["Gale", 2],
+				},
+			}
+		},
+		machineBronze:
+		{
+			baseStats: [-570, -570, "Bronze"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Gold", 4, 1.2],
+						["Alkahest", 4, 1.2],
+					],
+					out: [
+						["Bronze", 1, 1.2],
+					],
+					lock: ["Knowledge", 36, "Silver", 0.01],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Silver", 1, 2.4],
+						["Energy", 0.1, 0.8],
+					],
+					out: [
+						["Bronze", 2, 48.7],
+					],
+					lock: ["Energy", 2],
+				},
+			}
+		},
+		machineCopper:
+		{
+			baseStats: [-570, -330, "Copper"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Gold", 6, 1.2],
+						["Alkahest", 6, 1.2],
+					],
+					out: [
+						["Copper", 1, 1.2],
+					],
+					lock: ["Knowledge", 36, "Silver", 0.01],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Bronze", 1, 2.4],
+						["Blaze", 0, 0.3],
+					],
+					out: [
+						["Copper", 2, 184.7],
+					],
+					lock: ["Blaze", 0.6],
+				},
+			}
+		},
+		machineTin:
+		{
+			baseStats: [-740, -500, "Tin"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Gold", 8, 1.2],
+						["Alkahest", 8, 1.2],
+					],
+					out: [
+						["Tin", 1, 1.2],
+					],
+					lock: ["Knowledge", 36, "Copper", 0.01],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Copper", 1, 2.4],
+						["CompressedEarth", 0.001, 0.9],
+					],
+					out: [
+						["Tin", 2, 2.3e3],
+					],
+					lock: ["CompressedEarth", 3.6],
+				},
+			}
+		},
+		machineAluminum:
+		{
+			baseStats: [-500, -500, "Aluminum"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Gold", 12, 1.2],
+						["Alkahest", 12, 1.2],
+					],
+					out: [
+						["Aluminum", 1, 1.2],
+					],
+					lock: ["Knowledge", 36, "Copper", 0.01],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Tin", 1, 2.4],
+						["Gale", 0, 8.9],
+					],
+					out: [
+						["Aluminum", 2, 6.3e3],
+					],
+					lock: ["Gale", 3.6],
+				},
+			}
+		},
+		machineIron:
+		{
+			baseStats: [-670, -330, "Iron"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Gold", 16, 1.2],
+						["Alkahest", 16, 1.2],
+					],
+					out: [
+						["Iron", 1, 1.2],
+					],
+					lock: ["Knowledge", 36, "Copper", 0.01],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Aluminum", 1, 2.4],
+						["Alkahest", 0, 42],
+					],
+					out: [
+						["Iron", 2, 2.4e4],
+					],
+					lock: ["Knowledge", 36, "Aluminum", 3.6],
+					upgrade: ["earthStart3", "Iron", 2.4],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Aluminum", 1, 2.4],
+						["Alkahest", 0, 24],
+					],
+					out: [
+						["Iron", 2, 2.4e4],
+					],
+				},
+			}
+		},
+		machineSteel:
+		{
+			baseStats: [-670, -570, "Steel"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Steel", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineClay:
+		{
+			baseStats: [-330, -570, "Clay"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Clay", 1, 1.2],
+					],
+					lock: ["Knowledge", 36],
+				},
+			}
+		},
+		machinePlastic:
+		{
+			baseStats: [-330, -670, "Plastic"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Plastic", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineSilicon:
+		{
+			baseStats: [-400, -740, "Silicon"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Silicon", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineAcid:
+		{
+			baseStats: [-500, -740, "Acid"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Acid", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineMayo:
+		{
+			baseStats: [-570, -670, "Mayo"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Mayo", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+};
+var gemCircle = {
+	elements: ["CompressedDust", "CompressedAsh", "Gravel", "Pebbles", "Stone", "Gemstone", "Quartz", "Emerald", "Sapphire", "Topaz", "Ruby"],
+	machines:
+	{
+		machineAdvancedCompress:
+		{
+			baseStats: [1100, 600, ["CompressedDust", "CompressedAsh"]],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["CompressedDust", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["CompressedAsh", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineStone:
+		{
+			baseStats: [775, 600, ["Gravel", "Pebbles", "Stone"]],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.8, true, true],
+					in: [
+						["CompressedEarth", 0.4, 1.2],
+						["Energy", 1, 1.2],
+					],
+					out: [
+						["Gravel", 1, 1.2],
+					],
+					lock: ["Energy", 1],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.01, true, false],
+					in: [
+						["Obsidian", 1, 1],
+						["Lava", 1, 1],
+						["Cryogen", 1, 1],
+					],
+					out: [
+						["Pebbles", 1, 0.1],
+					],
+					lock: ["Knowledge", 8],
+					upgrade: ["earthStart21", "Energy", 1],
+				},
+				earthStart21:
+				{
+					baseStats: [1, 0.8, false, true],
+					in: [
+						["Gravel", 1, 0.3],
+						["Energy", 1, 1.2],
+					],
+					out: [
+						["Pebbles", 1, 1.2],
+					],
+					lock: ["Energy", 1],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 0.8, true, true],
+					in: [
+						["Pebbles", 1, 0.3],
+						["Energy", 1, 1.2],
+					],
+					out: [
+						["Stone", 1, 1.2],
+					],
+					lock: ["Energy", 1],
+				},
+			}
+		},
+		machineGemstone:
+		{
+			baseStats: [775, 775, "Gemstone"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Gemstone", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineRandomGem:
+		{
+			baseStats: [600, 775],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0.001, true, false],
+					in: [
+						["Gemstone", 1, 1.1]
+					],
+					out: [
+						["Quartz", 1, 120],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineQuartz:
+		{
+			baseStats: [675, 675, "Quartz"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Quartz", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineEmerald:
+		{
+			baseStats: [500, 675, "Emerald"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Emerald", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineSapphire:
+		{
+			baseStats: [500, 575, "Sapphire"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Sapphire", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineTopaz:
+		{
+			baseStats: [575, 500, "Topaz"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Topaz", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machineRuby:
+		{
+			baseStats: [675, 500, "Ruby"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Ruby", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+	decay: function ()
+	{
+		var r = 6 + Math.trunc(Math.max(20, Math.random() * 25) - 20);
+		machineData.machineRandomGem.recipes[0].outputs[0].type = this.elements[r];
+	},
+};
+var pureCircle = {
+	elements: ["PureEarth", "PureWater", "PureAir", "PureFire", "SterileGlass", "CompressionCrystal", "PerfectedOrb", "PureGolemEarth", "PureGolemWater", "PureGolemAir", "PureGolemFire"],
+	machines:
+	{
+		machinePerfectedComponents:
+		{
+			baseStats: [-525, 525, ["SterileGlass", "CompressionCrystal"]],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PerfectedOrb", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePerfectedOrb:
+		{
+			baseStats: [-600, 600, "PerfectedOrb"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PerfectedOrb", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePureMixer:
+		{
+			baseStats: [-675, 675],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PerfectedOrb", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePureEarth:
+		{
+			baseStats: [-550, 900, "PureEarth"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PureEarth", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePureWater:
+		{
+			baseStats: [-725, 875, "PureWater"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PureWater", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePureAir:
+		{
+			baseStats: [-900, 550, "PureAir"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PureAir", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePureFire:
+		{
+			baseStats: [-875, 725, "PureFire"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PureFire", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePureGolemEarth:
+		{
+			baseStats: [-550, 975, "PureGolemEarth"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PureGolemEarth", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePureGolemWater:
+		{
+			baseStats: [-775, 925, "PureGolemWater"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PureGolemWater", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePureGolemAir:
+		{
+			baseStats: [-975, 550, "PureGolemAir"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PureGolemAir", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+		machinePureGolemFire:
+		{
+			baseStats: [-925, 775, "PureGolemFire"],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["PureGolemFire", 1, 1.2],
+					],
+					lock: ["Earth", 1e99],
+				},
+			}
+		},
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+};
 
 var preprocessed = false;
 var colorDummy = ["#454545", "#454545", "#454545", "#454545"];
-preprocessAdditionalCircles = function ()
+
+function addCircleElements(array)
+{
+	for (var i = 0; i < array.length; i++)
+	{
+		initialData.elements.push(array[i]);
+		elementalColors[array[i]] = colorDummy;
+		images["icon" + array[i]] = images.iconVoid;
+		elementalDisplayType[array[i]] = "exp";
+	}
+}
+
+function preprocessAdditionalCircles()
 {
 	if (preprocessed)
 	{
 		return;
 	}
-	//Unreachable Space Circle
-	if (false)
-	{
-		var unreachableElements = ["Space", "Spatial", "Temporal", "Parallel", "FoldedSpace", "FoldedSpatial", "FoldedTemporal", "FoldedParallel"];
-		for (var i = 0; i < unreachableElements.length; i++)
-		{
-			initialData.elements.push(unreachableElements[i]);
-			elementalColors[unreachableElements[i]] = colorDummy;
-			images["icon" + unreachableElements[i]] = images.iconVoid;
-			elementalDisplayType[unreachableElements[i]] = "exp";
-		}
-		var unreachableCircle = {};
-		for (var i = 0; i < unreachableElements.length; i++)
-		{
-			var dx = 75 * i * Math.sin(i / 2);
-			var dy = 75 * i * Math.cos(i / 2);
-			dx = Math.trunc(dx);
-			dy = Math.trunc(dy);
-			var reachMachine = {
-				baseStats: [0 + dx, -500 + dy, unreachableElements[i]],
-				recipes:
-				{},
-			};
-			unreachableCircle["machine" + unreachableElements[i]] = reachMachine;
-			if (i == 0)
-			{
-				reachMachine.recipes["start" + unreachableElements[i]] = {
-					baseStats: [1, 0.001, true, false],
-					in: [],
-					out: [
-						[unreachableElements[i], 1, 1.2],
-					],
-					lock: [unreachableElements[0], 0],
-				};
-			}
-			else
-			{
-				reachMachine.recipes["start" + unreachableElements[i]] = {
-					baseStats: [1, 1, true, true],
-					in: [
-						[unreachableElements[0], Math.pow(10, i), Math.pow(10, i - 1)]
-					],
-					out: [
-						[unreachableElements[i], 1, 1.2],
-					],
-					lock: [unreachableElements[0], Math.pow(10, i - 1)],
-				};
-				reachMachine.recipes["prod" + unreachableElements[i]] = {
-					baseStats: [1, 1, true, true],
-					in: [
-						[unreachableElements[i], 1, 0.0001]
-					],
-					out: [
-						[unreachableElements[i], 1, 1e99],
-						[unreachableElements[i - 1], 0.1, 1e99],
-					],
-					lock: [unreachableElements[i], 0.1],
-				};
-			}
-
-		}
-		for (var machine in unreachableCircle)
-		{
-			simplifiedMachineData[machine] = unreachableCircle[machine];
-		}
-		unreachableCircle = null;
-	}
-
-	//Life Circle
-	if (true)
-	{
-		var lifeElementsC = ["Water", "Fire", "Earth", "Air"];
-
-		var lifeElements = [];
-		var lifeCircle = {
-			machineExtractor:
-			{
-				baseStats: [-100, 300, []],
-				recipes:
-				{},
-			},
-			machineCompressor:
-			{
-				baseStats: [100, 300, []],
-				recipes:
-				{},
-			},
-			machineLifeInfuser:
-			{
-				baseStats: [100, 500, []],
-				recipes:
-				{},
-			},
-			machinePlanter:
-			{
-				baseStats: [-100, 500, []],
-				recipes:
-				{},
-			},
-			machineHarvester:
-			{
-				baseStats: [0, 400, []],
-				recipes:
-				{},
-			},
-		};
-
-		for (var i = 0; i < lifeElementsC.length; i++)
-		{
-			locale.oElementsShorthand[lifeElementsC[i] + "PureEssence"] = lifeElementsC[i] + "PE";
-			locale.oElementsShorthand[lifeElementsC[i] + "Essence"] = lifeElementsC[i] + "E";
-			lifeElements.push(lifeElementsC[i] + "Essence");
-			lifeElements.push(lifeElementsC[i] + "Soil");
-			lifeElements.push(lifeElementsC[i] + "Seed");
-			lifeElements.push(lifeElementsC[i] + "Plant");
-			lifeElements.push(lifeElementsC[i] + "PureEssence");
-			lifeCircle.machineExtractor.baseStats[2].push(lifeElementsC[i] + "Essence");
-			lifeCircle.machineExtractor.recipes["extract" + lifeElementsC[i]] = {
-				baseStats: [1, 1e-3, true, true],
-				in: [
-					[lifeElementsC[i], 1, 1e2],
-				],
-				out: [
-					[lifeElementsC[i] + "Essence", 1, 1e10],
-				],
-				lock: [lifeElementsC[i], 1e4],
-			};
-			lifeCircle.machineCompressor.baseStats[2] = lifeElementsC[i] + "Soil";
-			lifeCircle.machineCompressor.recipes["soil" + lifeElementsC[i]] = {
-				baseStats: [1, 1e-4, true, true],
-				in: [
-					[lifeElementsC[i], 1, 1e2],
-				],
-				out: [
-					[lifeElementsC[i] + "Soil", 1, 1e10],
-				],
-				lock: [lifeElementsC[i], 1e4],
-			};
-
-			lifeCircle.machineLifeInfuser.baseStats[2] = lifeElementsC[i] + "Seed";
-			lifeCircle.machineLifeInfuser.recipes["plant" + lifeElementsC[i]] = {
-				baseStats: [1, 1, true, false],
-				in: [
-					[lifeElementsC[i] + "Essence", 10, 10],
-					[lifeElementsC[i] + "Soil", 1, 1],
-				],
-				out: [
-					[lifeElementsC[i] + "Seed", 1, 1000],
-				],
-				lock: [lifeElementsC[i] + "Essence", 1],
-			};
-
-			lifeCircle.machinePlanter.baseStats[2] = lifeElementsC[i] + "Plant";
-			lifeCircle.machinePlanter.recipes["grow" + lifeElementsC[i]] = {
-				baseStats: [1, 1, true, true],
-				in: [
-					[lifeElementsC[i] + "Seed", 1, 1],
-				],
-				out: [
-					[lifeElementsC[i] + "Seed", 1, -1000],
-					[lifeElementsC[i] + "Plant", 0.001, 1000],
-				],
-				lock: [lifeElementsC[i] + "Soil", 1],
-			};
-
-			lifeCircle.machineHarvester.baseStats[2].push(lifeElementsC[i] + "PureEssence");
-			lifeCircle.machineHarvester.recipes["harvest" + lifeElementsC[i]] = {
-				baseStats: [1, 1, true, false],
-				in: [
-					[lifeElementsC[i] + "Plant", 1, 1],
-				],
-				out: [
-					[lifeElementsC[i] + "PureEssence", 0.001, 1e10],
-					[lifeElementsC[i], 15e3, 1e10],
-				],
-				lock: [lifeElementsC[i] + "Plant", 1],
-			};
-		}
-
-		for (var i = 0; i < lifeElements.length; i++)
-		{
-			initialData.elements.push(lifeElements[i]);
-			elementalColors[lifeElements[i]] = colorDummy;
-			images["icon" + lifeElements[i]] = images["icon" + lifeElementsC[i % 4]];
-			elementalDisplayType[lifeElements[i]] = "exp";
-		}
-		for (var machine in lifeCircle)
-		{
-			simplifiedMachineData[machine] = lifeCircle[machine];
-		}
-	}
+	midCircle.preprocess();
+	lifeCircle.preprocess();
+	coldCircle.preprocess();
+	hotCircle.preprocess();
+	powerCircle.preprocess();
+	reachCircle.preprocess();
+	rarityCircle.preprocess();
+	gemCircle.preprocess();
+	pureCircle.preprocess();
 	preprocessed = true;
-};
+}

@@ -1,3 +1,411 @@
+var effectSystem;
+var particleSystem;
+
+var lineSystem = {
+	lines: [],
+	circles: [],
+	tick: function ()
+	{
+		var tempThing;
+		var tempVal;
+		var tempVal2;
+		for (var i = 0; i < this.lines.length; i++)
+		{
+			for (var j = 1; j < this.lines[i].length; j++)
+			{
+				tempThing = this.lines[i][j];
+				tempThing.volume *= 0.985;
+				tempVal = Math.abs(tempThing.volume);
+				if (tempVal < 0.00001)
+				{
+					tempThing.volume = 0;
+					continue;
+				}
+				tempVal = tempThing.destinationX - tempThing.drawX;
+				tempThing.drawX += tempVal * 0.005;
+				tempVal2 = tempThing.destinationY - tempThing.drawY;
+				tempThing.drawY += tempVal2 * 0.005;
+				if (Math.abs(tempVal) < 1 && Math.abs(tempVal) < 1)
+				{
+					tempVal = Math.random() * Math.PI * 2;
+					tempThing.destinationX = tempThing.originX + Math.sin(tempVal) * 14;
+					tempThing.destinationY = tempThing.originY + Math.sin(tempVal) * 14;
+				}
+				tempVal = tempThing.destinationA - tempThing.drawA;
+				tempThing.drawA += tempVal * 0.007;
+				tempVal2 = tempThing.destinationB - tempThing.drawB;
+				tempThing.drawB += tempVal2 * 0.007;
+				if (Math.abs(tempVal) < 1 && Math.abs(tempVal) < 1)
+				{
+					tempVal = Math.random() * Math.PI * 2;
+					tempThing.destinationA = tempThing.originA + Math.sin(tempVal) * 14;
+					tempThing.destinationB = tempThing.originB + Math.sin(tempVal) * 14;
+				}
+
+			}
+		}
+
+		for (var i = 0; i < this.circles.length; i++)
+		{
+			tempVal = data.oElements[this.circles[i][0]].amount / 1e10;
+			for (var j = 1; j < this.circles[i].length; j++)
+			{
+				tempThing = this.circles[i][j];
+				if (tempThing.lastVolume == 0 && Math.abs(tempThing.volume) < tempVal)
+				{
+					continue;
+				}
+				tempThing.volume *= 0.98;
+
+				if (tempThing.volume > 0)
+				{
+					if (tempThing.volume < tempVal)
+					{
+						if (tempThing.drawR > tempThing.minR)
+						{
+							tempThing.drawR -= 0.1;
+						}
+						else
+						{
+							tempThing.volume = 0;
+							tempThing.drawR = tempThing.maxR;
+						}
+					}
+					else
+					{
+						tempThing.drawR -= 0.1 + Math.log10(1 + tempThing.volume) / 5;
+						if (tempThing.drawR < tempThing.minR)
+						{
+							tempThing.drawR += tempThing.maxR - tempThing.minR;
+						}
+					}
+				}
+				else if (tempThing.volume < 0)
+				{
+					if (tempThing.volume > -tempVal)
+					{
+
+						if (tempThing.drawR < tempThing.maxR)
+						{
+							tempThing.drawR += 0.1;
+						}
+						else
+						{
+							tempThing.volume = 0;
+							tempThing.drawR = tempThing.minR;
+						}
+					}
+					else
+					{
+						tempThing.drawR += 0.1 + Math.log10(1 - tempThing.volume) / 5;
+						if (tempThing.drawR > tempThing.maxR)
+						{
+							tempThing.drawR -= tempThing.maxR - tempThing.minR;
+						}
+					}
+				}
+				tempThing.lastVolume = tempThing.volume;
+			}
+		}
+	},
+	draw: function (ctx)
+	{
+		ctx.save();
+
+		//ctx.shadowBlur = 5;
+		var tempThing;
+		var tempVal;
+		for (var i = 0; i < this.lines.length; i++)
+		{
+			ctx.strokeStyle = elementalColors[this.lines[i][0]][1];
+			//ctx.shadowColor = elementalColors[this.lines[i][0]][0];
+			for (var j = 1; j < this.lines[i].length; j++)
+			{
+				tempThing = this.lines[i][j];
+				if (tempThing.volume == 0)
+				{
+					continue;
+				}
+				tempVal = Math.abs(tempThing.volume);
+				ctx.globalAlpha = 0.8 + Math.min(0.2, tempVal / 3);
+				ctx.lineWidth = 0.3 + Math.log10(1 + tempVal);
+				ctx.beginPath();
+				ctx.moveTo(tempThing.drawA, tempThing.drawB);
+				ctx.lineTo(tempThing.drawX, tempThing.drawY);
+				ctx.stroke();
+			}
+		}
+		for (var i = 0; i < this.circles.length; i++)
+		{
+			ctx.strokeStyle = elementalColors[this.circles[i][0]][0];
+			for (var j = 1; j < this.circles[i].length; j++)
+			{
+				tempThing = this.circles[i][j];
+				if (tempThing.volume != 0)
+				{
+					ctx.globalAlpha = 1 - tempThing.drawR / tempThing.maxR;
+					ctx.lineWidth = 0.5 + Math.log10(1 + Math.abs(tempThing.volume)) / 2;
+					ctx.beginPath();
+					ctx.arc(tempThing.drawX, tempThing.drawY, tempThing.drawR, 0, Math.PI * 2);
+					ctx.stroke();
+				}
+			}
+		}
+		ctx.restore();
+	},
+	preprocessIngredient: function (mach, recipe, ingredient)
+	{
+		if (machineDisplayElements[ingredient.type] == mach)
+		{
+			if (ingredient.min)
+			{
+				if (!this.circleDataColor1[mach][ingredient.type])
+				{
+					this.circleDataColor1[mach][ingredient.type] = JSON.parse(JSON.stringify(this.circleData[mach]));
+					this.circleDataColor1[mach][ingredient.type].maxR += 32;
+				}
+				ingredient.effectReference = this.circleDataColor1[mach][ingredient.type];
+			}
+			else
+			{
+				var ratio = ingredient.ratio * recipe.efficiency;
+				var other;
+				for (var i = 0; i < recipe.inputs.length; i++)
+				{
+					if (recipe.inputs[i].type == ingredient.type)
+					{
+						ratio -= recipe.inputs[i].ratio;
+						other = recipe.inputs[i];
+					}
+				}
+				if (other)
+				{
+					if (ratio < 0)
+					{
+						ingredient.effectReference = other.effectReference;
+					}
+					else
+					{
+						if (!this.circleDataColor2[mach][ingredient.type])
+						{
+							this.circleDataColor2[mach][ingredient.type] = JSON.parse(JSON.stringify(this.circleData[mach]));
+						}
+						other.effectReference.sources--;
+						ingredient.effectReference = this.circleDataColor2[mach][ingredient.type];
+						other.effectReference = ingredient.effectReference;
+					}
+				}
+				else
+				{
+					if (!this.circleDataColor2[mach][ingredient.type])
+					{
+						this.circleDataColor2[mach][ingredient.type] = JSON.parse(JSON.stringify(this.circleData[mach]));
+					}
+					ingredient.effectReference = this.circleDataColor2[mach][ingredient.type];
+				}
+			}
+			ingredient.effectReference.sources++;
+		}
+		else
+		{
+			if (!this.lineDataColor[mach][machineDisplayElements[ingredient.type]][ingredient.type])
+			{
+				this.lineDataColor[mach][machineDisplayElements[ingredient.type]][ingredient.type] =
+					JSON.parse(JSON.stringify(this.lineData[mach][machineDisplayElements[ingredient.type]]));
+			}
+			ingredient.effectReference = this.lineDataColor[mach][machineDisplayElements[ingredient.type]][ingredient.type];
+		}
+	},
+	preprocess: function ()
+	{
+		this.lineData = {};
+		this.circleData = {};
+
+		this.lineDataColor = {};
+		this.circleDataColor1 = {};
+		this.circleDataColor2 = {};
+
+		for (var mach in machineData)
+		{
+			this.lineData[mach] = {};
+			this.lineDataColor[mach] = {};
+		}
+		for (var mach1 in machineData)
+		{
+			this.circleData[mach1] = {
+				drawX: machineData[mach1].region.x,
+				drawY: machineData[mach1].region.y,
+				drawR: 16,
+				minR: 25,
+				maxR: 96,
+				volume: 0,
+				lastVolume: 0,
+				sources: 0,
+			};
+			this.circleDataColor1[mach1] = {};
+			this.circleDataColor2[mach1] = {};
+			for (var mach2 in machineData)
+			{
+				this.lineData[mach1][mach2] = {
+					drawX: machineData[mach1].region.x,
+					drawY: machineData[mach1].region.y,
+					drawA: machineData[mach2].region.x,
+					drawB: machineData[mach2].region.y,
+					destinationX: machineData[mach1].region.x,
+					destinationY: machineData[mach1].region.y,
+					destinationA: machineData[mach2].region.x,
+					destinationB: machineData[mach2].region.y,
+					originX: machineData[mach1].region.x,
+					originY: machineData[mach1].region.y,
+					originA: machineData[mach2].region.x,
+					originB: machineData[mach2].region.y,
+					volume: 0,
+				};
+				this.lineDataColor[mach1][mach2] = {};
+			}
+		}
+
+		for (var mach in machineData)
+		{
+			var machine = machineData[mach];
+			for (var i = 0; i < machine.recipes.length; i++)
+			{
+				var recipe = machine.recipes[i];
+				for (var j = 0; j < recipe.inputs.length; j++)
+				{
+					var ingredient = recipe.inputs[j];
+					if (!machineDisplayElements[ingredient.type])
+					{
+						continue;
+					}
+					this.preprocessIngredient(mach, recipe, ingredient);
+				}
+				for (var j = 0; j < recipe.outputs.length; j++)
+				{
+					var ingredient = recipe.outputs[j];
+					if (!machineDisplayElements[ingredient.type])
+					{
+						continue;
+					}
+					this.preprocessIngredient(mach, recipe, ingredient);
+				}
+			}
+			for (var rec in machine.hiddenRecipes)
+			{
+				var recipe = machine.hiddenRecipes[rec];
+				for (var j = 0; j < recipe.inputs.length; j++)
+				{
+					var ingredient = recipe.inputs[j];
+					if (!machineDisplayElements[ingredient.type])
+					{
+						continue;
+					}
+					this.preprocessIngredient(mach, recipe, ingredient);
+				}
+				for (var j = 0; j < recipe.outputs.length; j++)
+				{
+					var ingredient = recipe.outputs[j];
+					if (!machineDisplayElements[ingredient.type])
+					{
+						continue;
+					}
+					this.preprocessIngredient(mach, recipe, ingredient);
+				}
+			}
+		}
+
+		for (var mach in this.circleDataColor1)
+		{
+			for (var type in this.circleDataColor1[mach])
+			{
+				var circle = this.circleDataColor1[mach][type];
+				if (circle.sources == 0)
+				{
+					continue;
+				}
+				var targetArray = null;
+				for (var i = 0; i < this.circles.length; i++)
+				{
+					if (this.circles[i][0] == type)
+					{
+						targetArray = this.circles[i];
+						break;
+					}
+				}
+				if (!targetArray)
+				{
+					targetArray = [type];
+					this.circles.push(targetArray);
+				}
+				targetArray.push(circle);
+				circle.array = targetArray;
+			}
+		}
+		for (var mach in this.circleDataColor2)
+		{
+			for (var type in this.circleDataColor2[mach])
+			{
+				var circle = this.circleDataColor2[mach][type];
+				if (circle.sources == 0)
+				{
+					continue;
+				}
+				var targetArray = null;
+				for (var i = 0; i < this.circles.length; i++)
+				{
+					if (this.circles[i][0] == type)
+					{
+						targetArray = this.circles[i];
+						break;
+					}
+				}
+				if (!targetArray)
+				{
+					targetArray = [type];
+					this.circles.push(targetArray);
+				}
+				targetArray.push(circle);
+				circle.array = targetArray;
+			}
+		}
+
+		for (var mach1 in this.lineDataColor)
+		{
+			for (var mach2 in this.lineDataColor[mach1])
+			{
+				for (var type in this.lineDataColor[mach1][mach2])
+				{
+					var line = this.lineDataColor[mach1][mach2][type];
+					var targetArray = null;
+					for (var i = 0; i < this.lines.length; i++)
+					{
+						if (this.lines[i][0] == type)
+						{
+							targetArray = this.lines[i];
+							break;
+						}
+					}
+					if (!targetArray)
+					{
+						targetArray = [type];
+						this.lines.push(targetArray);
+					}
+					targetArray.push(line);
+					line.array = targetArray;
+				}
+			}
+		}
+		this.lineData = null;
+		this.circleData = null;
+
+		this.lineDataColor = null;
+		this.circleDataColor1 = {};
+		this.circleDataColor2 = {};
+	},
+};
+
+effectSystem = lineSystem;
+/*
 var particleGenerator = {
 	stopTheLag: function ()
 	{
@@ -68,14 +476,13 @@ var particleGenerator = {
 			temp[v] = {
 				amount: 0,
 				cd: 0,
-				cdMax: 60,
+				cdMax: 90,
 				lifespan: lifespan,
 			};
 		}
 		temp = temp[v];
 		temp.amount += amount;
 	},
-
 	tick: function ()
 	{
 		if (this.stopLag)
@@ -98,7 +505,7 @@ var particleGenerator = {
 					{
 						if (temp.volumes[color].cd-- <= 0)
 						{
-							var cdMax = 5 * optionData.particleCDMultiplier;
+							var cdMax = 15 * optionData.particleCDMultiplier;
 							if (temp.volumes[color].amount <= 0.1)
 							{
 								cdMax *= 1.5;
@@ -186,11 +593,12 @@ var particleGenerator = {
 							temp3.amount *= -1;
 							tempV *= -1;
 						}
-						temp3.cd = temp3.cdMax * optionData.particleCDMultiplier;
-						var delay = 0;
+
+						temp3.cd = temp3.cdMax * optionData.particleCDMultiplier + Math.random() * 4;
+						var delay = Math.random();
 						if (target == "golemInfuser")
 						{
-							delay += Math.random() * 8;
+							delay += Math.random() * 36;
 						}
 						this.explosions.push(new cExplosion(t1.x, t1.y, 1 * v, elementalColors[type][3], elementalColors[type][3], temp3.lifespan, Math.max(0.1, temp3.amount), delay));
 						temp3.amount = 0;
@@ -273,8 +681,8 @@ function cExplosion(x, y, v, color1, color2, lifespan, amount, delay = 0)
 	this.v = v;
 	if (v < 0)
 	{
-		this.r = Math.trunc(lifespan) * 1;
-		this.lifespan = lifespan * 1;
+		this.r = Math.trunc(lifespan) * 1 + delay;
+		this.lifespan = lifespan * 1 + delay;
 	}
 	else
 	{
@@ -285,7 +693,6 @@ function cExplosion(x, y, v, color1, color2, lifespan, amount, delay = 0)
 	this.color2 = color2;
 	this.sizeBase = amount;
 	this.size = 0.4 + Math.log10(1 + amount);
-
 }
 
 function particle(x, y, target, size, ticks)
@@ -332,6 +739,71 @@ particle.prototype.tick = function ()
 	this.lifespan--;
 };
 
+function particleLine(x, y, a, b)
+{
+	this.x = x;
+	this.y = y;
+	this.dx = x;
+	this.dy = y;
+	this.tx = x;
+	this.ty = y;
+	this.a = a;
+	this.b = b;
+	this.da = a;
+	this.db = b;
+	this.ta = a;
+	this.tb = b;
+	this.size = 1;
+	this.color = elementalColors[initialData.elements[Math.floor(Math.random() * 4)]][1];
+}
+particleLine.prototype.tick = function ()
+{
+
+	if (this.size > 0)
+	{
+		this.size *= 0.98;
+		this.size = Math.max(0, this.size - 0.001);
+	}
+	this.x += (this.dx - this.x) * 0.02;
+	this.y += (this.dy - this.y) * 0.02;
+	this.a += (this.da - this.a) * 0.03;
+	this.b += (this.db - this.b) * 0.03;
+
+	if (Math.abs(this.x - this.dx) < 0.5 && Math.abs(this.x - this.dx) < 0.5)
+	{
+		this.dx = this.tx + (Math.random() - 0.5) * 25;
+		this.dy = this.ty + (Math.random() - 0.5) * 25;
+	}
+	if (Math.abs(this.a - this.da) < 0.5 && Math.abs(this.a - this.da) < 0.5)
+	{
+		this.da = this.ta + (Math.random() - 0.5) * 25;
+		this.db = this.tb + (Math.random() - 0.5) * 25;
+	}
+}
+particleLine.prototype.draw = function (ctx)
+{
+	if (this.size > 0)
+	{
+		ctx.save();
+		ctx.strokeStyle = this.color;
+		ctx.lineWidth = this.size;
+		ctx.beginPath();
+		ctx.moveTo(this.x, this.y);
+		ctx.lineTo(this.a, this.b);
+		ctx.stroke();
+		ctx.restore();
+
+		ctx.beginPath();
+		ctx.arc(this.tx, this.ty, 32, 0, Math.PI * 2);
+		ctx.stroke();
+		ctx.fill();
+		ctx.beginPath();
+		ctx.arc(this.ta, this.tb, 32, 0, Math.PI * 2);
+		ctx.stroke();
+		ctx.fill();
+	}
+}
+
 function preprocessParticles()
 {
 	particleGenerator.explosionGenerators = {};
@@ -361,4 +833,9 @@ function preprocessParticles()
 			}
 		}
 	}
+}
+*/
+function preprocessParticles()
+{
+	effectSystem.preprocess();
 }

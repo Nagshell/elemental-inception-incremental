@@ -84,9 +84,11 @@ var borderGlow = {
 		tempGlowCycleTime = (Math.sin(tempGlowCycleTime) + 1) / 2;
 		tempGlowCycleTime = tempGlowCycleTime * 0.98 + 0.02;
 		this.alpha = tempGlowCycleTime / 2;
+		this.solidalpha = 1;
 		for (var col in this.precolors)
 		{
 			this.colors[col] = this.prepareColor(col, tempGlowCycleTime);
+			this.colors["solid" + col] = this.prepareColor(col, 1);
 		}
 	},
 };
@@ -94,9 +96,9 @@ var borderGlow = {
 function draw()
 {
 	borderGlow.preparationTick();
-
-	ctxActive.resetTransform();
-
+	ctxActive.restore();
+	ctxActive.save();
+	ctxActive.clearRect(0, 0, canvas.width, canvas.height);
 	ctxActive.font = "14px Arial";
 	ctxActive.textBaseline = "middle";
 	ctxActive.textAlign = "center";
@@ -114,6 +116,10 @@ function drawNumber(ctx, num, x, y, mode = "", align = "left", prefix = "", suff
 {
 	ctx.save();
 	ctx.textAlign = align;
+	if (num > 1e6 && mode != "exp")
+	{
+		mode = "exp";
+	}
 	if (num < 1000 && mode == "exp")
 	{
 		mode = "fixed";

@@ -1,5 +1,5 @@
 var loopId = null;
-var gameVersion = 3;
+var gameVersion = 11;
 savingSystem = {
 	reccurentPaneSave: function (pane)
 	{
@@ -149,11 +149,6 @@ savingSystem = {
 	},
 	loadData: function ()
 	{
-		if (!initialData || !machines || !machineDisplayElements || !panes || !regionData || !canvas || !particleGenerator || !images)
-		{
-			alert("Game data did not load properly. Please try refreshing the page or contact me if problem persists.");
-			return;
-		}
 		localDataToLoad = JSON.parse(localStorage.getItem("localSaveData"));
 		if (localDataToLoad && localDataToLoad.oD)
 		{
@@ -177,7 +172,18 @@ savingSystem = {
 			{
 				if (!Array.isArray(dataToLoad[z]))
 				{
-					data.aElements[eCount++].amount = dataToLoad[z];
+					data.aElements[eCount].amount = dataToLoad[z];
+					data.aElements[eCount].possibleAmount = dataToLoad[z];
+					if (dataToLoad[z] > 0)
+					{
+						data.aElements[eCount].known = true;
+						data.elementsKnown++;
+						if (machineDisplayElements[data.aElements[eCount].type] && machineDisplayElements[data.aElements[eCount]] != "machineTime")
+						{
+							machineData[machineDisplayElements[data.aElements[eCount].type]].region.boundaryPath = machines.displayRegionPath;
+						}
+					}
+					eCount++
 				}
 				else
 				{
@@ -288,8 +294,8 @@ savingSystem = {
 		cancelAnimationFrame(loopId);
 		loopId = requestAnimationFrame(loop);
 
-		c = 7201;
-		saveCD = 540;
+		c = cMax;
+		saveCD = 5400;
 		s = saveCD / 2;
 	},
 	toConsole: function ()
@@ -304,7 +310,7 @@ savingSystem = {
 			this.loadData();
 		}
 	},
-	initiateLoad: function ()
+	initiatePasteLoad: function ()
 	{
 		this.attemptedPaste = 1800;
 	},
@@ -320,65 +326,61 @@ savingSystem = {
 }
 
 var c;
-var saveCD;
-var s;
+var cMax = 7201;
 
 function tick()
 {
-	particleGenerator.tick();
+	effectSystem.tick();
+
+	coldCircle.decay();
+	hotCircle.decay();
+	gemCircle.decay();
+
 	machines.tick();
 	for (var element in data.oElements)
 	{
-		data.oElements[element].amount += 1e11;
+		//data.oElements[element].amount += 0.100001;
 		data.oElements[element].amount += data.oElementsFlow[element];
-		data.oElements[element].amount = Math.min(1e300, Math.max(0, data.oElements[element].amount));
+		if (data.oElements[element].type != "Time")
+		{
+			data.oElements[element].amount = Math.min(1e300, Math.max(0, data.oElements[element].amount));
+		}
 		data.oElementsFlow[element] = 0;
 	}
 
-	if (data.oElements.Alkahest.amount >= 42e99 || c < 7201)
+	if (data.oElements.Alkahest.amount >= 42 || c < cMax)
 	{
 		c -= 1;
 	}
 	if (c == 7200)
 	{
-		particleGenerator.explosions.push(new cExplosion(0, 0, 1, elementalColors["Alkahest"][1], elementalColors["Alkahest"][1], 7200, 1e10));
+
 	}
 	else if (c == 3600)
-	{
-		particleGenerator.explosions.push(new cExplosion(0, 0, 2, elementalColors["Alkahest"][2], elementalColors["Alkahest"][2], 7200, 1e10));
-	}
+	{}
 	else if (c == 1800)
-	{
-		particleGenerator.explosions.push(new cExplosion(0, 0, 4, elementalColors["Alkahest"][3], elementalColors["Alkahest"][3], 7200, 1e10));
-	}
+	{}
 	else if (c > 1280 && c < 7200 && c % 256 == 0)
-	{
-		particleGenerator.explosions.push(new cExplosion(0, 0, -1, elementalColors["Alkahest"][0], elementalColors["Alkahest"][0], 1280, 0.01));
-	}
+	{}
 	else if (c > 640 && c <= 4800 && c % 128 == 0)
-	{
-		particleGenerator.explosions.push(new cExplosion(0, 0, -2, elementalColors["Alkahest"][0], elementalColors["Alkahest"][0], 1280, 0.01));
-	}
+	{}
 	else if (c > 320 && c <= 3600 && c % 64 == 0)
-	{
-		particleGenerator.explosions.push(new cExplosion(0, 0, -4, elementalColors["Alkahest"][0], elementalColors["Alkahest"][0], 1280, 0.01));
-	}
+	{}
 	else if (c > 160 && c <= 2000 && c % 32 == 0)
-	{
-		particleGenerator.explosions.push(new cExplosion(0, 0, -8, elementalColors["Alkahest"][0], elementalColors["Alkahest"][0], 1280, 0.01));
-	}
+	{}
 	else if (c > 80 && c <= 600 && c % 16 == 0)
-	{
-		particleGenerator.explosions.push(new cExplosion(0, 0, -16, elementalColors["Alkahest"][0], elementalColors["Alkahest"][0], 1280, 0.01));
-	}
+	{}
 	else if (c <= 0)
 	{
-		c = 7201;
-		for (var i = 0; i < data.aElements.length; i++)
+		c = cMax;
+		for (var i = 0; i < initialData.betaElements.length; i++)
 		{
-			data.aElements[i].amount = 0;
+			data.oElements[initialData.betaElements[i]].amount = 0;
 		}
-		particleGenerator.explosions.push(new cExplosion(0, 0, 10, elementalColors["Alkahest"][0], elementalColors["Alkahest"][0], 7200, 1e20));
+		if (data.oElements.Revelation.amount < 1)
+		{
+			data.oElements.Revelation.amount += (1 - data.oElements.Revelation.amount) / 3;
+		}
 	}
 }
 
@@ -393,24 +395,105 @@ function testPaste(event)
 document.addEventListener("paste", testPaste);
 var lastTimestamp = null;
 var accumulatedTime = 0;
-var drain = 16;
-var maxRounds = 500;
+var drain = 16.667;
+var maxRounds = 32;
+var fps;
+var fpsQueue = new cReplacingQueue(37);
+var tps;
+var tpsQueue = new cReplacingQueue(97);
+var lim = false;
+var saveCD;
+var s;
 
 function loop(timestamp)
 {
+	var time = performance.now();
+	var lastTime = fpsQueue.push(time);
+	if (lastTime != "null")
+	{
+		fps = 37000 / (time - lastTime);
+	}
+	else
+	{
+		fps = "..."
+	}
 	loopId = null;
 	if (!lastTimestamp)
 	{
 		lastTimestamp = timestamp;
 	}
-	accumulatedTime += timestamp - lastTimestamp;
+	data.oElements.Time.amount += timestamp - lastTimestamp;
 	lastTimestamp = timestamp;
-	var rounds = 0;
-	while (accumulatedTime > 16 && rounds++ < maxRounds)
+
+	if (machineData.machineTime.recipes[1].enabled && !machineData.machineTime.paused)
 	{
-		accumulatedTime -= drain;
-		tick();
+		if (data.oElements.TurboLimit.amount < 2)
+		{
+			data.oElements.TurboLimit.amount = 2;
+		}
+		maxRounds = data.oElements.TurboLimit.amount;
+		if (data.oElements.Time.amount > 1e4)
+		{
+			data.oElements.TurboLimit.amount = Math.min(32.1, data.oElements.TurboLimit.amount + 0.01);
+		}
+		else
+		{
+			data.oElements.TurboLimit.amount = Math.max(1.9, data.oElements.TurboLimit.amount - 0.01);
+		}
+		data.oElements.NormalLimit.amount = Math.min(3.1, data.oElements.NormalLimit.amount + 0.0001);
 	}
+	else
+	{
+		if (data.oElements.NormalLimit.amount < 1)
+		{
+			data.oElements.NormalLimit.amount = 1;
+		}
+		maxRounds = data.oElements.NormalLimit.amount;
+		if (data.oElements.Time.amount >= 80)
+		{
+			data.oElements.NormalLimit.amount = Math.min(3.1, data.oElements.NormalLimit.amount + 0.001);
+		}
+		else
+		{
+			data.oElements.NormalLimit.amount = Math.max(0.9, data.oElements.NormalLimit.amount - 0.001);
+		}
+		data.oElements.TurboLimit.amount = Math.max(1.9, data.oElements.TurboLimit.amount - 0.001);
+	}
+
+	var rounds = 0;
+	while (data.oElements.Time.amount > drain && rounds++ < maxRounds)
+	{
+		tick();
+		time = performance.now();
+		lastTime = tpsQueue.push(time);
+		if (lastTime != "null")
+		{
+			tps = 97000 / (time - lastTime);
+		}
+		else
+		{
+			tps = "..."
+		}
+		data.oElements.Time.amount -= drain;
+	}
+	if (tps != "..." && fps != "...")
+	{
+		tpf = Math.round(tps / fps * 10) / 10;
+	}
+	else
+	{
+		tpf = "...";
+	}
+	if (tps != "...")
+	{
+		tps = Math.round(tps);
+	}
+	if (fps != "...")
+	{
+		fps = Math.round(fps);
+	}
+	lim = rounds > maxRounds && data.oElements.Time.amount > 1e4;
+
 	if (s-- <= 0)
 	{
 		s = saveCD;
