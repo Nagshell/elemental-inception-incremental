@@ -363,6 +363,46 @@ var waypointsBase = [
 	name: locale.waypoints.center,
 	x: 0,
 	y: 0,
+},
+{
+	name: "REDACTED",
+	x: 0,
+	y: 0,
+},
+{
+	name: "REDACTED",
+	x: 0,
+	y: 0,
+},
+{
+	name: "REDACTED",
+	x: 0,
+	y: 0,
+},
+{
+	name: "REDACTED",
+	x: 0,
+	y: 0,
+},
+{
+	name: "REDACTED",
+	x: 0,
+	y: 0,
+},
+{
+	name: "REDACTED",
+	x: 0,
+	y: 0,
+},
+{
+	name: "REDACTED",
+	x: 0,
+	y: 0,
+},
+{
+	name: "REDACTED",
+	x: 0,
+	y: 0,
 }, ];
 
 function preprocessPaneData()
@@ -582,6 +622,12 @@ function preprocessPaneData()
 		{
 			ctx.fillText("Capped", trackerPane.savingX - 50, 84);
 		}
+		if (elapsed)
+		{
+			ctx.textAlign = "right";
+			ctx.fillText("Awarded " + Math.round(elapsed * 0.8) + " bonus Time.", trackerPane.savingX - 60, 67);
+			ctx.fillText("Time spent offline: " + formattedElapsed, trackerPane.savingX - 60, 50);
+		}
 		ctx.restore();
 	}
 	trackerPane.resize = function ()
@@ -777,7 +823,7 @@ function preprocessPaneData()
 	minimapPane.growthY = 300;
 	minimapPane.load = 0;
 	minimapPane.maxLoad = 50;
-	minimapPane.scale = 4.2;
+	minimapPane.scale = 10;
 
 	minimapPane.customDraw = function (ctx)
 	{

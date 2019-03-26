@@ -246,7 +246,9 @@ var machines = {
 		this.recipes[i].unlocked = temp.unlocked;
 		this.recipes[i].enabled = temp.enabled;
 		this.recipes[i].pane.x = temp.pane.x;
+		this.recipes[i].pane.defaultX = this.recipes[i].pane.x;
 		this.recipes[i].pane.y = temp.pane.y;
+		this.recipes[i].pane.defaultY = this.recipes[i].pane.y;
 		this.recipes[i].upData[0] = temp.upData[0];
 		if (temp.pane.pinned)
 		{
@@ -356,10 +358,6 @@ var machines = {
 					data.oElementsFlow[temp.inputs[j].type] -= amount * temp.inputs[j].ratio;
 					if (temp.inputs[j].ratio == 0)
 					{
-						if (temp.inputs[j].effectReference.sources > 1)
-						{
-							console.log("particleWhoops");
-						}
 						temp.inputs[j].effectReference.volume -= 0.001;
 					}
 					else
@@ -369,12 +367,11 @@ var machines = {
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
-					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max)
-					{
-						continue;
-					}
 					var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.2) - data.oElements[temp.outputs[j].type].amount;
-					data.oElementsFlow[temp.outputs[j].type] += flow;
+					if (data.oElements[temp.outputs[j].type].amount < temp.outputs[j].max)
+					{
+						data.oElementsFlow[temp.outputs[j].type] += flow;
+					}
 					temp.outputs[j].effectReference.volume += flow;
 				}
 			}
@@ -456,7 +453,7 @@ var machines = {
 		{
 			var radius = optionData.iconSize * 2 + 2;
 			radius /= turnedOn;
-			radius = Math.min(radius, optionData.iconSize);
+			radius = Math.max(3, Math.min(radius, optionData.iconSize));
 			for (var i = 0; i < recipes.length; i++)
 			{
 				if (recipes[i].unlocked)
@@ -960,6 +957,10 @@ var machines = {
 		{
 			this.mouseHandler(null, this.x + 90, 0, "mouseup");
 		}
+		else
+		{
+			this.mouseHandler(null, this.x + 10 + 40 * this.target.slider, 0, "mouseup");
+		}
 	},
 	sliderRegionMouseHandler: function (pane, x, y, type)
 	{
@@ -1143,6 +1144,14 @@ function preprocessMachines()
 
 function initMachine(title)
 {
+	var additionalPauseTranslation = 0;
+	var displayStep = 3;
+	if (optionData.iconSize == 16)
+	{
+		additionalPauseTranslation = 38;
+		displayStep = 4;
+	}
+
 	var thisData = machineData[title];
 	machines.list.push(thisData);
 	thisData.tick = machines.machineTick;
@@ -1259,8 +1268,19 @@ function initMachine(title)
 		recipeRegion.paymentSuccess = machines.recipeRegionPaymentSuccess;
 		recipeRegion.customDraw = machines.recipeRegionDraw;
 		recipeRegion.pane = thisRecipe.pane;
-		thisRecipe.pane.x = (optionData.iconSize + 1) * (7 + thisData.recipes.length - i) + 200;
-		thisRecipe.pane.y = (optionData.iconSize + 1) * (2 + i);
+		if (thisData.displayArray)
+		{
+			thisRecipe.pane.x = (optionData.iconSize + 1) * (5 + (thisData.recipes.length - i) * 2) + 301 + additionalPauseTranslation;
+			thisRecipe.pane.defaultX = thisRecipe.pane.x;
+		}
+		else
+		{
+			thisRecipe.pane.x = (optionData.iconSize + 1) * (2 + displayStep + (thisData.recipes.length - i) * 2) + 204 - displayStep + additionalPauseTranslation;
+			thisRecipe.pane.defaultX = thisRecipe.pane.x;
+		}
+
+		thisRecipe.pane.y = (optionData.iconSize + 1) * i;
+		thisRecipe.pane.defaultY = thisRecipe.pane.y;
 	}
 	for (var recipeTitle in thisData.hiddenRecipes)
 	{

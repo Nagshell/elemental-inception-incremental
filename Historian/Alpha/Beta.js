@@ -1,5 +1,7 @@
 var loopId = null;
-var gameVersion = 11;
+var gameVersion = 12;
+var elapsed = 0;
+var formattedElapsed = 0;
 savingSystem = {
 	reccurentPaneSave: function (pane)
 	{
@@ -47,14 +49,22 @@ savingSystem = {
 		var numi = 0;
 		for (var i = 0; i < data.aElements.length; i++)
 		{
-			if (data.aElements[i].amount > 0)
+			if (data.aElements[i].amount > 0 || data.aElements[i].type == "Time")
 			{
 				numi = i + 1;
 			}
 		}
 		for (var i = 0; i < numi; i++)
 		{
-			dataToSave.push(Math.trunc(data.aElements[i].amount * 1000) / 1000);
+			dataToSave.push(Math.trunc(Math.max(0, data.aElements[i].amount) * 1000) / 1000);
+			if (data.aElements[i].type == "Time")
+			{
+				dataToSave.push(-Date.now());
+			}
+			else
+			{
+				dataToSave.push(-1 - Math.trunc(data.aElements[i].possibleAmount * 1000) / 1000);
+			}
 		}
 		numi = 0;
 		for (var i = 0; i < machines.dataTranslator.length; i++)
@@ -157,14 +167,22 @@ savingSystem = {
 
 		this.reloadData();
 		dataToLoad = JSON.parse(localStorage.getItem("saveData"));
-
+		if (dataToLoad && dataToLoad[0] != gameVersion)
+		{
+			dataToLoad = versionMigrator(dataToLoad);
+			if (Array.isArray(dataToLoad))
+			{
+				alert("Save system has beed updated. There is high chance previous save could not work properly. If that's the case, please consider hard resetting.");
+			}
+			else
+			{
+				alert("Save system has beed updated. There is 99.5% chance previous save wouldn't load properly. Game did hard reset, but you'll recieved a lot of turbo time as an apology.");
+				data.oElements.Time += dataToLoad;
+				dataToLoad = null;
+			}
+		}
 		if (dataToLoad)
 		{
-			if (gameVersion != dataToLoad[0])
-			{
-				alert("Game has beed updated. There is high chance previous save could not work properly. If that's the case, please consider hard resetting.");
-				dataToLoad = versionMigrator(dataToLoad);
-			}
 			var z = 0;
 			var eCount = 0;
 			var mCount = 0;
@@ -173,17 +191,31 @@ savingSystem = {
 				if (!Array.isArray(dataToLoad[z]))
 				{
 					data.aElements[eCount].amount = dataToLoad[z];
-					data.aElements[eCount].possibleAmount = dataToLoad[z];
 					if (dataToLoad[z] > 0)
 					{
 						data.aElements[eCount].known = true;
 						data.elementsKnown++;
-						if (machineDisplayElements[data.aElements[eCount].type] && machineDisplayElements[data.aElements[eCount]] != "machineTime")
+						if (machineDisplayElements[data.aElements[eCount].type] && machineDisplayElements[data.aElements[eCount].type] != "machineTime")
 						{
 							machineData[machineDisplayElements[data.aElements[eCount].type]].region.boundaryPath = machines.displayRegionPath;
 						}
 					}
-					eCount++
+					z++;
+					if (data.aElements[eCount].type == "Time")
+					{
+						elapsed = Date.now() + dataToLoad[z];
+						data.aElements[eCount].amount += elapsed * 0.8;
+						formattedElapsed = Math.trunc(elapsed / 3600000) + ":" + ("0" + Math.trunc(elapsed % 3600000 / 60000)).slice(-2) + ":" + ("0" + Math.trunc(elapsed % 60000 / 1000)).slice(-2);
+						setTimeout(() =>
+						{
+							elapsed = 0;
+						}, 5000);
+					}
+					else
+					{
+						data.aElements[eCount].possibleAmount = -dataToLoad[z] - 1;
+					}
+					eCount++;
 				}
 				else
 				{
@@ -326,7 +358,7 @@ savingSystem = {
 }
 
 var c;
-var cMax = 7201;
+var cMax = 6401;
 
 function tick()
 {
@@ -352,27 +384,68 @@ function tick()
 	{
 		c -= 1;
 	}
-	if (c == 7200)
+	if (c == 6400)
 	{
-
+		for (var i = 0; i < 10; i++)
+		{
+			var temp = effectSystem.eventCircles[i];
+			temp.maxR = 672;
+			temp.minR = 32;
+			temp.drawR = temp.maxR;
+			temp.velocity = 0;
+			temp.width = 1;
+			temp.color = elementalColors.Alkahest[1];
+		}
+		effectSystem.eventCircles[0].velocity = -1 * 0.25;
 	}
-	else if (c == 3600)
-	{}
-	else if (c == 1800)
-	{}
-	else if (c > 1280 && c < 7200 && c % 256 == 0)
-	{}
-	else if (c > 640 && c <= 4800 && c % 128 == 0)
-	{}
-	else if (c > 320 && c <= 3600 && c % 64 == 0)
-	{}
-	else if (c > 160 && c <= 2000 && c % 32 == 0)
-	{}
-	else if (c > 80 && c <= 600 && c % 16 == 0)
-	{}
-	else if (c <= 0)
+	else if (c == 5760)
 	{
-		c = cMax;
+		effectSystem.eventCircles[1].velocity = -2 * 0.25;
+	}
+	else if (c == 5120)
+	{
+		effectSystem.eventCircles[2].velocity = -3 * 0.25;
+	}
+	else if (c == 4480)
+	{
+		effectSystem.eventCircles[3].velocity = -4 * 0.25;
+	}
+	else if (c == 3840)
+	{
+		effectSystem.eventCircles[4].velocity = -5 * 0.25;
+	}
+	else if (c == 3200)
+	{
+		effectSystem.eventCircles[5].velocity = -6 * 0.25;
+	}
+	else if (c == 2560)
+	{
+		effectSystem.eventCircles[6].velocity = -7 * 0.25;
+	}
+	else if (c == 1920)
+	{
+		effectSystem.eventCircles[7].velocity = -8 * 0.25;
+	}
+	else if (c == 1280)
+	{
+		effectSystem.eventCircles[8].velocity = -9 * 0.25;
+	}
+	else if (c == 640)
+	{
+		effectSystem.eventCircles[9].velocity = -10 * 0.25;
+	}
+	else if (c == 0)
+	{
+		for (var i = 0; i < effectSystem.eventCircles.length; i++)
+		{
+			effectSystem.eventCircles[i].velocity = 0;
+			effectSystem.eventCircles[i].color = elementalColors.Alkahest[0];
+		}
+		effectSystem.eventCircles[0].velocity = 1;
+		effectSystem.eventCircles[0].width = 4;
+		effectSystem.eventCircles[1].velocity = 2;
+		effectSystem.eventCircles[1].width = 10;
+		effectSystem.eventCircles[1].drawR = effectSystem.eventCircles[1].minR;
 		for (var i = 0; i < initialData.betaElements.length; i++)
 		{
 			data.oElements[initialData.betaElements[i]].amount = 0;
@@ -381,6 +454,12 @@ function tick()
 		{
 			data.oElements.Revelation.amount += (1 - data.oElements.Revelation.amount) / 3;
 		}
+	}
+	else if (c == -320)
+	{
+		c = cMax;
+		effectSystem.eventCircles[0].velocity = 0;
+		effectSystem.eventCircles[1].velocity = 0;
 	}
 }
 

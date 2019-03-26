@@ -23,6 +23,17 @@ var simplifiedMachineData = {
 					["Earth", 1, 12000 * 4],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["earthRift4", "PureEarth", 1],
+			},
+			earthRift4:
+			{
+				baseStats: [1, 1.4, false, true],
+				in: [
+					["Earth", 1, 1]
+				],
+				out: [
+					["Earth", 1, 120000],
+				],
 			},
 			earthCRift1:
 			{
@@ -34,6 +45,17 @@ var simplifiedMachineData = {
 					["Earth", 1, 52000],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["earthCRift2", "Fire", 100000],
+			},
+			earthCRift2:
+			{
+				baseStats: [1, 1.4, false, true],
+				in: [
+					["Fire", 1, 500],
+				],
+				out: [
+					["Earth", 1, 52e7],
+				],
 			},
 		}
 	},
@@ -61,6 +83,17 @@ var simplifiedMachineData = {
 					["Water", 1, 12000 * 4],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["waterRift4", "PureWater", 1],
+			},
+			waterRift4:
+			{
+				baseStats: [1, 1.4, false, true],
+				in: [
+					["Water", 1, 1]
+				],
+				out: [
+					["Water", 1, 120000],
+				],
 			},
 			waterCRift1:
 			{
@@ -72,6 +105,17 @@ var simplifiedMachineData = {
 					["Water", 1, 52000],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["waterCRift2", "Earth", 100000],
+			},
+			waterCRift2:
+			{
+				baseStats: [1, 1.4, false, true],
+				in: [
+					["Earth", 1, 500],
+				],
+				out: [
+					["Water", 1, 52e7],
+				],
 			},
 		}
 	},
@@ -99,6 +143,17 @@ var simplifiedMachineData = {
 					["Air", 1, 12000 * 4],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["airRift4", "PureAir", 1],
+			},
+			airRift4:
+			{
+				baseStats: [1, 1.4, false, true],
+				in: [
+					["Air", 1, 1]
+				],
+				out: [
+					["Air", 1, 120000],
+				],
 			},
 			airCRift1:
 			{
@@ -110,6 +165,17 @@ var simplifiedMachineData = {
 					["Air", 1, 52000],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["airCRift2", "Water", 100000],
+			},
+			airCRift2:
+			{
+				baseStats: [1, 1.4, false, true],
+				in: [
+					["Water", 1, 500],
+				],
+				out: [
+					["Air", 1, 52e7],
+				],
 			},
 		}
 	},
@@ -137,6 +203,17 @@ var simplifiedMachineData = {
 					["Fire", 1, 12000 * 4],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["fireRift4", "PureFire", 1],
+			},
+			fireRift4:
+			{
+				baseStats: [1, 1.4, false, true],
+				in: [
+					["Fire", 1, 1]
+				],
+				out: [
+					["Fire", 1, 120000],
+				],
 			},
 			fireCRift1:
 			{
@@ -148,6 +225,17 @@ var simplifiedMachineData = {
 					["Fire", 1, 52000],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["fireCRift2", "Air", 100000],
+			},
+			fireCRift2:
+			{
+				baseStats: [1, 1.4, false, true],
+				in: [
+					["Air", 1, 500],
+				],
+				out: [
+					["Fire", 1, 52e7],
+				],
 			},
 		}
 	},
@@ -295,6 +383,21 @@ var simplifiedMachineData = {
 					["Mud", 1, 208, 4, ["Glass", 0.8]],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["mudConversion3", "Silicon", 1, "Plastic", 1, "Steel", 1],
+			},
+			mudConversion3:
+			{
+				baseStats: [2, 1.44, false, true],
+				in: [
+					["Sand", 1, 48],
+					["Earth", 0, 1e6],
+					["Water", 0, 1e6],
+					["Air", 0, 1e6],
+					["Fire", 0, 1e6],
+				],
+				out: [
+					["Mud", 1, 2560],
+				],
 			},
 			mudRift1:
 			{
@@ -325,6 +428,21 @@ var simplifiedMachineData = {
 					["Ice", 1, 208, 4, ["Glass", 0.8]],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["iceConversion3", "Silicon", 1, "Plastic", 1, "Steel", 1],
+			},
+			iceConversion3:
+			{
+				baseStats: [2, 1.44, false, true],
+				in: [
+					["Void", 1, 48],
+					["Earth", 0, 1e6],
+					["Water", 0, 1e6],
+					["Air", 0, 1e6],
+					["Fire", 0, 1e6],
+				],
+				out: [
+					["Ice", 1, 2560],
+				],
 			},
 			mudRift1:
 			{
@@ -355,6 +473,21 @@ var simplifiedMachineData = {
 					["Steam", 1, 208, 4, ["Glass", 0.8]],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["steamConversion3", "Silicon", 1, "Plastic", 1, "Steel", 1],
+			},
+			steamConversion3:
+			{
+				baseStats: [2, 1.44, false, true],
+				in: [
+					["Mud", 1, 48],
+					["Earth", 0, 1e6],
+					["Water", 0, 1e6],
+					["Air", 0, 1e6],
+					["Fire", 0, 1e6],
+				],
+				out: [
+					["Steam", 1, 2560],
+				],
 			},
 			mudRift1:
 			{
@@ -385,6 +518,21 @@ var simplifiedMachineData = {
 					["Magma", 1, 208, 4, ["Glass", 0.8]],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["magmaConversion3", "Silicon", 1, "Plastic", 1, "Steel", 1],
+			},
+			magmaConversion3:
+			{
+				baseStats: [2, 1.44, false, true],
+				in: [
+					["Steam", 1, 48],
+					["Earth", 0, 1e6],
+					["Water", 0, 1e6],
+					["Air", 0, 1e6],
+					["Fire", 0, 1e6],
+				],
+				out: [
+					["Magma", 1, 2560],
+				],
 			},
 			mudRift1:
 			{
@@ -414,6 +562,21 @@ var simplifiedMachineData = {
 					["Sand", 1, 208, 4, ["Soil", 1.6]],
 				],
 				lock: ["Earth", 0],
+				upgrade: ["sandConversion3", "Silicon", 1, "Plastic", 1, "Steel", 1],
+			},
+			sandConversion3:
+			{
+				baseStats: [2, 1.44, false, true],
+				in: [
+					["Ice", 1, 48],
+					["Earth", 0, 1e6],
+					["Water", 0, 1e6],
+					["Air", 0, 1e6],
+					["Fire", 0, 1e6],
+				],
+				out: [
+					["Sand", 1, 2560],
+				],
 			},
 			mudRift1:
 			{
@@ -444,7 +607,22 @@ var simplifiedMachineData = {
 				],
 				lock: ["Earth", 0],
 			},
-		}
+			voidConversion3:
+			{
+				baseStats: [2, 1.44, true, true],
+				in: [
+					["Magma", 1, 48],
+					["Earth", 0, 1e6],
+					["Water", 0, 1e6],
+					["Air", 0, 1e6],
+					["Fire", 0, 1e6],
+				],
+				out: [
+					["Void", 1, 2560],
+				],
+				lock: ["Silicon", 1, "Plastic", 1, "Steel", 1],
+			},
+		},
 	},
 	"machineNexus":
 	{
@@ -1509,7 +1687,7 @@ var midCircle = {
 	{
 		machineKnowledge:
 		{
-			baseStats: [0, -400, ["Revelation", "Knowledge"]],
+			baseStats: [0, -450, ["Revelation", "Knowledge"]],
 			recipes:
 			{
 				earthStart1:
@@ -1622,6 +1800,20 @@ var midCircle = {
 					out: [
 						["Soil", 1, 12],
 					],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 0.01, true, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Mud", 0.01, 37],
+						["Earth", 4000, 79000],
+						["Water", 2000, 79000],
+					],
+					out: [
+						["Soil", 1, 24],
+					],
+					lock: ["Acid", 1],
 				},
 			}
 		},
@@ -1888,6 +2080,21 @@ var midCircle = {
 						["Force", 1, 1.2],
 					],
 					lock: ["Knowledge", 0.8, "Space", 1],
+					upgrade: ["earthStart2", "Steel", 1, "Space", 1e8],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.01, false, true],
+					in: [
+						["Alkahest", 0, 4.2],
+						["Steam", 0.1, 37],
+						["Air", 200, 7900],
+						["Water", 1, 7900],
+						["Fire", 200, 7900],
+					],
+					out: [
+						["Force", 1, 102],
+					],
 				},
 			}
 		},
@@ -1922,6 +2129,20 @@ var midCircle = {
 					],
 					lock: ["Silver", 0.4],
 				},
+				earthStart3:
+				{
+					baseStats: [1, 0.12, true, true],
+					in: [
+						["Power", 0.001, 0.2],
+						["Earth", 200, 7900],
+						["Water", 200, 7900],
+						["Air", 200, 7900],
+					],
+					out: [
+						["Oil", 1, 64],
+					],
+					lock: ["Steel", 1],
+				},
 			}
 		},
 		machineSolution:
@@ -1943,6 +2164,81 @@ var midCircle = {
 						["Solution", 10, 120],
 					],
 					lock: ["Knowledge", 8],
+					upgrade: ["solutionStart2", "PureEssenceEarth", 1],
+				},
+				solutionStart2:
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Alkahest", 0.75, 42],
+						["Earth", 5000, 51000],
+						["Water", 10000, 51000],
+						["Air", 10000, 51000],
+						["Fire", 10000, 51000],
+					],
+					out: [
+						["Solution", 10, 120],
+					],
+					upgrade: ["solutionStart3", "PureEssenceAir", 1],
+				},
+				solutionStart3:
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Alkahest", 0.50, 42],
+						["Earth", 5000, 51000],
+						["Water", 10000, 51000],
+						["Air", 5000, 51000],
+						["Fire", 10000, 51000],
+					],
+					out: [
+						["Solution", 10, 120],
+					],
+					upgrade: ["solutionStart4", "PureEssenceWater", 1],
+				},
+				solutionStart4:
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Alkahest", 0.25, 42],
+						["Earth", 5000, 51000],
+						["Water", 5000, 51000],
+						["Air", 5000, 51000],
+						["Fire", 10000, 51000],
+					],
+					out: [
+						["Solution", 10, 120],
+					],
+					upgrade: ["solutionStart5", "PureEssenceFire", 1],
+				},
+				solutionStart5:
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Alkahest", 0, 42],
+						["Earth", 5000, 51000],
+						["Water", 5000, 51000],
+						["Air", 5000, 51000],
+						["Fire", 5000, 51000],
+					],
+					out: [
+						["Solution", 10, 120],
+					],
+					upgrade: ["solutionStart6", "Tin", 1e3],
+				},
+				solutionStart6:
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Alkahest", 0, 8.3],
+						["Earth", 5000, 51000],
+						["Water", 5000, 51000],
+						["Air", 5000, 51000],
+						["Fire", 5000, 51000],
+					],
+					out: [
+						["Solution", 1, 120],
+					],
 				},
 			}
 		},
@@ -1960,7 +2256,7 @@ var midCircle = {
 						["Lava", 1, 0.1],
 					],
 					out: [
-						["Solution", 10, 140],
+						["Solution", 10, -140],
 						["DistilledEarth", 1, 0.8],
 					],
 					lock: ["Solution", 1],
@@ -1975,8 +2271,22 @@ var midCircle = {
 						["Lava", 0.1, 0.1],
 					],
 					out: [
-						["Solution", 10, 140],
+						["Solution", 10, -140],
 						["DistilledEarth", 1, 8],
+					],
+					upgrade: ["distillEarth3", "Vortex", 0.01],
+				},
+				distillEarth3:
+				{
+					baseStats: [1, 0.2, false, true],
+					in: [
+						["Solution", 8, 0.1],
+						["Gale", 0, 1],
+						["Blaze", 0, 1],
+					],
+					out: [
+						["Solution", 10, -140],
+						["DistilledEarth", 1, 18],
 					],
 				},
 				distillWater1:
@@ -1988,7 +2298,7 @@ var midCircle = {
 						["Lava", 1, 0.1],
 					],
 					out: [
-						["Solution", 10, 140],
+						["Solution", 10, -140],
 						["DistilledWater", 1, 0.8],
 					],
 					lock: ["Solution", 1],
@@ -2003,8 +2313,22 @@ var midCircle = {
 						["Lava", 0.1, 0.1],
 					],
 					out: [
-						["Solution", 10, 140],
+						["Solution", 10, -140],
 						["DistilledWater", 1, 8],
+					],
+					upgrade: ["distillWater3", "Vortex", 0.01],
+				},
+				distillWater3:
+				{
+					baseStats: [1, 0.2, false, true],
+					in: [
+						["Solution", 8, 0.1],
+						["Gale", 0, 1],
+						["Blaze", 0, 1],
+					],
+					out: [
+						["Solution", 10, -140],
+						["DistilledWater", 1, 18],
 					],
 				},
 				distillAir1:
@@ -2016,7 +2340,7 @@ var midCircle = {
 						["Lava", 1, 0.1],
 					],
 					out: [
-						["Solution", 10, 140],
+						["Solution", 10, -140],
 						["DistilledAir", 1, 0.8],
 					],
 					lock: ["Solution", 1],
@@ -2031,8 +2355,22 @@ var midCircle = {
 						["Lava", 0.1, 0.1],
 					],
 					out: [
-						["Solution", 10, 140],
+						["Solution", 10, -140],
 						["DistilledAir", 1, 8],
+					],
+					upgrade: ["distillAir3", "Vortex", 0.01],
+				},
+				distillAir3:
+				{
+					baseStats: [1, 0.2, false, true],
+					in: [
+						["Solution", 8, 0.1],
+						["Gale", 0, 1],
+						["Blaze", 0, 1],
+					],
+					out: [
+						["Solution", 10, -140],
+						["DistilledAir", 1, 18],
 					],
 				},
 				distillFire1:
@@ -2044,7 +2382,7 @@ var midCircle = {
 						["Lava", 1, 0.1],
 					],
 					out: [
-						["Solution", 10, 140],
+						["Solution", 10, -140],
 						["DistilledFire", 1, 0.8],
 					],
 					lock: ["Solution", 1],
@@ -2059,8 +2397,22 @@ var midCircle = {
 						["Lava", 0.1, 0.1],
 					],
 					out: [
-						["Solution", 10, 140],
+						["Solution", 10, -140],
 						["DistilledFire", 1, 8],
+					],
+					upgrade: ["distillFire3", "Vortex", 0.01],
+				},
+				distillFire3:
+				{
+					baseStats: [1, 0.2, false, true],
+					in: [
+						["Solution", 8, 0.1],
+						["Gale", 0, 1],
+						["Blaze", 0, 1],
+					],
+					out: [
+						["Solution", 10, -140],
+						["DistilledFire", 1, 18],
 					],
 				},
 			}
@@ -2217,7 +2569,7 @@ var lifeCircle = {
 						["Distilled", -1, 0.01],
 					],
 					out: [
-						["Essence", -1, 140],
+						["Essence", -1, 14],
 					],
 					lock: ["Distilled", -1],
 				},
@@ -2238,7 +2590,7 @@ var lifeCircle = {
 						["Compressed", -1, 0.01],
 					],
 					out: [
-						["Soil", -1, 140],
+						["Soil", -1, 14],
 					],
 					lock: ["Compressed", -1],
 				},
@@ -2355,7 +2707,7 @@ var lifeCircle = {
 						["SeedWater", 1.01, -111],
 						["PlantWater", 1, 10000],
 					],
-					lock: ["Cryospire", 1],
+					lock: ["EssenceWater", 0.1, "Cryospire", 1],
 				},
 				harvestWater1:
 				{
@@ -2397,7 +2749,7 @@ var lifeCircle = {
 					out: [
 						["SoilAir", 1, -250],
 						["SeedAir", 1, 111],
-						["PlantAir", 0.2, 10000],
+						["PlantAir", 0.4, 10000],
 					],
 					lock: ["SeedAir", 1],
 				},
@@ -2414,7 +2766,7 @@ var lifeCircle = {
 				},
 				uprootAir2:
 				{
-					baseStats: [1, 0.03, true, false],
+					baseStats: [1, 0.06, true, false],
 					in: [
 						["PlantAir", 100, 100],
 						["SeedAir", 1, 1],
@@ -2443,7 +2795,7 @@ var lifeCircle = {
 						["SeedFire", 0.99, 111],
 						["PlantFire", 1, 10000],
 					],
-					lock: ["Sulphur", 4, "Coal", 4],
+					lock: ["EssenceFire", 0.1, "Sulphur", 4, "Coal", 4],
 				},
 				harvestFire1:
 				{
@@ -2575,6 +2927,32 @@ var coldCircle = {
 						["Coolant", 5, 1080],
 					],
 					lock: ["Knowledge", 36],
+					upgrade: ["earthStart21", "Power", 36]
+				},
+				earthStart21:
+				{
+					baseStats: [1, 0.4, false, true],
+					in: [
+						["Ice", 80, 100],
+						["Snow", 0.1, 0.4],
+						["Cryogen", 0.1, 0.4]
+					],
+					out: [
+						["Coolant", 5, 1080],
+					],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.9, true, true],
+					in: [
+						["Energy", 1, 120e7, 10, ["Bronze", 16, "Copper", 32, "Tin", 64, "Aluminum", 128, "Iron", 256, "Steel", 1, "Plastic", 1]],
+						["Gale", 0, 4],
+						["Cryospire", 0, 4],
+					],
+					out: [
+						["Coolant", 1, 1580],
+					],
+					lock: ["Silver", 8],
 				},
 			}
 		},
@@ -2585,10 +2963,10 @@ var coldCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 0.1, true, true],
+					baseStats: [0.1, 0.1, true, true],
 					in: [
 						["Snow", 4, 0.1],
-						["Coolant", 1, 2],
+						["Coolant", 1, 54],
 					],
 					out: [
 						["Gale", 10, 12],
@@ -2603,8 +2981,8 @@ var coldCircle = {
 						["Coolant", 1, 13],
 					],
 					out: [
-						["Gale", 1, 12],
-						["Coolant", 0.95, 1100],
+						["Gale", 1, 13],
+						["Coolant", 0.95, 1000],
 					],
 					lock: ["Gale", 1e99],
 				},
@@ -2615,7 +2993,7 @@ var coldCircle = {
 						["Gale", 1, 0.001],
 					],
 					out: [
-						["Gale", 0.95, 12],
+						["Gale", 0.95, 13],
 						["Coolant", 0.05, 13],
 					],
 					lock: ["Gale", 1e99],
@@ -2629,7 +3007,7 @@ var coldCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 0.5, true, true],
+					baseStats: [0.1, 0.5, true, true],
 					in: [
 						["Gale", 1, 1],
 						["Coolant", 200, 100],
@@ -2644,11 +3022,11 @@ var coldCircle = {
 					baseStats: [1, 1, true, true],
 					in: [
 						["Cryospire", 1, 0.001],
-						["Coolant", 1, 13],
+						["Coolant", 1, 26],
 					],
 					out: [
-						["Cryospire", 1, 12],
-						["Coolant", 0.80, 1100],
+						["Cryospire", 1, 13],
+						["Coolant", 0.80, 1200],
 					],
 					lock: ["Cryospire", 1e99],
 				},
@@ -2659,8 +3037,8 @@ var coldCircle = {
 						["Cryospire", 1, 0.001],
 					],
 					out: [
-						["Cryospire", 0.95, 12],
-						["Coolant", 0.05, 13],
+						["Cryospire", 0.95, 13],
+						["Coolant", 0.05, 26],
 					],
 					lock: ["Cryospire", 1e99],
 				},
@@ -2673,16 +3051,41 @@ var coldCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 0.1, true, true],
+					baseStats: [0.1, 0.1, true, true],
 					in: [
 						["Cryospire", 1, 2],
 						["Gale", 1, 2],
-						["Ice", 10000, 200],
+						["Ice", 1000, 200],
 					],
 					out: [
 						["Vortex", 1, 12],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Coolant", 1300],
+				},
+				earthDecay1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Vortex", 1, 0.001],
+						["Coolant", 1, 39],
+					],
+					out: [
+						["Vortex", 1, 13],
+						["Coolant", 0, -1],
+					],
+					lock: ["Vortex", 1e99],
+				},
+				earthDecay2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Vortex", 1, 0.001],
+					],
+					out: [
+						["Vortex", 0.50, 13],
+						["Coolant", 0.50, 39],
+					],
+					lock: ["Vortex", 1e99],
 				},
 			}
 		},
@@ -2764,7 +3167,7 @@ var hotCircle = {
 						["Blaze", 1, 0.1],
 					],
 					out: [
-						["Blaze", 1.98, 1.1],
+						["Blaze", 1.98, 1.1, 10, ["Plastic", 0.02]],
 						["Ash", 0.02, -12],
 					],
 					lock: ["Knowledge", 36, "Energy", 0.01],
@@ -2780,7 +3183,7 @@ var hotCircle = {
 				{
 					baseStats: [1, 0.5, true, false],
 					in: [
-						["Sulphur", 0.3, 0.1],
+						["Sulphur", 0.3, 0.5],
 					],
 					out: [
 						["Blast", 0.3, 0.8],
@@ -2800,6 +3203,19 @@ var hotCircle = {
 					],
 					lock: ["Dust", 1e99],
 				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Sulphur", 0.2, 2.1],
+						["Blast", 1, 0.5],
+					],
+					out: [
+						["Blast", 1.1, 2.2, 5, ["Acid", 1]],
+						["Dust", 0.1, -12],
+					],
+					lock: ["Steel", 1],
+				},
 			}
 		},
 		machinePyro:
@@ -2809,15 +3225,38 @@ var hotCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 0.1, true, true],
+					baseStats: [1, 0.5, true, false],
 					in: [
-						["Propane", 1, 0.1],
+						["Propane", 0.02, 0.1],
 					],
 					out: [
-						["Pyro", 1, 12],
-						["Carbon", 1, -12],
+						["Pyro", 0.03, 0.1],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Plastic", 1],
+				},
+				earthDecay1:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Pyro", 1, 0.001],
+					],
+					out: [
+						["Pyro", 0.975, -12],
+						["Carbon", 0.025, -12],
+					],
+					lock: ["Carbon", 1e99],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Propane", 0.1, 0.1],
+						["Pyro", 1, 0.1],
+					],
+					out: [
+						["Pyro", 1.1, 1.2, 6, ["Steel", 1]],
+					],
+					lock: ["Pyro", 0.001],
 				},
 			}
 		},
@@ -2876,6 +3315,7 @@ var hotCircle = {
 					in: [
 						["Coal", 1, 0.1],
 						["Water", 1e5, 0.1],
+						["Air", 1e5, 0.1],
 					],
 					out: [
 						["Sulphur", 1, 12],
@@ -2940,7 +3380,7 @@ var hotCircle = {
 	},
 };
 var powerCircle = {
-	elements: ["Power", "Energy", "Fuel", "Diesel", "Petrol", "Propane"],
+	elements: ["Power", "Energy", "Fuel", "Diesel", "Petrol", "Propene"],
 	machines:
 	{
 		machineRefinery:
@@ -2964,7 +3404,7 @@ var powerCircle = {
 		},
 		machineAdvancedRefinery:
 		{
-			baseStats: [700, -450, ["Diesel", "Petrol", "Propane"]],
+			baseStats: [750, -350, ["Diesel", "Petrol", "Propane", "Propene"]],
 			recipes:
 			{
 				earthStart1:
@@ -2972,15 +3412,16 @@ var powerCircle = {
 					baseStats: [1, 0.8, true, true],
 					in: [
 						["Oil", 100, 1],
-						["Blaze", 1, 1],
+						["Blast", 0, 0.8],
 						["Cryospire", 0, 1],
 					],
 					out: [
 						["Diesel", 90, 12],
-						["Petrol", 9, 12],
+						["Petrol", 8, 12],
+						["Propene", 1, 12],
 						["Propane", 1, 12],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Blast", 0.1],
 				},
 			}
 		},
@@ -3024,10 +3465,31 @@ var powerCircle = {
 				{
 					baseStats: [1, 0, true, false],
 					in: [
-						["Diesel", 1, 0.01],
+						["Diesel", 0.001, 5.01],
 					],
 					out: [],
-					lock: ["Earth", 1e99],
+					lock: ["Clay", 1, "Diesel", 0.01],
+					upgrade: ["earthStart2", "Plastic", 0.1],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0, false, false],
+					in: [
+						["Diesel", 0.05, 5.01],
+					],
+					out: [],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 0.25, true, true],
+					in: [
+						["Diesel", 1, 1.1],
+						["Blaze", 0, 3],
+					],
+					out: [
+						["Energy", 20, -150],
+					],
+					lock: ["Steel", 1],
 				},
 			}
 		},
@@ -3040,10 +3502,22 @@ var powerCircle = {
 				{
 					baseStats: [1, 0, true, false],
 					in: [
-						["Petrol", 1, 0.01],
+						["Petrol", 0.001, 5.01],
 					],
 					out: [],
-					lock: ["Earth", 1e99],
+					lock: ["Clay", 1, "Petrol", 0.01],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 0.30, true, true],
+					in: [
+						["Petrol", 1, 1.1],
+						["Pyro", 0, 0.5],
+					],
+					out: [
+						["Power", 5, -150],
+					],
+					lock: ["Steel", 1],
 				},
 			}
 		},
@@ -3056,10 +3530,35 @@ var powerCircle = {
 				{
 					baseStats: [1, 0, true, false],
 					in: [
-						["Propane", 1, 0.01],
+						["Propane", 0.001, 5.01],
 					],
 					out: [],
-					lock: ["Earth", 1e99],
+					lock: ["Clay", 1, "Propane", 0.01],
+				},
+			}
+		},
+		machinePropene:
+		{
+			baseStats: [800, -800],
+			recipes:
+			{
+				earthStart1:
+				{
+					baseStats: [1, 0, true, false],
+					in: [
+						["Propene", 0.001, 5.01],
+					],
+					out: [],
+					lock: ["Clay", 1, "Propene", 0.01],
+					upgrade: ["earthStart2", "Plastic", 1],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0, false, false],
+					in: [
+						["Propene", 0.01, 5.01],
+					],
+					out: [],
 				},
 			}
 		},
@@ -3071,7 +3570,7 @@ var powerCircle = {
 		},
 		machinePower:
 		{
-			baseStats: [450, -700, "Power"],
+			baseStats: [350, -750, "Power"],
 			recipes:
 			{}
 		},
@@ -3352,7 +3851,7 @@ var rarityCircle = {
 					out: [
 						["Silver", 2, 16.3],
 					],
-					lock: ["Gale", 2],
+					lock: ["Silver", 0.01, "Gale", 2],
 				},
 			}
 		},
@@ -3383,7 +3882,7 @@ var rarityCircle = {
 					out: [
 						["Bronze", 2, 48.7],
 					],
-					lock: ["Energy", 2],
+					lock: ["Bronze", 0.01, "Energy", 2],
 				},
 			}
 		},
@@ -3414,7 +3913,7 @@ var rarityCircle = {
 					out: [
 						["Copper", 2, 184.7],
 					],
-					lock: ["Blaze", 0.6],
+					lock: ["Copper", 0.01, "Blaze", 0.6],
 				},
 			}
 		},
@@ -3445,7 +3944,7 @@ var rarityCircle = {
 					out: [
 						["Tin", 2, 2.3e3],
 					],
-					lock: ["CompressedEarth", 3.6],
+					lock: ["Tin", 0.01, "CompressedEarth", 3.6],
 				},
 			}
 		},
@@ -3476,7 +3975,7 @@ var rarityCircle = {
 					out: [
 						["Aluminum", 2, 6.3e3],
 					],
-					lock: ["Gale", 3.6],
+					lock: ["Aluminum", 0.01, "Gale", 3.6],
 				},
 			}
 		},
@@ -3530,12 +4029,16 @@ var rarityCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 1, true, false],
-					in: [],
+					baseStats: [1, 1, true, true],
+					in: [
+						["Iron", 1, 1.2],
+						["Carbon", 1, 1.2],
+						["Pyro", 0, 0.4],
+					],
 					out: [
 						["Steel", 1, 1.2],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Carbon", 1],
 				},
 			}
 		},
@@ -3547,11 +4050,16 @@ var rarityCircle = {
 				earthStart1:
 				{
 					baseStats: [1, 1, true, false],
-					in: [],
+					in: [
+						["Ash", 1, 4.8],
+						["Sand", 100, 457],
+						["Mud", 100, 457],
+						["Water", 200, 1e4],
+					],
 					out: [
 						["Clay", 1, 1.2],
 					],
-					lock: ["Knowledge", 36],
+					lock: ["Ash", 1],
 				},
 			}
 		},
@@ -3562,12 +4070,39 @@ var rarityCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 1, true, false],
-					in: [],
+					baseStats: [1, 0.05, true, true],
+					in: [
+						["Propene", 1, 1.2],
+						["Blaze", 0, 1],
+					],
+					out: [
+						["Plastic", 1, 0.1],
+					],
+					lock: ["Propene", 0.1],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.15, true, true],
+					in: [
+						["Propene", 1, 1.2],
+						["Blaze", 0, 10],
+					],
 					out: [
 						["Plastic", 1, 1.2],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Plastic", 0.02],
+					upgrade: ["earthStart3", "SterileGlass", 1],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 0.45, false, true],
+					in: [
+						["Propene", 1, 1.2],
+						["Blaze", 0, 10],
+					],
+					out: [
+						["Plastic", 1, 1.2],
+					],
 				},
 			}
 		},
@@ -3579,11 +4114,15 @@ var rarityCircle = {
 				earthStart1:
 				{
 					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["Silicon", 1, 1.2],
+					in: [
+						["Quartz", 1, 1],
+						["Coal", 4, 9],
+						["PureFire", 0.7, 1.7],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["Silicon", 0.4, 2.2],
+					],
+					lock: ["Quartz", 1, "Earth", 1e6, "Water", 1e6, "Air", 1e6, "Fire", 1e6],
 				},
 			}
 		},
@@ -3594,12 +4133,16 @@ var rarityCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 1, true, false],
-					in: [],
+					baseStats: [1, 0.2, true, true],
+					in: [
+						["Sulphur", 1, 1.2],
+						["Plastic", 0.4, 0.8],
+						["Vortex", 0, 1],
+					],
 					out: [
 						["Acid", 1, 1.2],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Vortex", 0.001],
 				},
 			}
 		},
@@ -3640,21 +4183,49 @@ var gemCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["CompressedDust", 1, 1.2],
+					baseStats: [1, 0.01, true, true],
+					in: [
+						["Ash", 100, 11],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["CompressedAsh", 1, 0.1],
+					],
+					lock: ["Ash", 11],
+					upgrade: ["earthStart21", "Pyro", 3],
+				},
+				earthStart21:
+				{
+					baseStats: [1, 0.1, false, true],
+					in: [
+						["Ash", 10, 9],
+						["Power", 10, 90],
+					],
+					out: [
+						["CompressedAsh", 5, 1.2],
+					],
 				},
 				earthStart2:
 				{
-					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["CompressedAsh", 1, 1.2],
+					baseStats: [1, 0.01, true, true],
+					in: [
+						["Dust", 100, 11],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["CompressedDust", 1, 0.1],
+					],
+					lock: ["Dust", 11],
+					upgrade: ["earthStart22", "Pyro", 3],
+				},
+				earthStart22:
+				{
+					baseStats: [1, 0.1, false, true],
+					in: [
+						["Dust", 10, 9],
+						["Energy", 100, 90],
+					],
+					out: [
+						["CompressedDust", 5, 1.2],
+					],
 				},
 			}
 		},
@@ -3723,11 +4294,243 @@ var gemCircle = {
 				earthStart1:
 				{
 					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["Gemstone", 1, 1.2],
+					in: [
+						["Stone", 0.04, 0.6],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["Gemstone", 0.001, 0.05],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["CompressedEarth", 0.04, 0.6],
+						["Gemstone", 0, 0.05],
+					],
+					out: [
+						["Gemstone", 0.001, 0.10],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Pebbles", 0.04, 0.6],
+						["Gemstone", 0, 0.10],
+					],
+					out: [
+						["Gemstone", 0.001, 0.15],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart4:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["CompressedWater", 0.04, 0.6],
+						["Gemstone", 0, 0.15],
+					],
+					out: [
+						["Gemstone", 0.001, 0.20],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart5:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Carbon", 0.04, 0.6],
+						["Gemstone", 0, 0.20],
+					],
+					out: [
+						["Gemstone", 0.001, 0.25],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart6:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["CompressedAir", 0.04, 0.6],
+						["Gemstone", 0, 0.25],
+					],
+					out: [
+						["Gemstone", 0.001, 0.30],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart7:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Iron", 0.04, 0.6],
+						["Energy", 0.04, 0.6],
+						["Gemstone", 0, 0.30],
+					],
+					out: [
+						["Gemstone", 0.001, 0.35],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart8:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["CompressedFire", 0.04, 0.6],
+						["Gemstone", 0, 0.35],
+					],
+					out: [
+						["Gemstone", 0.001, 0.40],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart9:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["CompressedAsh", 0.001, 0.6],
+						["Gemstone", 0, 0.40],
+					],
+					out: [
+						["Gemstone", 0.001, 0.45],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart10:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["DistilledEarth", 0.04, 0.6],
+						["Gemstone", 0, 0.45],
+					],
+					out: [
+						["Gemstone", 0.001, 0.50],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart11:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Gravel", 0.04, 0.6],
+						["Gemstone", 0, 0.50],
+					],
+					out: [
+						["Gemstone", 0.001, 0.55],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart12:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["DistilledWater", 0.04, 0.6],
+						["Gemstone", 0, 0.55],
+					],
+					out: [
+						["Gemstone", 0.001, 0.60],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart13:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["CompressedDust", 0.001, 0.6],
+						["Gemstone", 0, 0.60],
+					],
+					out: [
+						["Gemstone", 0.001, 0.65],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart14:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["DistilledAir", 0.04, 0.6],
+						["Gemstone", 0, 0.65],
+					],
+					out: [
+						["Gemstone", 0.001, 0.70],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart15:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Steel", 0.006, 0.6],
+						["Power", 0.04, 0.6],
+						["Gemstone", 0, 0.70],
+					],
+					out: [
+						["Gemstone", 0.001, 0.75],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart16:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["DistilledFire", 0.04, 0.6],
+						["Gemstone", 0, 0.75],
+					],
+					out: [
+						["Gemstone", 0.001, 0.80],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart17:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Force", 0.04, 0.6],
+						["Gemstone", 0, 0.80],
+					],
+					out: [
+						["Gemstone", 0.001, 0.85],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart18:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Space", 0.04, 0.6],
+						["Gemstone", 0, 0.85],
+					],
+					out: [
+						["Gemstone", 0.001, 0.90],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart19:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Pressure", 0.04, 0.6],
+						["Gemstone", 0, 0.90],
+					],
+					out: [
+						["Gemstone", 0.001, 0.95],
+					],
+					lock: ["Acid", 0.1],
+				},
+				earthStart20:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Acid", 0.002, 0.6],
+						["Gemstone", 0, 0.95],
+					],
+					out: [
+						["Gemstone", 0.001, 1.0],
+					],
+					lock: ["Acid", 0.1],
 				},
 			}
 		},
@@ -3738,14 +4541,14 @@ var gemCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 0.001, true, false],
+					baseStats: [1, 1, true, false],
 					in: [
-						["Gemstone", 1, 1.1]
+						["Gemstone", 1, 1]
 					],
 					out: [
-						["Quartz", 1, 120],
+						["Quartz", 1, 7],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Gemstone", 1],
 				},
 			}
 		},
@@ -3837,15 +4640,29 @@ var gemCircle = {
 		{
 			simplifiedMachineData[machine] = this.machines[machine];
 		}
+		elementalDisplayType["Topaz"] = "";
+		elementalDisplayType["Sapphire"] = "";
+		elementalDisplayType["Emerald"] = "";
+		elementalDisplayType["Ruby"] = "";
+		elementalDisplayType["Quartz"] = "";
 	},
 	decay: function ()
 	{
 		var r = 6 + Math.trunc(Math.max(20, Math.random() * 25) - 20);
 		machineData.machineRandomGem.recipes[0].outputs[0].type = this.elements[r];
+		if (this.elements[r] == "Quartz")
+		{
+			machineData.machineRandomGem.recipes[0].outputs[0].max = 326;
+		}
+		else
+		{
+			machineData.machineRandomGem.recipes[0].outputs[0].max = 77;
+		}
+		machineData.machineRandomGem.recipes[0].outputs[0].effectReference.volume = 0;
 	},
 };
 var pureCircle = {
-	elements: ["PureEarth", "PureWater", "PureAir", "PureFire", "SterileGlass", "CompressionCrystal", "PerfectedOrb", "PureGolemEarth", "PureGolemWater", "PureGolemAir", "PureGolemFire"],
+	elements: ["PureEarth", "PureWater", "PureAir", "PureFire", "SterileGlass", "CompressionCrystal", "PerfectedOrb", "PureGolemEarth", "PureGolemWater", "PureGolemAir", "PureGolemFire", "Mystery"],
 	machines:
 	{
 		machinePerfectedComponents:
@@ -3855,12 +4672,40 @@ var pureCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["PerfectedOrb", 1, 1.2],
+					baseStats: [1, 0.2, true, true],
+					in: [
+						["Glass", 4, 0.5],
+						["Plastic", 0.08, 0.5],
+						["Silicon", 0.2, 0.5],
+						["Silver", 2, 2],
+						["Knowledge", 1, 36],
+						["Pyro", 0, 6],
+						["Vortex", 0, 4],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["SterileGlass", 1, 108],
+					],
+					lock: ["Silicon", 1],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 0.1, true, true],
+					in: [
+						["SterileGlass", 0.3, 0.5],
+						["FoldedSpatial", 2, 0.5],
+						["Spatial", 1000, 140],
+						["Tin", 8, 2],
+						["Pressure", 2, 7.5],
+						["Knowledge", 8, 36],
+						["Blaze", 0, 10],
+						["Blast", 0, 10],
+						["Gale", 0, 9],
+						["Cryospire", 0, 9],
+					],
+					out: [
+						["CompressionCrystal", 1, 4.2],
+					],
+					lock: ["SterileGlass", 1],
 				},
 			}
 		},
@@ -3872,11 +4717,18 @@ var pureCircle = {
 				earthStart1:
 				{
 					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["PerfectedOrb", 1, 1.2],
+					in: [
+						["SterileGlass", 20, 20],
+						["CompressionCrystal", 1, 1],
+						["Emerald", 5, 5],
+						["Sapphire", 5, 5],
+						["Topaz", 5, 5],
+						["Ruby", 5, 5],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["PerfectedOrb", 1, 4],
+					],
+					lock: ["CompressionCrystal", 1],
 				},
 			}
 		},
@@ -3887,12 +4739,51 @@ var pureCircle = {
 			{
 				earthStart1:
 				{
-					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["PerfectedOrb", 1, 1.2],
+					baseStats: [1, 1, true, true],
+					in: [
+						["DistilledEarth", 1, 0.1],
+						["PureEssenceEarth", 1, 1.2],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["PureEarth", 4, 1.2, 4.4, ["Clay", 1, "Plastic", 1, "Silicon", 1]],
+					],
+					lock: ["Aluminum", 1e3],
+				},
+				earthStart2:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["DistilledWater", 1, 0.1],
+						["PureEssenceWater", 1, 1.2],
+					],
+					out: [
+						["PureWater", 1, 1.2, 4.4, ["Clay", 1, "Plastic", 1, "Silicon", 1]],
+					],
+					lock: ["Aluminum", 1e3],
+				},
+				earthStart3:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["DistilledAir", 1, 0.1],
+						["PureEssenceAir", 1, 1.2],
+					],
+					out: [
+						["PureAir", 3, 1.2, 4.4, ["Clay", 1, "Plastic", 1, "Silicon", 1]],
+					],
+					lock: ["Aluminum", 1e3],
+				},
+				earthStart4:
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["DistilledFire", 1, 0.1],
+						["PureEssenceFire", 1, 1.2],
+					],
+					out: [
+						["PureFire", 6, 1.2, 4.4, ["Clay", 1, "Plastic", 1, "Silicon", 1]],
+					],
+					lock: ["Aluminum", 1e3],
 				},
 			}
 		},
@@ -3968,11 +4859,14 @@ var pureCircle = {
 				earthStart1:
 				{
 					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["PureGolemEarth", 1, 1.2],
+					in: [
+						["PerfectedOrb", 1, 1],
+						["PureEarth", 100, 100],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["PureGolemEarth", 1, 1],
+					],
+					lock: ["SterileGlass", 21],
 				},
 			}
 		},
@@ -3984,11 +4878,14 @@ var pureCircle = {
 				earthStart1:
 				{
 					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["PureGolemWater", 1, 1.2],
+					in: [
+						["PerfectedOrb", 1, 1],
+						["PureWater", 100, 100],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["PureGolemWater", 1, 1],
+					],
+					lock: ["SterileGlass", 21],
 				},
 			}
 		},
@@ -4000,11 +4897,14 @@ var pureCircle = {
 				earthStart1:
 				{
 					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["PureGolemAir", 1, 1.2],
+					in: [
+						["PerfectedOrb", 1, 1],
+						["PureAir", 100, 100],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["PureGolemAir", 1, 1],
+					],
+					lock: ["SterileGlass", 21],
 				},
 			}
 		},
@@ -4016,11 +4916,14 @@ var pureCircle = {
 				earthStart1:
 				{
 					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["PureGolemFire", 1, 1.2],
+					in: [
+						["PerfectedOrb", 1, 1],
+						["PureFire", 100, 100],
 					],
-					lock: ["Earth", 1e99],
+					out: [
+						["PureGolemFire", 1, 1],
+					],
+					lock: ["SterileGlass", 21],
 				},
 			}
 		},
@@ -4043,8 +4946,14 @@ function addCircleElements(array)
 	for (var i = 0; i < array.length; i++)
 	{
 		initialData.elements.push(array[i]);
-		elementalColors[array[i]] = colorDummy;
-		images["icon" + array[i]] = images.iconVoid;
+		if (!elementalColors[array[i]])
+		{
+			elementalColors[array[i]] = colorDummy;
+		}
+		if (!images["icon" + array[i]])
+		{
+			images["icon" + array[i]] = images.iconVoid;
+		}
 		elementalDisplayType[array[i]] = "exp";
 	}
 }

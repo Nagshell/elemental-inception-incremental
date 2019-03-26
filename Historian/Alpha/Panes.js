@@ -404,8 +404,8 @@ cPane.prototype.resetPosition = function ()
 {
 	if (this.hiddenPath)
 	{
-		this.boundaryPath = this.hiddenPath;
-		this.hiddenPath = null;
+		//this.boundaryPath = this.hiddenPath;
+		//this.hiddenPath = null;
 	}
 	if (this.boundaryPathMin && !this.boundaryPathMax)
 	{
