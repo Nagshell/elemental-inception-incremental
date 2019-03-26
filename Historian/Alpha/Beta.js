@@ -177,7 +177,7 @@ savingSystem = {
 			else
 			{
 				alert("Save system has beed updated. There is 99.5% chance previous save wouldn't load properly. Game did hard reset, but you'll recieved a lot of turbo time as an apology.");
-				data.oElements.Time += dataToLoad;
+				data.oElements.Time.amount += dataToLoad;
 				dataToLoad = null;
 			}
 		}
