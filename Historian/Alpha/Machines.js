@@ -425,13 +425,23 @@ var machines = {
 				}
 				ctx.beginPath();
 				var angle = -Math.PI / 2 + Math.PI * 2 * Math.max(0, amount - 0.1) * 10 / 9;
+
 				ctx.arc(0, 0, radius + this.machine.displayStep, -Math.PI / 2, angle);
-				ctx.arc(0, 0, radius, angle, 3 * Math.PI / 2);
+				if (amount < 1)
+				{
+					ctx.arc(0, 0, radius, angle, 3 * Math.PI / 2);
+				}
 				//ctx.lineTo(0, 0);
 				ctx.closePath();
 				ctx.fill();
 				ctx.lineWidth = 1.3;
 				ctx.stroke();
+			}
+			if (this.machine.displayArrayCD-- <= 0)
+			{
+				this.machine.displayArrayCD = this.machine.displayArrayCDMax;
+				this.machine.displayArrayCurrent = (this.machine.displayArrayCurrent + 1) % this.machine.displayArray.length;
+				this.machine.displayElement = this.machine.displayArray[this.machine.displayArrayCurrent];
 			}
 		}
 		ctx.restore();
@@ -514,12 +524,6 @@ var machines = {
 		ctx.clip();
 		ctx.drawImage(images["icon" + this.displayArray[next]], 0, 0);
 
-		if (this.displayArrayCD-- <= 0)
-		{
-			this.displayArrayCD = this.displayArrayCDMax;
-			this.displayArrayCurrent = next;
-			this.displayElement = this.displayArray[next];
-		}
 		ctx.restore();
 	},
 	regularArrayPaneMouseHandler: function (pane, x, y, type)

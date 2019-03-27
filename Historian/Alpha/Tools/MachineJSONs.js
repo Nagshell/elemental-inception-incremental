@@ -2553,7 +2553,7 @@ var midCircle = {
 var lifeCircle = {
 	elements: [],
 	baseElements: ["Earth", "Water", "Air", "Fire"],
-	prefixElements: ["Essence", "Soil", "Seed", "Plant", "PureEssence", "Pure"],
+	prefixElements: ["Essence", "Soil", "Seed", "Plant", "PureEssence"],
 	machines:
 	{
 		machineEssenceElements:
@@ -2834,14 +2834,6 @@ var lifeCircle = {
 			}
 		}
 		addCircleElements(this.elements);
-		for (var i = 0; i < this.prefixElements.length; i++)
-		{
-			for (var j = 0; j < this.baseElements.length; j++)
-			{
-				var elem = this.prefixElements[i] + this.baseElements[j];
-				elementalColors[elem] = elementalColors[this.baseElements[j]];
-			}
-		}
 		elementalDisplayType["SeedEarth"] = "";
 		elementalDisplayType["SeedAir"] = "";
 		for (var mach in this.machines)

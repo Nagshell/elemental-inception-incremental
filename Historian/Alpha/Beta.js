@@ -1,5 +1,5 @@
 var loopId = null;
-var gameVersion = 12;
+var gameVersion = 13;
 var elapsed = 0;
 var formattedElapsed = 0;
 savingSystem = {
@@ -172,7 +172,7 @@ savingSystem = {
 			dataToLoad = versionMigrator(dataToLoad);
 			if (Array.isArray(dataToLoad))
 			{
-				alert("Save system has beed updated. There is high chance previous save could not work properly. If that's the case, please consider hard resetting.");
+				alert("Save system has beed updated. Save was migrated, but there is a chance it could not work properly. If that's the case, please consider hard resetting.");
 			}
 			else
 			{
@@ -327,7 +327,7 @@ savingSystem = {
 		loopId = requestAnimationFrame(loop);
 
 		c = cMax;
-		saveCD = 5400;
+		saveCD = 540000;
 		s = saveCD / 2;
 	},
 	toConsole: function ()
