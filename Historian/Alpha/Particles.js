@@ -48,7 +48,7 @@ var lineSystem = {
 
 		for (var i = 0; i < this.circles.length; i++)
 		{
-			tempVal = data.oElements[this.circles[i][0]].amount / 1e10;
+			tempVal = Math.max(1e-5, data.oElements[this.circles[i][0]].amount / 1e10);
 			for (var j = 1; j < this.circles[i].length; j++)
 			{
 				tempThing = this.circles[i][j];

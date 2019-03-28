@@ -420,53 +420,7 @@ function preprocessPaneData()
 	mainPane.customDraw = function (ctx)
 	{
 		var tempBackground;
-		if (false && machineData.machineNexus)
-		{
-			if (mainPane.background)
-			{
-				mainPane.backgroundR++;
-			}
-			if (machineData.machineNexus.recipes[0].unlocked)
-			{
-				tempBackground = "mainBackground4";
-			}
-			else if (machineData.machineVoid.recipes[0].unlocked)
-			{
-				tempBackground = "mainBackground3";
-			}
-			else if (machineData.golemMerger.recipes[0].unlocked)
-			{
-				tempBackground = "mainBackground2";
-			}
-			else if (machineData.machineWater.recipes[0].unlocked)
-			{
-				tempBackground = "mainBackground1";
-			}
-			if (tempBackground != mainPane.background)
-			{
-				mainPane.backgroundR = 0;
-				mainPane.backgroundLast = mainPane.background;
-				mainPane.background = tempBackground;
-			}
-			if (mainPane.background)
-			{
-				ctx.save();
-				if (mainPane.backgroundR < 600)
-				{
-					mainPane.backgroundR++;
-					if (mainPane.backgroundLast)
-					{
-						ctx.drawImage(images[mainPane.backgroundLast], -400, -400);
-					}
-					ctx.beginPath();
-					ctx.arc(0, 0, mainPane.backgroundR, 0, Math.PI * 2);
-					ctx.clip();
-				}
-				ctx.drawImage(images[mainPane.background], -400, -400);
-				ctx.restore();
-			}
-		}
-		ctx.drawImage(images.mainBackground, -1200, -1200);
+		backgrounds.draw(ctx);
 		effectSystem.draw(ctx);
 
 		var x = -this.centerX + Math.trunc(canvas.width / 2);

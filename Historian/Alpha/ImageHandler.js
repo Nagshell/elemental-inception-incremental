@@ -72,12 +72,6 @@ function preprocessImages()
 		"machineVoid",
 		"machineNexus",
 
-		"mainBackground",
-		"mainBackground1",
-		"mainBackground2",
-		"mainBackground3",
-		"mainBackground4",
-
 		"tutorialPage0",
 		"tutorialPage1",
 		"tutorialPage2",
@@ -86,6 +80,9 @@ function preprocessImages()
 		"tutorialPage5",
 		"tutorialPage6",
 		"tutorialPage7",
+
+		"midBackground1", "midBackground2", "midBackground3", "midBackground4",
+
 	];
 	for (var i = 0; i < imageList.length; i++)
 	{

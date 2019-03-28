@@ -241,7 +241,7 @@ var simplifiedMachineData = {
 	},
 	"golemInfuser":
 	{
-		baseStats: [-200, 200, ["GolemEarth", "GolemWater", "GolemAir", "GolemFire"]],
+		baseStats: [-195, 195, ["GolemEarth", "GolemWater", "GolemAir", "GolemFire"]],
 		recipes:
 		{
 			golemEarth3:
@@ -292,7 +292,7 @@ var simplifiedMachineData = {
 	},
 	"golemMerger":
 	{
-		baseStats: [200, 200],
+		baseStats: [195, 195],
 		recipes:
 		{
 			mergeMud3:
@@ -457,7 +457,7 @@ var simplifiedMachineData = {
 	},
 	"machineSteam":
 	{
-		baseStats: [-200, -200, "Steam"],
+		baseStats: [-195, -195, "Steam"],
 		recipes:
 		{
 			steamConversion2:
@@ -547,7 +547,7 @@ var simplifiedMachineData = {
 	},
 	"machineSand":
 	{
-		baseStats: [200, -200, "Sand"],
+		baseStats: [195, -195, "Sand"],
 		recipes:
 		{
 			sandConversion2:
@@ -629,20 +629,37 @@ var simplifiedMachineData = {
 		baseStats: [0, 0, "Alkahest"],
 		recipes:
 		{
-			alkahest1merge:
+			alkahest1traces:
 			{
-				baseStats: [10, 1, true, true],
+				baseStats: [1, 0.1, true, true],
 				in: [
 					["Void", 1, 1],
-					["Earth", 100000, 50000],
-					["Water", 100000, 50000],
-					["Air", 100000, 50000],
-					["Fire", 100000, 50000],
+					["Earth", 100000, 45000],
+					["Water", 100000, 45000],
+					["Air", 100000, 45000],
+					["Fire", 100000, 45000],
 				],
 				out: [
-					["Alkahest", 1, 42],
+					["Alkahest", 1, 0.1],
 				],
-				lock: ["Earth", 0],
+				lock: ["Void", 0.001]
+
+			},
+			alkahest1merge:
+			{
+				baseStats: [1, 1, true, true],
+				in: [
+					["Void", 0.25, 1],
+					["Earth", 25000, 50000],
+					["Water", 25000, 50000],
+					["Air", 25000, 50000],
+					["Fire", 25000, 50000],
+					["Alkahest", 1, 0.05],
+				],
+				out: [
+					["Alkahest", 1.25, 42],
+				],
+				lock: ["Alkahest", 0.1, "Earth", 50000, "Water", 50000, "Air", 50000, "Fire", 50000],
 			},
 		}
 	},
