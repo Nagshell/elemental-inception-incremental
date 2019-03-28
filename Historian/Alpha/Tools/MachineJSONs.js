@@ -2624,13 +2624,13 @@ var lifeCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Soil", -1, 1, 100, ["Space", 175]],
+						["Soil", -1, 1, 100, ["Space", 1e7]],
 						["Essence", -1, 1.1],
 					],
 					out: [
 						["Seed", -1, 107],
 					],
-					lock: ["Essence", -9.01],
+					lock: ["Essence", -9.01, "Soil", -0.1],
 				},
 			},
 			recipes:
@@ -3599,7 +3599,7 @@ var reachCircle = {
 	{
 		machineSpatial:
 		{
-			baseStats: [-100, -900, "Spatial"],
+			baseStats: [-107, -907, "Spatial"],
 			recipes:
 			{
 				earthStart1:
@@ -3671,7 +3671,7 @@ var reachCircle = {
 		},
 		machineParallel:
 		{
-			baseStats: [-100, -700, "Parallel"],
+			baseStats: [-107, -693, "Parallel"],
 			recipes:
 			{
 				earthStart1:
@@ -3702,7 +3702,7 @@ var reachCircle = {
 		},
 		machineFoldedSpace:
 		{
-			baseStats: [100, -700, "FoldedSpace"],
+			baseStats: [107, -693, "FoldedSpace"],
 			recipes:
 			{
 				earthStart1:
@@ -3721,7 +3721,7 @@ var reachCircle = {
 		},
 		machineFoldedSpatial:
 		{
-			baseStats: [100, -900, "FoldedSpatial"],
+			baseStats: [107, -907, "FoldedSpatial"],
 			recipes:
 			{
 				earthStart1:

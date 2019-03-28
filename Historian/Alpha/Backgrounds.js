@@ -68,40 +68,133 @@ var backgrounds = {
 				ctx.translate(this.x, this.y);
 			}
 		},
-		spaceCircle:
+		reachCircle:
 		{
 			x: -200,
 			y: -1000,
-			imagesList: [null, "mainBackground"],
+			list: [null,
+			{
+				image: "reachBackground1",
+				clipX: 0,
+				clipY: -800,
+				time: 800,
+			},
+			{
+				image: "reachBackground2",
+				clipX: 0,
+				clipY: -800,
+				time: 600,
+			},
+			{
+				image: "reachBackground3",
+				clipX: 0,
+				clipY: -800,
+				time: 500,
+			}, ],
 			changeTicks: 0,
 
-			currentImage: 0,
-			nextImage: 0,
+			currentImage: null,
+			nextImage: null,
+			current: 0,
+			next: 0,
 			changeTick: function ()
 			{
-				if (this.nextImage > 0)
+				if (this.next > 0)
 				{
 					this.changeTicks++;
-					if (this.changeTicks == 600)
+					if (this.changeTicks >= this.list[this.next].time)
 					{
+						this.changeTicks = 0;
 						this.currentImage = this.nextImage;
-						this.nextImage = 0;
+						this.nextImage = null;
+						this.current = this.next;
+						this.next = 0;
 					}
 				}
 				else
 				{
-					if (this.currentImage == 0)
+					if (this.current < 3)
 					{
-						//this.nextImage = 1;
+						this.next = this.current + 1;
+						this.nextImage = this.list[this.next].image;
 					}
 				}
 			},
 			clip: function (ctx)
 			{
+				ctx.translate(-this.x, -this.y);
 				ctx.beginPath();
-				ctx.arc(0, 0, 600 * this.changeTicks / 600, 0, Math.PI * 2);
+				ctx.arc(this.list[this.next].clipX, this.list[this.next].clipY, this.changeTicks / 2, 0, Math.PI * 2);
 				ctx.clip();
-			}
+				ctx.translate(this.x, this.y);
+			},
+		},
+		lifeCircle:
+		{
+			x: -300,
+			y: 600,
+			list: [null,
+			{
+				image: "lifeBackground1",
+				clipX: 0,
+				clipY: 800,
+				time: 120,
+			},
+			{
+				image: "lifeBackground2",
+				clipX: 0,
+				clipY: 800,
+				time: 120,
+			},
+			{
+				image: "lifeBackground3",
+				clipX: 0,
+				clipY: 800,
+				time: 1200,
+			},
+			{
+				image: "lifeBackground4",
+				clipX: 0,
+				clipY: 800,
+				time: 1200,
+			}, ],
+			changeTicks: 0,
+
+			currentImage: null,
+			nextImage: null,
+			current: 0,
+			next: 0,
+			changeTick: function ()
+			{
+				if (this.next > 0)
+				{
+					this.changeTicks++;
+					if (this.changeTicks >= this.list[this.next].time)
+					{
+						this.changeTicks = 0;
+						this.currentImage = this.nextImage;
+						this.nextImage = null;
+						this.current = this.next;
+						this.next = 0;
+					}
+				}
+				else
+				{
+					if (this.current < 4)
+					{
+						this.next = this.current + 1;
+						this.nextImage = this.list[this.next].image;
+					}
+				}
+			},
+			clip: function (ctx)
+			{
+				ctx.translate(-this.x, -this.y);
+				ctx.beginPath();
+				ctx.arc(this.list[this.next].clipX, this.list[this.next].clipY, this.changeTicks / 2, 0, Math.PI * 2);
+				ctx.clip();
+				ctx.translate(this.x, this.y);
+			},
 		},
 	},
 	draw: function (ctx)
@@ -115,7 +208,12 @@ var backgrounds = {
 			ctx.translate(circ.x, circ.y);
 			if (circ.currentImage)
 			{
+				if (circ.customDraw)
+				{
+					circ.customDraw(ctx);
+				}
 				ctx.drawImage(images[circ.currentImage], 0, 0);
+
 			}
 			if (circ.nextImage)
 			{

@@ -327,7 +327,7 @@ savingSystem = {
 		loopId = requestAnimationFrame(loop);
 
 		c = cMax;
-		saveCD = 540000;
+		saveCD = 5400;
 		s = saveCD / 2;
 	},
 	toConsole: function ()
