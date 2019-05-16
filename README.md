@@ -1,2 +1,2 @@
-# Elemental Shells
-A little incremental game about balancing elements.
+# The First Alkahistorian
+A not so little incremental game about balancing elements.
