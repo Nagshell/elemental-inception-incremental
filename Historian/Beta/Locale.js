@@ -21,7 +21,7 @@ var locale = {
 		"Waypoints",
 		"Minimap",
 		"Pane Controls",
-		"Lore - Disabled",
+		"Lore",
 		"Educational Corner",
 		"Redacted & Disabled",
 		null,
@@ -153,5 +153,5 @@ var locale = {
 	waypoints:
 	{
 		center: "Central Point",
-	}
+	},
 };

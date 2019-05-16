@@ -84,6 +84,7 @@ function preprocessImages()
 		"midBackground1", "midBackground2", "midBackground3", "midBackground4",
 		"reachBackground1", "reachBackground2", "reachBackground3",
 		"lifeBackground1", "lifeBackground2", "lifeBackground3", "lifeBackground4",
+		"coldBackground1", "coldBackground2", "coldBackground3",
 
 	];
 	for (var i = 0; i < imageList.length; i++)

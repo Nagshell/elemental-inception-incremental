@@ -905,6 +905,33 @@ function preprocessPaneData()
 		}
 	}
 
+	lorePane = new cPane(mainPane, -300, -300);
+	lorePane.title = "Lore Viewer";
+	regionData.pinRegion.action(lorePane);
+
+	lorePane.region = tabRegions[3];
+	lorePane.region.pane = lorePane;
+	lorePane.region.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			if (this.pane.boundaryPath)
+			{
+				regionData.hideRegion.mouseHandler(this.pane, x, y, type);
+			}
+			else
+			{
+				regionData.showRegion.mouseHandler(this.pane, x, y, type);
+				this.markedToSuperGlow = false;
+				this.pane.x = Math.floor(canvas.width / 2) - 200 - mainPane.centerX;
+				this.pane.y = 150 - mainPane.centerY;
+			}
+		}
+	};
+	lorePane.subRegions.push(regionData.dragRegion);
+	lorePane.subRegions.push(regionData.hideRegion);
+	lorePane.subRegions.push(regionData.draggableTitleRegion);
+
 	optionsPane = new cPane(mainPane, 300, 100);
 	var path = new Path2D();
 	path.rect(0, 0, 400, 300);
@@ -935,23 +962,8 @@ function preprocessPaneData()
 
 	optionsPane.region = tabRegions[9];
 	optionsPane.region.pane = optionsPane;
-	optionsPane.region.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (this.pane.boundaryPath)
-			{
-				regionData.hideRegion.mouseHandler(this.pane, x, y, type);
-			}
-			else
-			{
-				regionData.showRegion.mouseHandler(this.pane, x, y, type);
-				this.markedToSuperGlow = false;
-				this.pane.x = Math.floor(canvas.width / 2) - 200 - mainPane.centerX;
-				this.pane.y = 150 - mainPane.centerY;
-			}
-		}
-	};
+	optionsPane.region.mouseHandler = lorePane.region.mouseHandler;
+
 	preprocessOptions();
 }
 

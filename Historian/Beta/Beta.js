@@ -320,6 +320,7 @@ savingSystem = {
 		preprocessMachines();
 
 		preprocessMachinesData(simplifiedMachineData);
+		preprocessLore();
 		preprocessParticles();
 		resizeCanvas();
 

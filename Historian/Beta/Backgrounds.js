@@ -52,7 +52,27 @@ var backgrounds = {
 				}
 				else
 				{
-					if (this.current < 4)
+					var proceed = false;
+					switch (this.current)
+					{
+						case 0:
+							if (machineData.machineWater.recipes[0].unlocked)
+								proceed = true;
+							break;
+						case 1:
+							if (machineData.golemMerger.recipes[1].unlocked)
+								proceed = true;
+							break;
+						case 2:
+							if (machineData.machineVoid.recipes[0].unlocked)
+								proceed = true;
+							break;
+						case 3:
+							if (machineData.machineNexus.recipes[1].unlocked)
+								proceed = true;
+							break;
+					}
+					if (proceed)
 					{
 						this.next = this.current + 1;
 						this.nextImage = this.list[this.next].image;
@@ -113,7 +133,23 @@ var backgrounds = {
 				}
 				else
 				{
-					if (this.current < 3)
+					var proceed = false;
+					switch (this.current)
+					{
+						case 0:
+							if (machineData.machineSpatial.recipes[1].unlocked)
+								proceed = true;
+							break;
+						case 1:
+							if (machineData.machineParallel.recipes[1].unlocked)
+								proceed = true;
+							break;
+						case 2:
+							if (machineData.machineFoldedTemporal.recipes[1].unlocked)
+								proceed = true;
+							break;
+					}
+					if (proceed)
 					{
 						this.next = this.current + 1;
 						this.nextImage = this.list[this.next].image;
@@ -138,13 +174,13 @@ var backgrounds = {
 				image: "lifeBackground1",
 				clipX: 0,
 				clipY: 800,
-				time: 120,
+				time: 1200,
 			},
 			{
 				image: "lifeBackground2",
 				clipX: 0,
 				clipY: 800,
-				time: 120,
+				time: 1200,
 			},
 			{
 				image: "lifeBackground3",
@@ -180,7 +216,104 @@ var backgrounds = {
 				}
 				else
 				{
-					if (this.current < 4)
+					var proceed = false;
+					switch (this.current)
+					{
+						case 0:
+							if (machineData.machineSoilElements.recipes[0].unlocked)
+								proceed = true;
+							break;
+						case 1:
+							if (machineData.machineSeedElements.recipes[0].unlocked)
+								proceed = true;
+							break;
+						case 2:
+							if (machineData.machinePlantEarth.recipes[1].unlocked)
+								proceed = true;
+							break;
+						case 3:
+							if (machineData.machineUnPureSoilElements.recipes[0].unlocked)
+								proceed = true;
+							break;
+					}
+					if (proceed)
+					{
+						this.next = this.current + 1;
+						this.nextImage = this.list[this.next].image;
+					}
+				}
+			},
+			clip: function (ctx)
+			{
+				ctx.translate(-this.x, -this.y);
+				ctx.beginPath();
+				ctx.arc(this.list[this.next].clipX, this.list[this.next].clipY, this.changeTicks / 2, 0, Math.PI * 2);
+				ctx.clip();
+				ctx.translate(this.x, this.y);
+			},
+		},
+		coldCircle:
+		{
+			x: -1205,
+			y: -300,
+			list: [null,
+			{
+				image: "coldBackground1",
+				clipX: -750,
+				clipY: 0,
+				time: 800,
+			},
+			{
+				image: "coldBackground2",
+				clipX: -750,
+				clipY: 0,
+				time: 800,
+			},
+			{
+				image: "coldBackground3",
+				clipX: -750,
+				clipY: 0,
+				time: 800,
+			}, ],
+			changeTicks: 0,
+
+			currentImage: null,
+			nextImage: null,
+			current: 0,
+			next: 0,
+			changeTick: function ()
+			{
+				if (this.next > 0)
+				{
+					this.changeTicks++;
+					if (this.changeTicks >= this.list[this.next].time)
+					{
+						this.changeTicks = 0;
+						this.currentImage = this.nextImage;
+						this.nextImage = null;
+						this.current = this.next;
+						this.next = 0;
+					}
+				}
+				else
+				{
+					var proceed = false;
+					switch (this.current)
+					{
+						case 0:
+							if (machineData.machineGale.recipes[0].unlocked)
+								proceed = true;
+							break;
+						case 1:
+							if (machineData.machineCryospire.recipes[0].unlocked)
+								proceed = true;
+							break;
+						case 2:
+							if (machineData.machineVortex.recipes[0].unlocked)
+								proceed = true;
+							break;
+					}
+					if (proceed)
 					{
 						this.next = this.current + 1;
 						this.nextImage = this.list[this.next].image;

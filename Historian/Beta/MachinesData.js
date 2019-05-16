@@ -33,7 +33,6 @@ function preprocessMachinesData(simplifiedDataToBeProcessed)
 		{
 			machineDisplayElements[machineData[title].displayElement] = title;
 		}
-
 		initMachine(title);
 	}
 }

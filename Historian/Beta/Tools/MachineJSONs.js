@@ -3333,28 +3333,15 @@ var hotCircle = {
 				},
 			}
 		},
-		machineCarbon:
+		machinePropane:
 		{
-			baseStats: [800, -150, "Carbon"],
+			baseStats: [800, -150, "Propane"],
 			recipes:
-			{
-				earthStart1:
-				{
-					baseStats: [1, 1, true, true],
-					in: [
-						["Carbon", 1, 0.1],
-						["CompressedEarth", 1, 0.1],
-					],
-					out: [
-						["Coal", 10, 12],
-					],
-					lock: ["Earth", 1e99],
-				},
-			}
+			{}
 		},
 		machineHotWaste:
 		{
-			baseStats: [1100, 0, ["Ash", "Dust"]],
+			baseStats: [1100, 0, ["Ash", "Dust", "Carbon"]],
 			recipes:
 			{}
 		},
@@ -3413,7 +3400,7 @@ var powerCircle = {
 		},
 		machineAdvancedRefinery:
 		{
-			baseStats: [750, -350, ["Diesel", "Petrol", "Propane", "Propene"]],
+			baseStats: [750, -350, ["Diesel", "Petrol", "Propene"]],
 			recipes:
 			{
 				earthStart1:
@@ -3434,7 +3421,7 @@ var powerCircle = {
 				},
 			}
 		},
-		machineFuel:
+		machineProcessFuel:
 		{
 			baseStats: [500, -500],
 			recipes:
@@ -3465,7 +3452,7 @@ var powerCircle = {
 				},
 			}
 		},
-		machineDiesel:
+		machineProcessDiesel:
 		{
 			baseStats: [575, -575],
 			recipes:
@@ -3502,7 +3489,7 @@ var powerCircle = {
 				},
 			}
 		},
-		machinePetrol:
+		machineProcessPetrol:
 		{
 			baseStats: [650, -650],
 			recipes:
@@ -3530,7 +3517,7 @@ var powerCircle = {
 				},
 			}
 		},
-		machinePropane:
+		machineProcessPropane:
 		{
 			baseStats: [725, -725],
 			recipes:
@@ -3546,7 +3533,7 @@ var powerCircle = {
 				},
 			}
 		},
-		machinePropene:
+		machineProcessPropene:
 		{
 			baseStats: [800, -800],
 			recipes:
