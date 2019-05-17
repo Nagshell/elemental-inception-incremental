@@ -357,3 +357,16 @@ var backgrounds = {
 		}
 	},
 };
+
+function preprocessBackgrounds()
+{
+	for (var circle in backgrounds.circles)
+	{
+		var circ = backgrounds.circles[circle];
+		circ.changeTicks = 0;
+		circ.currentImage = null;
+		circ.nextImage = null;
+		circ.current = 0;
+		circ.next = 0;
+	}
+}

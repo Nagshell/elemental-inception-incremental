@@ -18,17 +18,18 @@ var locale = {
 	outOf: "out of",
 
 	aTabNames: [
-		"Redacted & Disabled",
-		"Redacted & Disabled",
-		"Redacted & Disabled",
-		"Lore - Disabled",
-		"Educational Corner",
-		"Redacted & Disabled",
+		"Waypoints",
+		"Minimap",
+		"Pane Controls",
+		"Lore",
+		"Info Corner",
+		"Icon Legend",
 		null,
 		null,
 		null,
-		"Options",
-		"Redacted & Disabled",
+		"Option(s)",
+		"Changelog",
+		"Donate",
 	],
 	oMachines:
 	{
@@ -141,11 +142,24 @@ var locale = {
 
 		n: "",
 	},
-	oGolemShorthand:
+	oElementsShorthand:
 	{
 		GolemEarth: "E",
 		GolemWater: "W",
 		GolemAir: "A",
 		GolemFire: "F",
+		Ice: "I",
+	},
+	waypoints:
+	{
+		center: "Central Point",
+		reach: "Reaching Point",
+		rarity: "Material Point",
+		cold: "Freezing Point",
+		hot: "Burning Point",
+		power: "Power Point",
+		life: "Vigorious Point",
+		gem: "Pressure Point",
+		pure: "Purest of Points",
 	},
 };

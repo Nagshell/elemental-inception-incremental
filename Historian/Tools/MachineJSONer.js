@@ -16,7 +16,18 @@ function prepareTemplatedMachineData(simplifiedDataToBeProcessed)
 		};
 		if (simplifiedData.baseStats[2])
 		{
-			preparedData.displayElement = simplifiedData.baseStats[2];
+			if (Array.isArray(simplifiedData.baseStats[2]))
+			{
+				preparedData.displayArray = simplifiedData.baseStats[2];
+				preparedData.displayArrayCurrent = 0;
+				preparedData.displayArrayCD = 0;
+				preparedData.displayArrayCDMax = 256;
+				preparedData.displayElement = simplifiedData.baseStats[2][0];
+			}
+			else
+			{
+				preparedData.displayElement = simplifiedData.baseStats[2];
+			}
 		}
 		if (simplifiedData.baseStats[3])
 		{
@@ -31,7 +42,7 @@ function prepareTemplatedMachineData(simplifiedDataToBeProcessed)
 			var simplifiedRecipe = simplifiedData.recipes[recipeTitle];
 			var preparedRecipe = {
 				id: recipeTitle,
-				title: locale.oRecipes[recipeTitle],
+				title: locale.oRecipes[recipeTitle] || recipeTitle,
 				enabled: false,
 				inputs: [],
 				outputs: [],

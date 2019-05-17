@@ -3,6 +3,7 @@ var images = {};
 function preprocessIcons()
 {
 	var resizabledIconList = [
+		"iconOk",
 		"iconOn",
 		"iconOff",
 		"iconUp",
@@ -34,6 +35,8 @@ function preprocessIcons()
 function preprocessImages()
 {
 	var imageList = [
+		"iconMissing",
+
 		"iconEarth",
 		"iconWater",
 		"iconAir",
@@ -50,8 +53,6 @@ function preprocessImages()
 		"iconGolemAir",
 		"iconGolemFire",
 
-		"iconMergerDisplay",
-
 		"buttonConfirm",
 		"buttonConfirmCrossed",
 		"buttonCancel",
@@ -61,6 +62,9 @@ function preprocessImages()
 		"machineWater",
 		"machineAir",
 		"machineFire",
+
+		"golemMerger",
+
 		"machineMud",
 		"machineIce",
 		"machineSteam",
@@ -70,11 +74,6 @@ function preprocessImages()
 		"machineVoid",
 		"machineNexus",
 
-		"mainBackground1",
-		"mainBackground2",
-		"mainBackground3",
-		"mainBackground4",
-
 		"tutorialPage0",
 		"tutorialPage1",
 		"tutorialPage2",
@@ -83,6 +82,18 @@ function preprocessImages()
 		"tutorialPage5",
 		"tutorialPage6",
 		"tutorialPage7",
+
+		"changelogPage0",
+
+		"donationPage",
+
+		"iconLegend",
+
+		"midBackground1", "midBackground2", "midBackground3", "midBackground4",
+		"reachBackground1", "reachBackground2", "reachBackground3",
+		"lifeBackground1", "lifeBackground2", "lifeBackground3", "lifeBackground4",
+		"coldBackground1", "coldBackground2", "coldBackground3",
+
 	];
 	for (var i = 0; i < imageList.length; i++)
 	{

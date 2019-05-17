@@ -9,6 +9,10 @@ function preprocessRegionData()
 	regionData.dragRegion.boundaryPath = regionData.iconPath;
 	regionData.dragRegion.mouseHandler = function (pane, x, y, type)
 	{
+		if (type == "mousemove" && pane.title)
+		{
+			tooltipPane.showText(pane.title);
+		}
 		if (type == "mousedown")
 		{
 			panes.dragndrop = pane;
@@ -27,6 +31,8 @@ function preprocessRegionData()
 			{
 				pane.hiddenPath = pane.boundaryPath;
 				pane.boundaryPath = null;
+				pane.blockShow = true;
+				pane.postShow = false;
 			}
 		}
 	}
@@ -42,6 +48,7 @@ function preprocessRegionData()
 			{
 				pane.boundaryPath = pane.hiddenPath;
 				pane.hiddenPath = null;
+				pane.blockShow = false;
 			}
 			if (pane.top)
 			{
@@ -137,14 +144,13 @@ function preprocessRegionData()
 				pane.boundaryPathMin = pane.hiddenPath;
 				pane.hiddenPath = pane.boundaryPathMax;
 			}
-
 			pane.boundaryPathMax = null;
 		}
 	}
 
 	regionData.draggableTitleRegion = new cRegion(optionData.iconSize * 2 + 2, 0);
 	var path = new Path2D();
-	path.rect(0, 0, 400, optionData.iconSize);
+	path.rect(0, 0, optionData.iconSize * 7 + 350, optionData.iconSize);
 	regionData.draggableTitleRegion.boundaryPath = path;
 	regionData.draggableTitleRegion.mouseHandler = regionData.dragRegion.mouseHandler;
 	regionData.draggableTitleRegion.customDraw = function (ctx, pane)
@@ -349,6 +355,56 @@ var mainPane;
 var paymentPane;
 var educationalPane;
 var optionsPane;
+var waypointPane;
+var minimapPane;
+var mapControlPane;
+var donatePage;
+var waypointsBase = [
+{
+	name: locale.waypoints.center,
+	x: 0,
+	y: 0,
+},
+{
+	name: locale.waypoints.reach,
+	x: 0,
+	y: -800,
+},
+{
+	name: locale.waypoints.rarity,
+	x: -500,
+	y: -500,
+},
+{
+	name: locale.waypoints.cold,
+	x: -750,
+	y: 0,
+},
+{
+	name: locale.waypoints.hot,
+	x: 750,
+	y: 0,
+},
+{
+	name: locale.waypoints.power,
+	x: 575,
+	y: -575,
+},
+{
+	name: locale.waypoints.life,
+	x: 0,
+	y: 900,
+},
+{
+	name: locale.waypoints.gem,
+	x: 775,
+	y: 600,
+},
+{
+	name: locale.waypoints.pure,
+	x: -600,
+	y: 600,
+}, ];
 
 function preprocessPaneData()
 {
@@ -365,57 +421,11 @@ function preprocessPaneData()
 	mainPane.customDraw = function (ctx)
 	{
 		var tempBackground;
-		if (mainPane.background)
-		{
-			mainPane.backgroundR++;
-		}
-		if (machineData.machineNexus.recipes[1].unlocked)
-		{
-			tempBackground = "mainBackground4";
-		}
-		else if (machineData.machineVoid.recipes[0].unlocked)
-		{
-			tempBackground = "mainBackground3";
-		}
-		else if (machineData.golemMerger.recipes[0].unlocked)
-		{
-			tempBackground = "mainBackground2";
-		}
-		else if (machineData.machineWater.recipes[1].unlocked)
-		{
-			tempBackground = "mainBackground1";
-		}
-		if (tempBackground != mainPane.background)
-		{
-			mainPane.backgroundR = 0;
-			mainPane.backgroundLast = mainPane.background;
-			mainPane.background = tempBackground;
-		}
-		if (mainPane.background)
-		{
-			ctx.save();
-			if (mainPane.backgroundR < 600)
-			{
-				mainPane.backgroundR++;
-				if (mainPane.backgroundLast)
-				{
-					ctx.drawImage(images[mainPane.backgroundLast], -400, -400);
-				}
-				ctx.beginPath();
-				ctx.arc(0, 0, mainPane.backgroundR, 0, Math.PI * 2);
-				ctx.globalAlpha = (600 - mainPane.backgroundR) / 600;
-				ctx.stroke();
-				ctx.globalAlpha = 1;
-				ctx.clip();
-			}
-			ctx.drawImage(images[mainPane.background], -400, -400);
-			ctx.restore();
-		}
+		backgrounds.draw(ctx);
+		effectSystem.draw(ctx);
 
-		particleGenerator.draw(ctx);
-
-		var x = -this.centerX + canvas.width / 2;
-		var y = -this.centerY + canvas.height / 2 - 100;
+		var x = -this.centerX + Math.trunc(canvas.width / 2);
+		var y = -this.centerY + Math.trunc(canvas.height / 2) - 100;
 
 		ctx.save();
 		ctx.globalAlpha = borderGlow.alpha;
@@ -456,6 +466,13 @@ function preprocessPaneData()
 			ctx.stroke();
 		}
 		ctx.restore();
+	};
+	mainPane.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mousedown")
+		{
+			panes.dragndropcenter = this;
+		}
 	}
 
 	paymentPane = new cPane(mainPane, 300, 0);
@@ -509,6 +526,7 @@ function preprocessPaneData()
 		this.costs = costs;
 		this.target = target;
 		panes.postMouseHandlerShow.push(this);
+		this.blockShow = false;
 
 		if (!this.pinned)
 		{
@@ -552,6 +570,19 @@ function preprocessPaneData()
 		ctx.textAlign = "left";
 		ctx.fillStyle = ctx.strokeStyle;
 		ctx.fillText(locale.autosave + ": " + Math.trunc(s / 3600) + ":" + ("0" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60)).slice(-2), trackerPane.savingX, 50);
+		ctx.fillText("TPF:" + tpf, trackerPane.savingX - 50, 33);
+		ctx.fillText("FPS:" + fps, trackerPane.savingX - 50, 50);
+		ctx.fillText("TPS:" + tps, trackerPane.savingX - 50, 67);
+		if (lim)
+		{
+			ctx.fillText("Capped", trackerPane.savingX - 50, 84);
+		}
+		if (elapsed)
+		{
+			ctx.textAlign = "right";
+			ctx.fillText("Awarded " + Math.round(elapsed * 0.8) + " bonus Time.", trackerPane.savingX - 60, 67);
+			ctx.fillText("Time spent offline: " + formattedElapsed, trackerPane.savingX - 60, 50);
+		}
 		ctx.restore();
 	}
 	trackerPane.resize = function ()
@@ -563,17 +594,22 @@ function preprocessPaneData()
 	trackerPane.subRegions.push(regionData.saveRegion);
 	trackerPane.subRegions.push(regionData.resetRegion);
 
+	var tabWidth = 140;
+	var tabHeight = 24;
 	path = new Path2D();
-	path.rect(0, 0, 140, 24);
+	path.rect(0, 0, tabWidth, tabHeight);
 	var tabRegions = [];
 	for (var i = 0; i < 18; i++)
 	{
-		var r = new cRegion(5 + 148 * Math.floor(i / 3), 5 + 32 * (i % 3));
+		var r = new cRegion(5 + (tabWidth + 8) * Math.floor(i / 3), 5 + (tabHeight + 8) * (i % 3));
 		r.text = locale.aTabNames[i];
-		r.textX = 70;
-		r.textY = 12;
+		r.textX = tabWidth / 2;
+		r.textY = tabHeight / 2;
 		r.boundaryPath = locale.aTabNames[i] ? path : null;
-		trackerPane.subRegions.push(r);
+		if (i > 2)
+		{
+			trackerPane.subRegions.push(r);
+		}
 		tabRegions.push(r);
 	}
 
@@ -617,14 +653,11 @@ function preprocessPaneData()
 			else
 			{
 				regionData.showRegion.mouseHandler(this.pane, x, y, type);
-				this.markedToSuperGlow = false;
 				this.pane.x = 50 - this.pane.top.centerX;
 				this.pane.y = 50 - this.pane.top.centerY;
 			}
 		}
 	};
-
-	educationalPane.region.markedToSuperGlow = true;
 	educationalPane.region.pane = educationalPane;
 
 	regionData.pinRegion.action(educationalPane);
@@ -662,11 +695,317 @@ function preprocessPaneData()
 	}
 	regionData.hideRegion.action(tooltipPane);
 
+	waypointPane = new cPane(trackerPane, tabRegions[0].x, tabRegions[0].y);
+	waypointPane.modelRegion = tabRegions[0];
+	waypointPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
+	waypointPane.maxGrowth = 15;
+	waypointPane.independent = true;
+	waypointPane.growth = 0;
+	waypointPane.growthX = 0;
+	waypointPane.growthY = optionData.iconSize - 1;
+	waypointPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		var rePath = false;
+		if (this.growing && this.growth < this.maxGrowth)
+		{
+			this.growth++;
+			regionData.showRegion.action(this.top);
+			rePath = true;
+		}
+		else if (!this.growing && this.growth > 0)
+		{
+			this.growth--;
+			rePath = true;
+		}
+		if (rePath)
+		{
+			path = new Path2D();
+			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			this.boundaryPath = path;
+		}
+		ctx.fillStyle = ctx.strokeStyle;
+		if (this.growth > 0)
+		{
+			ctx.save();
+			ctx.translate(0, tabHeight);
+			ctx.textAlign = "left";
+			for (var i = 0; i < waypointsBase.length; i++)
+			{
+				ctx.fillText(waypointsBase[i].name, optionData.iconSize + 5, optionData.iconSize / 2 + 1);
+				ctx.stroke(regionData.iconPath);
+				ctx.drawImage(images.iconNext, 0, 0);
+				ctx.translate(0, optionData.iconSize);
+			}
+			ctx.restore();
+		}
+
+		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+		ctx.restore();
+	};
+	waypointPane.mouseHandler = function (pane, x, y, type)
+	{
+		if (this.recentlyGrowing || type == "mouseup")
+		{
+			this.growing = true;
+			if (machineData.machineKnowledge.recipes[0].unlocked)
+			{
+				this.growthY = optionData.iconSize * waypointsBase.length;
+			}
+		}
+		if (type == "mouseup")
+		{
+			if (x < optionData.iconSize)
+			{
+				y -= tabHeight;
+				if (y > 0)
+				{
+					y = Math.trunc(y / optionData.iconSize);
+					x = waypointsBase[y].x;
+					y = waypointsBase[y].y;
+					panes.moveCenterMap(-x + Math.trunc(canvas.width / 2), -y + Math.trunc(canvas.height / 2) - 100);
+				}
+			}
+		}
+	};
+
+	minimapPane = new cPane(trackerPane, tabRegions[1].x, tabRegions[1].y);
+	minimapPane.modelRegion = tabRegions[1];
+	minimapPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
+	minimapPane.maxGrowth = 10;
+	minimapPane.independent = true;
+	minimapPane.growth = 0;
+	minimapPane.growthX = 300 - tabWidth;
+	minimapPane.growthY = 300;
+	minimapPane.load = 0;
+	minimapPane.maxLoad = 50;
+	minimapPane.scale = 10;
+
+	minimapPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		var rePath = false;
+		if (this.growing && this.growth < this.maxGrowth)
+		{
+			this.growth++;
+			//regionData.showRegion.action(this.top);
+			rePath = true;
+		}
+		else if (!this.growing && this.growth > 0)
+		{
+			this.growth--;
+			rePath = true;
+		}
+		if (rePath)
+		{
+			path = new Path2D();
+			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			this.boundaryPath = path;
+		}
+
+		if (this.growth >= this.maxGrowth)
+		{
+			if (this.load < this.maxLoad)
+			{
+				this.load++;
+			}
+			if (this.load > 0)
+			{
+				ctx.save();
+				ctx.translate((this.growthX + tabWidth) / 2, this.growthY / 2 + tabHeight);
+
+				ctx.beginPath();
+				ctx.arc(0, 0, Math.max(0, this.load / this.maxLoad * (this.growthX + tabWidth) / 2 - 5), 0, Math.PI * 2);
+				ctx.stroke();
+				ctx.fill();
+				ctx.clip();
+				ctx.scale(1 / this.scale, 1 / this.scale);
+				for (var machineTitle in machineData)
+				{
+					var mach = machineData[machineTitle];
+					if (mach.region.boundaryPath)
+					{
+						ctx.save();
+						ctx.translate(mach.region.x, mach.region.y);
+						ctx.stroke(mach.region.boundaryPath);
+						ctx.clip(mach.region.boundaryPath);
+						doGlows(ctx, mach.region, "solid");
+						ctx.restore();
+					}
+				}
+
+				ctx.restore();
+			}
+		}
+		else
+		{
+			this.load = 0;
+		}
+
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+		ctx.restore();
+	}
+	minimapPane.mouseHandler = function (pane, x, y, type)
+	{
+		if (this.recentlyGrowing || type == "mouseup")
+		{
+			this.growing = true;
+		}
+		if (type == "mouseup")
+		{
+			x -= (this.growthX + tabWidth) / 2;
+			y -= this.growthY / 2 + tabHeight;
+			var r = this.load / this.maxLoad * (this.growthX + tabWidth) / 2 - 5;
+			if (x * x + y * y < r * r)
+			{
+				panes.moveCenterMap(-x * this.scale + Math.trunc(canvas.width / 2), -y * this.scale + Math.trunc(canvas.height / 2) - 100);
+			}
+		}
+	}
+
+	mapControlPane = new cPane(trackerPane, tabRegions[2].x, tabRegions[2].y);
+	mapControlPane.modelRegion = tabRegions[2];
+	mapControlPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
+	mapControlPane.maxGrowth = 15;
+	mapControlPane.independent = true;
+	mapControlPane.growth = 0;
+	mapControlPane.growthX = 148;
+	mapControlPane.growthY = 75;
+	mapControlPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+
+		var rePath = false;
+		if (this.growing && this.growth < this.maxGrowth)
+		{
+			this.growth++;
+			regionData.showRegion.action(this.top);
+			rePath = true;
+		}
+		else if (!this.growing && this.growth > 0)
+		{
+			this.growth--;
+			rePath = true;
+			if (this.hideAllRegion.hiddenList.length > 0)
+			{
+				for (var i = 0; i < this.hideAllRegion.hiddenList.length; i++)
+				{
+					regionData.showRegion.action(this.hideAllRegion.hiddenList[i]);
+				}
+				this.hideAllRegion.hiddenList = [];
+			}
+		}
+		if (rePath)
+		{
+			path = new Path2D();
+			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			this.boundaryPath = path;
+		}
+
+		ctx.restore();
+	}
+	mapControlPane.mouseHandler = function (pane, x, y, type)
+	{
+		if (this.recentlyGrowing || type == "mouseup")
+		{
+			this.growing = true;
+		}
+	}
+	preprocessMapControl();
+
+	iconLegendPane = new cPane(trackerPane, tabRegions[5].x, tabRegions[5].y);
+	iconLegendPane.modelRegion = tabRegions[5];
+	iconLegendPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
+	iconLegendPane.maxGrowth = 15;
+	iconLegendPane.independent = true;
+	iconLegendPane.growth = 0;
+	iconLegendPane.growthX = 110;
+	iconLegendPane.growthY = 222;
+	iconLegendPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+
+		var rePath = false;
+		if (this.growing && this.growth < this.maxGrowth)
+		{
+			this.growth++;
+			regionData.showRegion.action(this.top);
+			rePath = true;
+		}
+		else if (!this.growing && this.growth > 0)
+		{
+			this.growth--;
+			rePath = true;
+		}
+		if (rePath)
+		{
+			path = new Path2D();
+			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			this.boundaryPath = path;
+		}
+
+		if (this.growth > 0)
+		{
+			ctx.drawImage(images.iconLegend, 0, 25);
+		}
+		ctx.restore();
+	}
+	iconLegendPane.mouseHandler = function (pane, x, y, type)
+	{
+		if (this.recentlyGrowing || type == "mouseup")
+		{
+			this.markedToSuperGlow = false;
+			this.growing = true;
+		}
+	}
+	iconLegendPane.modelRegion.markedToSuperGlow = true;
+
+	lorePane = new cPane(mainPane, -300, -300);
+	lorePane.title = "Lore Viewer";
+	regionData.pinRegion.action(lorePane);
+
+	lorePane.region = tabRegions[3];
+	lorePane.region.pane = lorePane;
+	lorePane.region.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			this.markedToSuperGlow = false;
+			if (this.pane.boundaryPath)
+			{
+				regionData.hideRegion.mouseHandler(this.pane, x, y, type);
+			}
+			else
+			{
+				regionData.showRegion.mouseHandler(this.pane, x, y, type);
+				this.markedToSuperGlow = false;
+				this.pane.x = Math.floor(canvas.width / 2) - 200 - mainPane.centerX;
+				this.pane.y = 150 - mainPane.centerY;
+			}
+		}
+	};
+	lorePane.subRegions.push(regionData.dragRegion);
+	lorePane.subRegions.push(regionData.hideRegion);
+	lorePane.subRegions.push(regionData.draggableTitleRegion);
+
 	optionsPane = new cPane(mainPane, 300, 100);
 	var path = new Path2D();
 	path.rect(0, 0, 400, 300);
 	optionsPane.boundaryPath = path;
 	optionsPane.title = "Options - Don't forget to apply your settings!";
+	optionsPane.customDraw = function (ctx)
+	{
+		if (!this.postShow)
+		{
+			panes.postMouseHandlerShow.push(this);
+			this.postShow = true;
+		}
+	}
 
 	optionsPane.maxPages = 0;
 	if (optionsPane.maxPages > 0)
@@ -676,15 +1015,48 @@ function preprocessPaneData()
 		optionsPane.subRegions.push(regionData.prevPageRegion);
 	}
 	optionsPane.subRegions.push(regionData.dragRegion);
-	optionsPane.subRegions.push(regionData.pinRegion);
 	optionsPane.subRegions.push(regionData.hideRegion);
 
 	optionsPane.subRegions.push(regionData.draggableTitleRegion);
 	regionData.hideRegion.action(optionsPane);
+	regionData.pinRegion.action(optionsPane);
 
 	optionsPane.region = tabRegions[9];
 	optionsPane.region.pane = optionsPane;
-	optionsPane.region.mouseHandler = function (pane, x, y, type)
+	optionsPane.region.mouseHandler = lorePane.region.mouseHandler;
+
+	preprocessOptions();
+
+	changelogPane = new cPane(mainPane, 200, 200);
+	path = new Path2D();
+	path.rect(0, 0, 300, 230);
+	changelogPane.boundaryPath = path;
+	changelogPane.subRegions.push(regionData.dragRegion);
+	changelogPane.subRegions.push(regionData.pinRegion);
+	changelogPane.subRegions.push(regionData.hideRegion);
+	changelogPane.subRegions.push(regionData.nextPageRegion);
+	changelogPane.subRegions.push(regionData.prevPageRegion);
+	changelogPane.subRegions.push(regionData.draggableTitleRegion);
+	changelogPane.maxPages = 0;
+	changelogPane.currentPage = changelogPane.maxPages;
+	changelogPane.customDraw = function (ctx)
+	{
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		this.title = locale.page + " " + (this.currentPage + 1) + " " + locale.outOf + " " + (this.maxPages + 1);
+		if (images["changelogPage" + this.currentPage])
+		{
+			ctx.drawImage(images["changelogPage" + this.currentPage], 0, 50);
+		}
+		switch (this.currentPage)
+		{
+			case 0:
+				break;
+		}
+		ctx.restore();
+	}
+	changelogPane.region = tabRegions[10];
+	changelogPane.region.mouseHandler = function (pane, x, y, type)
 	{
 		if (type == "mouseup")
 		{
@@ -695,16 +1067,118 @@ function preprocessPaneData()
 			else
 			{
 				regionData.showRegion.mouseHandler(this.pane, x, y, type);
-				this.markedToSuperGlow = false;
-				if (!this.pane.pinned)
-				{
-					this.pane.x = canvas.width / 2 - 200 - mainPane.centerX;
-					this.pane.y = 150 - mainPane.centerY;
-				}
+				this.pane.x = 50 - this.pane.top.centerX;
+				this.pane.y = 50 - this.pane.top.centerY;
 			}
 		}
 	};
-	preprocessOptions();
+	changelogPane.region.pane = changelogPane;
+	regionData.pinRegion.action(changelogPane);
+	regionData.hideRegion.action(changelogPane);
+
+	donatePage = new cPane(mainPane, 300, 100);
+	var path = new Path2D();
+	path.rect(0, 0, 300, 200);
+	donatePage.boundaryPath = path;
+	donatePage.title = "Donation Page";
+	donatePage.customDraw = function (ctx)
+	{
+		ctx.drawImage(images.donationPage, 0, 30);
+	}
+	donatePage.subRegions.push(regionData.dragRegion);
+	donatePage.subRegions.push(regionData.hideRegion);
+
+	donatePage.subRegions.push(regionData.draggableTitleRegion);
+	regionData.hideRegion.action(donatePage);
+	regionData.pinRegion.action(donatePage);
+
+	donatePage.region = tabRegions[11];
+	donatePage.region.pane = donatePage;
+	donatePage.region.mouseHandler = lorePane.region.mouseHandler;
+
+	preprocessDonations();
+}
+
+function preprocessMapControl()
+{
+	var hideAllRegion = new cRegion(20, 30);
+	var path = new Path2D();
+	path.rect(0, 0, 120, 20);
+	hideAllRegion.boundaryPath = path;
+	hideAllRegion.text = "Temp. Hide Panes";
+	hideAllRegion.textX = 60;
+	hideAllRegion.textY = 10;
+	hideAllRegion.hiddenList = [];
+	hideAllRegion.mouseHandler = function (pane, x, y, type)
+	{
+		pane.growing = true;
+		if (type == "mouseup")
+		{
+			for (var i = 0; i < this.hiddenList.length; i++)
+			{
+				regionData.showRegion.action(this.hiddenList[i]);
+			}
+			this.hiddenList = [];
+			for (var i = mainPane.subPanes.length - 1; i >= 0; i--)
+			{
+				if (mainPane.subPanes[i].boundaryPath)
+				{
+					regionData.hideRegion.action(mainPane.subPanes[i]);
+					this.hiddenList.push(mainPane.subPanes[i]);
+				}
+			}
+		}
+	}
+	mapControlPane.subRegions.push(hideAllRegion);
+	mapControlPane.hideAllRegion = hideAllRegion;
+
+	var closeAllRegion = new cRegion(20, 60);
+	closeAllRegion.boundaryPath = path;
+	closeAllRegion.text = "Close All Panes";
+	closeAllRegion.textX = 60;
+	closeAllRegion.textY = 10;
+	closeAllRegion.mouseHandler = function (pane, x, y, type)
+	{
+		pane.growing = true;
+		if (type == "mouseup")
+		{
+			for (var i = mainPane.subPanes.length - 1; i >= 0; i--)
+			{
+				regionData.hideRegion.action(mainPane.subPanes[i]);
+			}
+		}
+	}
+	mapControlPane.subRegions.push(closeAllRegion);
+
+	var unpinAllRegion = new cRegion(150, 30);
+	unpinAllRegion.boundaryPath = path;
+	unpinAllRegion.text = "Unpin All Panes";
+	unpinAllRegion.textX = 60;
+	unpinAllRegion.textY = 10;
+	unpinAllRegion.mouseHandler = function (pane, x, y, type)
+	{
+		pane.growing = true;
+		if (type == "mouseup")
+		{
+			mainPane.unpinPinnable();
+		}
+	}
+	mapControlPane.subRegions.push(unpinAllRegion);
+
+	var resetAllRegion = new cRegion(150, 60);
+	resetAllRegion.boundaryPath = path;
+	resetAllRegion.text = "Reset Pane Pos.";
+	resetAllRegion.textX = 60;
+	resetAllRegion.textY = 10;
+	resetAllRegion.mouseHandler = function (pane, x, y, type)
+	{
+		pane.growing = true;
+		if (type == "mouseup")
+		{
+			panes.resetPositions();
+		}
+	}
+	mapControlPane.subRegions.push(resetAllRegion);
 }
 
 function preprocessOptions()
@@ -743,6 +1217,15 @@ function preprocessOptions()
 	revertRegion.text = "Revert changes";
 	revertRegion.textX = 50;
 	revertRegion.textY = 10;
+	revertRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			optionsPane.optionData = JSON.parse(JSON.stringify(optionData));
+			pane.iconSizeRegion.text = "Toggle UI size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
+			pane.particleCDRegion.text = "Toggle particle limiter. x" + optionData.particleCDMultiplier + " -> x" + optionsPane.optionData.particleCDMultiplier;
+		}
+	};
 	optionsPane.subRegions.push(revertRegion);
 
 	var iconSizeRegion = new cRegion(25, 75);
@@ -760,5 +1243,60 @@ function preprocessOptions()
 			this.text = "Toggle UI size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
 		}
 	};
+	optionsPane.iconSizeRegion = iconSizeRegion;
 	optionsPane.subRegions.push(iconSizeRegion);
+
+	optionsPane.optionData.particleCDMultiplier = 1;
+	/*var particleCDRegion = new cRegion(25, 100);
+	particleCDRegion.text = "Toggle particle limiter. x" + optionData.particleCDMultiplier + " -> x" + optionsPane.optionData.particleCDMultiplier;
+	particleCDRegion.textX = 100;
+	particleCDRegion.textY = 10;
+	var path = new Path2D();
+	path.rect(0, 0, particleCDRegion.textX * 2, 20);
+	particleCDRegion.boundaryPath = path;
+	particleCDRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			pane.optionData.particleCDMultiplier = 1 + (pane.optionData.particleCDMultiplier) % 9;
+			this.text = "Toggle particle limiter. x" + optionData.particleCDMultiplier + " -> x" + optionsPane.optionData.particleCDMultiplier;
+		}
+	};
+	optionsPane.particleCDRegion = particleCDRegion;
+	optionsPane.subRegions.push(particleCDRegion);*/
+}
+
+function preprocessDonations()
+{
+	var patreonRegion = new cRegion(20, 160);
+	var path = new Path2D();
+	path.rect(0, 0, 120, 20);
+	patreonRegion.boundaryPath = path;
+	patreonRegion.text = "Link to Patreon";
+	patreonRegion.textX = 60;
+	patreonRegion.textY = 10;
+	patreonRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			window.open('https://www.patreon.com/user?u=12559765', '_blank');
+		}
+	}
+	donatePage.subRegions.push(patreonRegion);
+
+	var paypalRegion = new cRegion(150, 160);
+	var path = new Path2D();
+	path.rect(0, 0, 120, 20);
+	paypalRegion.boundaryPath = path;
+	paypalRegion.text = "Link to Patreon";
+	paypalRegion.textX = 60;
+	paypalRegion.textY = 10;
+	paypalRegion.mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TNTLB3ZN7BVUQ', '_blank');
+		}
+	}
+	donatePage.subRegions.push(paypalRegion);
 }

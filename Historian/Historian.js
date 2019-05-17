@@ -1,5 +1,5 @@
 var loopId = null;
-var gameVersion = 13;
+var gameVersion = 42;
 var elapsed = 0;
 var formattedElapsed = 0;
 savingSystem = {
@@ -176,9 +176,17 @@ savingSystem = {
 			}
 			else
 			{
-				alert("Save system has beed updated. There is 99.5% chance previous save wouldn't load properly. Game did hard reset, but you'll recieved a lot of turbo time as an apology.");
+				if (dataToLoad == -100)
+				{
+					alert("Cleared leftover data from Open Beta.");
+				}
+				else
+				{
+					alert("Save system has beed updated. There is 99.5% chance previous save wouldn't load properly. Game did hard reset, but you have recieved a lot of turbo time as an apology.");
+				}
 				data.oElements.Time.amount += dataToLoad;
 				dataToLoad = null;
+				this.saveData();
 			}
 		}
 		if (dataToLoad)
@@ -298,9 +306,8 @@ savingSystem = {
 			machines.glowCheck();
 			if (machineData.golemInfuser)
 			{
-				educationalPane.region.markedToSuperGlow = !machineData.golemInfuser.recipes[0].unlocked;
+				iconLegendPane.markedToSuperGlow = !machineData.golemInfuser.recipes[0].unlocked;
 			}
-
 			if (localDataToLoad)
 			{
 				resizeCanvas();
@@ -308,6 +315,10 @@ savingSystem = {
 			}
 		}
 		savingSystem.loadingEnded = true;
+
+		tickLore();
+		reccurentLoreUnTick(lore.dataTree);
+		lorePane.region.markedToSuperGlow = false;
 	},
 	reloadData: function ()
 	{
@@ -323,6 +334,7 @@ savingSystem = {
 		preprocessLore();
 		preprocessParticles();
 		resizeCanvas();
+		preprocessBackgrounds();
 
 		cancelAnimationFrame(loopId);
 		loopId = requestAnimationFrame(loop);
@@ -360,9 +372,11 @@ savingSystem = {
 
 var c;
 var cMax = 6401;
+var winCheck = false;
 
 function tick()
 {
+	tickLore();
 	effectSystem.tick();
 
 	coldCircle.decay();
@@ -461,6 +475,12 @@ function tick()
 		c = cMax;
 		effectSystem.eventCircles[0].velocity = 0;
 		effectSystem.eventCircles[1].velocity = 0;
+	}
+
+	if (winCheck && data.oElements.PureGolemAir.amount + data.oElements.PureGolemAir.amount + data.oElements.PureGolemAir.amount + data.oElements.PureGolemAir.amount > 3)
+	{
+		alert("You win. I hope you liked the stage 3 of The First Alkahistorian!");
+		winCheck = false;
 	}
 }
 

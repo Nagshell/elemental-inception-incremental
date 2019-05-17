@@ -127,6 +127,7 @@ var machines = {
 					}
 					else
 					{
+
 						if (paymentPane.isAffordable(tempRecipe.unlockCosts))
 						{
 							recipeFullGlow = true;
@@ -171,11 +172,31 @@ var machines = {
 				tempMachine.pane.markedToReadyGlow = machineFullGlow || machineWeakGlow;
 				tempMachine.region.markedToReadyGlow = machineFullGlow || machineWeakGlow;
 				mainFullGlow = mainFullGlow || machineFullGlow;
-				if (tempMachine.pane.markedToReadyGlow && !tempMachine.region.boundaryPath)
+				if (!tempMachine.region.boundaryPath)
 				{
-					tempMachine.region.boundaryPath = machines.displayRegionPath;
-				}
+					if (tempMachine.pane.markedToReadyGlow)
+					{
+						tempMachine.region.boundaryPath = machines.displayRegionPath;
+					}
+					else if (tempMachine.displayElement && tempMachine.id != "machineTime")
+					{
+						if (tempMachine.displayArray)
+						{
 
+							for (var j = 0; j < tempMachine.displayArray.length; j++)
+							{
+								if (data.oElements[tempMachine.displayArray[j]].amount > 0)
+								{
+									tempMachine.region.boundaryPath = machines.displayRegionPath;
+								}
+							}
+						}
+						else if (data.oElements[tempMachine.displayElement].amount > 0)
+						{
+							tempMachine.region.boundaryPath = machines.displayRegionPath;
+						}
+					}
+				}
 			}
 			mainPane.markedToReadyGlow = mainFullGlow;
 		}
@@ -187,7 +208,7 @@ var machines = {
 		{
 			if (!this.list[i].region.boundaryPath && this.list[i].displayElement)
 			{
-				if (data.oElements[this.list[i].displayElement].amount > 0)
+				if (data.oElements[this.list[i].displayElement].amount > 0 && !this.list[i].id == "machineTime")
 				{
 					this.list[i].region.boundaryPath = machines.displayRegionPath;
 				}
@@ -206,11 +227,28 @@ var machines = {
 			regionData.hideRegion.action(temp.pane);
 			regionData.showRegion.action(this.recipes[i].pane);
 		}
-
+		for (var j = 0; j < this.recipes[i].inputs.length; j++)
+		{
+			if (!data.oElements[this.recipes[i].inputs[j].type].known)
+			{
+				data.oElements[this.recipes[i].inputs[j].type].known = true;
+				data.elementsKnown++;
+			}
+		}
+		for (var j = 0; j < this.recipes[i].outputs.length; j++)
+		{
+			if (!data.oElements[this.recipes[i].outputs[j].type].known)
+			{
+				data.oElements[this.recipes[i].outputs[j].type].known = true;
+				data.elementsKnown++;
+			}
+		}
 		this.recipes[i].unlocked = temp.unlocked;
 		this.recipes[i].enabled = temp.enabled;
 		this.recipes[i].pane.x = temp.pane.x;
+		this.recipes[i].pane.defaultX = this.recipes[i].pane.x;
 		this.recipes[i].pane.y = temp.pane.y;
+		this.recipes[i].pane.defaultY = this.recipes[i].pane.y;
 		this.recipes[i].upData[0] = temp.upData[0];
 		if (temp.pane.pinned)
 		{
@@ -318,20 +356,23 @@ var machines = {
 				for (var j = 0; j < temp.inputs.length; j++)
 				{
 					data.oElementsFlow[temp.inputs[j].type] -= amount * temp.inputs[j].ratio;
-					particleGenerator.machineFlow(machineDisplayElements[temp.inputs[j].type], this.id, temp.inputs[j].type, amount * temp.inputs[j].ratio);
+					if (temp.inputs[j].ratio == 0)
+					{
+						temp.inputs[j].effectReference.volume -= 0.001;
+					}
+					else
+					{
+						temp.inputs[j].effectReference.volume -= amount * temp.inputs[j].ratio;
+					}
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
 					var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.2) - data.oElements[temp.outputs[j].type].amount;
-					data.oElementsFlow[temp.outputs[j].type] += flow;
-					if (this.id != "golemInfuser")
+					if (data.oElements[temp.outputs[j].type].amount < temp.outputs[j].max)
 					{
-						particleGenerator.machineFlow(this.id, machineDisplayElements[temp.outputs[j].type], temp.outputs[j].type, flow);
+						data.oElementsFlow[temp.outputs[j].type] += flow;
 					}
-				}
-				if (this.id == "golemInfuser")
-				{
-					particleGenerator.explosion(this.id, 1, temp.outputs[0].type, 600, Math.pow(10, temp.outputs[0].ratio));
+					temp.outputs[j].effectReference.volume += flow;
 				}
 			}
 		}
@@ -384,15 +425,191 @@ var machines = {
 				}
 				ctx.beginPath();
 				var angle = -Math.PI / 2 + Math.PI * 2 * Math.max(0, amount - 0.1) * 10 / 9;
+
 				ctx.arc(0, 0, radius + this.machine.displayStep, -Math.PI / 2, angle);
-				ctx.arc(0, 0, radius, angle, 3 * Math.PI / 2);
+				if (amount < 1)
+				{
+					ctx.arc(0, 0, radius, angle, 3 * Math.PI / 2);
+				}
 				//ctx.lineTo(0, 0);
 				ctx.closePath();
 				ctx.fill();
 				ctx.lineWidth = 1.3;
 				ctx.stroke();
 			}
+			if (this.machine.displayArrayCD-- <= 0)
+			{
+				this.machine.displayArrayCD = this.machine.displayArrayCDMax;
+				this.machine.displayArrayCurrent = (this.machine.displayArrayCurrent + 1) % this.machine.displayArray.length;
+				this.machine.displayElement = this.machine.displayArray[this.machine.displayArrayCurrent];
+			}
 		}
+		ctx.restore();
+	},
+	paneChartDraw: function (ctx, recipes)
+	{
+		ctx.save();
+		var turnedOn = 0;
+		for (var i = 0; i < recipes.length; i++)
+		{
+			if (recipes[i].unlocked)
+			{
+				turnedOn++;
+			}
+		}
+		ctx.fillStyle = chartColors["null"];
+		ctx.lineWidth = 1;
+		if (turnedOn > 0)
+		{
+			var radius = optionData.iconSize * 2 + 2;
+			radius /= turnedOn;
+			radius = Math.max(3, Math.min(radius, optionData.iconSize));
+			for (var i = 0; i < recipes.length; i++)
+			{
+				if (recipes[i].unlocked)
+				{
+					var temp = recipes[i].pieChart;
+					ctx.translate(0, radius);
+					ctx.save();
+					ctx.beginPath();
+					ctx.arc(0, 0, radius - 1, 0, Math.PI * 2);
+					ctx.fill();
+					if (!recipes[i].enabled)
+					{
+						ctx.globalAlpha = Math.min(1, borderGlow.alpha + 0.25);
+					}
+					ctx.stroke();
+
+					ctx.clip();
+
+					var angle = 0;
+					for (var type in temp.results)
+					{
+						ctx.beginPath();
+						ctx.moveTo(0, 0);
+						ctx.arc(0, 0, radius - 3, angle, angle + temp.results[type] / 300 * Math.PI);
+						angle += temp.results[type] / 300 * Math.PI;
+						ctx.fillStyle = chartColors[type];
+						ctx.fill();
+					}
+					ctx.restore();
+					ctx.translate(0, radius);
+				}
+
+			}
+		}
+		ctx.restore();
+	},
+
+	displayArrayDraw: function (ctx)
+	{
+		ctx.save();
+		ctx.translate(optionData.iconSize / 2, optionData.iconSize * 4 - 45);
+		ctx.beginPath();
+		ctx.arc(32, 32, 32, 0, Math.PI * 2);
+		ctx.stroke();
+		ctx.fill();
+		ctx.clip();
+
+		var next = (this.displayArrayCurrent + 1) % this.displayArray.length;
+
+		ctx.drawImage(images["icon" + this.displayArray[this.displayArrayCurrent]], 0, 0);
+		ctx.beginPath();
+		ctx.moveTo(0, 0);
+		ctx.lineTo(128 - this.displayArrayCD / 2, 0);
+		ctx.lineTo(0, 128 - this.displayArrayCD / 2);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.fill();
+		ctx.clip();
+		ctx.drawImage(images["icon" + this.displayArray[next]], 0, 0);
+
+		ctx.restore();
+	},
+	regularArrayPaneMouseHandler: function (pane, x, y, type)
+	{
+		if (type == "mousemove")
+		{
+			var additionalPauseTranslation = 0;
+			var displayStyle = 4;
+			if (optionData.iconSize == 16)
+			{
+				additionalPauseTranslation = 38;
+				displayStyle = 3;
+			}
+			x -= additionalPauseTranslation;
+			if (x > optionData.iconSize * (displayStyle - 1) && x < optionData.iconSize * displayStyle + 44)
+			{
+				var dY = optionData.iconSize * 4.5 - 4 - (this.machine.displayArray.length - 1) * 17;
+				if (y > dY)
+				{
+					var i = Math.floor((y - dY) / 17);
+					if (this.machine.displayArray[i] && locale.oElementsShorthand[this.machine.displayArray[i]])
+					{
+						tooltipPane.showText(this.machine.displayArray[i]);
+					}
+				}
+			}
+		}
+	},
+	regularPaneMouseHandler: function (pane, x, y, type)
+	{
+		if (type == "mousemove")
+		{
+			if (this.machine.displayElement && locale.oElementsShorthand[this.machine.displayElement])
+			{
+				var additionalPauseTranslation = 5;
+				if (optionData.iconSize == 16)
+				{
+					additionalPauseTranslation = -5 + optionData.iconSize * 4;
+				}
+				x -= additionalPauseTranslation;
+				if (x > 0 && x < 44 && y > optionData.iconSize * 4.5 - 26)
+				{
+					tooltipPane.showText(this.machine.displayElement);
+				}
+			}
+		}
+	},
+	regularArrayPaneDraw: function (ctx)
+	{
+		ctx.save();
+		var additionalPauseTranslation = 0;
+		var displayStep = 4;
+		if (optionData.iconSize == 16)
+		{
+			additionalPauseTranslation = 38;
+			displayStep = 3;
+		}
+		if (this.boundaryPathMax)
+		{
+			ctx.translate(optionData.iconSize * 5 + 110 + additionalPauseTranslation, optionData.iconSize + 1);
+			machines.paneChartDraw(ctx, this.machine.recipes);
+			ctx.restore();
+			ctx.save();
+		}
+		this.machine.displayArrayDraw(ctx);
+		ctx.fillStyle = ctx.strokeStyle;
+		for (var i = 0; i < this.machine.displayArray.length; i++)
+		{
+			ctx.textAlign = "right";
+			var textToShow;
+			if (locale.oElementsShorthand[this.machine.displayArray[i]])
+			{
+				textToShow = locale.oElementsShorthand[this.machine.displayArray[i]];
+			}
+			else
+			{
+				textToShow = this.machine.displayArray[i];
+			}
+			ctx.fillText(textToShow,
+				optionData.iconSize * displayStep + 44 + additionalPauseTranslation, optionData.iconSize * 4.5 + 4 - (this.machine.displayArray.length - i - 1) * 17);
+			ctx.textAlign = "left";
+			drawNumber(ctx, data.oElements[this.machine.displayArray[i]].amount,
+				optionData.iconSize * displayStep + 48 + additionalPauseTranslation, optionData.iconSize * 4.5 + 4 - (this.machine.displayArray.length - i - 1) * 17,
+				elementalDisplayType[this.machine.displayArray[i]], "left");
+		}
+
 		ctx.restore();
 	},
 	regularPaneDraw: function (ctx)
@@ -400,79 +617,25 @@ var machines = {
 		ctx.save();
 		if (this.boundaryPathMax)
 		{
-
-			var turnedOn = 0;
-			for (var i = 0; i < this.machine.recipes.length; i++)
-			{
-				if (this.machine.recipes[i].unlocked)
-				{
-					turnedOn++;
-				}
-			}
 			ctx.save();
-			ctx.fillStyle = chartColors["null"];
-			ctx.lineWidth = 1;
-			if (turnedOn > 0)
-			{
-				ctx.translate(optionData.iconSize * 5 + 60, optionData.iconSize + 1);
-				var radius = optionData.iconSize * 2 + 2;
-				radius /= turnedOn;
-				radius = Math.min(radius, optionData.iconSize);
-				for (var i = 0; i < this.machine.recipes.length; i++)
-				{
-					if (this.machine.recipes[i].unlocked)
-					{
-						var temp = this.machine.recipes[i].pieChart;
-						ctx.translate(0, radius);
-						ctx.save();
-						ctx.beginPath();
-						ctx.arc(0, 0, radius - 1, 0, Math.PI * 2);
-						ctx.fill();
-						if (!this.machine.recipes[i].enabled)
-						{
-							ctx.globalAlpha = Math.min(1, borderGlow.alpha + 0.25);
-						}
-						ctx.stroke();
-
-						ctx.clip();
-
-						var angle = 0;
-						for (var type in temp.results)
-						{
-							ctx.beginPath();
-							ctx.moveTo(0, 0);
-							ctx.arc(0, 0, radius - 3, angle, angle + temp.results[type] / 300 * Math.PI);
-							angle += temp.results[type] / 300 * Math.PI;
-							ctx.fillStyle = chartColors[type];
-							ctx.fill();
-						}
-						ctx.restore();
-						ctx.translate(0, radius);
-					}
-
-				}
-			}
+			ctx.translate(optionData.iconSize * 5 + 60, optionData.iconSize + 1);
+			machines.paneChartDraw(ctx, this.machine.recipes);
 			ctx.restore();
-			if (this.machine.displayElement)
+		}
+		if (this.machine.displayElement)
+		{
+			ctx.drawImage(images["icon" + this.machine.displayElement], optionData.iconSize * 2 - 31, optionData.iconSize + 6);
+			ctx.fillStyle = ctx.strokeStyle;
+			ctx.textAlign = "left";
+			var text = (locale.oElementsShorthand[this.machine.displayElement]) ? locale.oElementsShorthand[this.machine.displayElement] : this.machine.displayElement;
+			if (optionData.iconSize == 16)
 			{
-				ctx.drawImage(images["icon" + this.machine.displayElement], optionData.iconSize * 2 - 31, optionData.iconSize + 6);
-				ctx.fillStyle = ctx.strokeStyle;
-				ctx.textAlign = "left";
-				ctx.fillText(this.machine.displayElement, optionData.iconSize * 4, optionData.iconSize * 4.5 - 14);
+				ctx.fillText(text, optionData.iconSize * 4, optionData.iconSize * 4.5 - 14);
 				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, optionData.iconSize * 4, optionData.iconSize * 4.5 + 4, elementalDisplayType[this.machine.displayElement], "left");
 			}
-		}
-		else
-		{
-			if (this.machine.displayElement)
+			else
 			{
-				if (optionData.iconSize > 16)
-				{
-					ctx.drawImage(images["icon" + this.machine.displayElement], optionData.iconSize * 2 - 31, optionData.iconSize + 6);
-				}
-				ctx.fillStyle = ctx.strokeStyle;
-				ctx.textAlign = "left";
-				ctx.fillText(this.machine.displayElement, 5, optionData.iconSize * 4.5 - 14);
+				ctx.fillText(text, 5, optionData.iconSize * 4.5 - 14);
 				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, 5, optionData.iconSize * 4.5 + 4, elementalDisplayType[this.machine.displayElement], "left");
 			}
 		}
@@ -503,6 +666,7 @@ var machines = {
 	{
 		if (type == "mouseup")
 		{
+
 			if (this.recipe.unlocked)
 			{
 				if (x < optionData.iconSize + 1)
@@ -548,18 +712,22 @@ var machines = {
 		if (!this.recipe.unlocked)
 		{
 			this.recipe.unlocked = true;
-			// if (this.pane.top.boundaryPathMax)
-			// {
-			// 	this.pane.top.boundaryPathMax = machines.displayPanePath;
-			// }
-			// else if (this.pane.top.hiddenPath)
-			// {
-			// 	this.pane.top.hiddenPath = machines.displayPanePath;
-			// }
-			// else
-			// {
-			// 	this.pane.top.boundaryPath = machines.displayPanePath;
-			// }
+			for (var j = 0; j < this.recipe.inputs.length; j++)
+			{
+				if (!data.oElements[this.recipe.inputs[j].type].known)
+				{
+					data.oElements[this.recipe.inputs[j].type].known = true;
+					data.elementsKnown++;
+				}
+			}
+			for (var j = 0; j < this.recipe.outputs.length; j++)
+			{
+				if (!data.oElements[this.recipe.outputs[j].type].known)
+				{
+					data.oElements[this.recipe.outputs[j].type].known = true;
+					data.elementsKnown++;
+				}
+			}
 		}
 		else
 		{
@@ -596,7 +764,7 @@ var machines = {
 				else
 				{
 					ctx.drawImage(images.iconUpNot, optionData.iconSize * 2 + 2, 0);
-					if (this.markedToReadyGlow)
+					if (this.markedToReadyGlow && this.glowColor != "blue")
 					{
 						ctx.globalAlpha = borderGlow.alpha * 1.5 + 0.25;
 					}
@@ -703,7 +871,11 @@ var machines = {
 		{
 			if (x < 50)
 			{
-				if (y > 17)
+				if (y <= 17)
+				{
+					tooltipPane.showText("Type - " + this.ingredient.type);
+				}
+				else
 				{
 					tooltipPane.showText("Current");
 				}
@@ -751,7 +923,14 @@ var machines = {
 		ctx.fillStyle = ctx.strokeStyle;
 		ctx.textAlign = "left";
 		var temp = this.ingredient;
-		ctx.fillText(temp.type, 3, 8);
+		if (locale.oElementsShorthand[temp.type])
+		{
+			ctx.fillText(locale.oElementsShorthand[temp.type], 3, 8);
+		}
+		else
+		{
+			ctx.fillText(temp.type, 3, 8);
+		}
 
 		var displayStyle = "fixed";
 		var resultRatio = temp.ratio;
@@ -780,8 +959,11 @@ var machines = {
 		this.target.upped++;
 		if (this.target.max)
 		{
-			this.target.slider = 2;
-			this.target.max = this.target.sliderBase * Math.pow(this.target.sliderStep, this.target.upped);
+			this.mouseHandler(null, this.x + 90, 0, "mouseup");
+		}
+		else
+		{
+			this.mouseHandler(null, this.x + 10 + 40 * this.target.slider, 0, "mouseup");
 		}
 	},
 	sliderRegionMouseHandler: function (pane, x, y, type)
@@ -880,22 +1062,41 @@ var machines = {
 
 function preprocessMachines()
 {
+	var additionalPauseTranslation = 0;
+	var displayStep = 3;
+	if (optionData.iconSize == 16)
+	{
+		additionalPauseTranslation = 38;
+		displayStep = 4;
+	}
 	machines.displayRegionPath = new Path2D();
 	machines.displayRegionPath.arc(0, 0, 32, 0, Math.PI * 2);
 
 	machines.displayPanePathMin = new Path2D();
 	machines.displayPanePathMin.rect(0, 0, optionData.iconSize * 4 + 120, optionData.iconSize * 5 + 4);
+
+	machines.displayArrayPanePathMin = new Path2D();
+	machines.displayArrayPanePathMin.rect(0, 0, optionData.iconSize * 7 + 106 + additionalPauseTranslation, optionData.iconSize * 5 + 4);
+
 	machines.displayPanePathDemo = new Path2D();
-	machines.displayPanePathDemo.rect(0, 0, optionData.iconSize * 7 + 207, optionData.iconSize * 5 + 4);
+	machines.displayPanePathDemo.rect(0, 0, optionData.iconSize * (4 + displayStep) + 207 + additionalPauseTranslation, optionData.iconSize * 5 + 4);
+
+	machines.displayArrayPanePathDemo = new Path2D();
+	machines.displayArrayPanePathDemo.rect(0, 0, optionData.iconSize * 7 + 307 + additionalPauseTranslation, optionData.iconSize * 5 + 4);
 
 	var path = new Path2D();
 	path.rect(0, 0, optionData.iconSize, optionData.iconSize);
-	machines.machinePauseRegion = new cRegion(optionData.iconSize * 3 + 3, optionData.iconSize + 1);
+	machines.machinePauseRegion = new cRegion(optionData.iconSize * displayStep + 3 + additionalPauseTranslation, optionData.iconSize + 1);
 	machines.machinePauseRegion.boundaryPath = path;
 	machines.machinePauseRegion.customDraw = machines.pauseRegionDraw;
 	machines.machinePauseRegion.mouseHandler = machines.pauseRegionMouseHandler;
 
-	machines.recipeSelectorRegion = new cRegion(optionData.iconSize * 4 + 4, optionData.iconSize + 1);
+	machines.machineArrayPauseRegion = new cRegion(optionData.iconSize * 3 + 103 + additionalPauseTranslation, optionData.iconSize + 1);
+	machines.machineArrayPauseRegion.boundaryPath = path;
+	machines.machineArrayPauseRegion.customDraw = machines.pauseRegionDraw;
+	machines.machineArrayPauseRegion.mouseHandler = machines.pauseRegionMouseHandler;
+
+	machines.recipeSelectorRegion = new cRegion(optionData.iconSize * (displayStep + 1) + 4 + additionalPauseTranslation, optionData.iconSize + 1);
 	machines.recipeSelectorRegion.boundaryPath = new Path2D();
 	machines.recipeSelectorRegion.boundaryPath.rect(0, 0, optionData.iconSize + 53, optionData.iconSize);
 	machines.recipeSelectorRegion.text = "Recipes";
@@ -927,6 +1128,14 @@ function preprocessMachines()
 		}
 	};
 
+	machines.recipeArraySelectorRegion = new cRegion(optionData.iconSize * 4 + 104 + additionalPauseTranslation, optionData.iconSize + 1);
+	machines.recipeArraySelectorRegion.boundaryPath = machines.recipeSelectorRegion.boundaryPath;
+	machines.recipeArraySelectorRegion.text = machines.recipeSelectorRegion.text;
+	machines.recipeArraySelectorRegion.textX = machines.recipeSelectorRegion.textX;
+	machines.recipeArraySelectorRegion.textY = machines.recipeSelectorRegion.textY;
+	machines.recipeArraySelectorRegion.customDraw = machines.recipeSelectorRegion.customDraw;
+	machines.recipeArraySelectorRegion.mouseHandler = machines.recipeSelectorRegion.mouseHandler;
+
 	machines.recipeRegionPath = new Path2D();
 	machines.recipeRegionPath.rect(0, 0, optionData.iconSize * 3 + 203, optionData.iconSize);
 
@@ -939,14 +1148,26 @@ function preprocessMachines()
 
 function initMachine(title)
 {
+	var additionalPauseTranslation = 0;
+	var displayStep = 3;
+	if (optionData.iconSize == 16)
+	{
+		additionalPauseTranslation = 38;
+		displayStep = 4;
+	}
+
 	var thisData = machineData[title];
 	machines.list.push(thisData);
 	thisData.tick = machines.machineTick;
 	thisData.upgradeTick = machines.upgradeTick;
 	thisData.upgradeRecipe = machines.upgradeRecipe;
 	thisData.id = title;
-	thisData.title = locale.oMachines[title];
+	thisData.title = locale.oMachines[title] || title;
 	thisData.currentRecipes = [];
+	if (thisData.displayArray)
+	{
+		machineData[title].displayArrayDraw = machines.displayArrayDraw;
+	}
 
 	thisData.region = new cRegion(thisData.x, thisData.y);
 	thisData.region.machine = thisData;
@@ -969,19 +1190,35 @@ function initMachine(title)
 	thisData.pane = new cPane(mainPane, thisData.x + 32, thisData.y + 32);
 	thisData.pane.machine = thisData;
 	thisData.pane.centerPanes = [];
-	thisData.pane.boundaryPath = machines.displayPanePathDemo;
-	thisData.pane.boundaryPathMin = machines.displayPanePathMin;
+	if (thisData.displayArray)
+	{
+		thisData.pane.mouseHandler = machines.regularArrayPaneMouseHandler;
+		thisData.pane.boundaryPath = machines.displayArrayPanePathDemo;
+		thisData.pane.boundaryPathMin = machines.displayArrayPanePathMin;
+
+		thisData.pane.subRegions.push(machines.machineArrayPauseRegion);
+		thisData.pane.subRegions.push(machines.recipeArraySelectorRegion);
+		thisData.pane.subRegionsMin.push(machines.machineArrayPauseRegion);
+	}
+	else
+	{
+		thisData.pane.mouseHandler = machines.regularPaneMouseHandler;
+		thisData.pane.boundaryPath = machines.displayPanePathDemo;
+		thisData.pane.boundaryPathMin = machines.displayPanePathMin;
+
+		thisData.pane.subRegions.push(machines.machinePauseRegion);
+		thisData.pane.subRegions.push(machines.recipeSelectorRegion);
+		thisData.pane.subRegionsMin.push(machines.machinePauseRegion);
+	}
 	thisData.pane.subRegions.push(regionData.dragRegion);
 	thisData.pane.subRegions.push(regionData.minRegion);
 	thisData.pane.subRegions.push(regionData.hideRegion);
 	thisData.pane.subRegions.push(regionData.draggableTitleRegionShifted);
-	thisData.pane.subRegions.push(machines.machinePauseRegion);
 	thisData.pane.subRegions.push(regionData.pinRegion);
 	thisData.pane.subRegionsMin.push(regionData.dragRegion);
 	thisData.pane.subRegionsMin.push(regionData.maxRegion);
 	thisData.pane.subRegionsMin.push(regionData.hideRegion);
 	thisData.pane.subRegionsMin.push(regionData.draggableTitleRegionShifted);
-	thisData.pane.subRegionsMin.push(machines.machinePauseRegion);
 	thisData.pane.subRegionsMin.push(regionData.pinRegion);
 	thisData.pane.title = thisData.title;
 	thisData.pane.id = title;
@@ -991,14 +1228,27 @@ function initMachine(title)
 	}
 	else
 	{
-		thisData.pane.customDraw = machines.regularPaneDraw;
+		if (thisData.displayArray)
+		{
+			thisData.pane.customDraw = machines.regularArrayPaneDraw;
+		}
+		else
+		{
+			thisData.pane.customDraw = machines.regularPaneDraw;
+		}
 	}
 
 	regionData.hideRegion.action(thisData.pane);
 
-	thisData.pane.subRegions.push(machines.recipeSelectorRegion);
+	if (thisData.displayArray)
+	{
+		thisData.pane.recipeSelectorPane = new cPane(thisData.pane, machines.recipeArraySelectorRegion.x, machines.recipeArraySelectorRegion.y);
+	}
+	else
+	{
+		thisData.pane.recipeSelectorPane = new cPane(thisData.pane, machines.recipeSelectorRegion.x, machines.recipeSelectorRegion.y);
+	}
 
-	thisData.pane.recipeSelectorPane = new cPane(thisData.pane, optionData.iconSize * 4 + 4, optionData.iconSize + 1);
 	thisData.pane.recipeSelectorPane.title = locale.recipes;
 	thisData.pane.recipeSelectorPane.independent = true;
 	//thisData.pane.recipeSelectorPane.id = "recipeSelector";
@@ -1022,8 +1272,19 @@ function initMachine(title)
 		recipeRegion.paymentSuccess = machines.recipeRegionPaymentSuccess;
 		recipeRegion.customDraw = machines.recipeRegionDraw;
 		recipeRegion.pane = thisRecipe.pane;
-		thisRecipe.pane.x = (optionData.iconSize + 1) * (7 + thisData.recipes.length - i) + 200;
-		thisRecipe.pane.y = (optionData.iconSize + 1) * (2 + i);
+		if (thisData.displayArray)
+		{
+			thisRecipe.pane.x = (optionData.iconSize + 1) * (5 + (thisData.recipes.length - i) * 2) + 301 + additionalPauseTranslation;
+			thisRecipe.pane.defaultX = thisRecipe.pane.x;
+		}
+		else
+		{
+			thisRecipe.pane.x = (optionData.iconSize + 1) * (2 + displayStep + (thisData.recipes.length - i) * 2) + 204 - displayStep + additionalPauseTranslation;
+			thisRecipe.pane.defaultX = thisRecipe.pane.x;
+		}
+
+		thisRecipe.pane.y = (optionData.iconSize + 1) * i;
+		thisRecipe.pane.defaultY = thisRecipe.pane.y;
 	}
 	for (var recipeTitle in thisData.hiddenRecipes)
 	{
