@@ -372,7 +372,7 @@ savingSystem = {
 
 var c;
 var cMax = 6401;
-var winCheck = false;
+var winCheck = true;
 
 function tick()
 {
@@ -479,7 +479,7 @@ function tick()
 
 	if (winCheck && data.oElements.PureGolemAir.amount + data.oElements.PureGolemAir.amount + data.oElements.PureGolemAir.amount + data.oElements.PureGolemAir.amount > 3)
 	{
-		alert("You win. I hope you liked the stage 3 of The First Alkahistorian!");
+		alert("You win. I hope you liked the stage 3 of The First Alkahistorian!\n\nBig thanks to my supporters and helpers:\nPhantomLemon\nVoid\nAeras Alum\nnaltronix\nranger10700\nNevahlif06\n\nMy entire family\nEssi & Baster\n\n\\\\('_' )\nMade by Nagshell");
 		winCheck = false;
 	}
 }
