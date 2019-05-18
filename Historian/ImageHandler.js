@@ -73,6 +73,8 @@ function preprocessImages()
 
 		"machineVoid",
 		"machineNexus",
+		
+		"machineOil",
 
 		"tutorialPage0",
 		"tutorialPage1",

@@ -4363,7 +4363,7 @@ var rarityCircle = {
 					out: [
 						["Acid", 1, 1.2],
 					],
-					lock: ["Vortex", 0.001],
+					lock: ["Vortex", 0.001, "Glass" , 1],
 				},
 			}
 		},
@@ -5020,7 +5020,7 @@ var pureCircle = {
 					out: [
 						["PureEarth", 1, 1.2],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Mystery", 1e99],
 				},
 			}
 		},
@@ -5036,7 +5036,7 @@ var pureCircle = {
 					out: [
 						["PureWater", 1, 1.2],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Mystery", 1e99],
 				},
 			}
 		},
@@ -5052,7 +5052,7 @@ var pureCircle = {
 					out: [
 						["PureAir", 1, 1.2],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Mystery", 1e99],
 				},
 			}
 		},
@@ -5068,7 +5068,7 @@ var pureCircle = {
 					out: [
 						["PureFire", 1, 1.2],
 					],
-					lock: ["Earth", 1e99],
+					lock: ["Mystery", 1e99],
 				},
 			}
 		},
