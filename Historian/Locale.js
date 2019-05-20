@@ -46,7 +46,7 @@ var locale = {
 		machineSand: "Pulverizer",
 		machineVoid: "Orb of Emptiness",
 		machineNexus: "Nexus of Unification",
-		
+
 		machineKnowledge: "Research Table",
 		machineEssence: "Materializer",
 		machineSoil: "Composter",
@@ -138,39 +138,47 @@ var locale = {
 		earthStart2: "Earth Slide",
 		earthStart3: "Earth Avalanche",
 		earthRift1: "Weak Earth Rift",
-		earthRift2: "Pure Earth Rift",
+		earthRift2: "Pure Rift of Earth",
 		earthConversion1: "Simple Earth Conversion",
 		earthConversion2: "Improved Earth Conversion",
 		earthRift3: "True Earth Rift",
+		earthRift4: "Earth Breach",
 		earthCConversion1: "Catalyzed Earth Conversion",
 		earthCRift1: "Stabilized Earth C-Rift",
+		earthCRift2: "Earth C-Tunnel",
 
 		waterStart1: "Water Forced Conversion",
 		waterRift1: "Weak Water Rift",
-		waterRift2: "Pure Water Rift",
+		waterRift2: "Pure Rift of Water",
 		waterConversion1: "Simple Water Conversion",
 		waterConversion2: "Improved Water Conversion",
 		waterRift3: "True Water Rift",
+		waterRift4: "Water Breach",
 		waterCConversion1: "Catalyzed Water Conversion",
 		waterCRift1: "Stabilized Water C-Rift",
+		waterCRift2: "Water C-Tunnel",
 
 		airStart1: "Air Forced Conversion",
 		airRift1: "Weak Air Rift",
-		airRift2: "Pure Air Rift",
+		airRift2: "Pure Rift of Air",
 		airConversion1: "Simple Air Conversion",
 		airConversion2: "Improved Air Conversion",
 		airRift3: "True Air Rift",
+		airRift4: "Air Breach",
 		airCConversion1: "Catalyzed Air Conversion",
 		airCRift1: "Stabilized Air C-Rift",
+		airCRift2: "Air C-Tunnel",
 
 		fireStart1: "Fire Forced Conversion",
 		fireRift1: "Weak Fire Rift",
-		fireRift2: "Pure Fire Rift",
+		fireRift2: "Pure Rift of Fire",
 		fireConversion1: "Simple Fire Conversion",
 		fireConversion2: "Improved Fire Conversion",
 		fireRift3: "True Fire Rift",
+		fireRift4: "Fire Breach",
 		fireCConversion1: "Catalyzed Fire Conversion",
 		fireCRift1: "Stabilized Fire C-Rift",
+		fireCRift2: "Fire C-Tunnel",
 
 		golemEarth1: "Earth Orb Infusion",
 		golemEarth2: "Earth Golem Infusion",
@@ -201,31 +209,305 @@ var locale = {
 
 		mudConversion1: "Forceful Mud Conversion",
 		mudConversion2: "Gainfull Mud Conversion",
+		mudConversion3: "Catalyzed Mud Conversion",
 		mudAssimilation1: "Mud Assimilation",
+		mudRift1: "Mud Rift",
 
 		iceConversion1: "Forceful Ice Conversion",
 		iceConversion2: "Loseless Ice Conversion",
+		iceConversion3: "Catalyzed Ice Conversion",
 		iceAssimilation1: "Ice Assimilation",
+		iceRift1: "Ice Rift",
 
 		steamConversion1: "Forceful Steam Conversion",
 		steamConversion2: "Loseless Steam Conversion",
+		steamConversion3: "Catalyzed Steam Conversion",
 		steamAssimilation1: "Steam Assimilation",
+		steamRift1: "Steam Rift",
 
 		magmaConversion1: "Forceful Magma Conversion",
 		magmaConversion2: "Loseless Magma Conversion",
+		magmaConversion3: "Catalyzed Magma Conversion",
 		magmaAssimilation1: "Magma Assimilation",
+		magmaRift1: "Magma Rift",
 
 		sandConversion1: "Forceful Sand Conversion",
 		sandConversion2: "Loseful Sand Conversion",
+		sandConversion3: "Catalyzed Sand Conversion",
+		sandRift1: "Sand Rift",
 
 		voidClash1: "Antitype Trace",
 		voidClash2: "Antitype Merge",
 		voidClash3: "Antitype Fusion",
+		voidConversion3: "Catalyzed Void Conversion",
 
 		alkahest1traces: "Universal Solution",
 		alkahest1merge: "Universal Solvent",
 
-		n: "",
+		knowledgeProduction1: "Researching Revelation",
+		knowledgeProduction2: "Understanding Revelation",
+		knowledgeProduction3: "Unraveling Revelation",
+		revelationGain1: "Power of the Wallet",
+		revelationGain2: "Overloading Imagination",
+
+		essenceMerge1: "Tiered Essence Merge",
+
+		soilMerge1: "Tiered Soil Merge",
+		soilMerge2: "Streamlined Soil Merge",
+		soilAdvMerge1: "Assimilated Soil Merge",
+
+		obsidianMerge1: "Tiered Obsidian Merge",
+		obsidianCooling1: "Lava's not Hot",
+
+		lavaMerge1: "Tiered Lava Merge",
+
+		spaceMerge1: "Tiered Space Merge",
+
+		snowMerge1: "Tiered Snow Merge",
+
+		cryogenMerge1: "Tiered Cryogen Merge",
+
+		glassMerge1: "Tiered Glass Merge",
+
+		goldMerge1: "Tiered Gold Merge",
+		goldMerge2: "Basic Gold Sieve",
+		goldMerge3: "Harder Gold Sieve",
+		goldMerge4: "Better Gold Sieve",
+		goldMerge5: "Faster Gold Sieve",
+		goldMerge6: "Stronger Gold Sieve",
+		goldMerge7: "Shiny Gold Sieve",
+		goldMerge8: "Gold Auto Sieve",
+
+		forceMerge1: "Tiered Force Merge",
+		forceMerge2: "Hitting Unbreakable Wall",
+
+		oilMerge1: "Tiered Oil Merge",
+		oilPump1: "Pocket Pump",
+		oilAdvPump2: "Industrial Pump",
+
+		solutionMix1: "Basic Mix",
+		solutionMix2: "Improved Mix",
+		solutionMix3: "Blended Mix",
+		solutionMix4: "Saturated Mix",
+		solutionMix5: "Continous Mix",
+		solutionMix6: "Underpressured Mix",
+
+		distillEarth1: "Precipitate Earth",
+		distillEarth2: "Distill Earth",
+		distillEarth3: "Solidifying Earth",
+		distillWater1: "Precipitate Water",
+		distillWater2: "Distill Water",
+		distillWater3: "Solidifying Water",
+		distillAir1: "Precipitate Air",
+		distillAir2: "Distill Air",
+		distillAir3: "Solidifying Air",
+		distillFire1: "Precipitate Fire",
+		distillFire2: "Distill Fire",
+		distillFire3: "Solidifying Fire",
+
+		pressureMerge1: "Pressure Enforcement",
+
+		compressEarth1: "Earth Compression",
+		compressEarth2: "Earth Void-Coat Compression",
+		compressWater1: "Water Compression",
+		compressWater2: "Water Void-Coat Compression",
+		compressAir1: "Air Compression",
+		compressAir2: "Air Void-Coat Compression",
+		compressFire1: "Fire Compression",
+		compressFire2: "Fire Void-Coat Compression",
+
+		essenceElementEarth: "Earth Brew",
+		essenceElementWater: "Water Brew",
+		essenceElementAir: "Air Brew",
+		essenceElementFire: "Fire Brew",
+
+		soilElementEarth: "Earth Compost",
+		soilElementWater: "Water Compost",
+		soilElementAir: "Air Compost",
+		soilElementFire: "Fire Compost",
+
+		seedEarth: "Life    (Earth)",
+		seedWater: "Always  (Water)",
+		seedAir: "Finds   (Air)",
+		seedFire: "A Way (Fire)",
+
+		infuseSoilEarth: "Earth Soil Enrichment",
+		infuseSoilWater: "Water Soil Enrichment",
+		infuseSoilAir: "Air Soil Enrichment",
+		infuseSoilFire: "Fire Soil Enrichment",
+
+		growEarth: "Natural Growth",
+		harvestEarth1: "Leaf Trimmer",
+		uprootEarth2: "Plucker",
+
+		growWater: "Aggresive Growth",
+		harvestWater1: "Leaf Trimmer",
+		uprootWater2: "Plucker",
+
+		growAir: "Passive Growth",
+		harvestAir1: "Leaf Trimmer",
+		uprootAir2: "Plucker",
+
+		growFire: "Phoenix Growth",
+		harvestFire1: "Leaf Trimmer",
+		uprootFire2: "Plucker",
+
+		coolantMerge1: "Natural Coolant",
+		coolantMerge2: "Improved Coolant",
+		coolantProduction1: "Super Conducting Coolant",
+
+		galeSetup1: "Cool Fan",
+		galeCool1: "Gale Cooling System",
+		galeMelt2: "Gale Meltdown",
+
+		cryospireSetup1: "Rise of Cryospires",
+		cryospireCool1: "Cryospire Cooling Architecture",
+		cryospireMelt2: "Cryospire Meltdown",
+
+		vortexSetup1: "Vortex Creation",
+		vortexCool1: "Vortex Cooling Complex",
+		vortexMelt1: "Vortex Meltdown",
+
+		blazeIgnite1: "Blazing Ingnition",
+		blazeDecay1: "Ashen Fade",
+		blazeFuel1: "Coal Avalanche",
+
+		blastIgnite1: "Blast Off",
+		blastDecay1: "Pump-Inaction",
+		blastFuel1: "Sulphur Trickle",
+
+		pyroIgnite1: "From Zero to Hell-o",
+		pyroDecay1: "Heat Death",
+		pyroFuel1: "Propane Injection",
+
+		coalProduction1: "Coal Struggle",
+		coalRecover1: "Coal Reprocessing",
+		coalAdvProduction1: "Healthy Rock Hash",
+
+		sulphurProduction1: "Coal Washing Machine",
+
+		fuelRefine1: "Simple Hot Refinement",
+
+		oilRefine1: "Complex Oil Separation",
+
+		fuelUsage1: "Wasteful Energy",
+		fuelUsage2: "Efficient Energy",
+
+		dieselDrain1: "Trash Can",
+		dieselDrain2: "Industrial Trash Can",
+		dieselUsage1: "Reverse Decompression",
+
+		petrolDrain1: "Bald Trash Can",
+		petrolUsage1: "Fourteen Stroke Cycle",
+
+		propaneDrain1: "Trash Can",
+
+		propeneDrain1: "Trash Can",
+		propeneDrain2: "Industrial Trash Can",
+
+		spatialCreation1: "Compressed Space",
+		spatialProduce1: "Single Tick",
+
+		temporalCreation1: "Double Compressed Space",
+		temporalProduce1: "Single Shift",
+		temporalShenigans1: "Tick Speeding",
+
+		parallelCreation1: "Triple Compressed Space",
+		parallelProduce1: "Single Galaxy",
+
+		foldedSpaceCreation1: "Quadruple Compressed Space",
+
+		foldedSpatialCreation1: "Quintuple Compressed Space",
+		foldedSpatialProduce1: "Single Sacrifice",
+
+		foldedTemporalCreation1: "Sixtuple Compressed Space",
+		foldedTemporalProduce1: "Single Infinity",
+		foldedTemporalShenigans1: "Time Dilation",
+
+		timeSlow1: "Massive Slowdown",
+		timeFast1: "Turbo Time Spender",
+
+		silverStart1: "Hard Way",
+		silverAlchemy1: "Delicate Way",
+
+		bronzeStart1: "Tough Way",
+		bronzeAlchemy1: "Malleable Way",
+
+		copperStart1: "Firm Way",
+		copperAlchemy1: "Sensitive Way",
+
+		tinStart1: "Rigid Way",
+		tinAlchemy1: "Flexible Way",
+
+		aluminumStart1: "Dense Way",
+		aluminumAlchemy1: "Fluffy Way",
+
+		ironStart1: "Stiff Way",
+		ironAlchemy1: "Oh snap, here we go again.",
+		ironAlchemy2: "Da Wae",
+
+		steelProduction1: "Unyielding Way",
+
+		clayProduction1: "Pulpy Way",
+
+		plasticProduction1: "Elastic Way",
+		plasticProduction2: "Bendable Way",
+		plasticProduction3: "Moldable Way",
+
+		siliconProduction1: "Sikly Way",
+
+		acidProduction1: "Cozy Way",
+
+		ashCompress1: "ashCompress1",
+		ashCompress2: "ashCompress2",
+		dustCompress1: "dustCompress1",
+		dustCompress2: "dustCompress2",
+
+		gravelProduction1: "Dechunking Earth",
+		pebbleProduction1: "Cobble Trouble",
+		pebbleProduction2: "Decrushing Gravel",
+		stoneProduction1: "Decrumbling Pebbles",
+
+		gemGrow1: "G",
+		gemGrow2: "E",
+		gemGrow3: "M",
+		gemGrow4: "S",
+		gemGrow5: "T",
+		gemGrow6: "O",
+		gemGrow7: "N",
+		gemGrow8: "E",
+		gemGrow9: "P",
+		gemGrow10: "R",
+		gemGrow11: "E",
+		gemGrow12: "C",
+		gemGrow13: "I",
+		gemGrow14: "P",
+		gemGrow15: "I",
+		gemGrow16: "N",
+		gemGrow17: "A",
+		gemGrow18: "T",
+		gemGrow19: "O",
+		gemGrow20: "R",
+
+		gemBreak1: "Open Gembox",
+
+		sterileGlassProduction1: "Glass Sterilization",
+		compressionCrystalProduction1: "Folding Compression Crystal",
+
+		perfectedOrbProduction1: "Molecular Manipulation",
+
+		pureEarthProduction1: "Subspace Earth Refinement",
+		pureWaterProduction1: "Subspace Water Refinement",
+		pureAirProduction1: "Subspace Air Refinement",
+		pureFireProduction1: "Subspace Fire Refinement",
+
+		pureGolemEarthStart1: "Golem Incarnation",
+
+		pureGolemWaterStart1: "Golem Incarnation",
+
+		pureGolemAirStart1: "Golem Incarnation",
+
+		pureGolemFireStart1: "Golem Incarnation",
 	},
 	oElementsShorthand:
 	{
@@ -364,3 +646,19 @@ var locale = {
 		pure: "Purest of Points",
 	},
 };
+
+// var strangename = "";
+// for (var i = 0; i < machines.list.length; i++)
+// {
+// 	var mach = machines.list[i];
+// 	for (var j = 0; j < mach.recipes.length; j++)
+// 	{
+// 		var rec = mach.recipes[j];
+// 		while (rec)
+// 		{
+// 			strangename += rec.id + ": \"" + rec.id + "\",\n";
+// 			rec = mach.hiddenRecipes[rec.upgradeTo];
+// 		}
+// 	}
+// 	strangename += "\n";
+// }

@@ -524,8 +524,11 @@ function loop(timestamp)
 	}
 	data.oElements.Time.amount += timestamp - lastTimestamp;
 	lastTimestamp = timestamp;
-
-	if (machineData.machineTime.recipes[1].enabled && !machineData.machineTime.paused)
+	if (machineData.machineTime.recipes[0].enabled && !machineData.machineTime.paused)
+	{
+		maxRounds = Math.floor(Math.random() * 1.25);
+	}
+	else if (machineData.machineTime.recipes[1].enabled && !machineData.machineTime.paused)
 	{
 		if (data.oElements.TurboLimit.amount < 2)
 		{

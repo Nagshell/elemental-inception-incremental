@@ -937,7 +937,7 @@ var simplifiedMachineData = {
 				],
 				lock: ["Water", 1000, "Air", 1000],
 			},
-			mudRift1:
+			iceRift1:
 			{
 				baseStats: [1, 1, true, false],
 				in: [],
@@ -1009,7 +1009,7 @@ var simplifiedMachineData = {
 				],
 				lock: ["Water", 1000, "Fire", 1000],
 			},
-			mudRift1:
+			steamRift1:
 			{
 				baseStats: [1, 1, true, false],
 				in: [],
@@ -1081,7 +1081,7 @@ var simplifiedMachineData = {
 				],
 				lock: ["Earth", 1000, "Fire", 1000],
 			},
-			mudRift1:
+			magmaRift1:
 			{
 				baseStats: [1, 1, true, false],
 				in: [],
@@ -1140,7 +1140,7 @@ var simplifiedMachineData = {
 					["Sand", 1, 2560],
 				],
 			},
-			mudRift1:
+			sandRift1:
 			{
 				baseStats: [1, 1, true, false],
 				in: [],
@@ -1932,7 +1932,7 @@ var midCircle = {
 			baseStats: [0, -450, ["Revelation", "Knowledge"]],
 			recipes:
 			{
-				earthStart1:
+				knowledgeProduction1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -1943,9 +1943,9 @@ var midCircle = {
 						["Knowledge", 0.03, 7],
 					],
 					lock: ["Revelation", 0.1],
-					upgrade: ["earthRift1", "Gold", 1],
+					upgrade: ["knowledgeProduction2", "Gold", 1],
 				},
-				earthRift1:
+				knowledgeProduction2:
 				{
 					baseStats: [1, 1, false, true],
 					in: [
@@ -1955,9 +1955,9 @@ var midCircle = {
 						["Revelation", 1, -5],
 						["Knowledge", 0.05, 9, 1.3, ["DistilledEarth", 0.1, "DistilledWater", 0.1, "DistilledAir", 0.1, "DistilledFire", 0.1]],
 					],
-					upgrade: ["earthRift2", "Knowledge", 25],
+					upgrade: ["knowledgeProduction3", "Knowledge", 25],
 				},
-				earthRift2:
+				knowledgeProduction3:
 				{
 					baseStats: [1, 1, false, true],
 					in: [
@@ -1968,7 +1968,7 @@ var midCircle = {
 						["Knowledge", 0.8, 79],
 					],
 				},
-				earthStart2:
+				revelationGain1:
 				{
 					baseStats: [1, 0.1, true, true],
 					in: [
@@ -1978,9 +1978,9 @@ var midCircle = {
 						["Revelation", 1, 1.2, 4, ["Knowledge", 8]],
 					],
 					lock: ["Gold", 0.1],
-					upgrade: ["earthStart3", "Knowledge", 75],
+					upgrade: ["revelationGain2", "Knowledge", 75],
 				},
-				earthStart3:
+				revelationGain2:
 				{
 					baseStats: [1, 0.01, false, true],
 					in: [
@@ -1997,7 +1997,7 @@ var midCircle = {
 			baseStats: [-100, 650, "Essence"],
 			recipes:
 			{
-				earthStart1:
+				essenceMerge1:
 				{
 					baseStats: [1, 0.001, true, true],
 					in: [
@@ -2017,7 +2017,7 @@ var midCircle = {
 			baseStats: [100, 650, "Soil"],
 			recipes:
 			{
-				earthStart1:
+				soilMerge1:
 				{
 					baseStats: [1, 0.001, true, true],
 					in: [
@@ -2029,9 +2029,9 @@ var midCircle = {
 						["Soil", 1, 1.2, 2, ["Force", 0.2]],
 					],
 					lock: ["Knowledge", 0.1],
-					upgrade: ["earthStart2", "Knowledge", 36],
+					upgrade: ["soilMerge2", "Knowledge", 36],
 				},
-				earthStart2:
+				soilMerge2:
 				{
 					baseStats: [1, 0.01, false, true],
 					in: [
@@ -2043,7 +2043,7 @@ var midCircle = {
 						["Soil", 1, 12],
 					],
 				},
-				earthStart3:
+				soilAdvMerge1:
 				{
 					baseStats: [1, 0.01, true, true],
 					in: [
@@ -2064,7 +2064,7 @@ var midCircle = {
 			baseStats: [650, 100, "Obsidian"],
 			recipes:
 			{
-				earthStart1:
+				obsidianMerge1:
 				{
 					baseStats: [1, 0.001, true, true],
 					in: [
@@ -2077,7 +2077,7 @@ var midCircle = {
 					],
 					lock: ["Knowledge", 0.2],
 				},
-				earthStart2:
+				obsidianCooling1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -2096,7 +2096,7 @@ var midCircle = {
 			baseStats: [650, -100, "Lava"],
 			recipes:
 			{
-				earthStart1:
+				lavaMerge1:
 				{
 					baseStats: [1, 0.001, true, true],
 					in: [
@@ -2116,7 +2116,7 @@ var midCircle = {
 			baseStats: [0, -650, "Space"],
 			recipes:
 			{
-				earthStart1:
+				spaceMerge1:
 				{
 					baseStats: [1, 0.1, true, true],
 					in: [
@@ -2137,7 +2137,7 @@ var midCircle = {
 			baseStats: [-650, -100, "Snow"],
 			recipes:
 			{
-				earthStart1:
+				snowMerge1:
 				{
 					baseStats: [1, 0.001, true, true],
 					in: [
@@ -2157,7 +2157,7 @@ var midCircle = {
 			baseStats: [-650, 100, "Cryogen"],
 			recipes:
 			{
-				earthStart1:
+				cryogenMerge1:
 				{
 					baseStats: [1, 0.001, true, true],
 					in: [
@@ -2177,7 +2177,7 @@ var midCircle = {
 			baseStats: [-400, -500, "Glass"],
 			recipes:
 			{
-				earthStart1:
+				glassMerge1:
 				{
 					baseStats: [1, 0.001, true, true],
 					in: [
@@ -2198,7 +2198,7 @@ var midCircle = {
 			baseStats: [-500, -400, "Gold"],
 			recipes:
 			{
-				earthStart1:
+				goldMerge1:
 				{
 					baseStats: [1, 0.001, true, true],
 					in: [
@@ -2211,9 +2211,9 @@ var midCircle = {
 						["Gold", 1, 1.2],
 					],
 					lock: ["Knowledge", 7, "Cryogen", 0.4, "Force", 1.1, "Sand", 700],
-					upgrade: ["earthStart2", "Iron", 0.01],
+					upgrade: ["goldMerge2", "Iron", 0.01],
 				},
-				earthStart2:
+				goldMerge2:
 				{
 					baseStats: [1, 0.001, false, true],
 					in: [
@@ -2224,9 +2224,9 @@ var midCircle = {
 					out: [
 						["Gold", 1, 1.2],
 					],
-					upgrade: ["earthStart3", "Silver", 1.01],
+					upgrade: ["goldMerge3", "Silver", 1.01],
 				},
-				earthStart3:
+				goldMerge3:
 				{
 					baseStats: [1, 0.002, false, true],
 					in: [
@@ -2237,9 +2237,9 @@ var midCircle = {
 					out: [
 						["Gold", 1, 1.2],
 					],
-					upgrade: ["earthStart4", "Bronze", 1.01],
+					upgrade: ["goldMerge4", "Bronze", 1.01],
 				},
-				earthStart4:
+				goldMerge4:
 				{
 					baseStats: [1, 0.004, false, true],
 					in: [
@@ -2250,9 +2250,9 @@ var midCircle = {
 					out: [
 						["Gold", 1, 1.2],
 					],
-					upgrade: ["earthStart5", "Copper", 1.01],
+					upgrade: ["goldMerge5", "Copper", 1.01],
 				},
-				earthStart5:
+				goldMerge5:
 				{
 					baseStats: [1, 0.006, false, true],
 					in: [
@@ -2263,9 +2263,9 @@ var midCircle = {
 					out: [
 						["Gold", 1, 1.2],
 					],
-					upgrade: ["earthStart6", "Tin", 1.01],
+					upgrade: ["goldMerge6", "Tin", 1.01],
 				},
-				earthStart6:
+				goldMerge6:
 				{
 					baseStats: [1, 0.008, false, true],
 					in: [
@@ -2276,9 +2276,9 @@ var midCircle = {
 					out: [
 						["Gold", 1, 1.2],
 					],
-					upgrade: ["earthStart7", "Aluminum", 1.01],
+					upgrade: ["goldMerge7", "Aluminum", 1.01],
 				},
-				earthStart7:
+				goldMerge7:
 				{
 					baseStats: [1, 0.01, false, true],
 					in: [
@@ -2289,9 +2289,9 @@ var midCircle = {
 					out: [
 						["Gold", 1, 1.2],
 					],
-					upgrade: ["earthStart8", "Iron", 1.01],
+					upgrade: ["goldMerge8", "Iron", 1.01],
 				},
-				earthStart8:
+				goldMerge8:
 				{
 					baseStats: [1, 0.01, false, true],
 					in: [
@@ -2310,7 +2310,7 @@ var midCircle = {
 			baseStats: [400, -500, "Force"],
 			recipes:
 			{
-				earthStart1:
+				forceMerge1:
 				{
 					baseStats: [1, 0.001, true, true],
 					in: [
@@ -2322,9 +2322,9 @@ var midCircle = {
 						["Force", 1, 1.2],
 					],
 					lock: ["Knowledge", 0.8, "Space", 1],
-					upgrade: ["earthStart2", "Steel", 1, "Space", 1e8],
+					upgrade: ["forceMerge2", "Steel", 1, "Space", 1e8],
 				},
-				earthStart2:
+				forceMerge2:
 				{
 					baseStats: [1, 0.01, false, true],
 					in: [
@@ -2345,7 +2345,7 @@ var midCircle = {
 			baseStats: [500, -400, "Oil"],
 			recipes:
 			{
-				earthStart1:
+				oilMerge1:
 				{
 					baseStats: [1, 0.001, true, true],
 					in: [
@@ -2358,7 +2358,7 @@ var midCircle = {
 					],
 					lock: ["Knowledge", 0.4],
 				},
-				earthStart2:
+				oilPump1:
 				{
 					baseStats: [1, 0.02, true, true],
 					in: [
@@ -2371,7 +2371,7 @@ var midCircle = {
 					],
 					lock: ["Silver", 0.4],
 				},
-				earthStart3:
+				oilAdvPump2:
 				{
 					baseStats: [1, 0.12, true, true],
 					in: [
@@ -2392,7 +2392,7 @@ var midCircle = {
 			baseStats: [-500, 400, "Solution"],
 			recipes:
 			{
-				solutionStart1:
+				solutionMix1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -2406,9 +2406,9 @@ var midCircle = {
 						["Solution", 10, 120],
 					],
 					lock: ["Knowledge", 8],
-					upgrade: ["solutionStart2", "PureEssenceEarth", 1],
+					upgrade: ["solutionMix2", "PureEssenceEarth", 1],
 				},
-				solutionStart2:
+				solutionMix2:
 				{
 					baseStats: [1, 1, false, true],
 					in: [
@@ -2421,9 +2421,9 @@ var midCircle = {
 					out: [
 						["Solution", 10, 120],
 					],
-					upgrade: ["solutionStart3", "PureEssenceAir", 1],
+					upgrade: ["solutionMix3", "PureEssenceAir", 1],
 				},
-				solutionStart3:
+				solutionMix3:
 				{
 					baseStats: [1, 1, false, true],
 					in: [
@@ -2436,9 +2436,9 @@ var midCircle = {
 					out: [
 						["Solution", 10, 120],
 					],
-					upgrade: ["solutionStart4", "PureEssenceWater", 1],
+					upgrade: ["solutionMix4", "PureEssenceWater", 1],
 				},
-				solutionStart4:
+				solutionMix4:
 				{
 					baseStats: [1, 1, false, true],
 					in: [
@@ -2451,9 +2451,9 @@ var midCircle = {
 					out: [
 						["Solution", 10, 120],
 					],
-					upgrade: ["solutionStart5", "PureEssenceFire", 1],
+					upgrade: ["solutionMix5", "PureEssenceFire", 1],
 				},
-				solutionStart5:
+				solutionMix5:
 				{
 					baseStats: [1, 1, false, true],
 					in: [
@@ -2466,9 +2466,9 @@ var midCircle = {
 					out: [
 						["Solution", 10, 120],
 					],
-					upgrade: ["solutionStart6", "Tin", 1e3],
+					upgrade: ["solutionMix6", "Tin", 1e3],
 				},
-				solutionStart6:
+				solutionMix6:
 				{
 					baseStats: [1, 1, false, true],
 					in: [
@@ -2664,7 +2664,7 @@ var midCircle = {
 			baseStats: [500, 400, "Pressure"],
 			recipes:
 			{
-				earthStart1:
+				pressureMerge1:
 				{
 					baseStats: [1, 0.1, true, true],
 					in: [
@@ -3149,7 +3149,7 @@ var coldCircle = {
 			baseStats: [-750, 0, "Coolant"],
 			recipes:
 			{
-				earthStart1:
+				coolantMerge1:
 				{
 					baseStats: [1, 0.2, true, true],
 					in: [
@@ -3161,9 +3161,9 @@ var coldCircle = {
 						["Coolant", 5, 1080],
 					],
 					lock: ["Knowledge", 36],
-					upgrade: ["earthStart21", "Power", 36]
+					upgrade: ["coolantMerge2", "Power", 36]
 				},
-				earthStart21:
+				coolantMerge2:
 				{
 					baseStats: [1, 0.4, false, true],
 					in: [
@@ -3175,7 +3175,7 @@ var coldCircle = {
 						["Coolant", 5, 1080],
 					],
 				},
-				earthStart2:
+				coolantProduction1:
 				{
 					baseStats: [1, 0.9, true, true],
 					in: [
@@ -3195,7 +3195,7 @@ var coldCircle = {
 			baseStats: [-850, -250, "Gale"],
 			recipes:
 			{
-				earthStart1:
+				galeSetup1:
 				{
 					baseStats: [0.1, 0.1, true, true],
 					in: [
@@ -3207,7 +3207,7 @@ var coldCircle = {
 					],
 					lock: ["Knowledge", 36, "Coolant", 12],
 				},
-				earthDecay1:
+				galeCool1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3220,7 +3220,7 @@ var coldCircle = {
 					],
 					lock: ["Gale", 1e99],
 				},
-				earthDecay2:
+				galeMelt2:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3239,7 +3239,7 @@ var coldCircle = {
 			baseStats: [-850, 250, "Cryospire"],
 			recipes:
 			{
-				earthStart1:
+				cryospireSetup1:
 				{
 					baseStats: [0.1, 0.5, true, true],
 					in: [
@@ -3251,7 +3251,7 @@ var coldCircle = {
 					],
 					lock: ["Knowledge", 36, "Silver", 2],
 				},
-				earthDecay1:
+				cryospireCool1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3264,7 +3264,7 @@ var coldCircle = {
 					],
 					lock: ["Cryospire", 1e99],
 				},
-				earthDecay2:
+				cryospireMelt2:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3283,7 +3283,7 @@ var coldCircle = {
 			baseStats: [-1100, 0, "Vortex"],
 			recipes:
 			{
-				earthStart1:
+				vortexSetup1:
 				{
 					baseStats: [0.1, 0.1, true, true],
 					in: [
@@ -3296,7 +3296,7 @@ var coldCircle = {
 					],
 					lock: ["Coolant", 1300],
 				},
-				earthDecay1:
+				vortexCool1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3309,7 +3309,7 @@ var coldCircle = {
 					],
 					lock: ["Vortex", 1e99],
 				},
-				earthDecay2:
+				vortexMelt1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3370,7 +3370,7 @@ var hotCircle = {
 			baseStats: [900, 0, "Blaze"],
 			recipes:
 			{
-				earthStart1:
+				blazeIgnite1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -3381,7 +3381,7 @@ var hotCircle = {
 					],
 					lock: ["Coal", 0.1],
 				},
-				earthDecay1:
+				blazeDecay1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3393,7 +3393,7 @@ var hotCircle = {
 					],
 					lock: ["Ash", 1e99],
 				},
-				earthStart3:
+				blazeFuel1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3413,7 +3413,7 @@ var hotCircle = {
 			baseStats: [950, 250, "Blast"],
 			recipes:
 			{
-				earthStart1:
+				blastIgnite1:
 				{
 					baseStats: [1, 0.5, true, false],
 					in: [
@@ -3425,7 +3425,7 @@ var hotCircle = {
 					],
 					lock: ["Iron", 120],
 				},
-				earthDecay1:
+				blastDecay1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3437,7 +3437,7 @@ var hotCircle = {
 					],
 					lock: ["Dust", 1e99],
 				},
-				earthStart2:
+				blastFuel1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3457,7 +3457,7 @@ var hotCircle = {
 			baseStats: [950, -250, "Pyro"],
 			recipes:
 			{
-				earthStart1:
+				pyroIgnite1:
 				{
 					baseStats: [1, 0.5, true, false],
 					in: [
@@ -3468,7 +3468,7 @@ var hotCircle = {
 					],
 					lock: ["Plastic", 1],
 				},
-				earthDecay1:
+				pyroDecay1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3480,7 +3480,7 @@ var hotCircle = {
 					],
 					lock: ["Carbon", 1e99],
 				},
-				earthStart2:
+				pyroFuel1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3499,7 +3499,7 @@ var hotCircle = {
 			baseStats: [750, 0, "Coal"],
 			recipes:
 			{
-				earthStart1:
+				coalProduction1:
 				{
 					baseStats: [1, 0.1, true, true],
 					in: [
@@ -3512,7 +3512,7 @@ var hotCircle = {
 					],
 					lock: ["Knowledge", 36],
 				},
-				earthStart2:
+				coalRecover1:
 				{
 					baseStats: [1, 0.25, true, true],
 					in: [
@@ -3524,7 +3524,7 @@ var hotCircle = {
 					],
 					lock: ["Ash", 0.1],
 				},
-				earthStart3:
+				coalAdvProduction1:
 				{
 					baseStats: [1, 0.25, true, true],
 					in: [
@@ -3543,7 +3543,7 @@ var hotCircle = {
 			baseStats: [800, 150, "Sulphur"],
 			recipes:
 			{
-				earthStart1:
+				sulphurProduction1:
 				{
 					baseStats: [1, 0.3, true, true],
 					in: [
@@ -3609,7 +3609,7 @@ var powerCircle = {
 			baseStats: [600, -350, "Fuel"],
 			recipes:
 			{
-				earthStart1:
+				fuelRefine1:
 				{
 					baseStats: [1, 0.01, true, true],
 					in: [
@@ -3628,7 +3628,7 @@ var powerCircle = {
 			baseStats: [750, -350, ["Diesel", "Petrol", "Propene"]],
 			recipes:
 			{
-				earthStart1:
+				oilRefine1:
 				{
 					baseStats: [1, 0.8, true, true],
 					in: [
@@ -3651,7 +3651,7 @@ var powerCircle = {
 			baseStats: [500, -500],
 			recipes:
 			{
-				earthStart1:
+				fuelUsage1:
 				{
 					baseStats: [1, 0.1, true, true],
 					in: [
@@ -3662,9 +3662,9 @@ var powerCircle = {
 						["Energy", 100, -12],
 					],
 					lock: ["Knowledge", 36],
-					upgrade: ["earthStart2", "Copper", 6],
+					upgrade: ["fuelUsage2", "Copper", 6],
 				},
-				earthStart2:
+				fuelUsage2:
 				{
 					baseStats: [1, 0.2, false, true],
 					in: [
@@ -3682,7 +3682,7 @@ var powerCircle = {
 			baseStats: [575, -575],
 			recipes:
 			{
-				earthStart1:
+				dieselDrain1:
 				{
 					baseStats: [1, 0, true, false],
 					in: [
@@ -3690,9 +3690,9 @@ var powerCircle = {
 					],
 					out: [],
 					lock: ["Clay", 1, "Diesel", 0.01],
-					upgrade: ["earthStart2", "Plastic", 0.1],
+					upgrade: ["dieselDrain2", "Plastic", 0.1],
 				},
-				earthStart2:
+				dieselDrain2:
 				{
 					baseStats: [1, 0, false, false],
 					in: [
@@ -3700,7 +3700,7 @@ var powerCircle = {
 					],
 					out: [],
 				},
-				earthStart3:
+				dieselUsage1:
 				{
 					baseStats: [1, 0.25, true, true],
 					in: [
@@ -3719,7 +3719,7 @@ var powerCircle = {
 			baseStats: [650, -650],
 			recipes:
 			{
-				earthStart1:
+				petrolDrain1:
 				{
 					baseStats: [1, 0, true, false],
 					in: [
@@ -3728,7 +3728,7 @@ var powerCircle = {
 					out: [],
 					lock: ["Clay", 1, "Petrol", 0.01],
 				},
-				earthStart3:
+				petrolUsage1:
 				{
 					baseStats: [1, 0.30, true, true],
 					in: [
@@ -3747,7 +3747,7 @@ var powerCircle = {
 			baseStats: [725, -725],
 			recipes:
 			{
-				earthStart1:
+				propaneDrain1:
 				{
 					baseStats: [1, 0, true, false],
 					in: [
@@ -3763,7 +3763,7 @@ var powerCircle = {
 			baseStats: [800, -800],
 			recipes:
 			{
-				earthStart1:
+				propeneDrain1:
 				{
 					baseStats: [1, 0, true, false],
 					in: [
@@ -3771,9 +3771,9 @@ var powerCircle = {
 					],
 					out: [],
 					lock: ["Clay", 1, "Propene", 0.01],
-					upgrade: ["earthStart2", "Plastic", 1],
+					upgrade: ["propeneDrain2", "Plastic", 1],
 				},
-				earthStart2:
+				propeneDrain2:
 				{
 					baseStats: [1, 0, false, false],
 					in: [
@@ -3814,7 +3814,7 @@ var reachCircle = {
 			baseStats: [-107, -907, "Spatial"],
 			recipes:
 			{
-				earthStart1:
+				spatialCreation1:
 				{
 					baseStats: [1, 0.01, true, true],
 					in: [
@@ -3825,7 +3825,7 @@ var reachCircle = {
 					],
 					lock: ["Glass", 1],
 				},
-				earthRift1:
+				spatialProduce1:
 				{
 					baseStats: [1, 0.1, true, true],
 					in: [
@@ -3844,7 +3844,7 @@ var reachCircle = {
 			baseStats: [150, -800, "Temporal"],
 			recipes:
 			{
-				earthStart1:
+				temporalCreation1:
 				{
 					baseStats: [1, 0.01, true, true],
 					in: [
@@ -3855,7 +3855,7 @@ var reachCircle = {
 					],
 					lock: ["Spatial", 1, "Space", 10, "Gold", 1, ],
 				},
-				earthRift1:
+				temporalProduce1:
 				{
 					baseStats: [1, 0.05, true, true],
 					in: [
@@ -3868,7 +3868,7 @@ var reachCircle = {
 					],
 					lock: ["Temporal", 0.01],
 				},
-				earthRift2:
+				temporalShenigans1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -3886,7 +3886,7 @@ var reachCircle = {
 			baseStats: [-107, -693, "Parallel"],
 			recipes:
 			{
-				earthStart1:
+				parallelCreation1:
 				{
 					baseStats: [1, 0.01, true, true],
 					in: [
@@ -3897,7 +3897,7 @@ var reachCircle = {
 					],
 					lock: ["Temporal", 1, "Space", 100],
 				},
-				earthRift1:
+				parallelProduce1:
 				{
 					baseStats: [1, 0.05, true, true],
 					in: [
@@ -3917,7 +3917,7 @@ var reachCircle = {
 			baseStats: [107, -693, "FoldedSpace"],
 			recipes:
 			{
-				earthStart1:
+				foldedSpaceCreation1:
 				{
 					baseStats: [1, 0.01, true, true],
 					in: [
@@ -3936,7 +3936,7 @@ var reachCircle = {
 			baseStats: [107, -907, "FoldedSpatial"],
 			recipes:
 			{
-				earthStart1:
+				foldedSpatialCreation1:
 				{
 					baseStats: [1, 0.1, true, true],
 					in: [
@@ -3947,7 +3947,7 @@ var reachCircle = {
 					],
 					lock: ["FoldedSpace", 1],
 				},
-				earthRift1:
+				foldedSpatialProduce1:
 				{
 					baseStats: [1, 0.1, true, true],
 					in: [
@@ -3966,7 +3966,7 @@ var reachCircle = {
 			baseStats: [-150, -800, "FoldedTemporal"],
 			recipes:
 			{
-				earthStart1:
+				foldedTemporalCreation1:
 				{
 					baseStats: [1, 0.01, true, true],
 					in: [
@@ -3977,7 +3977,7 @@ var reachCircle = {
 					],
 					lock: ["FoldedSpatial", 1, "FoldedSpace", 10],
 				},
-				earthRift1:
+				foldedTemporalProduce1:
 				{
 					baseStats: [1, 0.05, true, true],
 					in: [
@@ -3990,7 +3990,7 @@ var reachCircle = {
 					],
 					lock: ["FoldedTemporal", 0.01],
 				},
-				earthRift2:
+				foldedTemporalShenigans1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4008,7 +4008,7 @@ var reachCircle = {
 			baseStats: [-0, -950, ["Time", "NormalLimit", "TurboLimit"]],
 			recipes:
 			{
-				earthStart1:
+				timeSlow1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4017,7 +4017,7 @@ var reachCircle = {
 					out: [],
 					lock: ["Knowledge", 0.001],
 				},
-				earthStart2:
+				timeFast1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4050,7 +4050,7 @@ var rarityCircle = {
 			baseStats: [-740, -400, "Silver"],
 			recipes:
 			{
-				earthStart1:
+				silverStart1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4062,7 +4062,7 @@ var rarityCircle = {
 					],
 					lock: ["Knowledge", 36],
 				},
-				earthStart2:
+				silverAlchemy1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4081,7 +4081,7 @@ var rarityCircle = {
 			baseStats: [-570, -570, "Bronze"],
 			recipes:
 			{
-				earthStart1:
+				bronzeStart1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4093,7 +4093,7 @@ var rarityCircle = {
 					],
 					lock: ["Knowledge", 36, "Silver", 0.01],
 				},
-				earthStart2:
+				bronzeAlchemy1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4112,7 +4112,7 @@ var rarityCircle = {
 			baseStats: [-570, -330, "Copper"],
 			recipes:
 			{
-				earthStart1:
+				copperStart1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4124,7 +4124,7 @@ var rarityCircle = {
 					],
 					lock: ["Knowledge", 36, "Silver", 0.01],
 				},
-				earthStart2:
+				copperAlchemy1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4143,7 +4143,7 @@ var rarityCircle = {
 			baseStats: [-740, -500, "Tin"],
 			recipes:
 			{
-				earthStart1:
+				tinStart1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4155,7 +4155,7 @@ var rarityCircle = {
 					],
 					lock: ["Knowledge", 36, "Copper", 0.01],
 				},
-				earthStart2:
+				tinAlchemy1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4174,7 +4174,7 @@ var rarityCircle = {
 			baseStats: [-500, -500, "Aluminum"],
 			recipes:
 			{
-				earthStart1:
+				aluminumStart1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4186,7 +4186,7 @@ var rarityCircle = {
 					],
 					lock: ["Knowledge", 36, "Copper", 0.01],
 				},
-				earthStart2:
+				aluminumAlchemy1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4205,7 +4205,7 @@ var rarityCircle = {
 			baseStats: [-670, -330, "Iron"],
 			recipes:
 			{
-				earthStart1:
+				ironStart1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4217,7 +4217,7 @@ var rarityCircle = {
 					],
 					lock: ["Knowledge", 36, "Copper", 0.01],
 				},
-				earthStart2:
+				ironAlchemy1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4228,9 +4228,9 @@ var rarityCircle = {
 						["Iron", 2, 2.4e4],
 					],
 					lock: ["Knowledge", 36, "Aluminum", 3.6],
-					upgrade: ["earthStart3", "Iron", 2.4],
+					upgrade: ["ironAlchemy2", "Iron", 2.4],
 				},
-				earthStart3:
+				ironAlchemy2:
 				{
 					baseStats: [1, 1, false, true],
 					in: [
@@ -4248,7 +4248,7 @@ var rarityCircle = {
 			baseStats: [-670, -570, "Steel"],
 			recipes:
 			{
-				earthStart1:
+				steelProduction1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4268,7 +4268,7 @@ var rarityCircle = {
 			baseStats: [-330, -570, "Clay"],
 			recipes:
 			{
-				earthStart1:
+				clayProduction1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4289,7 +4289,7 @@ var rarityCircle = {
 			baseStats: [-330, -670, "Plastic"],
 			recipes:
 			{
-				earthStart1:
+				plasticProduction1:
 				{
 					baseStats: [1, 0.05, true, true],
 					in: [
@@ -4301,7 +4301,7 @@ var rarityCircle = {
 					],
 					lock: ["Propene", 0.1],
 				},
-				earthStart2:
+				plasticProduction2:
 				{
 					baseStats: [1, 0.15, true, true],
 					in: [
@@ -4312,9 +4312,9 @@ var rarityCircle = {
 						["Plastic", 1, 1.2],
 					],
 					lock: ["Plastic", 0.02],
-					upgrade: ["earthStart3", "SterileGlass", 1],
+					upgrade: ["plasticProduction3", "SterileGlass", 1],
 				},
-				earthStart3:
+				plasticProduction3:
 				{
 					baseStats: [1, 0.45, false, true],
 					in: [
@@ -4332,7 +4332,7 @@ var rarityCircle = {
 			baseStats: [-400, -740, "Silicon"],
 			recipes:
 			{
-				earthStart1:
+				siliconProduction1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4352,7 +4352,7 @@ var rarityCircle = {
 			baseStats: [-500, -740, "Acid"],
 			recipes:
 			{
-				earthStart1:
+				acidProduction1:
 				{
 					baseStats: [1, 0.2, true, true],
 					in: [
@@ -4363,7 +4363,7 @@ var rarityCircle = {
 					out: [
 						["Acid", 1, 1.2],
 					],
-					lock: ["Vortex", 0.001, "Glass" , 1],
+					lock: ["Vortex", 0.001, "Glass", 1],
 				},
 			}
 		},
@@ -4402,7 +4402,7 @@ var gemCircle = {
 			baseStats: [1100, 600, ["CompressedDust", "CompressedAsh"]],
 			recipes:
 			{
-				earthStart1:
+				ashCompress1:
 				{
 					baseStats: [1, 0.01, true, true],
 					in: [
@@ -4412,9 +4412,9 @@ var gemCircle = {
 						["CompressedAsh", 1, 0.1],
 					],
 					lock: ["Ash", 11],
-					upgrade: ["earthStart21", "Pyro", 3],
+					upgrade: ["ashCompress2", "Pyro", 3],
 				},
-				earthStart21:
+				ashCompress2:
 				{
 					baseStats: [1, 0.1, false, true],
 					in: [
@@ -4425,7 +4425,7 @@ var gemCircle = {
 						["CompressedAsh", 5, 1.2],
 					],
 				},
-				earthStart2:
+				dustCompress1:
 				{
 					baseStats: [1, 0.01, true, true],
 					in: [
@@ -4435,9 +4435,9 @@ var gemCircle = {
 						["CompressedDust", 1, 0.1],
 					],
 					lock: ["Dust", 11],
-					upgrade: ["earthStart22", "Pyro", 3],
+					upgrade: ["dustCompress2", "Pyro", 3],
 				},
-				earthStart22:
+				dustCompress2:
 				{
 					baseStats: [1, 0.1, false, true],
 					in: [
@@ -4455,7 +4455,7 @@ var gemCircle = {
 			baseStats: [775, 600, ["Gravel", "Pebbles", "Stone"]],
 			recipes:
 			{
-				earthStart1:
+				gravelProduction1:
 				{
 					baseStats: [1, 0.8, true, true],
 					in: [
@@ -4467,7 +4467,7 @@ var gemCircle = {
 					],
 					lock: ["Energy", 1],
 				},
-				earthStart2:
+				pebbleProduction1:
 				{
 					baseStats: [1, 0.01, true, false],
 					in: [
@@ -4479,9 +4479,9 @@ var gemCircle = {
 						["Pebbles", 1, 0.1],
 					],
 					lock: ["Knowledge", 8],
-					upgrade: ["earthStart21", "Energy", 1],
+					upgrade: ["pebbleProduction2", "Energy", 1],
 				},
-				earthStart21:
+				pebbleProduction2:
 				{
 					baseStats: [1, 0.8, false, true],
 					in: [
@@ -4493,7 +4493,7 @@ var gemCircle = {
 					],
 					lock: ["Energy", 1],
 				},
-				earthStart3:
+				stoneProduction1:
 				{
 					baseStats: [1, 0.8, true, true],
 					in: [
@@ -4512,7 +4512,7 @@ var gemCircle = {
 			baseStats: [775, 775, "Gemstone"],
 			recipes:
 			{
-				earthStart1:
+				gemGrow1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4523,7 +4523,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart2:
+				gemGrow2:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4535,7 +4535,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart3:
+				gemGrow3:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4547,7 +4547,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart4:
+				gemGrow4:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4559,7 +4559,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart5:
+				gemGrow5:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4571,7 +4571,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart6:
+				gemGrow6:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4583,7 +4583,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart7:
+				gemGrow7:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4596,7 +4596,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart8:
+				gemGrow8:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4608,7 +4608,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart9:
+				gemGrow9:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4620,7 +4620,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart10:
+				gemGrow10:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4632,7 +4632,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart11:
+				gemGrow11:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4644,7 +4644,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart12:
+				gemGrow12:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4656,7 +4656,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart13:
+				gemGrow13:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4668,7 +4668,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart14:
+				gemGrow14:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4680,7 +4680,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart15:
+				gemGrow15:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4693,7 +4693,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart16:
+				gemGrow16:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4705,7 +4705,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart17:
+				gemGrow17:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4717,7 +4717,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart18:
+				gemGrow18:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4729,7 +4729,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart19:
+				gemGrow19:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4741,7 +4741,7 @@ var gemCircle = {
 					],
 					lock: ["Acid", 0.1],
 				},
-				earthStart20:
+				gemGrow20:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4760,7 +4760,7 @@ var gemCircle = {
 			baseStats: [600, 775],
 			recipes:
 			{
-				earthStart1:
+				gemBreak1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4777,81 +4777,31 @@ var gemCircle = {
 		{
 			baseStats: [675, 675, "Quartz"],
 			recipes:
-			{
-				earthStart1:
-				{
-					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["Quartz", 1, 1.2],
-					],
-					lock: ["Earth", 1e99],
-				},
-			}
+			{}
 		},
 		machineEmerald:
 		{
 			baseStats: [500, 675, "Emerald"],
 			recipes:
-			{
-				earthStart1:
-				{
-					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["Emerald", 1, 1.2],
-					],
-					lock: ["Earth", 1e99],
-				},
-			}
+			{}
 		},
 		machineSapphire:
 		{
 			baseStats: [500, 575, "Sapphire"],
 			recipes:
-			{
-				earthStart1:
-				{
-					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["Sapphire", 1, 1.2],
-					],
-					lock: ["Earth", 1e99],
-				},
-			}
+			{}
 		},
 		machineTopaz:
 		{
 			baseStats: [575, 500, "Topaz"],
 			recipes:
-			{
-				earthStart1:
-				{
-					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["Topaz", 1, 1.2],
-					],
-					lock: ["Earth", 1e99],
-				},
-			}
+			{}
 		},
 		machineRuby:
 		{
 			baseStats: [675, 500, "Ruby"],
 			recipes:
-			{
-				earthStart1:
-				{
-					baseStats: [1, 1, true, false],
-					in: [],
-					out: [
-						["Ruby", 1, 1.2],
-					],
-					lock: ["Earth", 1e99],
-				},
-			}
+			{}
 		},
 	},
 	preprocess: function ()
@@ -4891,7 +4841,7 @@ var pureCircle = {
 			baseStats: [-525, 525, ["SterileGlass", "CompressionCrystal"]],
 			recipes:
 			{
-				earthStart1:
+				sterileGlassProduction1:
 				{
 					baseStats: [1, 0.2, true, true],
 					in: [
@@ -4908,7 +4858,7 @@ var pureCircle = {
 					],
 					lock: ["Silicon", 1],
 				},
-				earthStart2:
+				compressionCrystalProduction1:
 				{
 					baseStats: [1, 0.1, true, true],
 					in: [
@@ -4935,7 +4885,7 @@ var pureCircle = {
 			baseStats: [-600, 600, "PerfectedOrb"],
 			recipes:
 			{
-				earthStart1:
+				perfectedOrbProduction1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -4958,7 +4908,7 @@ var pureCircle = {
 			baseStats: [-675, 675],
 			recipes:
 			{
-				earthStart1:
+				pureEarthProduction1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4970,7 +4920,7 @@ var pureCircle = {
 					],
 					lock: ["Aluminum", 1e3],
 				},
-				earthStart2:
+				pureWaterProduction1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4982,7 +4932,7 @@ var pureCircle = {
 					],
 					lock: ["Aluminum", 1e3],
 				},
-				earthStart3:
+				pureAirProduction1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -4994,7 +4944,7 @@ var pureCircle = {
 					],
 					lock: ["Aluminum", 1e3],
 				},
-				earthStart4:
+				pureFireProduction1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -5077,7 +5027,7 @@ var pureCircle = {
 			baseStats: [-550, 975, "PureGolemEarth"],
 			recipes:
 			{
-				earthStart1:
+				pureGolemEarthStart1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -5096,7 +5046,7 @@ var pureCircle = {
 			baseStats: [-775, 925, "PureGolemWater"],
 			recipes:
 			{
-				earthStart1:
+				pureGolemWaterStart1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -5115,7 +5065,7 @@ var pureCircle = {
 			baseStats: [-975, 550, "PureGolemAir"],
 			recipes:
 			{
-				earthStart1:
+				pureGolemAirStart1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -5134,7 +5084,7 @@ var pureCircle = {
 			baseStats: [-925, 775, "PureGolemFire"],
 			recipes:
 			{
-				earthStart1:
+				pureGolemFireStart1:
 				{
 					baseStats: [1, 1, true, false],
 					in: [
