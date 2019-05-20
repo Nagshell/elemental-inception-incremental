@@ -25,7 +25,7 @@ var locale = {
 		"Info Corner",
 		"Icon Legend",
 		null,
-		null,
+		"Discord",
 		null,
 		"Option(s)",
 		"Changelog",

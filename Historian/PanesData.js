@@ -1097,6 +1097,14 @@ function preprocessPaneData()
 	donatePage.region.mouseHandler = lorePane.region.mouseHandler;
 
 	preprocessDonations();
+
+	tabRegions[7].mouseHandler = function (pane, x, y, type)
+	{
+		if (type == "mouseup")
+		{
+			window.open('https://discord.gg/CjdSuzH', '_blank');
+		}
+	}
 }
 
 function preprocessMapControl()
