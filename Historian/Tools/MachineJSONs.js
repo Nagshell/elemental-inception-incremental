@@ -4479,7 +4479,7 @@ var gemCircle = {
 						["Pebbles", 1, 0.1],
 					],
 					lock: ["Knowledge", 8],
-					upgrade: ["pebbleProduction2", "Energy", 1],
+					upgrade: ["pebbleProduction2", "Energy", 1, "Gravel", 0.1],
 				},
 				pebbleProduction2:
 				{
