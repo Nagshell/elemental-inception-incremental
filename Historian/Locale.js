@@ -327,7 +327,7 @@ var locale = {
 		soilElementFire: "Fire Compost",
 
 		seedEarth: "Life    (Earth)",
-		seedWater: "Always  (Water)",
+		seedWater: "Uh      (Water)",
 		seedAir: "Finds   (Air)",
 		seedFire: "A Way (Fire)",
 
