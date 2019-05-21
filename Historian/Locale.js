@@ -214,25 +214,25 @@ var locale = {
 		mudRift1: "Mud Rift",
 
 		iceConversion1: "Forceful Ice Conversion",
-		iceConversion2: "Loseless Ice Conversion",
+		iceConversion2: "Lossless Ice Conversion",
 		iceConversion3: "Catalyzed Ice Conversion",
 		iceAssimilation1: "Ice Assimilation",
 		iceRift1: "Ice Rift",
 
 		steamConversion1: "Forceful Steam Conversion",
-		steamConversion2: "Loseless Steam Conversion",
+		steamConversion2: "Lossless Steam Conversion",
 		steamConversion3: "Catalyzed Steam Conversion",
 		steamAssimilation1: "Steam Assimilation",
 		steamRift1: "Steam Rift",
 
 		magmaConversion1: "Forceful Magma Conversion",
-		magmaConversion2: "Loseless Magma Conversion",
+		magmaConversion2: "Lossless Magma Conversion",
 		magmaConversion3: "Catalyzed Magma Conversion",
 		magmaAssimilation1: "Magma Assimilation",
 		magmaRift1: "Magma Rift",
 
 		sandConversion1: "Forceful Sand Conversion",
-		sandConversion2: "Loseful Sand Conversion",
+		sandConversion2: "Lossful Sand Conversion",
 		sandConversion3: "Catalyzed Sand Conversion",
 		sandRift1: "Sand Rift",
 
