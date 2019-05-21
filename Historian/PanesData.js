@@ -1296,7 +1296,7 @@ function preprocessDonations()
 	var path = new Path2D();
 	path.rect(0, 0, 120, 20);
 	paypalRegion.boundaryPath = path;
-	paypalRegion.text = "Link to Patreon";
+	paypalRegion.text = "Link to Paypal";
 	paypalRegion.textX = 60;
 	paypalRegion.textY = 10;
 	paypalRegion.mouseHandler = function (pane, x, y, type)

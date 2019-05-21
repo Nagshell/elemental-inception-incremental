@@ -685,14 +685,14 @@ function softReset()
 		switch (data.aElements[i].type)
 		{
 			case "Revelation":
-				data.aElements[i].amount = 0.1;
+				//data.aElements[i].amount = 0.1;
 				break;
 			case "NormalLimit":
 			case "TurboLimit":
 				data.aElements[i].amount = 1;
 				break;
 			case "Time":
-				data.aElements[i].amount = 1e10;
+				//data.aElements[i].amount = 1e10;
 				break;
 			default:
 				data.aElements[i].amount = 0;
