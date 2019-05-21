@@ -307,6 +307,7 @@ savingSystem = {
 			if (machineData.golemInfuser)
 			{
 				iconLegendPane.markedToSuperGlow = !machineData.golemInfuser.recipes[0].unlocked;
+				educationalPane.markedToSuperGlow = !machineData.golemInfuser.recipes[0].unlocked;
 			}
 			if (localDataToLoad)
 			{

@@ -2126,7 +2126,7 @@ var midCircle = {
 						["Fire", 10000, 27900],
 					],
 					out: [
-						["Space", 1, 1.2],
+						["Space", 1, 3.2],
 					],
 					lock: ["Knowledge", 1.5],
 				},
@@ -2146,7 +2146,7 @@ var midCircle = {
 						["Air", 200, 7900],
 					],
 					out: [
-						["Snow", 1, 1.2],
+						["Snow", 1, 1.2, 4, ["Cryospire", 0.1, "Vortex", 0.1]],
 					],
 					lock: ["Knowledge", 0.3],
 				},
@@ -2650,7 +2650,6 @@ var midCircle = {
 					in: [
 						["Solution", 8, 0.1],
 						["Gale", 0, 1],
-						["Blaze", 0, 1],
 					],
 					out: [
 						["Solution", 10, -140],
@@ -3821,7 +3820,7 @@ var reachCircle = {
 						["Space", 1, 1.1],
 					],
 					out: [
-						["Spatial", 1, 1.2],
+						["Spatial", 1, 9.6],
 					],
 					lock: ["Glass", 1],
 				},

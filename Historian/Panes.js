@@ -230,6 +230,8 @@ var panes = {
 				{
 					nohit = false;
 					targetRegion.mouseHandler(targetPane, x, y, type);
+					if (targetRegion.markedToSuperGlow && type == "mouseup")
+						targetRegion.markedToSuperGlow = false;
 				}
 				if (nohit && targetPane.mouseHandler)
 				{

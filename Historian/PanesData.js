@@ -1037,7 +1037,7 @@ function preprocessPaneData()
 	changelogPane.subRegions.push(regionData.nextPageRegion);
 	changelogPane.subRegions.push(regionData.prevPageRegion);
 	changelogPane.subRegions.push(regionData.draggableTitleRegion);
-	changelogPane.maxPages = 0;
+	changelogPane.maxPages = 1;
 	changelogPane.currentPage = changelogPane.maxPages;
 	changelogPane.customDraw = function (ctx)
 	{

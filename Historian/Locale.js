@@ -22,7 +22,7 @@ var locale = {
 		"Minimap",
 		"Pane Controls",
 		"Lore",
-		"Info Corner",
+		"Tutorial",
 		"Icon Legend",
 		null,
 		"Discord",
@@ -662,3 +662,42 @@ var locale = {
 // 	}
 // 	strangename += "\n";
 // }
+function fullunlock()
+{
+	for (var i = 0; i < machines.list.length; i++)
+	{
+		var mach = machines.list[i];
+		for (var j = 0; j < mach.recipes.length; j++)
+		{
+			var rec = mach.recipes[j];
+			if (!rec.unlocked || !(!rec.upgradeTo))
+			{
+				rec.region.paymentSuccess();
+			}
+		}
+	}
+}
+
+function softReset()
+{
+	for (var i = 0; i < data.aElements.length; i++)
+	{
+		switch (data.aElements[i].type)
+		{
+			case "Revelation":
+				data.aElements[i].amount = 0.1;
+				break;
+			case "NormalLimit":
+			case "TurboLimit":
+				data.aElements[i].amount = 1;
+				break;
+			case "Time":
+				data.aElements[i].amount = 1e10;
+				break;
+			default:
+				data.aElements[i].amount = 0;
+		}
+	}
+	savingSystem.saveData();
+	location.reload();
+}
