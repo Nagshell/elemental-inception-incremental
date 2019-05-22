@@ -3106,6 +3106,11 @@ var lifeCircle = {
 						recipe.lock[1] *= -1;
 						recipe.lock[0] += this.baseElements[j];
 					}
+					if (recipe.lock[3] && recipe.lock[3] < 0)
+					{
+						recipe.lock[3] *= -1;
+						recipe.lock[2] += this.baseElements[j];
+					}
 					this.machines[mach].recipes[rec + this.baseElements[j]] = recipe;
 				}
 				this.machines[mach].reciconv = null;
@@ -3218,6 +3223,7 @@ var coldCircle = {
 						["Coolant", 0.95, 1000],
 					],
 					lock: ["Gale", 1e99],
+					alwayson: true,
 				},
 				galeMelt2:
 				{
@@ -3230,6 +3236,7 @@ var coldCircle = {
 						["Coolant", 0.05, 13],
 					],
 					lock: ["Gale", 1e99],
+					alwayson: true,
 				},
 			}
 		},
@@ -3262,6 +3269,7 @@ var coldCircle = {
 						["Coolant", 0.80, 1200],
 					],
 					lock: ["Cryospire", 1e99],
+					alwayson: true,
 				},
 				cryospireMelt2:
 				{
@@ -3274,6 +3282,7 @@ var coldCircle = {
 						["Coolant", 0.05, 26],
 					],
 					lock: ["Cryospire", 1e99],
+					alwayson: true,
 				},
 			}
 		},
@@ -3307,6 +3316,7 @@ var coldCircle = {
 						["Coolant", 0, -1],
 					],
 					lock: ["Vortex", 1e99],
+					alwayson: true,
 				},
 				vortexMelt1:
 				{
@@ -3319,6 +3329,7 @@ var coldCircle = {
 						["Coolant", 0.50, 39],
 					],
 					lock: ["Vortex", 1e99],
+					alwayson: true,
 				},
 			}
 		},
@@ -3391,6 +3402,7 @@ var hotCircle = {
 						["Ash", 0.01, -12],
 					],
 					lock: ["Ash", 1e99],
+					alwayson: true,
 				},
 				blazeFuel1:
 				{
@@ -3435,6 +3447,7 @@ var hotCircle = {
 						["Dust", 0.005, -12],
 					],
 					lock: ["Dust", 1e99],
+					alwayson: true,
 				},
 				blastFuel1:
 				{
@@ -3478,6 +3491,7 @@ var hotCircle = {
 						["Carbon", 0.025, -12],
 					],
 					lock: ["Carbon", 1e99],
+					alwayson: true,
 				},
 				pyroFuel1:
 				{

@@ -48,7 +48,13 @@ function prepareTemplatedMachineData(simplifiedDataToBeProcessed)
 				outputs: [],
 				productionRate: simplifiedRecipe.baseStats[0],
 				efficiency: simplifiedRecipe.baseStats[1],
+				alwayson: simplifiedRecipe.alwayson,
 			};
+			if (simplifiedRecipe.alwayson)
+			{
+				preparedData.unpauseable = true;
+			}
+
 			if (simplifiedRecipe.baseStats[3])
 			{
 				preparedRecipe.scaling = true;

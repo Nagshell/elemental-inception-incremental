@@ -778,7 +778,7 @@ function preprocessPaneData()
 	minimapPane.growthX = 300 - tabWidth;
 	minimapPane.growthY = 300;
 	minimapPane.load = 0;
-	minimapPane.maxLoad = 50;
+	minimapPane.maxLoad = 10;
 	minimapPane.scale = 10;
 
 	minimapPane.customDraw = function (ctx)
@@ -1037,7 +1037,7 @@ function preprocessPaneData()
 	changelogPane.subRegions.push(regionData.nextPageRegion);
 	changelogPane.subRegions.push(regionData.prevPageRegion);
 	changelogPane.subRegions.push(regionData.draggableTitleRegion);
-	changelogPane.maxPages = 1;
+	changelogPane.maxPages = 2;
 	changelogPane.currentPage = changelogPane.maxPages;
 	changelogPane.customDraw = function (ctx)
 	{

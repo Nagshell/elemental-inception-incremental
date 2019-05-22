@@ -458,10 +458,10 @@ var locale = {
 
 		acidProduction1: "Cozy Way",
 
-		ashCompress1: "ashCompress1",
-		ashCompress2: "ashCompress2",
-		dustCompress1: "dustCompress1",
-		dustCompress2: "dustCompress2",
+		ashCompress1: "Inefficient Ash Compression",
+		ashCompress2: "Efficient Ash Compression",
+		dustCompress1: "Inefficient Dust Compression",
+		dustCompress2: "Efficient Dust Compression",
 
 		gravelProduction1: "Dechunking Earth",
 		pebbleProduction1: "Cobble Trouble",

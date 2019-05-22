@@ -30,6 +30,10 @@ savingSystem = {
 		{
 			returnData.visible = true;
 		}
+		if (pane.hiddenPath)
+		{
+			returnData.hidden = true;
+		}
 		for (var i = 0; i < pane.subPanes.length; i++)
 		{
 			if (pane.subPanes[i].id)
@@ -154,6 +158,14 @@ savingSystem = {
 			{
 				pane.boundaryPath = pane.hiddenPath;
 				pane.hiddenPath = null;
+			}
+		}
+		if (data.hidden)
+		{
+			if (pane.boundaryPath)
+			{
+				pane.hiddenPath = pane.boundaryPath;
+				pane.boundaryPath = null;
 			}
 		}
 	},
@@ -564,6 +576,10 @@ function loop(timestamp)
 		data.oElements.TurboLimit.amount = Math.max(1.9, data.oElements.TurboLimit.amount - 0.001);
 	}
 
+	if (fps && fps < 2)
+	{
+		maxRounds *= 60;
+	}
 	var rounds = 0;
 	while (data.oElements.Time.amount > drain && rounds++ < maxRounds)
 	{

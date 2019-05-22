@@ -53,6 +53,8 @@ function preprocessImages()
 		"iconGolemAir",
 		"iconGolemFire",
 
+		"iconGale",
+
 		"buttonConfirm",
 		"buttonConfirmCrossed",
 		"buttonCancel",
@@ -87,6 +89,7 @@ function preprocessImages()
 
 		"changelogPage0",
 		"changelogPage1",
+		"changelogPage2",
 
 		"donationPage",
 
