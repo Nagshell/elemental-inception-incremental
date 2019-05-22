@@ -908,7 +908,7 @@ var simplifiedMachineData = {
 				out: [
 					["Ice", 1, 52, 4, ["Ice", 60, "Glass", 0.8]],
 				],
-				upgrade: ["iceConversion3", "Silicon", 1, "Plastic", 1, "Steel", 1],
+				upgrade: ["iceConversion3", "Silicon", 1, "Plastic", 1, "Steel", 1, "Void", 2000],
 			},
 			iceConversion3:
 			{
@@ -1192,7 +1192,7 @@ var simplifiedMachineData = {
 				],
 				out: [
 					["Void", 1, 102, 8, ["Glass", 0.8]],
-					["Mud", 19, -150],
+					["Mud", 19, -150, 2, ["Mud", 200, "Mud", 400, "Mud", 800, "Mud", 1600, "Mud", 2500]],
 				],
 			},
 			voidConversion3:

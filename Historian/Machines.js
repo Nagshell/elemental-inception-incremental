@@ -1025,7 +1025,7 @@ var machines = {
 			}
 			this.target.upData[this.target.upDataId] = Math.floor(this.target.upData[this.target.upDataId] / 3) * 3;
 			this.target.upData[this.target.upDataId] += this.target.slider;
-			var newValue = this.target.sliderBase * Math.pow(this.target.sliderStep, (this.target.slider - 1) * this.target.upped);
+			var newValue = Math.abs(this.target.sliderBase) * Math.pow(this.target.sliderStep, (this.target.slider - 1) * this.target.upped);
 			if (this.target.min)
 			{
 				this.target.min = newValue;
