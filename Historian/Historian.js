@@ -229,7 +229,7 @@ savingSystem = {
 						setTimeout(() =>
 						{
 							elapsed = 0;
-						}, 5000);
+						}, 25000);
 					}
 					else
 					{
