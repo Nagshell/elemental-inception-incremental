@@ -4476,7 +4476,7 @@ var gemCircle = {
 						["Energy", 1, 1.2],
 					],
 					out: [
-						["Gravel", 1, 1.2],
+						["Gravel", 1, 1.2, 10, ["PureEarth", 1]],
 					],
 					lock: ["Energy", 1],
 				},
@@ -4502,7 +4502,7 @@ var gemCircle = {
 						["Energy", 1, 1.2],
 					],
 					out: [
-						["Pebbles", 1, 1.2],
+						["Pebbles", 1, 1.2, 10, ["FoldedSpace", 200]],
 					],
 					lock: ["Energy", 1],
 				},
@@ -4514,7 +4514,7 @@ var gemCircle = {
 						["Energy", 1, 1.2],
 					],
 					out: [
-						["Stone", 1, 1.2],
+						["Stone", 1, 1.2, 10, ["Acid", 1]],
 					],
 					lock: ["Energy", 1],
 				},
