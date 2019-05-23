@@ -575,11 +575,6 @@ function loop(timestamp)
 		}
 		data.oElements.TurboLimit.amount = Math.max(1.9, data.oElements.TurboLimit.amount - 0.001);
 	}
-
-	if (fps && fps < 2)
-	{
-		maxRounds *= 60;
-	}
 	var rounds = 0;
 	while (data.oElements.Time.amount > drain && rounds++ < maxRounds)
 	{
