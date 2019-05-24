@@ -431,21 +431,45 @@ var lineSystem = {
 			}
 		}
 
+		//splosion circles generating
+		var tempCircles = [];
 		for (var i = 0; i < 10; i++)
 		{
-			var eventCircle = {
-				drawX: 0,
-				drawY: 0,
-				drawR: 25,
-				minR: 16,
-				maxR: 512,
-				velocity: 0,
-				width: 0.5,
-				color: "#FFFFFF",
-			};
-			this.eventCircles.push(eventCircle);
-		}
+		    var eventCircle = {
+		        drawX: machineData[machineDisplayElements[splosions.types.Alkaplosion.splosionElement]].x,
+		        drawY: machineData[machineDisplayElements[splosions.types.Alkaplosion.splosionElement]].y,
+		        drawR: 672,
+		        minR: 32,
+		        maxR: 672,
+		        velocity: 0,
+		        width: 1,
+		        color: elementalColors[splosions.types.Alkaplosion.splosionElement][1],
+		    };
+		    this.eventCircles.push(eventCircle);
 
+		    tempCircles.push(eventCircle);
+		}
+		splosions.types.Alkaplosion.splosionCircles = tempCircles;
+
+		//for (var i = 0; i < splosionTypes.length; i++)
+		var tempCircles = [];
+		for (var i = 0; i < 10; i++)
+		{
+		    var eventCircle = {
+		        drawX: machineData[machineDisplayElements[splosions.types.Firesplosion.splosionElement]].x,
+		        drawY: machineData[machineDisplayElements[splosions.types.Firesplosion.splosionElement]].y,
+		        drawR: 672,
+		        minR: 32,
+		        maxR: 672,
+		        velocity: 0,
+		        width: 1,
+		        color: elementalColors[splosions.types.Firesplosion.splosionElement][1],
+		    };
+		    this.eventCircles.push(eventCircle);
+
+		    tempCircles.push(eventCircle);
+		}
+		splosions.types.Firesplosion.splosionCircles = tempCircles;
 		this.lineData = null;
 		this.circleData = null;
 
