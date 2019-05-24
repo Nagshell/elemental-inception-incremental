@@ -412,15 +412,15 @@ function tick()
 		data.oElementsFlow[element] = 0;
 	}
 
-	if (data.oElements.Alkahest.amount >= 42 && !splosions.Alkaplosion.ticking)
+	if (data.oElements.Alkahest.amount >= 42)
 	{
-		startSplosion(splosions.Alkaplosion);
+		splosions.start("Alkaplosion");
 	}
 
 //testing
-	if (data.oElements.Fire.amount >= 1e8 && !splosions.Firesplosion.ticking)
+	if (data.oElements.Fire.amount >= 1e8)
 	{
-		startSplosion(splosions.Firesplosion);
+		//startSplosion(splosions.Firesplosion);
 	}
 
 	if (winCheck && data.oElements.PureGolemEarth.amount + data.oElements.PureGolemWater.amount + data.oElements.PureGolemAir.amount + data.oElements.PureGolemFire.amount > 3)
@@ -509,10 +509,6 @@ function loop(timestamp)
 		data.oElements.TurboLimit.amount = Math.max(1.9, data.oElements.TurboLimit.amount - 0.001);
 	}
 
-	if (fps && fps < 2)
-	{
-		maxRounds *= 60;
-	}
 	var rounds = 0;
 	while (data.oElements.Time.amount > drain && rounds++ < maxRounds)
 	{
