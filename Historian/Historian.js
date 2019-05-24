@@ -345,6 +345,7 @@ savingSystem = {
 
 		preprocessMachinesData(simplifiedMachineData);
 		preprocessLore();
+		preprocessSplosions();
 		preprocessParticles();
 		resizeCanvas();
 		preprocessBackgrounds();
@@ -397,6 +398,9 @@ function tick()
 	gemCircle.decay();
 
 	machines.tick();
+	splosions.tick();
+
+
 	for (var element in data.oElements)
 	{
 		//data.oElements[element].amount += 0.100001;
@@ -408,86 +412,15 @@ function tick()
 		data.oElementsFlow[element] = 0;
 	}
 
-	if (data.oElements.Alkahest.amount >= 42 || c < cMax)
+	if (data.oElements.Alkahest.amount >= 42 && !splosions.Alkaplosion.ticking)
 	{
-		c -= 1;
+		startSplosion(splosions.Alkaplosion);
 	}
-	if (c == 6400)
+
+//testing
+	if (data.oElements.Fire.amount >= 1e8 && !splosions.Firesplosion.ticking)
 	{
-		for (var i = 0; i < 10; i++)
-		{
-			var temp = effectSystem.eventCircles[i];
-			temp.maxR = 672;
-			temp.minR = 32;
-			temp.drawR = temp.maxR;
-			temp.velocity = 0;
-			temp.width = 1;
-			temp.color = elementalColors.Alkahest[1];
-		}
-		effectSystem.eventCircles[0].velocity = -1 * 0.25;
-	}
-	else if (c == 5760)
-	{
-		effectSystem.eventCircles[1].velocity = -2 * 0.25;
-	}
-	else if (c == 5120)
-	{
-		effectSystem.eventCircles[2].velocity = -3 * 0.25;
-	}
-	else if (c == 4480)
-	{
-		effectSystem.eventCircles[3].velocity = -4 * 0.25;
-	}
-	else if (c == 3840)
-	{
-		effectSystem.eventCircles[4].velocity = -5 * 0.25;
-	}
-	else if (c == 3200)
-	{
-		effectSystem.eventCircles[5].velocity = -6 * 0.25;
-	}
-	else if (c == 2560)
-	{
-		effectSystem.eventCircles[6].velocity = -7 * 0.25;
-	}
-	else if (c == 1920)
-	{
-		effectSystem.eventCircles[7].velocity = -8 * 0.25;
-	}
-	else if (c == 1280)
-	{
-		effectSystem.eventCircles[8].velocity = -9 * 0.25;
-	}
-	else if (c == 640)
-	{
-		effectSystem.eventCircles[9].velocity = -10 * 0.25;
-	}
-	else if (c == 0)
-	{
-		for (var i = 0; i < effectSystem.eventCircles.length; i++)
-		{
-			effectSystem.eventCircles[i].velocity = 0;
-			effectSystem.eventCircles[i].color = elementalColors.Alkahest[0];
-		}
-		effectSystem.eventCircles[0].velocity = 1;
-		effectSystem.eventCircles[0].width = 4;
-		effectSystem.eventCircles[1].velocity = 2;
-		effectSystem.eventCircles[1].width = 10;
-		effectSystem.eventCircles[1].drawR = effectSystem.eventCircles[1].minR;
-		for (var i = 0; i < initialData.betaElements.length; i++)
-		{
-			data.oElements[initialData.betaElements[i]].amount = 0;
-		}
-		if (data.oElements.Revelation.amount < 1)
-		{
-			data.oElements.Revelation.amount += (1 - data.oElements.Revelation.amount) / 3;
-		}
-	}
-	else if (c == -320)
-	{
-		c = cMax;
-		effectSystem.eventCircles[0].velocity = 0;
-		effectSystem.eventCircles[1].velocity = 0;
+		startSplosion(splosions.Firesplosion);
 	}
 
 	if (winCheck && data.oElements.PureGolemEarth.amount + data.oElements.PureGolemWater.amount + data.oElements.PureGolemAir.amount + data.oElements.PureGolemFire.amount > 3)
@@ -574,6 +507,11 @@ function loop(timestamp)
 			data.oElements.NormalLimit.amount = Math.max(0.9, data.oElements.NormalLimit.amount - 0.001);
 		}
 		data.oElements.TurboLimit.amount = Math.max(1.9, data.oElements.TurboLimit.amount - 0.001);
+	}
+
+	if (fps && fps < 2)
+	{
+		maxRounds *= 60;
 	}
 	var rounds = 0;
 	while (data.oElements.Time.amount > drain && rounds++ < maxRounds)
