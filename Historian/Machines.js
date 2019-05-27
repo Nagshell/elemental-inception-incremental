@@ -347,12 +347,14 @@ var machines = {
 					}
 				}
 				temp.pieChart.push(state);
-
+				if (state !== "empty")
+				{
+					temp.activated = true;
+				}
 				if (state !== "working")
 				{
 					continue;
 				}
-				temp.activated = true;
 				var amount = 1e300;
 				if (temp.scaling)
 				{
