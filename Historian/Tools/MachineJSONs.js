@@ -3360,6 +3360,7 @@ var coldCircle = {
 					dec1.region.paymentSuccess();
 				}
 				dec1.enabled = true;
+				dec1.activated = true;
 
 				var dec2 = machineData["machine" + this.elements[i]].recipes[2];
 				if (!dec2.unlocked)
@@ -3367,6 +3368,7 @@ var coldCircle = {
 					dec2.region.paymentSuccess();
 				}
 				dec2.enabled = true;
+				dec2.activated = true;
 			}
 		}
 	},
