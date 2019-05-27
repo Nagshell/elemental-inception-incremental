@@ -285,11 +285,11 @@ savingSystem = {
 						}
 						while (rec[0] > 2)
 						{
-							recipe.region.paymentSuccess();
+							recipe.region.paymentSuccess(false);
 							if (recipe.markedToUpgrade)
 							{
 								recipe = machine.hiddenRecipes[recipe.upgradeTo];
-								machine.upgradeRecipe(i);
+								machine.upgradeRecipe(i, false);
 							}
 
 							rec[0] -= 3;

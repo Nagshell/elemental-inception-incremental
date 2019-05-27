@@ -182,7 +182,7 @@ function preprocessRegionData()
 					{
 						data.oElements[pane.costs[i].type].amount -= pane.costs[i].amount;
 					}
-					pane.target.paymentSuccess();
+					pane.target.paymentSuccess(true);
 					pane.costs = null;
 					machines.glowCheckCD = 0;
 					machines.glowCheck();

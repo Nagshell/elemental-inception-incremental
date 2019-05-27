@@ -235,7 +235,7 @@ var machines = {
 	},
 
 	draw: function (ctx) {},
-	upgradeRecipe: function (i)
+	upgradeRecipe: function (i, refundable)
 	{
 		var temp = this.recipes[i];
 		this.recipes[i] = this.hiddenRecipes[temp.upgradeTo];
@@ -260,6 +260,10 @@ var machines = {
 				data.elementsKnown++;
 			}
 		}
+		if (refundable && this.recipes[i].refund)
+		{
+			machines.applyRefund(this.recipes[i].refund);
+		}
 		this.recipes[i].unlocked = temp.unlocked;
 		this.recipes[i].enabled = temp.enabled;
 		this.recipes[i].pane.x = temp.pane.x;
@@ -280,8 +284,15 @@ var machines = {
 		{
 			if (this.recipes[i].markedToUpgrade)
 			{
-				this.upgradeRecipe(i);
+				this.upgradeRecipe(i, true);
 			}
+		}
+	},
+	applyRefund: function (refund)
+	{
+		for (var elem in refund)
+		{
+			data.oElements[elem].amount += refund[elem];
 		}
 	},
 	machineTick: function ()
@@ -732,7 +743,7 @@ var machines = {
 			}
 		}
 	},
-	recipeRegionPaymentSuccess: function ()
+	recipeRegionPaymentSuccess: function (refundable)
 	{
 		this.recipe.upData[0]++;
 		this.recipe.machine.upped = true;
@@ -754,6 +765,10 @@ var machines = {
 					data.oElements[this.recipe.outputs[j].type].known = true;
 					data.elementsKnown++;
 				}
+			}
+			if (refundable && this.recipe.refund)
+			{
+				machines.applyRefund(this.recipe.refund);
 			}
 		}
 		else

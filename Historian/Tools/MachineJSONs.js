@@ -503,6 +503,7 @@ var simplifiedMachineData = {
 					["GolemEarth", 1, 1],
 				],
 				lock: ["Earth", 1, "Water", 1, "Air", 1, "Fire", 1],
+				refund: ["GolemEarth", 1],
 				upgrade: ["golemEarth2", "Earth", 450],
 			},
 			golemEarth2:
@@ -514,6 +515,7 @@ var simplifiedMachineData = {
 				out: [
 					["GolemEarth", 1, 2],
 				],
+				refund: ["GolemEarth", 2],
 				upgrade: ["golemEarth3", "Earth", 11000],
 			},
 			golemEarth3:
@@ -525,6 +527,7 @@ var simplifiedMachineData = {
 				out: [
 					["GolemEarth", 5, 14],
 				],
+				refund: ["GolemEarth", 5],
 			},
 			golemWater1:
 			{
@@ -536,6 +539,7 @@ var simplifiedMachineData = {
 					["GolemWater", 1, 1],
 				],
 				lock: ["Earth", 14, "Water", 19, "Air", 14, "Fire", 14],
+				refund: ["GolemWater", 1],
 				upgrade: ["golemWater2", "Water", 450],
 			},
 			golemWater2:
@@ -547,6 +551,7 @@ var simplifiedMachineData = {
 				out: [
 					["GolemWater", 1, 2],
 				],
+				refund: ["GolemWater", 2],
 				upgrade: ["golemWater3", "Water", 11000],
 			},
 			golemWater3:
@@ -558,6 +563,7 @@ var simplifiedMachineData = {
 				out: [
 					["GolemWater", 5, 14],
 				],
+				refund: ["GolemWater", 5],
 			},
 			golemAir1:
 			{
@@ -569,6 +575,7 @@ var simplifiedMachineData = {
 					["GolemAir", 1, 1],
 				],
 				lock: ["Earth", 14, "Water", 14, "Air", 19, "Fire", 14],
+				refund: ["GolemAir", 1],
 				upgrade: ["golemAir2", "Air", 450],
 			},
 			golemAir2:
@@ -580,6 +587,7 @@ var simplifiedMachineData = {
 				out: [
 					["GolemAir", 1, 2],
 				],
+				refund: ["GolemAir", 2],
 				upgrade: ["golemAir3", "Air", 11000],
 			},
 			golemAir3:
@@ -591,6 +599,7 @@ var simplifiedMachineData = {
 				out: [
 					["GolemAir", 5, 14],
 				],
+				refund: ["GolemAir", 5],
 			},
 			golemFire1:
 			{
@@ -602,6 +611,7 @@ var simplifiedMachineData = {
 					["GolemFire", 1, 1],
 				],
 				lock: ["Earth", 14, "Water", 14, "Air", 14, "Fire", 19],
+				refund: ["GolemFire", 1],
 				upgrade: ["golemFire2", "Fire", 450],
 			},
 			golemFire2:
@@ -613,6 +623,7 @@ var simplifiedMachineData = {
 				out: [
 					["GolemFire", 1, 2],
 				],
+				refund: ["GolemFire", 2],
 				upgrade: ["golemFire3", "Fire", 11000],
 			},
 			golemFire3:
@@ -624,6 +635,7 @@ var simplifiedMachineData = {
 				out: [
 					["GolemFire", 5, 14],
 				],
+				refund: ["GolemFire", 5],
 			},
 		}
 	},
