@@ -923,7 +923,7 @@ function preprocessPaneData()
 	iconLegendPane.independent = true;
 	iconLegendPane.growth = 0;
 	iconLegendPane.growthX = 110;
-	iconLegendPane.growthY = 222;
+	iconLegendPane.growthY = 242;
 	iconLegendPane.customDraw = function (ctx)
 	{
 		ctx.save();
