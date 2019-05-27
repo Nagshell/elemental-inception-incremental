@@ -282,13 +282,22 @@ function doGlows(ctx, target, colModifier = "")
 		{
 			ctx.strokeStyle = borderGlow.colors[colModifier + target.glowColor];
 			ctx.shadowColor = borderGlow.colors[colModifier + target.glowColor];
+			if (target.glowColor == "purple")
+			{
+				ctx.globalAlpha = 1;
+			}
+			else
+			{
+				ctx.globalAlpha = borderGlow[colModifier + "alpha"];
+			}
 		}
 		else
 		{
 			ctx.strokeStyle = borderGlow.colors[colModifier + "purple"];
 			ctx.shadowColor = borderGlow.colors[colModifier + "purple"];
+			ctx.globalAlpha = 1;
 		}
-		ctx.globalAlpha = borderGlow[colModifier + "alpha"];
+
 	}
 	else
 	{

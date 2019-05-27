@@ -54,6 +54,14 @@ function prepareTemplatedMachineData(simplifiedDataToBeProcessed)
 			{
 				preparedData.unpauseable = true;
 			}
+			if (simplifiedRecipe.refund)
+			{
+				preparedRecipe.refund = {};
+				for (var i = 0; i < simplifiedRecipe.refund.length; i += 2)
+				{
+					preparedRecipe.refund[simplifiedRecipe.refund[i]] = simplifiedRecipe.refund[i + 1]
+				}
+			}
 
 			if (simplifiedRecipe.baseStats[3])
 			{

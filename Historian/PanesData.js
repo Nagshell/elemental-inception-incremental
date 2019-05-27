@@ -71,7 +71,7 @@ function preprocessRegionData()
 					mx += pane.top.centerX;
 					my += pane.top.centerY;
 				}
-				if (!pane.top.checkBoundary(mx, my, "mousemove"))
+				if (pane.pinned && !pane.top.checkBoundary(mx, my, "mousemove"))
 				{
 					pane.x = pane.defaultX;
 					pane.y = pane.defaultY;
@@ -182,7 +182,7 @@ function preprocessRegionData()
 					{
 						data.oElements[pane.costs[i].type].amount -= pane.costs[i].amount;
 					}
-					pane.target.paymentSuccess();
+					pane.target.paymentSuccess(true);
 					pane.costs = null;
 					machines.glowCheckCD = 0;
 					machines.glowCheck();
@@ -923,7 +923,7 @@ function preprocessPaneData()
 	iconLegendPane.independent = true;
 	iconLegendPane.growth = 0;
 	iconLegendPane.growthX = 110;
-	iconLegendPane.growthY = 222;
+	iconLegendPane.growthY = 242;
 	iconLegendPane.customDraw = function (ctx)
 	{
 		ctx.save();
@@ -1037,7 +1037,7 @@ function preprocessPaneData()
 	changelogPane.subRegions.push(regionData.nextPageRegion);
 	changelogPane.subRegions.push(regionData.prevPageRegion);
 	changelogPane.subRegions.push(regionData.draggableTitleRegion);
-	changelogPane.maxPages = 2;
+	changelogPane.maxPages = 3;
 	changelogPane.currentPage = changelogPane.maxPages;
 	changelogPane.customDraw = function (ctx)
 	{
@@ -1237,7 +1237,7 @@ function preprocessOptions()
 	optionsPane.subRegions.push(revertRegion);
 
 	var iconSizeRegion = new cRegion(25, 75);
-	iconSizeRegion.text = "Toggle UI size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
+	iconSizeRegion.text = "Toggle icon size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
 	iconSizeRegion.textX = 100;
 	iconSizeRegion.textY = 10;
 	var path = new Path2D();
