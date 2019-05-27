@@ -1,17 +1,24 @@
 var loopId = null;
-var gameVersion = 42;
+var gameVersion = 43;
 var elapsed = 0;
 var formattedElapsed = 0;
 savingSystem = {
+	migrationMessage: "",
 	reccurentPaneSave: function (pane)
 	{
 		var returnData = {
-			x: pane.x,
-			y: pane.y,
 			pinned: pane.pinned,
 			subPanes:
 			{},
 		};
+		for (var i = 0; i < pane.subRegions.length; i++)
+		{
+			if (pane.subRegions[i] == regionData.dragRegion)
+			{
+				returnData.x = pane.x;
+				returnData.y = pane.y;
+			}
+		}
 		if (pane.centerX)
 		{
 			returnData.centerX = pane.centerX;
@@ -89,6 +96,10 @@ savingSystem = {
 				{
 					var recipeData = machine.recipes[j].upData.slice();
 					recipeData[0] *= 3;
+					if (machine.recipes[j].activated)
+					{
+						recipeData[0] += 0.5;
+					}
 					if (machine.recipes[j].enabled)
 					{
 						recipeData[0]++;
@@ -130,8 +141,14 @@ savingSystem = {
 	},
 	reccurentPaneLoad: function (data, pane)
 	{
-		pane.x = data.x;
-		pane.y = data.y;
+		if (data.x)
+		{
+			pane.x = data.x;
+		}
+		if (data.y)
+		{
+			pane.y = data.y;
+		}
 		if (data.centerX)
 		{
 			pane.centerX = data.centerX;
@@ -184,7 +201,14 @@ savingSystem = {
 			dataToLoad = versionMigrator(dataToLoad);
 			if (Array.isArray(dataToLoad))
 			{
-				alert("Save system has beed updated. Save was migrated, but there is a chance it could not work properly. If that's the case, please consider hard resetting.");
+				if (this.migrationMessage)
+				{
+					alert(this.migrationMessage);
+				}
+				else
+				{
+					alert("Save system has beed updated. Save was migrated, but there is a chance it could not work properly. If that's the case, please consider hard resetting.");
+				}
 			}
 			else
 			{
@@ -249,6 +273,12 @@ savingSystem = {
 					{
 						var rec = mach[i];
 						var recipe = machine.recipes[i];
+						var toActivate = false;
+						if (rec[0] % 1 > 0)
+						{
+							rec[0] -= rec[0] % 1;
+							toActivate = true;
+						}
 						if (rec[0] % 3)
 						{
 							recipe.enabled = true;
@@ -311,6 +341,7 @@ savingSystem = {
 							iCount++;
 							searchNext = true;
 						}
+						recipe.activated = toActivate;
 					}
 				}
 			}
@@ -400,7 +431,6 @@ function tick()
 	machines.tick();
 	splosions.tick();
 
-
 	for (var element in data.oElements)
 	{
 		//data.oElements[element].amount += 0.100001;
@@ -415,12 +445,6 @@ function tick()
 	if (data.oElements.Alkahest.amount >= 42)
 	{
 		splosions.start("Alkaplosion");
-	}
-
-//testing
-	if (data.oElements.Fire.amount >= 1e8)
-	{
-		//startSplosion(splosions.Firesplosion);
 	}
 
 	if (winCheck && data.oElements.PureGolemEarth.amount + data.oElements.PureGolemWater.amount + data.oElements.PureGolemAir.amount + data.oElements.PureGolemFire.amount > 3)

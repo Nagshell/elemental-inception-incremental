@@ -36,13 +36,18 @@ var machines = {
 				var tempMachine = this.list[i];
 				var machineFullGlow = false;
 				var machineWeakGlow = false;
+				var machineTraceGlow = false;
 				for (var j = 0; j < tempMachine.recipes.length; j++)
 				{
 					var tempRecipe = tempMachine.recipes[j];
+					tempRecipe.insideGlow = false;
+
 					var recipeFullGlow = false;
 					var recipeWeakGlow = false;
+					var recipeTraceGlow = false;
 					if (tempRecipe.unlocked)
 					{
+						recipeTraceGlow = !tempRecipe.activated;
 						if (tempRecipe.upgradeTo)
 						{
 							if (paymentPane.isAffordable(tempRecipe.upgradeCosts))
@@ -85,6 +90,7 @@ var machines = {
 									tempIngredient.sliderRegion.glowColor = null;
 								}
 								tempIngredient.sliderRegion.markedToReadyGlow = sliderFullGlow || sliderWeakGlow;
+								tempRecipe.insideGlow = tempRecipe.insideGlow || tempIngredient.sliderRegion.markedToReadyGlow;
 								recipeFullGlow = recipeFullGlow || sliderFullGlow;
 								recipeWeakGlow = recipeWeakGlow || sliderWeakGlow;
 							}
@@ -120,6 +126,7 @@ var machines = {
 									tempIngredient.sliderRegion.glowColor = null;
 								}
 								tempIngredient.sliderRegion.markedToReadyGlow = sliderFullGlow || sliderWeakGlow;
+								tempRecipe.insideGlow = tempRecipe.insideGlow || tempIngredient.sliderRegion.markedToReadyGlow;
 								recipeFullGlow = recipeFullGlow || sliderFullGlow;
 								recipeWeakGlow = recipeWeakGlow || sliderWeakGlow;
 							}
@@ -145,13 +152,18 @@ var machines = {
 					{
 						tempRecipe.region.glowColor = "blue";
 					}
+					else if (recipeTraceGlow)
+					{
+						tempRecipe.region.glowColor = "cyan";
+					}
 					else
 					{
 						tempRecipe.region.glowColor = null;
 					}
-					tempRecipe.region.markedToReadyGlow = recipeFullGlow || recipeWeakGlow;
+					tempRecipe.region.markedToReadyGlow = recipeFullGlow || recipeWeakGlow || recipeTraceGlow;
 					machineFullGlow = machineFullGlow || recipeFullGlow;
 					machineWeakGlow = machineWeakGlow || recipeWeakGlow;
+					machineTraceGlow = machineTraceGlow || recipeTraceGlow;
 				}
 				if (machineFullGlow)
 				{
@@ -163,14 +175,19 @@ var machines = {
 					tempMachine.pane.glowColor = "blue";
 					tempMachine.region.glowColor = "blue";
 				}
+				else if (machineTraceGlow)
+				{
+					tempMachine.pane.glowColor = "cyan";
+					tempMachine.region.glowColor = "cyan";
+				}
 				else
 				{
 					tempMachine.pane.glowColor = null;
 					tempMachine.region.glowColor = null;
 				}
 
-				tempMachine.pane.markedToReadyGlow = machineFullGlow || machineWeakGlow;
-				tempMachine.region.markedToReadyGlow = machineFullGlow || machineWeakGlow;
+				tempMachine.pane.markedToReadyGlow = machineFullGlow || machineWeakGlow || machineTraceGlow;
+				tempMachine.region.markedToReadyGlow = machineFullGlow || machineWeakGlow || machineTraceGlow;
 				mainFullGlow = mainFullGlow || machineFullGlow;
 				if (!tempMachine.region.boundaryPath)
 				{
@@ -335,6 +352,7 @@ var machines = {
 				{
 					continue;
 				}
+				temp.activated = true;
 				var amount = 1e300;
 				if (temp.scaling)
 				{
@@ -787,6 +805,10 @@ var machines = {
 			}
 			else
 			{
+				if (!this.recipe.insideGlow)
+				{
+					ctx.globalAlpha = 1;
+				}
 				ctx.drawImage(images.iconShow, optionData.iconSize + 1, 0);
 				ctx.globalAlpha = 1;
 			}
@@ -948,7 +970,7 @@ var machines = {
 		{
 			resultRatio *= temp.recipe.efficiency;
 		}
-		if (resultRatio > 1e3)
+		if (resultRatio > 1e3 || resultRatio < 0.001)
 		{
 			displayStyle = "exp";
 		}

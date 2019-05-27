@@ -63,6 +63,7 @@ var borderGlow = {
 		purple: "rgba(255,55,205,",
 		blue: "rgba(5,55,255,",
 		yellow: "rgba(255,255,0,",
+		cyan: "rgba(0,255,255,",
 	},
 	colors:
 	{
@@ -87,7 +88,14 @@ var borderGlow = {
 		this.solidalpha = 1;
 		for (var col in this.precolors)
 		{
-			this.colors[col] = this.prepareColor(col, tempGlowCycleTime);
+			if (col == "purple")
+			{
+				this.colors[col] = this.prepareColor(col, 0.5 + 0.5 * tempGlowCycleTime);
+			}
+			else
+			{
+				this.colors[col] = this.prepareColor(col, tempGlowCycleTime);
+			}
 			this.colors["solid" + col] = this.prepareColor(col, 1);
 		}
 	},
@@ -120,7 +128,7 @@ function drawNumber(ctx, num, x, y, mode = "", align = "left", prefix = "", suff
 	{
 		mode = "exp";
 	}
-	if (num < 1000 && mode == "exp")
+	if ((num == 0 || num >= 0.001 & num < 1000) && mode == "exp")
 	{
 		mode = "fixed";
 	}
@@ -131,6 +139,11 @@ function drawNumber(ctx, num, x, y, mode = "", align = "left", prefix = "", suff
 		{
 			e++;
 			num /= 10;
+		}
+		while (num < 1)
+		{
+			e--;
+			num *= 10;
 		}
 		ctx.fillText(prefix + (Math.trunc(num * 100) / 100).toFixed(2) + "e" + e + suffix, x, y);
 	}

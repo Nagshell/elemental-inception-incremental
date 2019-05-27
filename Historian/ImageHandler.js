@@ -90,6 +90,7 @@ function preprocessImages()
 		"changelogPage0",
 		"changelogPage1",
 		"changelogPage2",
+		"changelogPage3",
 
 		"donationPage",
 

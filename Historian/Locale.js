@@ -54,7 +54,7 @@ var locale = {
 		machineLava: "Winner of Magma Overheating Competition",
 		machineSpace: "Measurer of Distances",
 		machineSnow: "Snowmaker",
-		machineCryogen: "Your machine name was taken.",
+		machineCryogen: "Name changed after countless bug reports.",
 		machineGlass: "Glassblowery",
 		machineGold: "Alchemical Construct",
 		machineForce: "Unstoppable Object",
@@ -454,7 +454,7 @@ var locale = {
 		plasticProduction2: "Bendable Way",
 		plasticProduction3: "Moldable Way",
 
-		siliconProduction1: "Sikly Way",
+		siliconProduction1: "Silky Way",
 
 		acidProduction1: "Cozy Way",
 

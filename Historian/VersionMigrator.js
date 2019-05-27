@@ -8,16 +8,9 @@ function versionMigrator(dataToLoad)
 	{
 		switch (dataToLoad[0])
 		{
-			case 12:
-				dataToLoad[0] = 13;
-				if (dataToLoad[117] != null && !Array.isArray(dataToLoad[117]))
-				{
-					for (var i = 125; i < dataToLoad.length; i++)
-					{
-						dataToLoad[i - 8] = dataToLoad[i];
-					}
-					dataToLoad.length -= 8;
-				}
+			case 42:
+				savingSystem.migrationMessage += "Save system was expanded to include cyan glows. It is fully compatible with old saves, but all unlocked recipes will glow cyan until they do a tick of active work.";
+				dataToLoad[0] = 43;
 				break;
 			default:
 				return 1e7 * Math.pow(25, dataToLoad.length / 150);
