@@ -7,7 +7,7 @@ var lore = {
 			{
 				"10th Day":
 				{
-					text: "I began my preparations again. I did not expect that old man, who I suspect to be the real Alchemist, to be this hostile and deadly, so I need to be much more careful and have defensive measures. I don’t think he will miss his mark next time. | | I still don’t know why I didn’t find information about anything like Golems, let alone their advanced versions. The original Golems I discovered, they represented all 4 Elements known to Elementalism, so what were those combined ones? | | | Why are public books so inaccurate compared to what I was seeing? Well, it’s something I’ll need to investigate in the future. For now, I need to find a new place for my experiments.",
+					text: "I began my preparations again. I did not expect that old man — who I suspect to be the real Alchemist — to be this hostile and deadly. I need to be much more careful and create defensive measures to protect myself. I doubt he will miss his mark next time. | | I still don’t know why I didn’t find information about anything like Golems, let alone their advanced versions. The original Golems I discovered, they represented all 4 Elements known to Elementalism, so what were those combined ones? | | | Why are public books so inaccurate compared to what I was seeing? Well, it’s something I’ll need to investigate in the future. For now, I need to find a new place for my experiments.",
 				},
 				"14th Day":
 				{
