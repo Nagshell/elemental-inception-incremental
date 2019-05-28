@@ -86,6 +86,15 @@ function preprocessImages()
 		"machineVoid",
 		"machineNexus",
 
+		"machineGold",
+		"machineSilver",
+		"machineBronze",
+		"machineCopper",
+		"machineTin",
+		"machineAluminum",
+		"machineIron",
+		"machineSteel",
+
 		"machineOil",
 
 		"machineSnow",
@@ -95,7 +104,7 @@ function preprocessImages()
 		"machineCryospire",
 		"machineVortex",
 
-		"machinePlantEarth",
+		"machinePlantEarth", //*/
 
 		"tutorialPage0",
 		"tutorialPage1",
