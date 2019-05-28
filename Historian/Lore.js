@@ -30,7 +30,7 @@ var lore = {
 				"79th Day":
 				{
 					lock: ["machineEarth", 0],
-					text: "My materials only allowed me to prepare the original 4 machines. But my new perception allowed me to understand how the catalyst crystal worked and incorporate the design into each machine. | | I was thinking about how the Alchemist entered my workshop last time- it really was something out of the ordinary. It was something like a portal appearing on the wall. I don’t have much to work with here, but I think it’s safe to assume it’s something based on Elements, like my rifts. If that’s the case, then maybe if I throw different Elements at the portal, it’ll annihilate and disappear. I have a few ideas on how could I achieve that."
+					text: "My materials only allowed me to prepare the original 4 machines. But my new perception allowed me to understand how the catalyst crystal worked and incorporate the design into each machine. | | I was thinking about how the Alchemist entered my workshop last time—it really was something out of the ordinary. It was something like a portal appearing on the wall. I don’t have much to work with here, but I think it’s safe to assume it’s something based on the Elements, like my rifts. If that’s the case, then maybe if I throw different Elements the next time the portal emerges it’ll collapse and disappear. I have a few ideas on how could I achieve that."
 				},
 			},
 			"Summer, 363":
