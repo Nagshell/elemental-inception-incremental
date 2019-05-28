@@ -701,3 +701,48 @@ function softReset()
 	savingSystem.saveData();
 	location.reload();
 }
+
+function fullenable()
+{
+	for (var i = 0; i < machines.list.length; i++)
+	{
+		var mach = machines.list[i];
+		for (var j = 0; j < mach.recipes.length; j++)
+		{
+			var rec = mach.recipes[j];
+			if (!rec.enabled)
+			{
+				rec.enabled = true;
+			}
+		}
+	}
+}
+
+function fullsliderino()
+{
+	for (var i = 0; i < machines.list.length; i++)
+	{
+		var mach = machines.list[i];
+		for (var j = 0; j < mach.recipes.length; j++)
+		{
+			var rec = mach.recipes[j];
+
+			for (var k = 0; k < rec.inputs.length; k++)
+			{
+				if (rec.inputs[k].upgrades)
+					if (rec.inputs[k].upped < rec.inputs[k].upgrades.length)
+					{
+						rec.inputs[k].sliderRegion.paymentSuccess();
+					}
+			}
+			for (var k = 0; k < rec.outputs.length; k++)
+			{
+				if (rec.outputs[k].upgrades)
+					if (rec.outputs[k].upped < rec.outputs[k].upgrades.length)
+					{
+						rec.outputs[k].sliderRegion.paymentSuccess();
+					}
+			}
+		}
+	}
+}
