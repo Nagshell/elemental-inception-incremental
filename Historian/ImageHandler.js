@@ -83,6 +83,7 @@ function preprocessImages()
 		"machineCoolant",
 		"machineGale",
 		"machineCryospire",
+		"machineVortex",
 
 		"tutorialPage0",
 		"tutorialPage1",
