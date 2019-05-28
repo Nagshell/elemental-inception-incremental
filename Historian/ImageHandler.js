@@ -78,6 +78,12 @@ function preprocessImages()
 
 		"machineOil",
 
+		"machineSnow",
+		"machineCryogen",
+		"machineCoolant",
+		"machineGale",
+		"machineCryospire",
+
 		"tutorialPage0",
 		"tutorialPage1",
 		"tutorialPage2",
