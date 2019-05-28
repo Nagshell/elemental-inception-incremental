@@ -55,6 +55,16 @@ function preprocessImages()
 
 		"iconGale",
 
+		"iconPlantEarth",
+		"iconPlantWater",
+		"iconPlantAir",
+		"iconPlantFire",
+
+		"iconSeedEarth",
+		"iconSeedWater",
+		"iconSeedAir",
+		"iconSeedFire",
+
 		"buttonConfirm",
 		"buttonConfirmCrossed",
 		"buttonCancel",
@@ -84,6 +94,8 @@ function preprocessImages()
 		"machineGale",
 		"machineCryospire",
 		"machineVortex",
+
+		"machinePlantEarth",
 
 		"tutorialPage0",
 		"tutorialPage1",
