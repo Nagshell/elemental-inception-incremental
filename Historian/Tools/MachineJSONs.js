@@ -3343,7 +3343,6 @@ var coldCircle = {
 					],
 					out: [
 						["Vortex", 1, 13],
-						["Coolant", 0, -1],
 					],
 					lock: ["Vortex", 1e99],
 					alwayson: true,
