@@ -352,7 +352,7 @@ var machines = {
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
-					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max && !temp.outputs[j].noLimit)
+					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max && !temp.outputs[j].noLimit && temp.outputs[j].ratio)
 					{
 						state = "full";
 					}
