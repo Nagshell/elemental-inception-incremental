@@ -340,7 +340,7 @@ var locale = {
 		harvestEarth1: "Leaf Trimmer",
 		uprootEarth2: "Plucker",
 
-		growWater: "Aggresive Growth",
+		growWater: "Aggressive Growth",
 		harvestWater1: "Leaf Trimmer",
 		uprootWater2: "Plucker",
 
