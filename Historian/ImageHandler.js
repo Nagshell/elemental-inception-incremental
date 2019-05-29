@@ -6,6 +6,7 @@ function preprocessIcons()
 		"iconOk",
 		"iconOn",
 		"iconOff",
+		"iconOffTransparent",
 		"iconUp",
 		"iconUpNot",
 		"iconLeft",
@@ -14,6 +15,7 @@ function preprocessIcons()
 		"iconShow",
 		"iconShowUp",
 		"iconPause",
+		"iconPauseTransparent",
 		"iconResume",
 		"iconHide",
 		"iconDrag",
@@ -66,6 +68,11 @@ function preprocessImages()
 		"iconSeedAir",
 		"iconSeedFire",
 
+		"iconEmerald",
+		"iconSapphire",
+		"iconTopaz",
+		"iconRuby",
+
 		"buttonConfirm",
 		"buttonConfirmCrossed",
 		"buttonCancel",
@@ -83,7 +90,6 @@ function preprocessImages()
 		"machineSteam",
 		"machineMagma",
 		"machineSand",
-
 		"machineVoid",
 		"machineNexus",
 
@@ -96,6 +102,8 @@ function preprocessImages()
 		"machineIron",
 		"machineSteel",
 
+		"machineTime",
+
 		"machineOil",
 
 		"machineSnow",
@@ -105,7 +113,15 @@ function preprocessImages()
 		"machineCryospire",
 		"machineVortex",
 
+		"machineLava",
+		"machineObsidian",
+
 		"machinePlantEarth", //*/
+
+		"machineEmerald",
+		"machineSapphire",
+		"machineTopaz",
+		"machineRuby",
 
 		"tutorialPage0",
 		"tutorialPage1",
@@ -115,11 +131,13 @@ function preprocessImages()
 		"tutorialPage5",
 		"tutorialPage6",
 		"tutorialPage7",
+		"tutorialPage8",
 
 		"changelogPage0",
 		"changelogPage1",
 		"changelogPage2",
 		"changelogPage3",
+		"changelogPage4",
 
 		"donationPage",
 

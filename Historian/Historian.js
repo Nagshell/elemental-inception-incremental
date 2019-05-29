@@ -1,5 +1,5 @@
 var loopId = null;
-var gameVersion = 43;
+var gameVersion = 44;
 var elapsed = 0;
 var formattedElapsed = 0;
 savingSystem = {
@@ -381,6 +381,8 @@ savingSystem = {
 		resizeCanvas();
 		preprocessBackgrounds();
 
+		postprocessRandomStuff();
+
 		cancelAnimationFrame(loopId);
 		loopId = requestAnimationFrame(loop);
 
@@ -415,6 +417,10 @@ savingSystem = {
 	attemptedPaste: 0,
 }
 
+function postprocessRandomStuff()
+{
+	machineData.machineTime.region.customDraw = machines.displayRegionStumpedDraw;
+}
 var c;
 var cMax = 6401;
 var winCheck = true;
@@ -427,6 +433,7 @@ function tick()
 	coldCircle.decay();
 	hotCircle.decay();
 	gemCircle.decay();
+	reachCircle.decay();
 
 	machines.tick();
 	splosions.tick();
@@ -437,7 +444,7 @@ function tick()
 		data.oElements[element].amount += data.oElementsFlow[element];
 		if (data.oElements[element].type != "Time")
 		{
-			data.oElements[element].amount = Math.min(1e300, Math.max(0, data.oElements[element].amount));
+			data.oElements[element].amount = Math.min(1e300, Math.max(-1e300, data.oElements[element].amount));
 		}
 		data.oElementsFlow[element] = 0;
 	}
@@ -449,7 +456,7 @@ function tick()
 
 	if (winCheck && data.oElements.PureGolemEarth.amount + data.oElements.PureGolemWater.amount + data.oElements.PureGolemAir.amount + data.oElements.PureGolemFire.amount > 3)
 	{
-		alert("You win. I hope you liked the stage 3 of The First Alkahistorian!\n\nBig thanks to my supporters and helpers:\nPhantomLemon\nVoid\nAeras Alum\nnaltronix\nranger10700\nNevahlif06\n\nMy entire family\nEssi & Baster\n\n\\\\('_' )\nMade by Nagshell");
+		alert("You win. I hope you liked the stage 3 of The First Alkahistorian!\n\nBig thanks to my supporters and helpers:\nPhantomLemon\nVoid\nAeras Alum\nnaltronix\nranger10700\nNevahlif06\n\nAdditional art provided by:\nnononick\nDimava\nRubikium\n\nMy entire family\nEssi & Baster\n\n\\\\('_' )\nMade by Nagshell");
 		winCheck = false;
 	}
 }

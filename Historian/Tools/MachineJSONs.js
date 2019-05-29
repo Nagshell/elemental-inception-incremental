@@ -379,7 +379,7 @@ var simplifiedMachineData = {
 			{
 				baseStats: [1, 0.25, true, true],
 				in: [
-					["Air", 1, 0.1],
+					["Air", 1, 0.2],
 				],
 				out: [
 					["Fire", 1, 1.2],
@@ -392,7 +392,7 @@ var simplifiedMachineData = {
 				baseStats: [1, 0.1, false, false],
 				in: [],
 				out: [
-					["Fire", 1, 12, 10, ["Fire", 80]],
+					["Fire", 1, 12, 10, ["Fire", 75]],
 				],
 				upgrade: ["fireRift2", "Steam", 0.1, "Magma", 0.1],
 			},
@@ -2119,7 +2119,7 @@ var midCircle = {
 					out: [
 						["Lava", 1, 1.2],
 					],
-					lock: ["Knowledge", 3.3, "Obsidian", 1, "Force", 1],
+					lock: ["Knowledge", 2, "Obsidian", 1, "Force", 1],
 				},
 			}
 		},
@@ -2201,7 +2201,7 @@ var midCircle = {
 					out: [
 						["Glass", 1, 1.2, 2, ["Knowledge", 36]],
 					],
-					lock: ["Knowledge", 2, "Sand", 300],
+					lock: ["Knowledge", 3.3, "Sand", 300],
 				},
 			}
 		},
@@ -3045,7 +3045,7 @@ var lifeCircle = {
 						["Lava", 0.001, 1],
 					],
 					out: [
-						["SeedFire", 0.99, 111],
+						["SeedFire", 0.99, 131],
 						["PlantFire", 1, 10000],
 					],
 					lock: ["EssenceFire", 0.1, "Sulphur", 4, "Coal", 4],
@@ -3237,7 +3237,7 @@ var coldCircle = {
 					lock: ["Gale", 1e99],
 					alwayson: true,
 				},
-				galeMelt2:
+				galeMelt1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3249,6 +3249,15 @@ var coldCircle = {
 					],
 					lock: ["Gale", 1e99],
 					alwayson: true,
+				},
+				galeMelt2:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Gale", 0.01, 0.001],
+					],
+					out: [],
+					lock: ["Gale", 0.01],
 				},
 			}
 		},
@@ -3283,7 +3292,7 @@ var coldCircle = {
 					lock: ["Cryospire", 1e99],
 					alwayson: true,
 				},
-				cryospireMelt2:
+				cryospireMelt1:
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -3295,6 +3304,15 @@ var coldCircle = {
 					],
 					lock: ["Cryospire", 1e99],
 					alwayson: true,
+				},
+				cryospireMelt2:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Cryospire", 0.01, 0.001],
+					],
+					out: [],
+					lock: ["Cryospire", 0.01],
 				},
 			}
 		},
@@ -3342,6 +3360,15 @@ var coldCircle = {
 					],
 					lock: ["Vortex", 1e99],
 					alwayson: true,
+				},
+				vortexMelt2:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Vortex", 0.01, 0.001],
+					],
+					out: [],
+					lock: ["Vortex", 0.01],
 				},
 			}
 		},
@@ -3711,9 +3738,9 @@ var powerCircle = {
 			{
 				dieselDrain1:
 				{
-					baseStats: [1, 0, true, false],
+					baseStats: [1, 0, true, true],
 					in: [
-						["Diesel", 0.001, 5.01],
+						["Diesel", 0.01, 5.01],
 					],
 					out: [],
 					lock: ["Clay", 1, "Diesel", 0.01],
@@ -3721,9 +3748,9 @@ var powerCircle = {
 				},
 				dieselDrain2:
 				{
-					baseStats: [1, 0, false, false],
+					baseStats: [1, 0, false, true],
 					in: [
-						["Diesel", 0.05, 5.01],
+						["Diesel", 0.5, 5.01],
 					],
 					out: [],
 				},
@@ -3748,9 +3775,9 @@ var powerCircle = {
 			{
 				petrolDrain1:
 				{
-					baseStats: [1, 0, true, false],
+					baseStats: [1, 0, true, true],
 					in: [
-						["Petrol", 0.001, 5.01],
+						["Petrol", 0.01, 5.01],
 					],
 					out: [],
 					lock: ["Clay", 1, "Petrol", 0.01],
@@ -3776,9 +3803,9 @@ var powerCircle = {
 			{
 				propaneDrain1:
 				{
-					baseStats: [1, 0, true, false],
+					baseStats: [1, 0, true, true],
 					in: [
-						["Propane", 0.001, 5.01],
+						["Propane", 0.01, 5.01],
 					],
 					out: [],
 					lock: ["Clay", 1, "Propane", 0.01],
@@ -3792,9 +3819,9 @@ var powerCircle = {
 			{
 				propeneDrain1:
 				{
-					baseStats: [1, 0, true, false],
+					baseStats: [1, 0, true, true],
 					in: [
-						["Propene", 0.001, 5.01],
+						["Propene", 0.01, 5.01],
 					],
 					out: [],
 					lock: ["Clay", 1, "Propene", 0.01],
@@ -3802,9 +3829,9 @@ var powerCircle = {
 				},
 				propeneDrain2:
 				{
-					baseStats: [1, 0, false, false],
+					baseStats: [1, 0, false, true],
 					in: [
-						["Propene", 0.01, 5.01],
+						["Propene", 0.1, 5.01],
 					],
 					out: [],
 				},
@@ -4053,6 +4080,15 @@ var reachCircle = {
 					out: [],
 					lock: ["Knowledge", 0.4, "Gold", 0.4],
 				},
+				timeBend1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Time", 200, 0.01],
+					],
+					out: [],
+					lock: ["Temporal", 1, "Time", 1e6],
+				},
 			}
 		},
 	},
@@ -4067,6 +4103,17 @@ var reachCircle = {
 			simplifiedMachineData[machine] = this.machines[machine];
 		}
 	},
+	decay: function ()
+	{
+		machines.lagbenderMultiplier = 1;
+		if (!machineData.machineTime.paused)
+		{
+			if (machineData.machineTime.recipes[2].enabled)
+			{
+				machines.lagbenderMultiplier = 10;
+			}
+		}
+	}
 };
 var rarityCircle = {
 	elements: ["Silver", "Bronze", "Copper", "Tin", "Aluminum", "Iron", "Steel", "Clay", "Plastic", "Silicon", "Acid", "Mayo"],

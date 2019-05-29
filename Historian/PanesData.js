@@ -523,6 +523,12 @@ function preprocessPaneData()
 	}
 	paymentPane.preparePayment = function (costs, x, y, offsetPane, target)
 	{
+		if (this.target == target && this.boundaryPath)
+		{
+			this.target = null;
+			regionData.hideRegion.action(this);
+			return;
+		}
 		this.costs = costs;
 		this.target = target;
 		panes.postMouseHandlerShow.push(this);
@@ -624,7 +630,7 @@ function preprocessPaneData()
 	educationalPane.subRegions.push(regionData.prevPageRegion);
 	educationalPane.subRegions.push(regionData.draggableTitleRegion);
 	educationalPane.currentPage = 0;
-	educationalPane.maxPages = 7;
+	educationalPane.maxPages = 8;
 	educationalPane.customDraw = function (ctx)
 	{
 		ctx.save();
@@ -707,7 +713,12 @@ function preprocessPaneData()
 	{
 		ctx.save();
 		var rePath = false;
-		if (this.growing && this.growth < this.maxGrowth)
+		if (this.growing && this.growth >= this.maxGrowth)
+		{
+			this.growth = 2;
+			this.maxGrowth = 2;
+		}
+		if (this.growing)
 		{
 			this.growth++;
 			regionData.showRegion.action(this.top);
@@ -1037,7 +1048,7 @@ function preprocessPaneData()
 	changelogPane.subRegions.push(regionData.nextPageRegion);
 	changelogPane.subRegions.push(regionData.prevPageRegion);
 	changelogPane.subRegions.push(regionData.draggableTitleRegion);
-	changelogPane.maxPages = 3;
+	changelogPane.maxPages = 4;
 	changelogPane.currentPage = changelogPane.maxPages;
 	changelogPane.customDraw = function (ctx)
 	{

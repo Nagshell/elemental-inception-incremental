@@ -1,4 +1,5 @@
 var machines = {
+	lagbenderMultiplier: 1,
 	list: [],
 	glowCheckCD: 0,
 
@@ -6,7 +7,7 @@ var machines = {
 	{
 		if (this.glowCheckCD-- <= 0)
 		{
-			this.glowCheckCD = 20 * optionData.glowCheckCDMultiplier;
+			this.glowCheckCD = 30 * optionData.glowCheckCDMultiplier * data.oElements.NormalLimit.amount;
 
 			for (var i = 0; i < this.list.length; i++)
 			{
@@ -271,6 +272,10 @@ var machines = {
 		this.recipes[i].pane.y = temp.pane.y;
 		this.recipes[i].pane.defaultY = this.recipes[i].pane.y;
 		this.recipes[i].upData[0] = temp.upData[0];
+		if (this.recipes[i].outerUpgradeMax)
+		{
+			machines.machineMaxout(this);
+		}
 		if (temp.pane.pinned)
 		{
 			regionData.pinRegion.action(temp.pane);
@@ -377,35 +382,53 @@ var machines = {
 						}
 					}
 					amount /= 100;
-					amount *= temp.productionRate;
+					amount *= temp.productionRate * machines.lagbenderMultiplier;
 				}
 				else
 				{
 					amount = 1;
 				}
-
-				for (var j = 0; j < temp.inputs.length; j++)
+				if (amount > 0)
 				{
-					data.oElementsFlow[temp.inputs[j].type] -= amount * temp.inputs[j].ratio;
-					if (temp.inputs[j].ratio == 0)
+					var mul = machines.lagbenderMultiplier % 4;
+					for (var j = 0; j < temp.inputs.length; j++)
 					{
-						temp.inputs[j].effectReference.volume -= 0.001;
+						data.oElementsFlow[temp.inputs[j].type] -= amount * temp.inputs[j].ratio;
+						if (temp.inputs[j].ratio == 0)
+						{
+							temp.inputs[j].effectReference.volume -= 0.001;
+						}
+						else
+						{
+							temp.inputs[j].effectReference.volume -= amount * temp.inputs[j].ratio;
+						}
 					}
-					else
+					for (var j = 0; j < temp.outputs.length; j++)
 					{
-						temp.inputs[j].effectReference.volume -= amount * temp.inputs[j].ratio;
+						var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.2 * mul) - data.oElements[temp.outputs[j].type].amount;
+						if (data.oElements[temp.outputs[j].type].amount < temp.outputs[j].max)
+						{
+							data.oElementsFlow[temp.outputs[j].type] += flow;
+						}
+						temp.outputs[j].effectReference.volume += flow;
 					}
-				}
-				for (var j = 0; j < temp.outputs.length; j++)
-				{
-					var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.2) - data.oElements[temp.outputs[j].type].amount;
-					if (data.oElements[temp.outputs[j].type].amount < temp.outputs[j].max)
-					{
-						data.oElementsFlow[temp.outputs[j].type] += flow;
-					}
-					temp.outputs[j].effectReference.volume += flow;
 				}
 			}
+		}
+	},
+	machineMaxout: function (machine)
+	{
+		var maxCount = 0;
+		for (var i = 0; i < machine.recipes.length; i++)
+		{
+			if (machine.recipes[i].outerUpgradeMax && machine.recipes[i].innerUpgradesLeft < 1)
+			{
+				maxCount++;
+			}
+		}
+		if (maxCount == machine.recipes.length)
+		{
+			machine.region.goldenShine = true;
 		}
 	},
 
@@ -415,14 +438,52 @@ var machines = {
 		{
 			tooltipPane.showText(this.machine.title);
 		}
-		else if (this.machine.pane.hiddenPath)
+		else
 		{
-			regionData.showRegion.mouseHandler(this.machine.pane, x, y, type);
+			if (lastMouseEvent.button == 2)
+			{
+				machines.pauseRegionMouseHandler(this.machine.pane, x, y, type)
+			}
+			else
+			{
+				if (this.machine.pane.hiddenPath)
+				{
+					regionData.showRegion.mouseHandler(this.machine.pane, x, y, type);
+				}
+				else
+				{
+					regionData.hideRegion.mouseHandler(this.machine.pane, x, y, type);
+				}
+			}
+		}
+	},
+	displayRegionStumpedDraw: function (ctx, pane)
+	{
+		ctx.save();
+		if (images[this.machine.id])
+		{
+			ctx.drawImage(images[this.machine.id], -32, -32);
+		}
+		if (this.machine.paused)
+		{
+			ctx.drawImage(images.iconPauseTransparent, -optionData.iconSize / 2, 26 - optionData.iconSize / 2);
 		}
 		else
 		{
-			regionData.hideRegion.mouseHandler(this.machine.pane, x, y, type);
+			var num = 0;
+			for (var i = 0; i < this.machine.recipes.length; i++)
+			{
+				if (this.machine.recipes[i].unlocked && !this.machine.recipes[i].enabled)
+				{
+					num++;
+				}
+			}
+			if (num > 0)
+			{
+				ctx.drawImage(images.iconOffTransparent, -optionData.iconSize / 2, 26 - optionData.iconSize / 2);
+			}
 		}
+		ctx.restore();
 	},
 	displayRegionRegularDraw: function (ctx, pane)
 	{
@@ -441,12 +502,12 @@ var machines = {
 			if (amount > 0.0)
 			{
 				var radius = 0;
-				while (amount > 1)
+				while (amount > 1.03)
 				{
 					radius += this.machine.displayStep;
 					amount /= 10;
 				}
-				amount = Math.round(amount * 100) / 100;
+				if (amount > 0.97) amount = 1;
 
 				radius = Math.min(radius, 16);
 
@@ -478,6 +539,27 @@ var machines = {
 				this.machine.displayArrayCD = this.machine.displayArrayCDMax;
 				this.machine.displayArrayCurrent = (this.machine.displayArrayCurrent + 1) % this.machine.displayArray.length;
 				this.machine.displayElement = this.machine.displayArray[this.machine.displayArrayCurrent];
+			}
+		}
+
+		if (this.machine.paused)
+		{
+			ctx.drawImage(images.iconPauseTransparent, -optionData.iconSize / 2, 26 - optionData.iconSize / 2);
+		}
+		else
+		{
+			var num = 0;
+			for (var i = 0; i < this.machine.recipes.length; i++)
+			{
+				if (this.machine.recipes[i].unlocked && !this.machine.recipes[i].enabled)
+				{
+					num++;
+				}
+			}
+			if (num > 0)
+			{
+				ctx.drawImage(images.iconOffTransparent, -optionData.iconSize / 2, 26 - optionData.iconSize / 2);
+				//ctx.fillText(num, 0, 26);
 			}
 		}
 		ctx.restore();
@@ -531,7 +613,6 @@ var machines = {
 					ctx.restore();
 					ctx.translate(0, radius);
 				}
-
 			}
 		}
 		ctx.restore();
@@ -667,7 +748,7 @@ var machines = {
 			if (optionData.iconSize == 16)
 			{
 				ctx.fillText(text, optionData.iconSize * 4, optionData.iconSize * 4.5 - 14);
-				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, optionData.iconSize * 4, optionData.iconSize * 4.5 + 4, elementalDisplayType[this.machine.displayElement], "left");
+				drawNumber(ctx, data.oElements[this.machine.displayElement].amount, optionData.iconSize * 7, optionData.iconSize * 4.5 + 4, elementalDisplayType[this.machine.displayElement], "right");
 			}
 			else
 			{
@@ -733,6 +814,7 @@ var machines = {
 				{
 					if (this.recipe.upgradeTo)
 					{
+						panes.lastClickedPane = this;
 						paymentPane.preparePayment(this.recipe.upgradeCosts, x, y, pane, this);
 					}
 				}
@@ -741,6 +823,7 @@ var machines = {
 			{
 				if (this.recipe.unlockCosts && this.recipe.unlockCosts.length > 0)
 				{
+					panes.lastClickedPane = this;
 					paymentPane.preparePayment(this.recipe.unlockCosts, x, y, pane, this);
 				}
 				else
@@ -776,6 +859,10 @@ var machines = {
 			if (refundable && this.recipe.refund)
 			{
 				machines.applyRefund(this.recipe.refund);
+			}
+			if (this.recipe.outerUpgradeMax)
+			{
+				machines.machineMaxout(this.recipe.machine);
 			}
 		}
 		else
@@ -1049,6 +1136,14 @@ var machines = {
 		this.target.upData[this.target.upDataId] += 3;
 		this.target.recipe.machine.upped = true;
 		this.target.upped++;
+		if (this.target.recipe.outerUpgradeMax && this.target.upped >= this.target.upgrades.length)
+		{
+			this.target.recipe.innerUpgradesLeft--;
+			if (this.target.recipe.innerUpgradesLeft < 1)
+			{
+				machines.machineMaxout(this.target.recipe.machine);
+			}
+		}
 		if (this.target.max)
 		{
 			this.mouseHandler(null, this.x + 90, 0, "mouseup");
@@ -1083,6 +1178,7 @@ var machines = {
 			{
 				if (this.target.upped < this.target.upgrades.length)
 				{
+					panes.lastClickedPane = this;
 					paymentPane.preparePayment(this.target.upgrades[this.target.upped].costs, x, y, pane, this);
 				}
 			}
@@ -1391,12 +1487,21 @@ function initMachine(title)
 			prepareRecipe(thisRecipe);
 		}
 	}
+	else
+	{
+		thisData.region.goldenShine = true;
+	}
 }
 
 function prepareRecipe(thisRecipe)
 {
 	thisRecipe.upData = [0];
 	thisRecipe.pieChart = new cEfficiencyCounter();
+	if (!thisRecipe.upgradeTo)
+	{
+		thisRecipe.outerUpgradeMax = true;
+		thisRecipe.innerUpgradesLeft = 0;
+	}
 
 	var recipePane = new cPane(thisRecipe.machine.pane, 0, 0);
 	thisRecipe.pane = recipePane;
@@ -1443,6 +1548,7 @@ function prepareIngredient(thisIngredient, thisRecipe, x, y)
 
 	if (thisIngredient.upgrades)
 	{
+		thisRecipe.innerUpgradesLeft++;
 		thisIngredient.upData = thisRecipe.upData;
 		thisIngredient.upDataId = thisRecipe.upData.length;
 		thisRecipe.upData.push(0);

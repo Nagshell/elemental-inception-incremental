@@ -358,15 +358,18 @@ var locale = {
 
 		galeSetup1: "Cool Fan",
 		galeCool1: "Gale Cooling System",
-		galeMelt2: "Gale Meltdown",
+		galeMelt1: "Gale Meltdown",
+		galeMelt2: "Manual Melt Override",
 
 		cryospireSetup1: "Rise of Cryospires",
 		cryospireCool1: "Cryospire Cooling Architecture",
-		cryospireMelt2: "Cryospire Meltdown",
+		cryospireMelt1: "Cryospire Meltdown",
+		cryospireMelt2: "Just melt it!",
 
 		vortexSetup1: "Vortex Creation",
 		vortexCool1: "Vortex Cooling Complex",
 		vortexMelt1: "Vortex Meltdown",
+		vortexMelt2: "Let it melt!",
 
 		blazeIgnite1: "Blazing Ingnition",
 		blazeDecay1: "Ashen Fade",
@@ -426,6 +429,7 @@ var locale = {
 
 		timeSlow1: "Massive Slowdown",
 		timeFast1: "Turbo Time Spender",
+		timeBend1: "Experimental Time Bend",
 
 		silverStart1: "Hard Way",
 		silverAlchemy1: "Delicate Way",
@@ -625,7 +629,7 @@ var locale = {
 		PureAir: "PureAir",
 		PureFire: "PureFire",
 		SterileGlass: "SterileGlass",
-		CompressionCrystal: "CompressionCrystal",
+		CompressionCrystal: "CompCrystal",
 		PerfectedOrb: "PerfectedOrb",
 		PureGolemEarth: "PureGolemEarth",
 		PureGolemWater: "PureGolemWater",

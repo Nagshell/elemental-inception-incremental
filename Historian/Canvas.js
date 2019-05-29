@@ -1,9 +1,11 @@
 var savingSystem;
+var lastMouseEvent;
 
 function canvasMouseHandler(event)
 {
 	if (savingSystem && savingSystem.loadingEnded)
 	{
+		lastMouseEvent = event;
 		panes.mouseHandler(event);
 	}
 }
@@ -17,6 +19,7 @@ document.addEventListener("mousemove", canvasMouseHandler);
 document.addEventListener("mousedown", canvasMouseHandler);
 document.addEventListener("mouseup", canvasMouseHandler);
 document.addEventListener("click", canvasMouseHandler);
+document.addEventListener("dblclick", canvasMouseHandler);
 document.addEventListener("keydown", canvasKeyHandler);
 
 var canvas = document.getElementById("canvasMain");
@@ -124,6 +127,11 @@ function drawNumber(ctx, num, x, y, mode = "", align = "left", prefix = "", suff
 {
 	ctx.save();
 	ctx.textAlign = align;
+	if (num < 0)
+	{
+		num *= -1;
+		prefix += "-";
+	}
 	if (num > 1e6 && mode != "exp")
 	{
 		mode = "exp";
@@ -149,7 +157,7 @@ function drawNumber(ctx, num, x, y, mode = "", align = "left", prefix = "", suff
 	}
 	else if (mode == "fixed")
 	{
-		ctx.fillText(prefix + (Math.trunc(num * 1000) / 1000).toFixed(3) + suffix, x, y);
+		ctx.fillText(prefix + (Math.trunc(num * 1000) / 1000).toFixed(3).slice(0, 5) + suffix, x, y);
 	}
 	else
 	{

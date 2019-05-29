@@ -170,7 +170,7 @@ var lineSystem = {
 				ctx.stroke();
 
 				ctx.beginPath();
-				ctx.arc(tempThing.drawA + (tempThing.drawX - tempThing.drawA) * tempThing.directionalR, tempThing.drawB + (tempThing.drawY - tempThing.drawB) * tempThing.directionalR, tempVal * 2.5, 0, Math.PI * 2);
+				ctx.arc(tempThing.drawA + (tempThing.drawX - tempThing.drawA) * tempThing.directionalR, tempThing.drawB + (tempThing.drawY - tempThing.drawB) * tempThing.directionalR, tempVal * 0.5 + 2, 0, Math.PI * 2);
 				ctx.fill();
 			}
 		}
@@ -265,6 +265,8 @@ var lineSystem = {
 			{
 				this.lineDataColor[mach][machineDisplayElements[ingredient.type]][ingredient.type] =
 					JSON.parse(JSON.stringify(this.lineData[mach][machineDisplayElements[ingredient.type]]));
+				this.lineDataColor[mach][machineDisplayElements[ingredient.type]][ingredient.type].directionalV *= (0.95 + Math.random() * 0.1);
+				this.lineDataColor[mach][machineDisplayElements[ingredient.type]][ingredient.type].directionalR = Math.random();
 			}
 			ingredient.effectReference = this.lineDataColor[mach][machineDisplayElements[ingredient.type]][ingredient.type];
 		}

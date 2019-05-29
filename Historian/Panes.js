@@ -2,6 +2,7 @@ var nullCanvas = document.createElement('canvas');
 var nullCtx = nullCanvas.getContext("2d");
 
 var panes = {
+	lastClickedPane: null,
 	highlightDragged: function (pane)
 	{
 		pane.markedToSuperGlow = panes.dragndrop != null;
@@ -129,6 +130,58 @@ var panes = {
 				}
 				break;
 		}
+		switch (event.key)
+		{
+			case "w":
+				if (panes.dragndrop)
+				{
+					panes.dragMove(0, -1);
+				}
+				else if (panes.dragndropcenter)
+				{
+					panes.dragCenterMove(0, -1);
+				}
+				break;
+			case "s":
+				if (event.ctrlKey)
+				{
+					event.preventDefault();
+					regionData.saveRegion.action(trackerPane);
+				}
+				else
+				{
+					if (panes.dragndrop)
+					{
+						panes.dragMove(0, 1);
+					}
+					else if (panes.dragndropcenter)
+					{
+						panes.dragCenterMove(0, 1);
+					}
+				}
+				break;
+
+			case "a":
+				if (panes.dragndrop)
+				{
+					panes.dragMove(-1, 0);
+				}
+				else if (panes.dragndropcenter)
+				{
+					panes.dragCenterMove(-1, 0);
+				}
+				break;
+			case "d":
+				if (panes.dragndrop)
+				{
+					panes.dragMove(1, 0);
+				}
+				else if (panes.dragndropcenter)
+				{
+					panes.dragCenterMove(1, 0);
+				}
+				break;
+		}
 	},
 	mouseHandler: function (event)
 	{
@@ -146,6 +199,15 @@ var panes = {
 		{
 			return;
 		}
+		if (event.type == "dblclick")
+		{
+			if (panes.lastClickedPane)
+			{
+				regionData.confirmRegion.action(paymentPane);
+			}
+			return;
+		}
+		panes.lastClickedPane = null;
 		waypointPane.recentlyGrowing = waypointPane.growing;
 		waypointPane.growing = false;
 		minimapPane.recentlyGrowing = minimapPane.growing;
@@ -536,7 +598,18 @@ cRegion.prototype.draw = function (ctx, pane)
 	ctx.translate(this.x, this.y);
 	if (this.boundaryPath)
 	{
-		ctx.stroke(this.boundaryPath);
+		if (this.goldenShine)
+		{
+			ctx.save();
+			ctx.strokeStyle = "#ffbf00";
+			ctx.stroke(this.boundaryPath);
+			ctx.restore();
+		}
+		else
+		{
+			ctx.stroke(this.boundaryPath);
+		}
+
 		ctx.fill(this.boundaryPath);
 		ctx.clip(this.boundaryPath);
 		if (this.img)
