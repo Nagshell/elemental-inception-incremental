@@ -4794,7 +4794,11 @@ var gemCircle = {
 						["Gemstone", 1, 1]
 					],
 					out: [
-						["Quartz", 1, 7],
+						["Quartz", 1, 326],
+						["Emerald", 0, 77],
+						["Sapphire", 0, 77],
+						["Topaz", 0, 77],
+						["Ruby", 0, 77],
 					],
 					lock: ["Gemstone", 1],
 				},
@@ -4846,17 +4850,12 @@ var gemCircle = {
 	},
 	decay: function ()
 	{
-		var r = 6 + Math.trunc(Math.max(20, Math.random() * 25) - 20);
-		machineData.machineRandomGem.recipes[0].outputs[0].type = this.elements[r];
-		if (this.elements[r] == "Quartz")
+		for (var i = 0; i < machineData.machineRandomGem.recipes[0].outputs.length; i++)
 		{
-			machineData.machineRandomGem.recipes[0].outputs[0].max = 326;
+			machineData.machineRandomGem.recipes[0].outputs[i].ratio = 0;
 		}
-		else
-		{
-			machineData.machineRandomGem.recipes[0].outputs[0].max = 77;
-		}
-		machineData.machineRandomGem.recipes[0].outputs[0].effectReference.volume = 0;
+		var r = Math.trunc(Math.max(20, Math.random() * 25) - 20);
+		machineData.machineRandomGem.recipes[0].outputs[r].ratio = 1;
 	},
 };
 var pureCircle = {

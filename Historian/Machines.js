@@ -446,6 +446,7 @@ var machines = {
 					radius += this.machine.displayStep;
 					amount /= 10;
 				}
+				amount = Math.round(amount * 100) / 100;
 
 				radius = Math.min(radius, 16);
 
@@ -699,9 +700,15 @@ var machines = {
 	},
 	recipeRegionMouseHandler: function (pane, x, y, type)
 	{
-		if (type == "mouseup")
+		if (type == "mousemove")
 		{
-
+			if (this.recipe.alwayson && (x < optionData.iconSize + 1))
+			{
+				tooltipPane.showText("Always on. It is simulating natural ongoing process.");
+			}
+		}
+		else if (type == "mouseup")
+		{
 			if (this.recipe.unlocked)
 			{
 				if (x < optionData.iconSize + 1)
@@ -825,8 +832,13 @@ var machines = {
 				if (!this.recipe.insideGlow)
 				{
 					ctx.globalAlpha = 1;
+					ctx.drawImage(images.iconShow, optionData.iconSize + 1, 0);
 				}
-				ctx.drawImage(images.iconShow, optionData.iconSize + 1, 0);
+				else
+				{
+					ctx.drawImage(images.iconShowUp, optionData.iconSize + 1, 0);
+				}
+
 				ctx.globalAlpha = 1;
 			}
 			ctx.lineWidth = 1;
@@ -899,13 +911,19 @@ var machines = {
 		ctx.stroke();
 		if (this.recipe.inputs.length > 0)
 		{
+			ctx.save();
+			ctx.font = "bold 14px Arial";
 			ctx.fillText(locale.inputs, optionData.iconSize * 0.5 + 50, optionData.iconSize * 1.5 + 1);
 			ctx.strokeRect(optionData.iconSize - 0.5, optionData.iconSize + 0.5, 101, optionData.iconSize + 1);
+			ctx.restore();
 		}
 		if (this.recipe.outputs.length > 0)
 		{
+			ctx.save();
+			ctx.font = "bold 14px Arial";
 			ctx.fillText(locale.outputs, optionData.iconSize * 0.5 + 50, this.outputY);
 			ctx.strokeRect(-0.5, this.outputY - 8.5, optionData.iconSize + 101, 17);
+			ctx.restore();
 		}
 		ctx.textAlign = "left";
 		ctx.fillText(locale.production, optionData.iconSize + 102, optionData.iconSize * 2 + 27);
@@ -933,30 +951,41 @@ var machines = {
 			{
 				if (y <= 17)
 				{
-					if (this.ingredient.noLimit)
+					if (this.ingredient.ratio == 0)
 					{
-						tooltipPane.showText("NonBlock Ratio");
+						tooltipPane.showText("Catalyst");
+					}
+					else if (this.ingredient.noLimit)
+					{
+						tooltipPane.showText("Soft-Ratio. Won't stop recipe from working after reaching cap.");
 					}
 					else
 					{
-						tooltipPane.showText("Ratio");
+						if (this.ingredient.min)
+						{
+							tooltipPane.showText("Usage ratio.");
+						}
+						else
+						{
+							tooltipPane.showText("Ratio of production. Recipe stops working after reaching cap.");
+						}
 					}
 				}
 				else
 				{
 					if (this.ingredient.min)
 					{
-						tooltipPane.showText("Required");
+						tooltipPane.showText("Requirement to start recipe.");
 					}
 					else
 					{
 						if (this.ingredient.noLimit)
 						{
-							tooltipPane.showText("NonBlock Max");
+							tooltipPane.showText("Production soft-cap.");
 						}
 						else
 						{
-							tooltipPane.showText("Maximal");
+							tooltipPane.showText("Production cap. Check ratio above.");
 						}
 
 					}
@@ -983,19 +1012,33 @@ var machines = {
 
 		var displayStyle = "fixed";
 		var resultRatio = temp.ratio;
-		if (temp.max)
+		if (temp.ratio == 0)
 		{
-			resultRatio *= temp.recipe.efficiency;
+			if (temp.max)
+			{
+				drawNumber(ctx, 0, optionData.iconSize + 98, 8, "", "right", "");
+			}
+			else
+			{
+				ctx.fillText("Cat.", optionData.iconSize + 75, 8);
+			}
 		}
-		if (resultRatio > 1e3 || resultRatio < 0.001)
+		else
 		{
-			displayStyle = "exp";
+			if (temp.max)
+			{
+				resultRatio *= temp.recipe.efficiency;
+			}
+			if (resultRatio > 1e3 || resultRatio < 0.001)
+			{
+				displayStyle = "exp";
+			}
+			else if (resultRatio == Math.trunc(resultRatio))
+			{
+				displayStyle = "";
+			}
+			drawNumber(ctx, resultRatio, optionData.iconSize + 98, 8, displayStyle, "right", temp.noLimit ? "0 - " : "");
 		}
-		else if (resultRatio == Math.trunc(resultRatio))
-		{
-			displayStyle = "";
-		}
-		drawNumber(ctx, resultRatio, optionData.iconSize + 98, 8, displayStyle, "right", temp.noLimit ? "0 - " : "");
 		drawNumber(ctx, data.oElements[temp.type].amount, 3, 25, elementalDisplayType[temp.type]);
 		ctx.fillText("/", optionData.iconSize / 2 + 50, 25);
 		drawNumber(ctx, temp.min || temp.max, optionData.iconSize + 98, 25, elementalDisplayType[temp.type], "right");
@@ -1244,26 +1287,12 @@ function initMachine(title)
 		thisData.pane.mouseHandler = machines.regularArrayPaneMouseHandler;
 		thisData.pane.boundaryPath = machines.displayArrayPanePathDemo;
 		thisData.pane.boundaryPathMin = machines.displayArrayPanePathMin;
-
-		thisData.pane.subRegions.push(machines.recipeArraySelectorRegion);
-		if (!thisData.unpauseable)
-		{
-			thisData.pane.subRegions.push(machines.machineArrayPauseRegion);
-			thisData.pane.subRegionsMin.push(machines.machineArrayPauseRegion);
-		}
 	}
 	else
 	{
 		thisData.pane.mouseHandler = machines.regularPaneMouseHandler;
 		thisData.pane.boundaryPath = machines.displayPanePathDemo;
 		thisData.pane.boundaryPathMin = machines.displayPanePathMin;
-
-		thisData.pane.subRegions.push(machines.recipeSelectorRegion);
-		if (!thisData.unpauseable)
-		{
-			thisData.pane.subRegions.push(machines.machinePauseRegion);
-			thisData.pane.subRegionsMin.push(machines.machinePauseRegion);
-		}
 	}
 	thisData.pane.subRegions.push(regionData.dragRegion);
 	thisData.pane.subRegions.push(regionData.minRegion);
@@ -1295,57 +1324,72 @@ function initMachine(title)
 
 	regionData.hideRegion.action(thisData.pane);
 
-	if (thisData.displayArray)
+	if (thisData.recipes.length > 0)
 	{
-		thisData.pane.recipeSelectorPane = new cPane(thisData.pane, machines.recipeArraySelectorRegion.x, machines.recipeArraySelectorRegion.y);
-	}
-	else
-	{
-		thisData.pane.recipeSelectorPane = new cPane(thisData.pane, machines.recipeSelectorRegion.x, machines.recipeSelectorRegion.y);
-	}
-
-	thisData.pane.recipeSelectorPane.title = locale.recipes;
-	thisData.pane.recipeSelectorPane.independent = true;
-	thisData.pane.recipeSelectorPane.id = "recipeSelector" + title;
-	thisData.pane.recipeSelectorPane.boundaryPath = new Path2D();
-	thisData.pane.recipeSelectorPane.boundaryPath.rect(0, 0, optionData.iconSize * 3 + 203, (optionData.iconSize + 1) * (thisData.recipes.length + 1) - 1);
-	thisData.pane.recipeSelectorPane.subRegions.push(regionData.hideRegion);
-	//regionData.hideRegion.action(thisData.pane.recipeSelectorPane);
-
-	for (var i = thisData.recipes.length - 1; i >= 0; i--)
-	{
-		var thisRecipe = thisData.recipes[i];
-		thisRecipe.machine = thisData;
-		prepareRecipe(thisRecipe);
-
-		var recipeRegion = new cRegion(0, (optionData.iconSize + 1) * (i + 1));
-		thisRecipe.region = recipeRegion;
-		thisData.pane.recipeSelectorPane.subRegions.push(recipeRegion);
-		recipeRegion.recipe = thisRecipe;
-		recipeRegion.boundaryPath = machines.recipeRegionPath;
-		recipeRegion.mouseHandler = machines.recipeRegionMouseHandler;
-		recipeRegion.paymentSuccess = machines.recipeRegionPaymentSuccess;
-		recipeRegion.customDraw = machines.recipeRegionDraw;
-		recipeRegion.pane = thisRecipe.pane;
 		if (thisData.displayArray)
 		{
-			thisRecipe.pane.x = (optionData.iconSize + 1) * (7 + i * 2) + 301 + additionalPauseTranslation;
-			thisRecipe.pane.defaultX = thisRecipe.pane.x;
+			thisData.pane.subRegions.push(machines.recipeArraySelectorRegion);
+			if (!thisData.unpauseable)
+			{
+				thisData.pane.subRegions.push(machines.machineArrayPauseRegion);
+				thisData.pane.subRegionsMin.push(machines.machineArrayPauseRegion);
+			}
+			thisData.pane.recipeSelectorPane = new cPane(thisData.pane, machines.recipeArraySelectorRegion.x, machines.recipeArraySelectorRegion.y);
 		}
 		else
 		{
-			thisRecipe.pane.x = (optionData.iconSize + 1) * (4 + displayStep + i * 2) + 204 - displayStep + additionalPauseTranslation;
-			thisRecipe.pane.defaultX = thisRecipe.pane.x;
+			thisData.pane.subRegions.push(machines.recipeSelectorRegion);
+			if (!thisData.unpauseable)
+			{
+				thisData.pane.subRegions.push(machines.machinePauseRegion);
+				thisData.pane.subRegionsMin.push(machines.machinePauseRegion);
+			}
+			thisData.pane.recipeSelectorPane = new cPane(thisData.pane, machines.recipeSelectorRegion.x, machines.recipeSelectorRegion.y);
 		}
 
-		thisRecipe.pane.y = (optionData.iconSize + 1) * (thisData.recipes.length - i - 1);
-		thisRecipe.pane.defaultY = thisRecipe.pane.y;
-	}
-	for (var recipeTitle in thisData.hiddenRecipes)
-	{
-		var thisRecipe = thisData.hiddenRecipes[recipeTitle];
-		thisRecipe.machine = thisData;
-		prepareRecipe(thisRecipe);
+		thisData.pane.recipeSelectorPane.title = locale.recipes;
+		thisData.pane.recipeSelectorPane.independent = true;
+		thisData.pane.recipeSelectorPane.id = "recipeSelector" + title;
+		thisData.pane.recipeSelectorPane.boundaryPath = new Path2D();
+		thisData.pane.recipeSelectorPane.boundaryPath.rect(0, 0, optionData.iconSize * 3 + 203, (optionData.iconSize + 1) * (thisData.recipes.length + 1) - 1);
+		thisData.pane.recipeSelectorPane.subRegions.push(regionData.hideRegion);
+		//regionData.hideRegion.action(thisData.pane.recipeSelectorPane);
+
+		for (var i = thisData.recipes.length - 1; i >= 0; i--)
+		{
+			var thisRecipe = thisData.recipes[i];
+			thisRecipe.machine = thisData;
+			prepareRecipe(thisRecipe);
+
+			var recipeRegion = new cRegion(0, (optionData.iconSize + 1) * (i + 1));
+			thisRecipe.region = recipeRegion;
+			thisData.pane.recipeSelectorPane.subRegions.push(recipeRegion);
+			recipeRegion.recipe = thisRecipe;
+			recipeRegion.boundaryPath = machines.recipeRegionPath;
+			recipeRegion.mouseHandler = machines.recipeRegionMouseHandler;
+			recipeRegion.paymentSuccess = machines.recipeRegionPaymentSuccess;
+			recipeRegion.customDraw = machines.recipeRegionDraw;
+			recipeRegion.pane = thisRecipe.pane;
+			if (thisData.displayArray)
+			{
+				thisRecipe.pane.x = (optionData.iconSize + 1) * (7 + i * 2) + 301 + additionalPauseTranslation;
+				thisRecipe.pane.defaultX = thisRecipe.pane.x;
+			}
+			else
+			{
+				thisRecipe.pane.x = (optionData.iconSize + 1) * (4 + displayStep + i * 2) + 204 - displayStep + additionalPauseTranslation;
+				thisRecipe.pane.defaultX = thisRecipe.pane.x;
+			}
+
+			thisRecipe.pane.y = (optionData.iconSize + 1) * (thisData.recipes.length - i - 1);
+			thisRecipe.pane.defaultY = thisRecipe.pane.y;
+		}
+		for (var recipeTitle in thisData.hiddenRecipes)
+		{
+			var thisRecipe = thisData.hiddenRecipes[recipeTitle];
+			thisRecipe.machine = thisData;
+			prepareRecipe(thisRecipe);
+		}
 	}
 }
 

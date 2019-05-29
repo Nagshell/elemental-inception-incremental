@@ -12,6 +12,7 @@ function preprocessIcons()
 		"iconRight",
 		"iconLock",
 		"iconShow",
+		"iconShowUp",
 		"iconPause",
 		"iconResume",
 		"iconHide",

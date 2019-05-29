@@ -1209,7 +1209,7 @@ function preprocessOptions()
 	{
 		if (type == "mouseup")
 		{
-			if (JSON.stringify(optionData) != JSON.stringify(optionsPane.optionData) && confirm("This will require to save your game and soft-reset the game's page. Continue?"))
+			if (JSON.stringify(optionData) != JSON.stringify(optionsPane.optionData) && confirm("This will require to save your game and soft-reload it. Continue?"))
 			{
 				optionData = JSON.parse(JSON.stringify(optionsPane.optionData));
 				savingSystem.saveData();
