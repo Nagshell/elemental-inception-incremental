@@ -436,7 +436,6 @@ function tick()
 	reachCircle.decay();
 
 	machines.tick();
-	splosions.tick();
 
 	for (var element in data.oElements)
 	{
@@ -453,6 +452,7 @@ function tick()
 	{
 		splosions.start("Alkaplosion");
 	}
+	splosions.tick();
 
 	if (winCheck && data.oElements.PureGolemEarth.amount + data.oElements.PureGolemWater.amount + data.oElements.PureGolemAir.amount + data.oElements.PureGolemFire.amount > 3)
 	{
