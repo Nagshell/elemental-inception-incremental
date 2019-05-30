@@ -71,7 +71,7 @@ function preprocessRegionData()
 					mx += pane.top.centerX;
 					my += pane.top.centerY;
 				}
-				if (pane.pinned && !pane.top.checkBoundary(mx, my, "mousemove"))
+				if (!pane.top.checkBoundary(mx, my, "mousemove"))
 				{
 					pane.x = pane.defaultX;
 					pane.y = pane.defaultY;
@@ -525,7 +525,6 @@ function preprocessPaneData()
 	{
 		if (this.target == target && this.boundaryPath)
 		{
-			this.target = null;
 			regionData.hideRegion.action(this);
 			return;
 		}
@@ -904,7 +903,8 @@ function preprocessPaneData()
 			{
 				for (var i = 0; i < this.hideAllRegion.hiddenList.length; i++)
 				{
-					regionData.showRegion.action(this.hideAllRegion.hiddenList[i]);
+					this.hideAllRegion.hiddenList[i].boundaryPath = this.hideAllRegion.hiddenList[i].hiddenPath;
+					this.hideAllRegion.hiddenList[i].hiddenPath = null;
 				}
 				this.hideAllRegion.hiddenList = [];
 			}
@@ -1135,14 +1135,16 @@ function preprocessMapControl()
 		{
 			for (var i = 0; i < this.hiddenList.length; i++)
 			{
-				regionData.showRegion.action(this.hiddenList[i]);
+				this.hiddenList[i].boundaryPath = this.hiddenList[i].hiddenPath;
+				this.hiddenList[i].hiddenPath = null;
 			}
 			this.hiddenList = [];
 			for (var i = mainPane.subPanes.length - 1; i >= 0; i--)
 			{
 				if (mainPane.subPanes[i].boundaryPath)
 				{
-					regionData.hideRegion.action(mainPane.subPanes[i]);
+					mainPane.subPanes[i].hiddenPath = mainPane.subPanes[i].boundaryPath;
+					mainPane.subPanes[i].boundaryPath = null;
 					this.hiddenList.push(mainPane.subPanes[i]);
 				}
 			}
