@@ -750,3 +750,32 @@ function fullsliderino()
 		}
 	}
 }
+
+function research()
+{
+	var output = "";
+	var elemArray;
+	var elemCategories = [
+		initialData.betaElements,
+		midCircle.elements,
+		lifeCircle.elements,
+		coldCircle.elements,
+		hotCircle.elements,
+		powerCircle.elements,
+		reachCircle.elements,
+		rarityCircle.elements,
+		pureCircle.elements,
+	];
+	for (var j = 0; j < elemCategories.length; j++)
+	{
+		elemArray = elemCategories[j];
+		output += "\"" + j + "Circle\" : \{";
+		for (var i = 0; i < elemArray.length; i++)
+		{
+			output += `\"${elemArray[i]}\" : \{lock:[\"${elemArray[i]}\",-1e-10],text:\"\",\},`;
+		}
+		output += "\},";
+	}
+
+	return output;
+}

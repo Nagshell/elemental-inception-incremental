@@ -353,6 +353,7 @@ var machines = {
 					if (data.oElements[temp.inputs[j].type].amount < temp.inputs[j].min)
 					{
 						state = "empty";
+						break;
 					}
 				}
 				for (var j = 0; j < temp.outputs.length; j++)
@@ -360,6 +361,7 @@ var machines = {
 					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max && !temp.outputs[j].noLimit && temp.outputs[j].ratio)
 					{
 						state = "full";
+						break;
 					}
 				}
 				temp.pieChart.push(state);

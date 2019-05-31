@@ -105,12 +105,12 @@ var lore = {
 				},
 				"62nd Day":
 				{
-					lock: ["machineNexus", 1],
+					lock: ["Alkahest", 42],
 					text: "While I was making a new barrier, my machines were steadily producing more and more Elements. The Void recipe got to quite a high level of efficiency thanks to the improved structure and bigger amounts processed. With more Void at hand, I was able to increase the volume of Alkahest produced. I wanted to test it out in bigger volume, but when its amount reached 42 units it destabilized. It seems that coating failed to contain the volatile contents in stasis, and Alkahest devoured the Orb it was in along with the coating. Dissolved Void gave the substance pulling properties, so it floated mid-air without eating rest of machine. Even though it wasn’t expanding anymore, it started sending small waves around. I guess that new property is caused by the increased volume of the substance. | | A few minutes later waves stopped appearing, and soon after Alkahest jumped towards each machine in its vicinity devouring every bit of Elements I had stored there. It also jumped towards me and clung to the globe on my left shoulder. Suddenly my arm fell down, dangling and I couldn’t move it. I saw Alkahest in each Orb disappear after a second, leaving all machines intact but empty. And then I felt that globe in my shoulder collapsed, and with it, my consciousness left me."
 				},
 				"63rd Day":
 				{
-					lock: ["machineNexus", 1],
+					lock: ["Alkahest", 42],
 					text: "I realized I was awake. After standing up I looked around, and everything was how I saw it before sleeping. Empty machines, ready to work. I was feeling good, looking at myself I couldn’t find the globe, it seems like it vanished completely. I decided that worrying about myself will only stop me from progress, and I felt like I’m at the doorstep before greatness. I knew exactly what I had to do. Triggering machines to work again, I knew I always had to have a bit of Alkahest at hand to work as a catalyst. I felt like that sleep I had unlocked some sort of hidden box in my mind, and I started untangling streams of information coming from there. Soon after I discovered that Elements are much more complicated than I could ever imagine before. And with a satisfying smile, I started construction of machines for the third tier of Elements."
 				},
 				"76th Day":
@@ -199,7 +199,514 @@ var lore = {
 		},
 		Research:
 		{
-			text: "Currently this section is empty",
+			text: "TO BE RELEASED SOON",
+			/*
+						"Utility":
+						{
+							"Time":
+							{
+								lock: ["machineTime", 0],
+								text: "'Time' in quotation marks. Represents not in-game time, but rather the time during which machines do their work. | | Creating more Time is similar to map-wide speed up, while spending it will slow down the overall production. | | Game spends 16.7 Time to generate a tick of work. Game has basic production of Time of 1000 per second of real time. | | Offline progression rewards you a lot from closing a game while you can't actively play. It is designed to be more optimal to close the game than leaving it on. Especially through the night.",
+							},
+							"Limits":
+							{
+								lock: ["machineTime", 0],
+								text: "NormalLimit represents cap on ticks that can happen per frame of animation. This is carefully designed to keep stable TPS, while preventing any cases of script hanging up in browsers. | | If you have a lot of Time, you can use turbo recipes in Rabbit Hole for to speed up a game. A lot. It is not 100% efficient way of spending Time though, so don't leave them on if you run out of Time.",
+							},
+							"Rabbit Hole":
+							{
+								lock: ["machineTime", 0],
+								text: "Utility machine, doesn't exist in lore. | | Slowdown recipe only slows down the game. Use it if something is happening too fast and you want to troubleshoot something. | | Turbo Spender simply changes limit to TurboLimit | | Turbo Time Bend multiplies scaling recipes speed by a factor of 10 without impacting the game's performance.",
+							},
+						},
+						"Research":
+						{
+							"Revelation":
+							{
+								lock: ["Revelation", 1e-10],
+								text: "The hidden vault inside my mind. | | It's lock consumed by the Alkahest.",
+							},
+							"Knowledge":
+							{
+								lock: ["Knowledge", 1e-10],
+								text: "The secrets that have been uncovered. | | The principles that have been understood. | | The limits that have been overcame. | | The designs that have been studied. | | The work that has not been done. | | The work that needs to be done.",
+							},
+							"Mystery":
+							{
+								lock: ["Mystery", 1e-10],
+								text: "Even though I know so much. | | This... | | This still is a mystery...",
+							},
+						},
+						"Elements":
+						{
+							"Alkahest":
+							{
+								lock: ["Alkahest", -1e-10],
+								text: "What a mysterious substance. | | While technically it is an Element, it doesn't have any of the usual properties. | | It's inanimate, yet behaves like an extremely infectious diesease, or rather, like a starving beast. When it touches anything, the touched matter gets instantly sucked into the Alkahest, and immediately dissolved, leaving no trace it ever existed before. All elemental flows around it die down, leaving perfectly empty area devoid of anything but the Alkahest itself. | | Thankfully my orb coating keeps it confined in it's orb, and is insulating the influence enough to keep Elements flowing outside of it. Now, how can it be used? Trying to manipulate with Glove is futile, it seems that manipulations are based on flow of some kind, and that is consumed by Alkahest. It bended itself towards me every time I tried that. Fascinating.",
+							},
+							"Tier 1":
+							{
+								"Earth":
+								{
+									lock: ["Earth", 1e-10],
+									text: "The primal Element of Earth. | | Present in all matter, but biggest concentrations are found in solid rocks and crystals. Also it is very easily exctractable from dust, or debris created during excavation of my base, so it's best starting point to any of my experiments. | | It is helpful in construction of solid structures, and by manipulating Earth contained in rocks and ground around I was able to create a huge cave, and further stabilize it to prevent it from collapsing.",
+								},
+								"Water":
+								{
+									lock: ["Water", -1e-10],
+									text: "The primal Element of Water. | | Present in all matter, but biggest concentrations are found in various liquids. It's natural tendency to circulate, even if it's idle, helps enchancing anything system related to flow of the Elements.",
+								},
+								"Air":
+								{
+									lock: ["Air", -1e-10],
+									text: "The primal Element of Air. | | Present in all matter, but biggest concentrations are found in various gases.  While it is most common of the primals, it is really hard to pull any substantial amount of it out of breathable air. It is very light weight, spacious. I have easiest time manipulating and improving all kinds of rifts and subspace transport with Glove filled with the Air, and as a consequence helps increase processing speed of machines.",
+								},
+								"Fire":
+								{
+									lock: ["Fire", -1e-10],
+									text: "The primal Element of Air. | | Present in all matter, but not present anywhere in substantial concentrations. Very energetic, but not as volatile as normal fire. Filling alchemical symbols and formations with it causes the reactions to occur more smoothly, increasing the efficiency.",
+								},
+							},
+							"Golems":
+							{
+								"GolemEarth":
+								{
+									lock: ["GolemEarth", -1e-10],
+									text: "",
+								},
+								"GolemWater":
+								{
+									lock: ["GolemWater", -1e-10],
+									text: "",
+								},
+								"GolemAir":
+								{
+									lock: ["GolemAir", -1e-10],
+									text: "",
+								},
+								"GolemFire":
+								{
+									lock: ["GolemFire", -1e-10],
+									text: "",
+								},
+							},
+							"Tier 2":
+							{
+								"Mud":
+								{
+									lock: ["Mud", -1e-10],
+									text: "",
+								},
+								"Ice":
+								{
+									lock: ["Ice", -1e-10],
+									text: "",
+								},
+								"Steam":
+								{
+									lock: ["Steam", -1e-10],
+									text: "",
+								},
+								"Sand":
+								{
+									lock: ["Sand", -1e-10],
+									text: "",
+								},
+								"Magma":
+								{
+									lock: ["Magma", -1e-10],
+									text: "",
+								},
+								"Void":
+								{
+									lock: ["Void", -1e-10],
+									text: "",
+								},
+							},
+							"Tier 3":
+							{
+								"Essence":
+								{
+									lock: ["Essence", -1e-10],
+									text: "",
+								},
+								"Soil":
+								{
+									lock: ["Soil", -1e-10],
+									text: "",
+								},
+								"Obsidian":
+								{
+									lock: ["Obsidian", -1e-10],
+									text: "",
+								},
+								"Lava":
+								{
+									lock: ["Lava", -1e-10],
+									text: "",
+								},
+								"Oil":
+								{
+									lock: ["Oil", -1e-10],
+									text: "",
+								},
+								"Force":
+								{
+									lock: ["Force", -1e-10],
+									text: "",
+								},
+								"Space":
+								{
+									lock: ["Space", -1e-10],
+									text: "",
+								},
+								"Glass":
+								{
+									lock: ["Glass", -1e-10],
+									text: "",
+								},
+								"Gold":
+								{
+									lock: ["Gold", -1e-10],
+									text: "",
+								},
+								"Snow":
+								{
+									lock: ["Snow", -1e-10],
+									text: "",
+								},
+								"Cryogen":
+								{
+									lock: ["Cryogen", -1e-10],
+									text: "",
+								},
+							},
+						},
+						"Expansive":
+						{
+							"Spatial":
+							{
+								lock: ["Spatial", -1e-10],
+								text: "",
+							},
+							"Temporal":
+							{
+								lock: ["Temporal", -1e-10],
+								text: "",
+							},
+							"Parallel":
+							{
+								lock: ["Parallel", -1e-10],
+								text: "",
+							},
+							"FoldedSpace":
+							{
+								lock: ["FoldedSpace", -1e-10],
+								text: "",
+							},
+							"FoldedSpatial":
+							{
+								lock: ["FoldedSpatial", -1e-10],
+								text: "",
+							},
+							"FoldedTemporal":
+							{
+								lock: ["FoldedTemporal", -1e-10],
+								text: "",
+							},
+						},
+						"Compunds":
+						{
+							"Solution":
+							{
+								lock: ["Solution", -1e-10],
+								text: "",
+							},
+							"Distillates":
+							{
+								lock: ["DistilledEarth", -1e-10, "DistilledWater", -1e-10, "DistilledAir", -1e-10, "DistilledFire", -1e-10],
+								text: "",
+							},
+							"Pressure":
+							{
+								lock: ["Pressure", -1e-10],
+								text: "",
+							},
+							"Compressed":
+							{
+								lock: ["CompressedEarth", -1e-10, "CompressedWater", -1e-10, "CompressedAir", -1e-10, "CompressedFire", -1e-10],
+								text: "",
+							},
+						},
+						"Vigorious":
+						{
+							"Essences":
+							{
+								lock: ["EssenceEarth", -1e-10, "EssenceWater", -1e-10, "EssenceAir", -1e-10, "EssenceFire", -1e-10],
+								text: "",
+							},
+							"Soils":
+							{
+								lock: ["SoilEarth", -1e-10, "SoilWater", -1e-10, "SoilAir", -1e-10, "SoilFire", -1e-10],
+								text: "",
+							},
+							"Earth Seed":
+							{
+								lock: ["SeedEarth", -1e-10],
+								text: "",
+							},
+							"Water Seed":
+							{
+								lock: ["SeedWater", -1e-10],
+								text: "",
+							},
+							"Air Seed":
+							{
+								lock: ["SeedAir", -1e-10],
+								text: "",
+							},
+							"Fire Seed":
+							{
+								lock: ["SeedFire", -1e-10],
+								text: "",
+							},
+							"Plants":
+							{
+								lock: ["PlantEarth", -1e-10],
+								text: "",
+							},
+							"Pure Essences":
+							{
+								lock: ["PureEssenceEarth", -1e-10],
+								text: "",
+							},
+						},
+						"Frozen":
+						{
+							"Coolant":
+							{
+								lock: ["Coolant", -1e-10],
+								text: "",
+							},
+							"Gale":
+							{
+								lock: ["Gale", -1e-10],
+								text: "",
+							},
+							"Cryospire":
+							{
+								lock: ["Cryospire", -1e-10],
+								text: "",
+							},
+							"Vortex":
+							{
+								lock: ["Vortex", -1e-10],
+								text: "",
+							},
+						},
+						"Burnt":
+						{
+							"Blaze":
+							{
+								lock: ["Blaze", -1e-10],
+								text: "",
+							},
+							"Blast":
+							{
+								lock: ["Blast", -1e-10],
+								text: "",
+							},
+							"Pyro":
+							{
+								lock: ["Pyro", -1e-10],
+								text: "",
+							},
+							"Coal":
+							{
+								lock: ["Coal", -1e-10],
+								text: "",
+							},
+							"Sulphur":
+							{
+								lock: ["Sulphur", -1e-10],
+								text: "",
+							},
+							"Propane":
+							{
+								lock: ["Propane", -1e-10],
+								text: "",
+							},
+							"Ash":
+							{
+								lock: ["Ash", -1e-10],
+								text: "",
+							},
+							"Dust":
+							{
+								lock: ["Dust", -1e-10],
+								text: "",
+							},
+							"Carbon":
+							{
+								lock: ["Carbon", -1e-10],
+								text: "",
+							},
+						},
+						"Industrial":
+						{
+							"Power":
+							{
+								lock: ["Power", -1e-10],
+								text: "",
+							},
+							"Energy":
+							{
+								lock: ["Energy", -1e-10],
+								text: "",
+							},
+							"Fuel":
+							{
+								lock: ["Fuel", -1e-10],
+								text: "",
+							},
+							"Diesel":
+							{
+								lock: ["Diesel", -1e-10],
+								text: "",
+							},
+							"Petrol":
+							{
+								lock: ["Petrol", -1e-10],
+								text: "",
+							},
+							"Propene":
+							{
+								lock: ["Propene", -1e-10],
+								text: "",
+							},
+						},
+						"Material":
+						{
+							"Silver":
+							{
+								lock: ["Silver", -1e-10],
+								text: "",
+							},
+							"Bronze":
+							{
+								lock: ["Bronze", -1e-10],
+								text: "",
+							},
+							"Copper":
+							{
+								lock: ["Copper", -1e-10],
+								text: "",
+							},
+							"Tin":
+							{
+								lock: ["Tin", -1e-10],
+								text: "",
+							},
+							"Aluminum":
+							{
+								lock: ["Aluminum", -1e-10],
+								text: "",
+							},
+							"Iron":
+							{
+								lock: ["Iron", -1e-10],
+								text: "",
+							},
+							"Steel":
+							{
+								lock: ["Steel", -1e-10],
+								text: "",
+							},
+							"Clay":
+							{
+								lock: ["Clay", -1e-10],
+								text: "",
+							},
+							"Plastic":
+							{
+								lock: ["Plastic", -1e-10],
+								text: "",
+							},
+							"Silicon":
+							{
+								lock: ["Silicon", -1e-10],
+								text: "",
+							},
+							"Acid":
+							{
+								lock: ["Acid", -1e-10],
+								text: "",
+							},
+							"Mayo":
+							{
+								lock: ["Mayo", -1e-10],
+								text: "",
+							},
+						},
+						"Pureness":
+						{
+							"PureEarth":
+							{
+								lock: ["PureEarth", -1e-10],
+								text: "",
+							},
+							"PureWater":
+							{
+								lock: ["PureWater", -1e-10],
+								text: "",
+							},
+							"PureAir":
+							{
+								lock: ["PureAir", -1e-10],
+								text: "",
+							},
+							"PureFire":
+							{
+								lock: ["PureFire", -1e-10],
+								text: "",
+							},
+							"SterileGlass":
+							{
+								lock: ["SterileGlass", -1e-10],
+								text: "",
+							},
+							"CompressionCrystal":
+							{
+								lock: ["CompressionCrystal", -1e-10],
+								text: "",
+							},
+							"PerfectedOrb":
+							{
+								lock: ["PerfectedOrb", -1e-10],
+								text: "",
+							},
+							"PureGolemEarth":
+							{
+								lock: ["PureGolemEarth", -1e-10],
+								text: "",
+							},
+							"PureGolemWater":
+							{
+								lock: ["PureGolemWater", -1e-10],
+								text: "",
+							},
+							"PureGolemAir":
+							{
+								lock: ["PureGolemAir", -1e-10],
+								text: "",
+							},
+							"PureGolemFire":
+							{
+								lock: ["PureGolemFire", -1e-10],
+								text: "",
+							},
+
+						},*/
 		},
 		General:
 		{
@@ -411,9 +918,17 @@ function reccurentLoreTick(node)
 			change = reccurentLoreTick(node.list[i]) || change;
 		}
 	}
-	else
+	else if (node.lock)
 	{
-		change = !(!node.lock) && machineData[node.lock[0]].recipes[node.lock[1]].unlocked;
+		if (machineData[node.lock[0]])
+		{
+			change = machineData[node.lock[0]].recipes[node.lock[1]].unlocked;
+		}
+		else if (data.oElements[node.lock[0]])
+		{
+			change = data.oElements[node.lock[0]].amount >= node.lock[1];
+		}
+
 		if (change)
 		{
 			node.lock = null;
