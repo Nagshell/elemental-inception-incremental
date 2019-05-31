@@ -712,16 +712,17 @@ function preprocessPaneData()
 	{
 		ctx.save();
 		var rePath = false;
-		if (this.growing && this.growth >= this.maxGrowth)
-		{
-			this.growth = 2;
-			this.maxGrowth = 2;
-		}
-		if (this.growing)
+
+		if (this.growing && this.growth < this.maxGrowth)
 		{
 			this.growth++;
 			regionData.showRegion.action(this.top);
 			rePath = true;
+		}
+		else if (this.growing)
+		{
+			this.growth = 1;
+			this.maxGrowth = 1;
 		}
 		else if (!this.growing && this.growth > 0)
 		{
@@ -782,13 +783,13 @@ function preprocessPaneData()
 	minimapPane = new cPane(trackerPane, tabRegions[1].x, tabRegions[1].y);
 	minimapPane.modelRegion = tabRegions[1];
 	minimapPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
-	minimapPane.maxGrowth = 10;
+	minimapPane.maxGrowth = 30;
 	minimapPane.independent = true;
 	minimapPane.growth = 0;
 	minimapPane.growthX = 300 - tabWidth;
 	minimapPane.growthY = 300;
 	minimapPane.load = 0;
-	minimapPane.maxLoad = 10;
+	minimapPane.maxLoad = 30;
 	minimapPane.scale = 10;
 
 	minimapPane.customDraw = function (ctx)
@@ -800,6 +801,11 @@ function preprocessPaneData()
 			this.growth++;
 			//regionData.showRegion.action(this.top);
 			rePath = true;
+		}
+		else if (this.growing)
+		{
+			this.growth = 1;
+			this.maxGrowth = 1;
 		}
 		else if (!this.growing && this.growth > 0)
 		{
@@ -818,6 +824,11 @@ function preprocessPaneData()
 			if (this.load < this.maxLoad)
 			{
 				this.load++;
+			}
+			else
+			{
+				this.maxLoad = 1;
+				this.load = 1;
 			}
 			if (this.load > 0)
 			{
@@ -995,8 +1006,8 @@ function preprocessPaneData()
 			{
 				regionData.showRegion.mouseHandler(this.pane, x, y, type);
 				this.markedToSuperGlow = false;
-				this.pane.x = Math.floor(canvas.width / 2) - 200 - mainPane.centerX;
-				this.pane.y = 150 - mainPane.centerY;
+				this.pane.x = 0 - mainPane.centerX;
+				this.pane.y = 0 - mainPane.centerY;
 			}
 		}
 	};

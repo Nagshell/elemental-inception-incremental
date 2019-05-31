@@ -4065,7 +4065,7 @@ var reachCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Time", 80, 0.01],
+						["Time", 500, 0.01],
 					],
 					out: [],
 					lock: ["Knowledge", 0.001],
