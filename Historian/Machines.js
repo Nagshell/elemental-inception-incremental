@@ -348,20 +348,23 @@ var machines = {
 			if (temp.enabled)
 			{
 				var state = "working";
-				for (var j = 0; j < temp.inputs.length; j++)
-				{
-					if (data.oElements[temp.inputs[j].type].amount < temp.inputs[j].min)
-					{
-						state = "empty";
-						break;
-					}
-				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
 					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max && !temp.outputs[j].noLimit && temp.outputs[j].ratio)
 					{
 						state = "full";
 						break;
+					}
+				}
+				if (state == "working")
+				{
+					for (var j = 0; j < temp.inputs.length; j++)
+					{
+						if (data.oElements[temp.inputs[j].type].amount < temp.inputs[j].min)
+						{
+							state = "empty";
+							break;
+						}
 					}
 				}
 				temp.pieChart.push(state);
