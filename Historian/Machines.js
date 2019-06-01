@@ -399,7 +399,7 @@ var machines = {
 					var mul = machines.lagbenderMultiplier % 4;
 					for (var j = 0; j < temp.inputs.length; j++)
 					{
-						data.oElementsFlow[temp.inputs[j].type] -= amount * temp.inputs[j].ratio;
+						data.oElements[temp.inputs[j].type].flow -= amount * temp.inputs[j].ratio;
 						if (temp.inputs[j].ratio == 0)
 						{
 							temp.inputs[j].effectReference.volume -= 0.001;
@@ -414,7 +414,7 @@ var machines = {
 						var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.2 * mul) - data.oElements[temp.outputs[j].type].amount;
 						if (data.oElements[temp.outputs[j].type].amount < temp.outputs[j].max)
 						{
-							data.oElementsFlow[temp.outputs[j].type] += flow;
+							data.oElements[temp.outputs[j].type].flow += flow;
 						}
 						temp.outputs[j].effectReference.volume += flow;
 					}

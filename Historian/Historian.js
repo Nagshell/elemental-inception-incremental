@@ -437,15 +437,10 @@ function tick()
 
 	machines.tick();
 
-	for (var element in data.oElements)
-	{
-		//data.oElements[element].amount += 0.100001;
-		data.oElements[element].amount += data.oElementsFlow[element];
-		if (data.oElements[element].type != "Time")
-		{
-			data.oElements[element].amount = Math.min(1e300, Math.max(-1e300, data.oElements[element].amount));
-		}
-		data.oElementsFlow[element] = 0;
+	for (var i = 0; i < data.aElements.length; i++) {
+		var element = data.aElements[i];
+		element.amount = Math.min(1e300, Math.max(-1e300, element.amount + element.flow));
+		element.flow = 0;
 	}
 
 	if (data.oElements.Alkahest.amount >= 42)

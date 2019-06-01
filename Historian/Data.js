@@ -156,8 +156,6 @@ function preprocessData()
 		aElements: [],
 		oElements:
 		{},
-		oElementsFlow:
-		{},
 		aMachines: [],
 		oMachines:
 		{},
@@ -167,11 +165,11 @@ function preprocessData()
 	{
 		data.oElements[initialData.elements[i]] = {
 			amount: 0,
+			flow: 0,
 			possibleAmount: 0,
 			type: initialData.elements[i],
 			index: i,
 		};
 		data.aElements.push(data.oElements[initialData.elements[i]]);
-		data.oElementsFlow[initialData.elements[i]] = 0;
 	}
 }
