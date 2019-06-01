@@ -305,35 +305,36 @@ var machines = {
 		this.upgradeTick();
 		if (this.displayElement)
 		{
-			if (data.oElements[this.displayElement].amount > 1e255)
+			var amount = data.oElements[this.displayElement].amount;
+			if (amount > 1e255)
 			{
 				this.displayStep = Math.min(0.03, this.displayStep);
 			}
-			else if (data.oElements[this.displayElement].amount > 1e127)
+			else if (amount > 1e127)
 			{
 				this.displayStep = Math.min(0.06, this.displayStep);
 			}
-			else if (data.oElements[this.displayElement].amount > 1e63)
+			else if (amount > 1e63)
 			{
 				this.displayStep = Math.min(0.125, this.displayStep);
 			}
-			else if (data.oElements[this.displayElement].amount > 1e31)
+			else if (amount > 1e31)
 			{
 				this.displayStep = Math.min(0.25, this.displayStep);
 			}
-			else if (data.oElements[this.displayElement].amount > 1e15)
+			else if (amount > 1e15)
 			{
 				this.displayStep = Math.min(0.5, this.displayStep);
 			}
-			else if (data.oElements[this.displayElement].amount > 1e7)
+			else if (amount > 1e7)
 			{
 				this.displayStep = Math.min(1, this.displayStep);
 			}
-			else if (data.oElements[this.displayElement].amount > 1e3)
+			else if (amount > 1e3)
 			{
 				this.displayStep = Math.min(2, this.displayStep);
 			}
-			else if (data.oElements[this.displayElement].amount > 1e1)
+			else if (amount > 1e1)
 			{
 				this.displayStep = Math.min(4, this.displayStep);
 			}
