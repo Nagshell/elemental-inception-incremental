@@ -402,10 +402,6 @@ savingSystem = {
 			this.loadData();
 		}
 	},
-	initiatePasteLoad: function ()
-	{
-		this.attemptedPaste = 1800;
-	},
 	hardReset: function ()
 	{
 		if (confirm(locale.hardReset))
@@ -414,8 +410,79 @@ savingSystem = {
 			this.saveData();
 		}
 	},
-	attemptedPaste: 0,
+
+	toString: function()
+	{
+		// add some extra info to save. Date is probably more or less helpfull.
+		var extraInfo = "(" + new Date().toLocaleString().replace(/[^\w.,\-:;]/g,"") + ")";
+		return "TFA3save" + extraInfo + "<<" + btoa(JSON.stringify(this.saveData())) + ">>";
+	},
+	validateImportString(str)
+	{
+		// if (typeof str !== "string") {
+		//	 return false;
+		// } // just convert instead
+		str += "";
+		// whitespace and quotes may remain from copying from somewhere else
+		str = str.replace(/[\s"]/g, "");
+		if (str.match(/TFA3save/))
+		{
+			let match = str.match(/TFA3save.*?<<([^]*)>>/);
+			if (match)
+				str = match[1];
+		}
+		try
+		{
+			JSON.parse(atob(str));
+		} catch (e)
+		{
+			return false;
+		}
+		return str;
+	},
+	loadFromString: function(str)
+	{
+		let data = this.validateImportString(str);
+		if (!data)
+		{
+			return alert(locale.exchangeStringInvalid);
+		}
+		if (confirm(locale.exchangeStringLoad))
+		{
+			localStorage.setItem("saveData", atob(data));
+			this.loadData();
+			location.reload();
+			// loading save does not handle closing some of windows properly 
+			// it wont be bad to reload page anyway
+		}
+	},
+	globalCopyHandler: function(event)
+	{
+		event.clipboardData.setData("text/plain", savingSystem.toString());
+		event.preventDefault();
+		alert(locale.exchangeStringCopyed);
+	},
+	globalPasteHandler: function(event)
+	{
+		let str = event.clipboardData.getData("text/plain");
+		event.preventDefault();
+
+		str = savingSystem.validateImportString(str);
+		if (!str) 
+		{
+			return alert(locale.exchangeStringInvalid);
+		}
+
+		// let str = prompt(locale.exchangeStringPasted);
+		// if (str == locale.exchangeStringLoadComfirmed) {
+		if (confirm(locale.exchangeStringPasted)) 
+		{
+			savingSystem.loadFromString(str);
+		}
+	},
 }
+document.addEventListener("copy", savingSystem.globalCopyHandler);
+document.addEventListener("paste", savingSystem.globalPasteHandler);
 
 function postprocessRandomStuff()
 {
@@ -461,15 +528,7 @@ function tick()
 	}
 }
 
-function testPaste(event)
-{
-	if (savingSystem.attemptedPaste > 0)
-	{
-		navigator.clipboard.readText().then(
-			clipText => console.log(clipText));
-	}
-}
-document.addEventListener("paste", testPaste);
+
 var lastTimestamp = null;
 var accumulatedTime = 0;
 var drain = 16.667;
@@ -578,10 +637,6 @@ function loop(timestamp)
 	{
 		s = saveCD;
 		savingSystem.saveData();
-	}
-	if (savingSystem.attemptedPaste > 0)
-	{
-		savingSystem.attemptedPaste--;
 	}
 	draw();
 	loopId = requestAnimationFrame(loop);
