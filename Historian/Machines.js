@@ -507,7 +507,7 @@ var machines = {
 			var amount = data.oElements[this.machine.displayElement].amount;
 			if (amount > 0.0)
 			{
-				amount /= 1.2;
+				
 				this.machine.displayStep = machines.calculateDisplayStep(data.oElements[this.machine.displayElement].reachedAmount, this.machine.displayStep);
 				var radius = 0;
 				while (amount > 1.03)
