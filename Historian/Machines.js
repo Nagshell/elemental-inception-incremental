@@ -303,42 +303,6 @@ var machines = {
 	machineTick: function ()
 	{
 		this.upgradeTick();
-		if (this.displayElement)
-		{
-			var amount = data.oElements[this.displayElement].amount;
-			if (amount > 1e255)
-			{
-				this.displayStep = Math.min(0.03, this.displayStep);
-			}
-			else if (amount > 1e127)
-			{
-				this.displayStep = Math.min(0.06, this.displayStep);
-			}
-			else if (amount > 1e63)
-			{
-				this.displayStep = Math.min(0.125, this.displayStep);
-			}
-			else if (amount > 1e31)
-			{
-				this.displayStep = Math.min(0.25, this.displayStep);
-			}
-			else if (amount > 1e15)
-			{
-				this.displayStep = Math.min(0.5, this.displayStep);
-			}
-			else if (amount > 1e7)
-			{
-				this.displayStep = Math.min(1, this.displayStep);
-			}
-			else if (amount > 1e3)
-			{
-				this.displayStep = Math.min(2, this.displayStep);
-			}
-			else if (amount > 1e1)
-			{
-				this.displayStep = Math.min(4, this.displayStep);
-			}
-		}
 		for (var i = 0; i < this.recipes.length; i++)
 		{
 			var temp = this.recipes[i];
@@ -491,6 +455,42 @@ var machines = {
 		}
 		ctx.restore();
 	},
+	calculateDisplayStep: function(amount, step)
+	{
+		if (amount > 1e255)
+		{
+			return Math.min(0.03, step);
+		}
+		else if (amount > 1e127)
+		{
+			return Math.min(0.06, step);
+		}
+		else if (amount > 1e63)
+		{
+			return Math.min(0.125, step);
+		}
+		else if (amount > 1e31)
+		{
+			return Math.min(0.25, step);
+		}
+		else if (amount > 1e15)
+		{
+			return Math.min(0.5, step);
+		}
+		else if (amount > 1e7)
+		{
+			return Math.min(1, step);
+		}
+		else if (amount > 1e3)
+		{
+			return Math.min(2, step);
+		}
+		else if (amount > 1e1)
+		{
+			return Math.min(4, step);
+		}
+		return Math.min(4, step);
+	},
 	displayRegionRegularDraw: function (ctx, pane)
 	{
 		ctx.save();
@@ -507,6 +507,8 @@ var machines = {
 			var amount = data.oElements[this.machine.displayElement].amount;
 			if (amount > 0.0)
 			{
+				amount /= 1.2;
+				this.machine.displayStep = machines.calculateDisplayStep(data.oElements[this.machine.displayElement].reachedAmount, this.machine.displayStep);
 				var radius = 0;
 				while (amount > 1.03)
 				{

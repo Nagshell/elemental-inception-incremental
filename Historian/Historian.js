@@ -440,6 +440,7 @@ function tick()
 	for (var i = 0; i < data.aElements.length; i++) {
 		var element = data.aElements[i];
 		element.amount = Math.min(1e300, Math.max(-1e300, element.amount + element.flow));
+		element.reachedAmount = Math.max(element.amount, element.reachedAmount);
 		element.flow = 0;
 	}
 
