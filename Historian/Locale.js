@@ -1,5 +1,8 @@
 var locale = {
 	exchangeStringLoad: "Loading from exchange string is experimental feature. Providing incorrect string can break the game. Use savingSystem.hardReset() in case of troubles.",
+	exchangeStringInvalid: "Pasted string was not a proper exchange string.\nOr you just accidentially pressed Ctrl+V.",
+	exchangeStringCopyed: "Save exchange string was copied to your clipboard. You can save it elsewhere and paste back when you need it.",
+	exchangeStringPasted: "You pasted something that looks like exchange string. Do you want to load it?",
 	hardReset: "This will erase all of your progress. Proceed?",
 	reset: "Hard Reset",
 	efficiency: "Efficiency",
