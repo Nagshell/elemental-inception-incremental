@@ -489,7 +489,7 @@ var machines = {
 		{
 			return Math.min(4, step);
 		}
-		return Math.min(4, step);
+		return step;
 	},
 	displayRegionRegularDraw: function (ctx, pane)
 	{
