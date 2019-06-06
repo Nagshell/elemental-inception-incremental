@@ -1260,6 +1260,20 @@ var simplifiedMachineData = {
 				],
 				lock: ["Alkahest", 0.1, "Earth", 50000, "Water", 50000, "Air", 50000, "Fire", 50000],
 			},
+			alkahest1mixer:
+			{
+				baseStats: [10, 1, true, false],
+				in: [
+					["Earth", 1e8, 5e8],
+					["Water", 1e8, 5e8],
+					["Air", 1e8, 5e8],
+					["Fire", 1e8, 5e8],
+				],
+				out: [
+					["Alkahest", 0.01, 42],
+				],
+				lock: ["Earth", 5e8, "Water", 5e8, "Air", 5e8, "Fire", 5e8],
+			},
 		}
 	},
 };
