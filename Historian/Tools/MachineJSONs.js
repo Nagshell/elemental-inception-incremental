@@ -4862,6 +4862,19 @@ var gemCircle = {
 					],
 					lock: ["Gemstone", 1],
 				},
+				gemRemove1:
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Gemstone", 1, 1],
+						["PureGolemEarth", 0, 1],
+						["PureGolemWater", 0, 1],
+						["PureGolemAir", 0, 1],
+						["PureGolemFire", 0, 1],
+					],
+					out: [],
+					lock: ["Gemstone", 1, "PureGolemEarth", 1, "PureGolemWater", 1, "PureGolemAir", 1, "PureGolemFire", 1],
+				},
 			}
 		},
 		machineQuartz:
@@ -4948,7 +4961,7 @@ var pureCircle = {
 				{
 					baseStats: [1, 0.1, true, true],
 					in: [
-						["SterileGlass", 0.3, 0.5],
+						["SterileGlass", 0.03, 0.5],
 						["FoldedSpatial", 2, 0.5],
 						["Spatial", 1000, 140],
 						["Tin", 8, 2],
@@ -4975,7 +4988,7 @@ var pureCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["SterileGlass", 20, 20],
+						["SterileGlass", 4, 4],
 						["CompressionCrystal", 1, 1],
 						["Emerald", 5, 5],
 						["Sapphire", 5, 5],

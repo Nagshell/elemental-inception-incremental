@@ -246,6 +246,7 @@ var locale = {
 
 		alkahest1traces: "Universal Solution",
 		alkahest1merge: "Universal Solvent",
+		alkahest1mixer: "Alkahest Drip-Feeding",
 
 		knowledgeProduction1: "Researching Revelation",
 		knowledgeProduction2: "Understanding Revelation",
@@ -497,6 +498,7 @@ var locale = {
 		gemGrow20: "R",
 
 		gemBreak1: "Open Gembox",
+		gemRemove1: "The Laser Show Must Go On",
 
 		sterileGlassProduction1: "Glass Sterilization",
 		compressionCrystalProduction1: "Folding Compression Crystal",
