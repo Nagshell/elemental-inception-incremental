@@ -1270,7 +1270,7 @@ var simplifiedMachineData = {
 					["Fire", 1e8, 5e8],
 				],
 				out: [
-					["Alkahest", 0.01, 42],
+					["Alkahest", 0.01, 41],
 				],
 				lock: ["Earth", 5e8, "Water", 5e8, "Air", 5e8, "Fire", 5e8],
 			},
