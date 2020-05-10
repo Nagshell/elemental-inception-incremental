@@ -1,0 +1,52 @@
+html,body {
+	font-family: "Lucida Console", Monaco, monospace;
+	background-color : #1D1D1D;
+	color: white;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	height:100%;
+	width:100%;
+	overflow:hidden;
+}
+* {
+	box-sizing: border-box;
+}
+button {
+	background-color: #292929;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+#canvasMain {
+	margin:auto;
+	display: block;
+	background-color: #000000;
+	position: absolute;
+
+}
+.what {
+	@media all and (orientation:portrait) {
+		body {
+			overflow:hidden;
+		}
+		#canvasMain {
+			width:100vw;
+		}
+	}
+	@media all and (orientation:landscape) {
+		body {
+			overflow:hidden;
+		}
+		#canvasMain {
+			height:100vh;
+		}
+	}
+}
