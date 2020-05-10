@@ -129,13 +129,13 @@ savingSystem = {
 				dataToSave.push([]);
 			}
 		}
-		localStorage.setItem("saveData", JSON.stringify(dataToSave));
+		localStorage.setItem("saveDataAlternative3", JSON.stringify(dataToSave));
 
 		var localDataToSave = {
 			pP: this.reccurentPaneSave(mainPane),
 			oD: optionData,
 		};
-		localStorage.setItem("localSaveData", JSON.stringify(localDataToSave));
+		localStorage.setItem("localSaveDataAlternative3", JSON.stringify(localDataToSave));
 
 		return dataToSave;
 	},
@@ -188,14 +188,14 @@ savingSystem = {
 	},
 	loadData: function ()
 	{
-		localDataToLoad = JSON.parse(localStorage.getItem("localSaveData"));
+		localDataToLoad = JSON.parse(localStorage.getItem("localSaveDataAlternative3"));
 		if (localDataToLoad && localDataToLoad.oD)
 		{
 			optionData = localDataToLoad.oD;
 		}
 
 		this.reloadData();
-		dataToLoad = JSON.parse(localStorage.getItem("saveData"));
+		dataToLoad = JSON.parse(localStorage.getItem("saveDataAlternative3"));
 		if (dataToLoad && dataToLoad[0] != gameVersion)
 		{
 			dataToLoad = versionMigrator(dataToLoad);
