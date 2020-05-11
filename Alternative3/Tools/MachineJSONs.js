@@ -73,9 +73,74 @@ var baseCircle = {
 	}
 };
 var materialCircle = {
-	elements: ["Earth", "Water", "Air", "Fire", "Mud", "Clay", "Brick", "Wood","Ash"],
+	elements: ["Earth", "Water", "Air", "Fire", "Mud", "Clay", "Brick", "Wood", "Ash", "Muddy Water"],
 	machines:
 	{
+		'Earth':
+		{
+			baseStats: [-600, 600, "Earth"],
+			recipes:
+			{
+				"Transmute":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Mana", 0.001, 0.1],
+						["Water", 0.01, 0.1],
+						["Earth", 0.01, 0.1],
+					],
+					out: [
+						["Earth", 0.02, 20]
+					],
+					lock: ["Earth", 0.1],
+				},
+			}
+		},
+		'Water':
+		{
+			baseStats: [-600, -600, "Water"],
+			recipes:
+			{
+				"Transmute":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Mana", 0.001, 0.1],
+						["Air", 0.01, 0.1],
+						["Water", 0.01, 0.1],
+					],
+					out: [
+						["Water", 0.02, 20]
+					],
+					lock: ["Water", 0.1],
+				},
+			}
+		},
+		'Air':
+		{
+			baseStats: [600, -600, "Air"],
+			recipes:
+			{
+				"Transmute":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Mana", 0.001, 0.1],
+						["Fire", 0.01, 0.1],
+						["Air", 0.01, 0.1],
+					],
+					out: [
+						["Air", 0.02, 20]
+					],
+					lock: ["Air", 0.1],
+				},}
+		},		
+		'Fire':
+		{
+			baseStats: [600, 600, "Fire"],
+			recipes:
+			{}
+		},
 		'Mud':
 		{
 			baseStats: [100, -300, "Mud"],
@@ -100,15 +165,15 @@ var materialCircle = {
 			recipes:
 			{}
 		},
-		'Fire':
-		{
-			baseStats: [600, 600, "Fire"],
-			recipes:
-			{}
-		},
 		'Ash':
 		{
 			baseStats: [200, 300, "Ash"],
+			recipes:
+			{}
+		},
+		'Muddy Water':
+		{
+			baseStats: [0, -300, "Muddy Water"],
 			recipes:
 			{}
 		},
@@ -144,7 +209,7 @@ var basicWorkplaces = {
 				},
 			}
 		},
-		'River':
+		'River - Mud Spot':
 		{
 			baseStats: [300, -200],
 			recipes:
@@ -156,10 +221,17 @@ var basicWorkplaces = {
 						["Stamina", 0.1, 20],
 					],
 					out: [
-						["Mud", 0.1, 2000],
+						["Mud", 0.1, 200],
 					],
-					lock: ["Currency", 0.15],
+					lock: ["Water", 0.01],
 				},
+			}
+		},
+		'River - Clay Spot':
+		{
+			baseStats: [300, -300],
+			recipes:
+			{
 				'Gather Clay':
 				{
 					baseStats: [1, 1, true, false],
@@ -167,13 +239,31 @@ var basicWorkplaces = {
 						["Stamina", 0.1, 20],
 					],
 					out: [
-						["Clay", 0.01, 2000],
+						["Clay", 0.01, 200],
+					],
+					lock: ["Earth", 0.01],
+				},
+			}
+		},
+		'River - Water Spot':
+		{
+			baseStats: [300, -400],
+			recipes:
+			{
+				'Gather Water':
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Stamina", 0.1, 20],
+					],
+					out: [
+						["Muddy Water", 0.01, 200],
 					],
 					lock: ["Currency", 0.2],
 				},
 			}
 		},
-		'Forest':
+		'Forest - Wood Spot':
 		{
 			baseStats: [400, -200],
 			recipes:
@@ -219,7 +309,7 @@ var basicHouses = {
 					out: [
 						["Home Progress", 0.01, 1]
 					],
-					lock: ["Stamina", 21],
+					lock: ["Air", 0.01],
 					upgrade: ["Procure Permit", "Home Progress", 1],
 				},
 				"Procure Permit":
@@ -282,7 +372,7 @@ var basicHouses = {
 					],
 					out: [
 						["Home", 1, 1e3],
-						["Stamina", 0.01, 100]
+						["Stamina", 1, 100]
 					],
 					lock: ["Home", 0.001],
 				},
@@ -302,9 +392,70 @@ var constructedWorkplaces = {
 	elements: ["Campfire"],
 	machines:
 	{
+		'Firepit':
+		{
+			baseStats: [200, 200],
+			recipes:
+			{
+				"Burn":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Wood", 0.005, 5]
+					],
+					out: [
+						["Fire", 0.001, 10]
+					],
+					lock: ["Wood", 1],
+				},
+			}
+		},
+		'Pot':
+		{
+			baseStats: [300, 200],
+			recipes:
+			{
+				"Boil out water":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Muddy Water", 0.1, 1],
+						["Fire", 0.1, 1]
+					],
+					out: [
+						["Earth", 0.01, 1]
+					],
+					lock: ["Muddy Water", 3],
+				},
+				"Boil out earth":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Muddy Water", 0.1, 1],
+						["Fire", 0.1, 1]
+					],
+					out: [
+						["Water", 0.01, 1]
+					],
+					lock: ["Muddy Water", 1],
+				},
+				"Boil out both":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Muddy Water", 0.1, 1],
+						["Fire", 0.1, 1]
+					],
+					out: [
+						["Air", 0.01, 1]
+					],
+					lock: ["Muddy Water", 0.5],
+				},
+			}
+		},
 		'Campfire':
 		{
-			baseStats: [200, 200, "Campfire"],
+			baseStats: [200, 300, "Campfire"],
 			recipes:
 			{
 				"Ignite":
@@ -346,10 +497,10 @@ var constructedWorkplaces = {
 		},
 		'Kiln':
 		{
-			baseStats: [300, 200],
+			baseStats: [300, 300],
 			recipes:
 			{
-				"Burn Brick":
+				"Fire Brick":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
