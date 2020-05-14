@@ -1,5 +1,5 @@
 var baseCircle = {
-	elements: ["Stamina", "Currency", "Mana"],
+	elements: ["Stamina", "Currency", "Mana", "Resolve"],
 	machines:
 	{
 		'Stamina':
@@ -53,7 +53,9 @@ var baseCircle = {
 	},
 	decay: function ()
 	{
+		machineData["Stamina"].paused = false;
 		var dec1 = machineData["Stamina"].recipes[0];
+
 
 		if (!dec1.unlocked)
 		{
@@ -62,6 +64,7 @@ var baseCircle = {
 		dec1.enabled = true;
 		dec1.activated = true;
 
+		machineData["Mana"].paused = false;
 		dec1 = machineData["Mana"].recipes[0];
 
 		if (!dec1.unlocked)
@@ -81,18 +84,29 @@ var materialCircle = {
 			baseStats: [-600, 600, "Earth"],
 			recipes:
 			{
+				"Conjure":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mana", 0.001, 1],
+					],
+					out: [
+						["Earth", 0.001, 1e3]
+					],
+					lock: ["Mana", 0.1],
+				},
 				"Transmute":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
 						["Mana", 0.001, 0.1],
-						["Water", 0.01, 0.1],
+						["Water", 0.01, 0.2],
 						["Earth", 0.01, 0.1],
 					],
 					out: [
 						["Earth", 0.02, 20]
 					],
-					lock: ["Earth", 0.1],
+					lock: ["Earth", 1],
 				},
 			}
 		},
@@ -101,18 +115,29 @@ var materialCircle = {
 			baseStats: [-600, -600, "Water"],
 			recipes:
 			{
+				"Conjure":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mana", 0.001, 1],
+					],
+					out: [
+						["Water", 0.001, 1e3]
+					],
+					lock: ["Mana", 0.1],
+				},
 				"Transmute":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
 						["Mana", 0.001, 0.1],
-						["Air", 0.01, 0.1],
+						["Air", 0.01, 0.2],
 						["Water", 0.01, 0.1],
 					],
 					out: [
 						["Water", 0.02, 20]
 					],
-					lock: ["Water", 0.1],
+					lock: ["Water", 1],
 				},
 			}
 		},
@@ -121,25 +146,48 @@ var materialCircle = {
 			baseStats: [600, -600, "Air"],
 			recipes:
 			{
+				"Conjure":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mana", 0.001, 1],
+					],
+					out: [
+						["Air", 0.001, 1e3]
+					],
+					lock: ["Mana", 0.1],
+				},
 				"Transmute":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
 						["Mana", 0.001, 0.1],
-						["Fire", 0.01, 0.1],
+						["Fire", 0.01, 0.2],
 						["Air", 0.01, 0.1],
 					],
 					out: [
 						["Air", 0.02, 20]
 					],
-					lock: ["Air", 0.1],
+					lock: ["Air", 1],
 				},}
 		},		
 		'Fire':
 		{
 			baseStats: [600, 600, "Fire"],
 			recipes:
-			{}
+			{
+				"Conjure":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mana", 0.001, 1],
+					],
+					out: [
+						["Fire", 0.001, 1e3]
+					],
+					lock: ["Mana", 0.1],
+				},
+			}
 		},
 		'Mud':
 		{
@@ -167,7 +215,7 @@ var materialCircle = {
 		},
 		'Ash':
 		{
-			baseStats: [200, 300, "Ash"],
+			baseStats: [200, 400, "Ash"],
 			recipes:
 			{}
 		},
@@ -223,7 +271,7 @@ var basicWorkplaces = {
 					out: [
 						["Mud", 0.1, 200],
 					],
-					lock: ["Water", 0.01],
+					lock: ["Water", 0.01, "Currency", 0.1],
 				},
 			}
 		},
@@ -239,9 +287,9 @@ var basicWorkplaces = {
 						["Stamina", 0.1, 20],
 					],
 					out: [
-						["Clay", 0.01, 200],
+						["Clay", 0.01, 50],
 					],
-					lock: ["Earth", 0.01],
+					lock: ["Home", 0.01],
 				},
 			}
 		},
@@ -259,7 +307,19 @@ var basicWorkplaces = {
 					out: [
 						["Muddy Water", 0.01, 200],
 					],
-					lock: ["Currency", 0.2],
+					lock: ["Home", 0.01],
+				},
+				'Collect Water':
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Stamina", 0.1, 20],
+						["Water", 0.1, 3],
+					],
+					out: [
+						["Muddy Water", 0.4, 200],
+					],
+					lock: ["Muddy Water", 0.01, "Water", 5],
 				},
 			}
 		},
@@ -277,7 +337,19 @@ var basicWorkplaces = {
 					out: [
 						["Wood", 0.1, 2000],
 					],
-					lock: ["Currency", 0.1],
+					lock: ["Currency", 0.01],
+				},
+				'Collect Wood':
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Stamina", 0.1, 20],
+						["Earth", 0.1, 3],
+					],
+					out: [
+						["Wood", 0.4, 2000],
+					],
+					lock: ["Wood", 0.01, "Earth", 5],
 				},
 			}
 		},
@@ -304,7 +376,7 @@ var basicHouses = {
 				{
 					baseStats: [1, 1, true, true],
 					in: [
-						["Stamina", 0.6, 30]
+						["Stamina", 0.6, 10]
 					],
 					out: [
 						["Home Progress", 0.01, 1]
@@ -330,7 +402,7 @@ var basicHouses = {
 						["Mud", 0.1, 5]
 					],
 					out: [
-						["Home", 0.001, 1]
+						["Home", 0.01, 1]
 					],
 					upgrade: ["Lay out wooden floor", "Wood", 10, "Home", 0.5],
 				},
@@ -364,7 +436,7 @@ var basicHouses = {
 			baseStats: [0, 300, "Home"],
 			recipes:
 			{
-				"Rest":
+				"Restless Sleep":
 				{
 					baseStats: [1, 1, true, true],
 					in: [
@@ -372,9 +444,22 @@ var basicHouses = {
 					],
 					out: [
 						["Home", 1, 1e3],
-						["Stamina", 1, 100]
+						["Stamina", 1, -1000, 1, ["Stamina", 1]]
 					],
 					lock: ["Home", 0.001],
+					upgrade : ["Refreshing Sleep", "Earth",20,"Water",20,"Air",20,"Fire",20],
+				},
+				"Refreshing Sleep":
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Home", 1, 0.1]
+					],
+					out: [
+						["Home", 1, 1e3],
+						["Stamina", 1.5, -1000],
+						["Mana", 0.15, -1000]
+					],
 				},
 			}
 		}
@@ -389,7 +474,7 @@ var basicHouses = {
 	},
 }
 var constructedWorkplaces = {
-	elements: ["Campfire"],
+	elements: ["Campfire", "Boiling Water"],
 	machines:
 	{
 		'Firepit':
@@ -412,44 +497,32 @@ var constructedWorkplaces = {
 		},
 		'Pot':
 		{
-			baseStats: [300, 200],
+			baseStats: [300, 200, "Boiling Water"],
 			recipes:
 			{
-				"Boil out water":
+				"Boil Water":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
 						["Muddy Water", 0.1, 1],
-						["Fire", 0.1, 1]
+						["Fire", 0.1, 20]
 					],
 					out: [
-						["Earth", 0.01, 1]
+						["Boiling Water", 0.07, 10]
 					],
-					lock: ["Muddy Water", 3],
+					lock: ["Muddy Water", 10],
 				},
-				"Boil out earth":
+				"Prepare relaxing powder":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Muddy Water", 0.1, 1],
-						["Fire", 0.1, 1]
+						["Boiling Water", 0.05, 1],
+						["Fire", 0.05, 30]
 					],
 					out: [
-						["Water", 0.01, 1]
+						["Mana", 0.07, 50]
 					],
-					lock: ["Muddy Water", 1],
-				},
-				"Boil out both":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Muddy Water", 0.1, 1],
-						["Fire", 0.1, 1]
-					],
-					out: [
-						["Air", 0.01, 1]
-					],
-					lock: ["Muddy Water", 0.5],
+					lock: ["Boiling Water", 1],
 				},
 			}
 		},
@@ -467,7 +540,7 @@ var constructedWorkplaces = {
 					out: [
 						["Campfire", 1, 1]
 					],
-					lock: ["Mud", 10],
+					lock: ["Mud", 4],
 				},
 				"Burn":
 				{
@@ -489,7 +562,7 @@ var constructedWorkplaces = {
 						["Campfire", 100, 100]
 					],
 					out: [
-						["Ash", 100, 20]
+						["Ash", 100, -20]
 					],
 					lock: ["Campfire", 0.001],
 				}
@@ -561,15 +634,16 @@ function preprocessAdditionalCircles()
 function decayAdditionalCircles()
 {
 	baseCircle.decay();
+	reachCircle.decay();
 }
 
 var reachCircle = {
-	elements: ["Time", "NormalLimit", "TurboLimit"],
+	elements: ["Game Ticks", "Time", "NormalLimit", "TurboLimit"],
 	machines:
 	{
 		machineTime:
 		{
-			baseStats: [0, 0, ["Time", "NormalLimit", "TurboLimit"]],
+			baseStats: [0, 0, ["Time", "NormalLimit", "TurboLimit","Game Ticks"]],
 			recipes:
 			{
 				timeSlow1:
@@ -590,6 +664,16 @@ var reachCircle = {
 					out: [],
 					lock: [],
 				},
+				timeCount:
+				{
+					baseStats: [1, 1, true, false],
+					in: [],
+					out: [
+						["Game Ticks", 1, 1e100]
+					],
+					lock: [],
+					alwayson: true,
+				},
 			}
 		},
 	},
@@ -607,6 +691,26 @@ var reachCircle = {
 	decay: function ()
 	{
 		machines.lagbenderMultiplier = 1;
+		machineData["machineTime"].paused = false;
+		var dec1 = machineData["machineTime"].recipes[0];
+		if (!dec1.unlocked)
+		{
+			dec1.region.paymentSuccess();
+		}
+		dec1.activated = true;
+		var dec1 = machineData["machineTime"].recipes[1];
+		if (!dec1.unlocked)
+		{
+			dec1.region.paymentSuccess();
+		}
+		dec1.activated = true;
+		var dec1 = machineData["machineTime"].recipes[2];
+		if (!dec1.unlocked)
+		{
+			dec1.region.paymentSuccess();
+		}
+		dec1.enabled = true;
+		dec1.activated = true;
 	}
 };
 
