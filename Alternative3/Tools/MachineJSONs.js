@@ -1,5 +1,5 @@
 var baseCircle = {
-	elements: ["Stamina", "Currency", "Mana", "Resolve"],
+	elements: ["Stamina", "Currency", "Mana", "Resolve", "Body","Mind","Soul","Corruption"],
 	machines:
 	{
 		'Stamina':
@@ -39,6 +39,12 @@ var baseCircle = {
 		'Currency':
 		{
 			baseStats: [0, -200, "Currency"],
+			recipes:
+			{}
+		},
+		'Resolve':
+		{
+			baseStats: [-200, -200, "Resolve"],
 			recipes:
 			{}
 		},

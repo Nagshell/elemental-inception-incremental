@@ -1,5 +1,5 @@
 var loopId = null;
-var gameVersion = 44;
+var gameVersion = 304;
 var elapsed = 0;
 var formattedElapsed = 0;
 savingSystem = {
@@ -214,7 +214,7 @@ savingSystem = {
 			{
 				if (dataToLoad == -100)
 				{
-					alert("Cleared leftover data from Open Beta.");
+					alert("Updated + Performed full hard reset");
 				}
 				else
 				{

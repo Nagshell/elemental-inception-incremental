@@ -6,6 +6,7 @@ function versionMigrator(dataToLoad)
 	}
 	while (dataToLoad[0] != gameVersion)
 	{
+		return -100;
 		switch (dataToLoad[0])
 		{
 			case 42:
