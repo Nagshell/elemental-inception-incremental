@@ -1,5 +1,5 @@
 var loopId = null;
-var gameVersion = 304;
+var gameVersion = 300;
 var elapsed = 0;
 var formattedElapsed = 0;
 savingSystem = {

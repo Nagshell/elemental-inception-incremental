@@ -716,7 +716,7 @@ var reachCircle = {
 			dec1.region.paymentSuccess();
 		}
 		dec1.enabled = true;
-		dec1.activated = true;
+		//dec1.activated = true;
 	}
 };
 
