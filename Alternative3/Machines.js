@@ -396,14 +396,15 @@ var machines = {
 					for (var j = 0; j < temp.inputs.length; j++)
 					{
 						data.oElementsFlow[temp.inputs[j].type] -= amount * temp.inputs[j].ratio;
-						if (temp.inputs[j].ratio == 0)
-						{
-							temp.inputs[j].effectReference.volume -= 0.001;
-						}
-						else
-						{
-							temp.inputs[j].effectReference.volume -= amount * temp.inputs[j].ratio;
-						}
+						if(temp.inputs[j].effectReference)
+							if (temp.inputs[j].ratio == 0)
+							{
+								temp.inputs[j].effectReference.volume -= 0.001;
+							}
+							else
+							{
+								temp.inputs[j].effectReference.volume -= amount * temp.inputs[j].ratio;
+							}
 					}
 					for (var j = 0; j < temp.outputs.length; j++)
 					{
@@ -412,7 +413,8 @@ var machines = {
 						{
 							data.oElementsFlow[temp.outputs[j].type] += flow;
 						}
-						temp.outputs[j].effectReference.volume += flow;
+						if(temp.outputs[j].effectReference)
+							temp.outputs[j].effectReference.volume += flow;
 					}
 				}
 			}
