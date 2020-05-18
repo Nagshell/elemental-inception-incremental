@@ -363,6 +363,7 @@ savingSystem = {
 		tickLore();
 		reccurentLoreUnTick(lore.dataTree);
 		lorePane.region.markedToSuperGlow = false;
+		postprocessAdditionalCircles();
 	},
 	reloadData: function ()
 	{
@@ -380,8 +381,6 @@ savingSystem = {
 		preprocessParticles();
 		resizeCanvas();
 		preprocessBackgrounds();
-
-		postprocessRandomStuff();
 
 		cancelAnimationFrame(loopId);
 		loopId = requestAnimationFrame(loop);
@@ -408,6 +407,7 @@ savingSystem = {
 		{
 			this.reloadData();
 			this.saveData();
+			location.reload(true);
 		}
 	},
 
@@ -485,10 +485,6 @@ savingSystem = {
 document.addEventListener("copy", savingSystem.globalCopyHandler);
 document.addEventListener("paste", savingSystem.globalPasteHandler);
 
-function postprocessRandomStuff()
-{
-	//machineData.machineTime.region.customDraw = machines.displayRegionStumpedDraw;
-}
 var c;
 var cMax = 6401;
 var winCheck = true;
@@ -528,7 +524,7 @@ function tick()
 
 var lastTimestamp = null;
 var accumulatedTime = 0;
-var drain = 16.667;
+
 var maxRounds = 32;
 var fps;
 var fpsQueue = new cReplacingQueue(37);
@@ -585,7 +581,7 @@ function loop(timestamp)
 			data.oElements.NormalLimit.amount = 1;
 		}
 		maxRounds = data.oElements.NormalLimit.amount;
-		if (data.oElements.Time.amount >= 80)
+		if (data.oElements.Time.amount >= 200)
 		{
 			data.oElements.NormalLimit.amount = Math.min(3.1, data.oElements.NormalLimit.amount + 0.001);
 		}
@@ -597,7 +593,7 @@ function loop(timestamp)
 	}
 
 	var rounds = 0;
-	while (data.oElements.Time.amount > drain && rounds++ < maxRounds)
+	while (data.oElements.Time.amount > 100 && rounds++ < maxRounds)
 	{
 		tick();
 		time = performance.now();
@@ -610,7 +606,6 @@ function loop(timestamp)
 		{
 			tps = "..."
 		}
-		data.oElements.Time.amount -= drain;
 	}
 	if (tps != "..." && fps != "...")
 	{
