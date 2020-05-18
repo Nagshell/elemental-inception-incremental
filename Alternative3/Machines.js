@@ -345,7 +345,7 @@ var machines = {
 			{
 				continue;
 			}
-			if (temp.enabled)
+			if (temp.unlocked && temp.enabled)
 			{
 				var state = "working";
 				for (var j = 0; j < temp.inputs.length; j++)
@@ -425,7 +425,7 @@ var machines = {
 		var maxCount = 0;
 		for (var i = 0; i < machine.recipes.length; i++)
 		{
-			if (machine.recipes[i].outerUpgradeMax && machine.recipes[i].innerUpgradesLeft < 1)
+			if (machine.recipes[i].unlocked && machine.recipes[i].outerUpgradeMax && machine.recipes[i].innerUpgradesLeft < 1)
 			{
 				maxCount++;
 			}
@@ -433,6 +433,8 @@ var machines = {
 		if (maxCount == machine.recipes.length)
 		{
 			machine.region.goldenShine = true;
+		} else {
+			machine.region.goldenShine = false;
 		}
 	},
 
@@ -766,7 +768,10 @@ var machines = {
 	{
 		if (type == "mouseup")
 		{
-			pane.machine.paused = !pane.machine.paused;
+			if(!pane.machine.unpauseable)
+			{
+				pane.machine.paused = !pane.machine.paused;
+			}
 		}
 	},
 	pauseRegionDraw: function (ctx, pane)
@@ -844,6 +849,12 @@ var machines = {
 		if (!this.recipe.unlocked)
 		{
 			this.recipe.unlocked = true;
+			
+			if(this.recipe.alwayson)
+			{
+				this.recipe.enabled = true;
+			}
+			
 			for (var j = 0; j < this.recipe.inputs.length; j++)
 			{
 				if (!data.oElements[this.recipe.inputs[j].type].known)
