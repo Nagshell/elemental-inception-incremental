@@ -705,7 +705,7 @@ var ritualCircle = {
 						["Revelation", 1, -1],
 						["Madness1", 1, 1],
 					],
-					lock: ["Ritual", 1000],
+					lock: ["Ritual", 100],
 					alwayson: true,
 				},
 				"Clear Ritual":
@@ -978,7 +978,7 @@ var researchCircle = {
 				{
 					baseStats: [1, 1, true, true],
 					in: [
-						["Revelation", 0, 1],
+						["Revelation", 0, 0.001],
 						["Mind", 100, 1],
 					],
 					out: [
