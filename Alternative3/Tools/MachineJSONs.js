@@ -32,7 +32,7 @@ var baseCircle = {
 					out: [
 						["Mana", 0.001, 1000],
 					],
-					lock: [],
+					lock: ["House", 0.5],
 					alwayson: true,
 				},
 			}
@@ -391,7 +391,7 @@ var basicWorkplaces = {
 					out: [
 						["Impure Mud", 0.1, 200],
 					],
-					lock: ["Water", 0.01, "Currency", 0.1],
+					lock: ["Home Progress", 0.1, "Currency", 0.1],
 				},
 			}
 		},
@@ -550,7 +550,7 @@ var basicHouses = {
 					out: [
 						["Home Progress", 0.05, 2]
 					],
-					upgrade: ["Dig up Mud Hut", "Home Progress", 2],
+					upgrade: ["Dig up Mud Hut", "Impure Mud", 5, "Home Progress", 2],
 				},
 				"Dig up Mud Hut":
 				{
@@ -604,7 +604,7 @@ var basicHouses = {
 						["Stamina", 1, -1000]
 					],
 					lock: ["Home", 0.001],
-					upgrade : ["Refreshing Sleep", "Earth", 18, "Water", 18, "Air", 18, "Fire", 18],
+					upgrade : ["Refreshing Sleep", "Home", 2, "Earth", 18, "Water", 18, "Air", 18, "Fire", 18],
 				},
 				"Refreshing Sleep":
 				{
@@ -716,7 +716,7 @@ var constructedWorkplaces = {
 					out: [
 						["Campfire", 1, 1]
 					],
-					lock: ["Impure Mud", 4],
+					lock: ["Wood", 1, "Impure Mud", 4],
 				},
 				"Burn":
 				{
@@ -1413,8 +1413,8 @@ var ritualCircle = {
 	rituals: ['RitualEarth','RitualWater','RitualAir','RitualFire','RitualVoid','RitualMud','RitualSteam','RitualSand','RitualIce','RitualMagma'],
 	postprocess: function ()
 	{
-		for(var j=0;j<this.rituals.length;j++)
-			machineData[this.rituals[j]].region.customDraw = machines.displayRegionStumpedDraw;
+		// for(var j=0;j<this.rituals.length;j++)
+			// machineData[this.rituals[j]].region.customDraw = machines.displayRegionStumpedDraw;
 	},
 	decay: function ()
 	{
