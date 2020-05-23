@@ -5,7 +5,7 @@ var baseCircle = {
 	{
 		'Stamina':
 		{
-			baseStats: [200, 0, "Stamina"],
+			baseStats: [-400, -300, "Stamina"],
 			recipes:
 			{
 				"Rest":
@@ -22,7 +22,7 @@ var baseCircle = {
 		},
 		'Mana':
 		{
-			baseStats: [-200, 0, "Mana"],
+			baseStats: [400, -300, "Mana"],
 			recipes:
 			{
 				"Recover":
@@ -39,19 +39,19 @@ var baseCircle = {
 		},
 		'Currency':
 		{
-			baseStats: [0, -200, "Currency"],
+			baseStats: [-400, 0, "Currency"],
 			recipes:
 			{}
 		},
 		'Resolve':
 		{
-			baseStats: [-200, -200, "Resolve"],
+			baseStats: [0, -400, "Resolve"],
 			recipes:
 			{}
 		},
 		'Body':
 		{
-			baseStats: [-300, -200, "Body"],
+			baseStats: [-400, -500, "Body"],
 			recipes:
 			{
 				"Train Body":
@@ -78,7 +78,7 @@ var baseCircle = {
 		},
 		'Mind':
 		{
-			baseStats: [-300, -300, "Mind"],
+			baseStats: [0, -500, "Mind"],
 			recipes:
 			{
 				"Train Mind":
@@ -105,7 +105,7 @@ var baseCircle = {
 		},
 		'Soul':
 		{
-			baseStats: [-300, -400, "Soul"],
+			baseStats: [400, -500, "Soul"],
 			recipes:
 			{
 				"Train Soul":
@@ -150,13 +150,44 @@ var baseCircle = {
 		machineData["Soul"].recipes[0].efficiency = 1-data.oElements.Soul.amount/scaledMax;
 	}
 };
+
 var materialCircle = {
-	elements: ["Earth", "Water", "Air", "Fire", "Impure Mud", "Clay", "Brick", "Wood", "Ash", "Muddy Water"],
+	elements: ["Earth", "Water", "Air", "Fire", "Mud", "Magma", "Ice", "Steam", "Sand", "Void", "Impure Mud", "Clay", "Brick", "Wood", "Ash", "Muddy Water", "Wet Sand"],
 	machines:
 	{
+		'Air':
+		{
+			baseStats: [150, 0, "Air"],
+			recipes:
+			{
+				"Conjure":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mana", 0.001, 1],
+					],
+					out: [
+						["Air", 0.001, 1e3]
+					],
+					lock: ["Mana", 1],
+				},
+				"Transmute":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Mana", 0.001, 0.1],
+						["Earth", 0.01, 0.2],
+						["Air", 0.01, 0.1],
+					],
+					out: [
+						["Air", 0.02, 20]
+					],
+					lock: ["Air", 1],
+				},}
+		},
 		'Earth':
 		{
-			baseStats: [-700, -600, "Earth"],
+			baseStats: [50, 0, "Earth"],
 			recipes:
 			{
 				"Conjure":
@@ -168,7 +199,7 @@ var materialCircle = {
 					out: [
 						["Earth", 0.001, 1e3]
 					],
-					lock: ["Mana", 0.1],
+					lock: ["Mana", 2],
 				},
 				"Transmute":
 				{
@@ -187,7 +218,7 @@ var materialCircle = {
 		},
 		'Water':
 		{
-			baseStats: [-600, -600, "Water"],
+			baseStats: [-50, 0, "Water"],
 			recipes:
 			{
 				"Conjure":
@@ -199,14 +230,14 @@ var materialCircle = {
 					out: [
 						["Water", 0.001, 1e3]
 					],
-					lock: ["Mana", 0.1],
+					lock: ["Mana", 3],
 				},
 				"Transmute":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
 						["Mana", 0.001, 0.1],
-						["Air", 0.01, 0.2],
+						["Fire", 0.01, 0.2],
 						["Water", 0.01, 0.1],
 					],
 					out: [
@@ -215,40 +246,10 @@ var materialCircle = {
 					lock: ["Water", 1],
 				},
 			}
-		},
-		'Air':
-		{
-			baseStats: [-500, -600, "Air"],
-			recipes:
-			{
-				"Conjure":
-				{
-					baseStats: [1, 1, true, true],
-					in: [
-						["Mana", 0.001, 1],
-					],
-					out: [
-						["Air", 0.001, 1e3]
-					],
-					lock: ["Mana", 0.1],
-				},
-				"Transmute":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Mana", 0.001, 0.1],
-						["Fire", 0.01, 0.2],
-						["Air", 0.01, 0.1],
-					],
-					out: [
-						["Air", 0.02, 20]
-					],
-					lock: ["Air", 1],
-				},}
-		},		
+		},	
 		'Fire':
 		{
-			baseStats: [-800, -600, "Fire"],
+			baseStats: [-150, -0, "Fire"],
 			recipes:
 			{
 				"Conjure":
@@ -260,43 +261,86 @@ var materialCircle = {
 					out: [
 						["Fire", 0.001, 1e3]
 					],
-					lock: ["Mana", 0.1],
+					lock: ["Mana", 4],
 				},
 			}
 		},
+		'Mud':
+		{
+			baseStats: [0, 85, "Mud"],
+			recipes:
+			{}
+		},
+		'Sand':
+		{
+			baseStats: [100, 85, "Sand"],
+			recipes:
+			{}
+		},
+		'Steam':
+		{
+			baseStats: [-100, 85, "Steam"],
+			recipes:
+			{}
+		},
+		'Magma':
+		{
+			baseStats: [-50, 170, "Magma"],
+			recipes:
+			{}
+		},
+		'Ice':
+		{
+			baseStats: [50, 170, "Ice"],
+			recipes:
+			{}
+		},
+		'Void':
+		{
+			baseStats: [0, 255, "Void"],
+			recipes:
+			{}
+		},
+		
 		'Impure Mud':
 		{
-			baseStats: [100, -300, "Impure Mud"],
-			recipes:
-			{}
-		},
-		'Clay':
-		{
-			baseStats: [100, -400, "Clay"],
-			recipes:
-			{}
-		},
-		'Brick':
-		{
-			baseStats: [0, -400, "Brick"],
+			baseStats: [-500, 0, "Impure Mud"],
 			recipes:
 			{}
 		},
 		'Wood':
 		{
-			baseStats: [100, -500, "Wood"],
+			baseStats: [-600, 0, "Wood"],
 			recipes:
 			{}
 		},
 		'Ash':
 		{
-			baseStats: [200, 400, "Ash"],
+			baseStats: [-600, 100, "Ash"],
+			recipes:
+			{}
+		},
+		'Clay':
+		{
+			baseStats: [-700, 0, "Clay"],
+			recipes:
+			{}
+		},
+		'Brick':
+		{
+			baseStats: [-700, 100, "Brick"],
 			recipes:
 			{}
 		},
 		'Muddy Water':
 		{
-			baseStats: [0, -300, "Muddy Water"],
+			baseStats: [-800, 0, "Muddy Water"],
+			recipes:
+			{}
+		},
+		'Wet Sand':
+		{
+			baseStats: [-900, 0, "Wet Sand"],
 			recipes:
 			{}
 		},
@@ -310,13 +354,14 @@ var materialCircle = {
 		}
 	},
 };
+
 var basicWorkplaces = {
 	elements: [],
 	machines:
 	{
 		'Mundane Work':
 		{
-			baseStats: [200, -200],
+			baseStats: [-400, -100],
 			recipes:
 			{
 				"Work":
@@ -334,7 +379,7 @@ var basicWorkplaces = {
 		},
 		'River - Mud Spot':
 		{
-			baseStats: [300, -200],
+			baseStats: [-500, -100],
 			recipes:
 			{
 				'Gather Mud':
@@ -350,57 +395,9 @@ var basicWorkplaces = {
 				},
 			}
 		},
-		'River - Clay Spot':
-		{
-			baseStats: [300, -300],
-			recipes:
-			{
-				'Gather Clay':
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Stamina", 0.1, 20],
-					],
-					out: [
-						["Clay", 0.02, 50],
-					],
-					lock: ["Home", 0.01],
-				},
-			}
-		},
-		'River - Water Spot':
-		{
-			baseStats: [300, -400],
-			recipes:
-			{
-				'Gather Water':
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Stamina", 0.1, 20],
-					],
-					out: [
-						["Muddy Water", 0.01, 200],
-					],
-					lock: ["Home", 0.01],
-				},
-				'Collect Water':
-				{
-					baseStats: [1, 1, true, true],
-					in: [
-						["Stamina", 0.1, 20],
-						["Water", 0.1, 3],
-					],
-					out: [
-						["Muddy Water", 0.4, 200],
-					],
-					lock: ["Muddy Water", 0.01, "Water", 5],
-				},
-			}
-		},
 		'Forest - Wood Spot':
 		{
-			baseStats: [400, -200],
+			baseStats: [-600, -100],
 			recipes:
 			{
 				'Gather Wood':
@@ -428,6 +425,90 @@ var basicWorkplaces = {
 				},
 			}
 		},
+		'River - Clay Spot':
+		{
+			baseStats: [-700, -100],
+			recipes:
+			{
+				'Gather Clay':
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Stamina", 0.1, 20],
+					],
+					out: [
+						["Clay", 0.02, 50],
+					],
+					lock: ["Home", 0.01],
+				},
+			}
+		},
+		'River - Water Spot':
+		{
+			baseStats: [-800, -100],
+			recipes:
+			{
+				'Gather Water':
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Stamina", 0.1, 20],
+					],
+					out: [
+						["Muddy Water", 0.01, 200],
+					],
+					lock: ["Home", 0.01, "Brick", 1],
+				},
+				'Collect Water':
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Stamina", 0.1, 20],
+						["Water", 0.1, 3],
+					],
+					out: [
+						["Muddy Water", 0.4, 200],
+					],
+					lock: ["Muddy Water", 0.01, "Water", 5],
+				},
+			}
+		},
+		'River - Sand Spot':
+		{
+			baseStats: [-900, -100],
+			recipes:
+			{
+				'Gather Sand':
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Stamina", 0.1, 20],
+					],
+					out: [
+						["Wet Sand", 0.02, 50],
+					],
+					lock: ["Knowledge", 5],
+				},
+			}
+		},
+		'Hotspring - Steam Spot':
+		{
+			baseStats: [-1000, -100],
+			recipes:
+			{
+				'Siphon Steam':
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+					],
+					out: [
+						["Steam", 0.001, 1e2],
+					],
+					lock: ["Knowledge", 50],
+					alwayson: true,
+				},
+			}
+		},
 	},
 	preprocess: function ()
 	{
@@ -438,13 +519,14 @@ var basicWorkplaces = {
 		}
 	},
 };
+
 var basicHouses = {
-	elements: ["Home", "Home Progress"],
+	elements: ["Home", "Home Progress","PlaceOfPower","TerraProgress"],
 	machines:
 	{
 		'Construct Home':
 		{
-			baseStats: [0, 200, "Home Progress"],
+			baseStats: [-100, -200, "Home Progress"],
 			recipes:
 			{
 				"Find Suitable Plot":
@@ -474,7 +556,7 @@ var basicHouses = {
 				{
 					baseStats: [1, 1, false, true],
 					in: [
-						["Impure Mud", 0.3, 5]
+						["Impure Mud", 1, 5]
 					],
 					out: [
 						["Home", 0.01, 1]
@@ -508,7 +590,7 @@ var basicHouses = {
 		},
 		'Home':
 		{
-			baseStats: [0, 300, "Home"],
+			baseStats: [-100, -300, "Home"],
 			recipes:
 			{
 				"Restless Sleep":
@@ -538,7 +620,73 @@ var basicHouses = {
 					],
 				},
 			}
-		}
+		},
+		'Transform Ground':
+		{
+			baseStats: [100,-200,"TerraProgress"],
+			recipes:
+			{
+				"Expand land property":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Currency", 0.1, 5],
+					],
+					out: [
+						["TerraProgress", 0.01, 1],
+					],
+					lock: ["Mind", 1],
+					upgrade:["Terraform land", "TerraProgress", 1]
+				},
+				"Terraform land":
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Ritual", 1, 5],
+					],
+					out: [
+						["TerraProgress", 0.001, 1],
+						["PlaceOfPower", 0.001, 1],
+					],
+				},
+			}
+		},
+		'Place of Power':
+		{
+			baseStats: [100,-300, "PlaceOfPower"],
+			recipes:
+			{
+				// "Ritual":
+				// {
+					// baseStats: [1, 1, true, false],
+					// in: [
+						// ["Ritual", 0, 1],
+						// ["RitualFire", 0, 1],
+						// ["Fire", 0.03, 10],
+					// ],
+					// out: [
+						// ["Ritual", 0.01, 1e5],
+						// ["Cycle", 0.003, 1],
+					// ],
+					// lock: ["Soul", 1],
+				// },
+				// "Cycle":
+				// {
+					// baseStats: [1, 1, true, false],
+					// in: [
+						// ["RitualFire", 1, 1],
+						// ["Cycle", 1, 1]
+					// ],
+					// out: [
+						// ["RitualEarth", 1, 1],
+						// ["RitualWater", 1, 1],
+						// ["RitualAir", 1, 1],
+					// ],
+					// lock: ["Soul", 1],
+				// },
+			}
+		},
+	
 	},
 	preprocess: function ()
 	{
@@ -549,62 +697,14 @@ var basicHouses = {
 		}
 	},
 }
+
 var constructedWorkplaces = {
 	elements: ["Campfire", "Boiling Water"],
 	machines:
 	{
-		'Firepit':
-		{
-			baseStats: [200, 200],
-			recipes:
-			{
-				"Burn":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Wood", 0.005, 5]
-					],
-					out: [
-						["Fire", 0.001, 10]
-					],
-					lock: ["Wood", 1],
-				},
-			}
-		},
-		'Pot':
-		{
-			baseStats: [300, 200, "Boiling Water"],
-			recipes:
-			{
-				"Boil Water":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Muddy Water", 0.1, 1],
-						["Fire", 0.1, 20]
-					],
-					out: [
-						["Boiling Water", 0.05, 10]
-					],
-					lock: ["Muddy Water", 10],
-				},
-				"Prepare relaxing powder":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Boiling Water", 0.05, 1],
-						["Fire", 0.05, 30]
-					],
-					out: [
-						["Mana", 0.10, 50]
-					],
-					lock: ["Boiling Water", 1],
-				},
-			}
-		},
 		'Campfire':
 		{
-			baseStats: [200, 300, "Campfire"],
+			baseStats: [-600, 200, "Campfire"],
 			recipes:
 			{
 				"Ignite":
@@ -640,13 +740,13 @@ var constructedWorkplaces = {
 					out: [
 						["Ash", 100, -1000]
 					],
-					lock: ["Campfire", 0.001],
+					lock: ["Campfire", 100],
 				}
 			}
 		},
 		'Kiln':
 		{
-			baseStats: [300, 300],
+			baseStats: [-700, 200],
 			recipes:
 			{
 				"Fire Brick":
@@ -663,335 +763,40 @@ var constructedWorkplaces = {
 				},
 			}
 		},
-	},
-	preprocess: function ()
-	{
-		addCircleElements(this.elements);
-		for (var machine in this.machines)
+		'Pot':
 		{
-			simplifiedMachineData[machine] = this.machines[machine];
-		}
-	},
-};
-
-var ritualCircle = {
-	elements: ["Cycle", "Ritual","RitualEarth","RitualWater","RitualAir","RitualFire","PlaceOfPower","TerraProgress"],
-	machines:
-	{
-		'Ritual':
-		{
-			baseStats: [-800, 0, "Ritual"],
+			baseStats: [-800, 200, "Boiling Water"],
 			recipes:
 			{
-				"Start Ritual":
+				"Boil Water":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Soul", 0, 200],
+						["Muddy Water", 0.1, 1],
+						["Fire", 0.1, 20]
 					],
 					out: [
-						["Ritual", 1, 1],
-						["RitualEarth", 1, 1],
+						["Boiling Water", 0.05, 10]
 					],
-					lock: ["Soul", 1],
+					lock: ["Muddy Water", 10],
 				},
-				"Perform Ritual":
+				"Prepare relaxing powder":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Ritual", 1, 1],
+						["Boiling Water", 0.05, 1],
+						["Fire", 0.05, 30]
 					],
 					out: [
-						["Revelation", 1, -1],
-						["Madness1", 1, 1],
+						["Mana", 0.10, 50]
 					],
-					lock: ["Ritual", 100],
-					alwayson: true,
-				},
-				"Clear Ritual":
-				{
-					baseStats: [1, 1, true, true],
-					in: [
-						["Ritual", 1, 1000],
-					],
-					out: [],
-					lock: ["Ritual", 1e4],
-				},
-			}
-		},
-		'RitualEarth':
-		{
-			baseStats: [-800, 100, "RitualEarth"],
-			recipes:
-			{
-				"Ritual":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Ritual", 0, 1],
-						["RitualEarth", 0, 1],
-						["Earth", 0.03, 10],
-					],
-					out: [
-						["Ritual", 0.01, 1e5],
-						["Cycle", 0.003, 1],
-					],
-					lock: ["Soul", 1],
-				},
-				"Cycle":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["RitualEarth", 1, 1],
-						["Cycle", 1, 1]
-					],
-					out: [
-						["RitualWater", 1, 1],
-						["RitualAir", 1, 1],
-						["RitualFire", 1, 1],
-					],
-					lock: ["Soul", 1],
-				},
-			}
-		},
-		'RitualWater':
-		{
-			baseStats: [-900, 0, "RitualWater"],
-			recipes:
-			{
-				"Ritual":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Ritual", 0, 1],
-						["RitualWater", 0, 1],
-						["Water", 0.03, 10],
-					],
-					out: [
-						["Ritual", 0.01, 1e5],
-						["Cycle", 0.003, 1],
-					],
-					lock: ["Soul", 1],
-				},
-				"Cycle":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["RitualWater", 1, 1],
-						["Cycle", 1, 1]
-					],
-					out: [
-						["RitualEarth", 1, 1],
-						["RitualAir", 1, 1],
-						["RitualFire", 1, 1],
-					],
-					lock: ["Soul", 1],
-				},
-			}
-		},
-		'RitualAir':
-		{
-			baseStats: [-800, -100, "RitualAir"],
-			recipes:
-			{
-				"Ritual":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Ritual", 0, 1],
-						["RitualAir", 0, 1],
-						["Air", 0.03, 10],
-					],
-					out: [
-						["Ritual", 0.01, 1e5],
-						["Cycle", 0.003, 1],
-					],
-					lock: ["Soul", 1],
-				},
-				"Cycle":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["RitualAir", 1, 1],
-						["Cycle", 1, 1]
-					],
-					out: [
-						["RitualEarth", 1, 1],
-						["RitualWater", 1, 1],
-						["RitualFire", 1, 1],
-					],
-					lock: ["Soul", 1],
-				},
-			}
-		},
-		'RitualFire':
-		{
-			baseStats: [-700, 0, "RitualFire"],
-			recipes:
-			{
-				"Ritual":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Ritual", 0, 1],
-						["RitualFire", 0, 1],
-						["Fire", 0.03, 10],
-					],
-					out: [
-						["Ritual", 0.01, 1e5],
-						["Cycle", 0.003, 1],
-					],
-					lock: ["Soul", 1],
-				},
-				"Cycle":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["RitualFire", 1, 1],
-						["Cycle", 1, 1]
-					],
-					out: [
-						["RitualEarth", 1, 1],
-						["RitualWater", 1, 1],
-						["RitualAir", 1, 1],
-					],
-					lock: ["Soul", 1],
-				},
-			}
-		},
-		'Transform Ground':
-		{
-			baseStats: [-200, 200,"TerraProgress"],
-			recipes:
-			{
-				"Expand land property":
-				{
-					baseStats: [1, 1, true, true],
-					in: [
-						["Currency", 0.1, 5],
-					],
-					out: [
-						["TerraProgress", 0.01, 1],
-					],
-					lock: ["Mind", 1],
-					upgrade:["Terraform land", "TerraProgress", 1]
-				},
-				"Terraform land":
-				{
-					baseStats: [1, 1, false, true],
-					in: [
-						["Ritual", 1, 5],
-					],
-					out: [
-						["TerraProgress", 0.001, 1],
-						["PlaceOfPower", 0.001, 1],
-					],
-				},
-			}
-		},
-		'Place of Power':
-		{
-			baseStats: [-200, 300, "PlaceOfPower"],
-			recipes:
-			{
-				// "Ritual":
-				// {
-					// baseStats: [1, 1, true, false],
-					// in: [
-						// ["Ritual", 0, 1],
-						// ["RitualFire", 0, 1],
-						// ["Fire", 0.03, 10],
-					// ],
-					// out: [
-						// ["Ritual", 0.01, 1e5],
-						// ["Cycle", 0.003, 1],
-					// ],
-					// lock: ["Soul", 1],
-				// },
-				// "Cycle":
-				// {
-					// baseStats: [1, 1, true, false],
-					// in: [
-						// ["RitualFire", 1, 1],
-						// ["Cycle", 1, 1]
-					// ],
-					// out: [
-						// ["RitualEarth", 1, 1],
-						// ["RitualWater", 1, 1],
-						// ["RitualAir", 1, 1],
-					// ],
-					// lock: ["Soul", 1],
-				// },
-			}
-		},
-	},
-	preprocess: function ()
-	{
-		addCircleElements(this.elements);
-		for (var machine in this.machines)
-		{
-			simplifiedMachineData[machine] = this.machines[machine];
-		}
-	},
-	cooldown : 0,
-	decay: function ()
-	{
-		if(ritualCircle.cooldown-->0) return;
-		ritualCircle.cooldown = 60;
-		
-		var rituals = ['RitualEarth','RitualWater','RitualAir','RitualFire'];
-		
-		for(var j=0;j<rituals.length;j++)
-		{
-			for (var i = 0; i < machineData[rituals[j]].recipes[1].outputs.length; i++)
-			{
-				machineData[rituals[j]].recipes[1].outputs[i].ratio = 0;
-			}
-			var r = Math.trunc(Math.random() * 3);
-			machineData[rituals[j]].recipes[1].outputs[r].ratio = 1;
-		}
-	},
-};
-
-var researchCircle = {
-	elements: ["Knowledge","Mud","Wet Sand","Sand","Steam","Mana Crystal","Empty Crystal","Mana Charge","Rice Cooker","FKnowledge"],
-	machines:
-	{
-		'Research':
-		{
-			baseStats: [-400, -300, "Knowledge"],
-			recipes:
-			{
-				"Research":
-				{
-					baseStats: [1, 1, true, true],
-					in: [
-						["Mind", 1, 1],
-					],
-					out: [
-						["Mind", 1, 1e4],
-						["Knowledge", 0.001, 1],
-					],
-					lock: ["Mind", 1],
-				},
-				"Forbidden Research":
-				{
-					baseStats: [1, 1, true, true],
-					in: [
-						["Revelation", 0, 0.001],
-						["Mind", 100, 1],
-					],
-					out: [
-						["Mind", 100, 1e4],
-						["FKnowledge", 0.001, 1],
-					],
-					lock: ["Revelation", 0.001],
+					lock: ["Boiling Water", 1],
 				},
 			}
 		},
 		'Purifier':
 		{
-			baseStats: [400, 200],
+			baseStats: [-500, 200],
 			recipes:
 			{
 				"Purify Mud":
@@ -1020,63 +825,9 @@ var researchCircle = {
 				},
 			}
 		},
-		'Mud':
-		{
-			baseStats: [-650, -550, "Mud"],
-			recipes:
-			{}
-		},
-		'Sand':
-		{
-			baseStats: [-600, -500, "Sand"],
-			recipes:
-			{}
-		},
-		'River - Sand Spot':
-		{
-			baseStats: [400, -300],
-			recipes:
-			{
-				'Gather Sand':
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Stamina", 0.1, 20],
-					],
-					out: [
-						["Wet Sand", 0.02, 50],
-					],
-					lock: ["Knowledge", 5],
-				},
-			}
-		},
-		'Hotspring - Steam Spot':
-		{
-			baseStats: [500, -200],
-			recipes:
-			{
-				'Siphon Steam':
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-					],
-					out: [
-						["Steam", 0.001, 1e2],
-					],
-					lock: ["Knowledge", 50],
-					alwayson: true,
-				},
-			}
-		},
-		'Steam':
-		{
-			baseStats: [-700, -500, "Steam"],
-			recipes:
-			{}
-		},
 		'Arcane Station':
 		{
-			baseStats: [400, 400],
+			baseStats: [-500, 300],
 			recipes:
 			{
 				'Discharge Stone':
@@ -1097,6 +848,7 @@ var researchCircle = {
 					in: [
 						["Empty Crystal", 1, 1],
 						["Steam", 5, 80],
+						["Wood", 1, 80],
 					],
 					out: [
 						["Rice Cooker", 1, 10],
@@ -1105,9 +857,590 @@ var researchCircle = {
 				},
 			}
 		},
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+};
+
+var ritualCircle = {
+	elements: ["Cycle", "Ritual","RitualA","RitualB","RitualEarth","RitualWater","RitualAir","RitualFire","RitualMud","RitualSand","RitualSteam","RitualMagma","RitualIce","RitualVoid"],
+	machines:
+	{
+		'Cycle':
+		{
+			baseStats: [600,175],
+			recipes:
+			{
+				"Continue Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Cycle",1,1]
+					],
+					out: [],
+					lock: ["Cycle", 1],
+				},
+			}
+		},
+		'Ritual':
+		{
+			baseStats: [600,-50, "Ritual"],
+			recipes:
+			{
+				"Ritual Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+					],
+					out: [
+						["Cycle",0.003,1]
+					],
+					lock: ["Soul", 1],
+					alwayson: true,
+				},
+				"Ritual Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+					],
+					out: [
+						["Cycle",0.003,1]
+					],
+					lock: ["Soul", 1],
+					alwayson: true,
+				},
+				"Common Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Soul", 0, 200],
+					],
+					out: [
+						["Ritual", 1, -1],
+					],
+					lock: ["Cycle", 0.1],
+					upgrade: ["Advanced Ritual", "Mana Charge", 100],
+				},
+				"Advanced Ritual":
+				{
+					baseStats: [1, 1, false, false],
+					in: [
+						["Soul", 0, 400],
+					],
+					out: [
+						["Ritual", 1, -1],
+						["RitualA", 1, -1],
+					],
+					upgrade: ["Boundary Ritual", "FKnowledge", 1],
+				},
+				"Boundary Ritual":
+				{
+					baseStats: [1, 1, false, false],
+					in: [
+						["Soul", 0, 600],
+					],
+					out: [
+						["Ritual", 1, -1],
+						["RitualA", 1, -1],
+						["RitualB", 1, -1],
+					],
+				},
+				"Ritual of Knowledge":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Ritual", 0, 100],
+					],
+					out: [
+						["Revelation", 1, -1],
+						["Madness1", 1, 1],
+					],
+					lock: ["Ritual", 100],
+					alwayson: true,
+				},
+				"Ritual of Gate":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Ritual", 0, 100],
+					],
+					out: [
+						["Revelation", 1, -1],
+						["Madness1", 1, 1],
+					],
+					lock: ["Ritual", 1000],
+					alwayson: true,
+				},
+			}
+		},
+		'RitualA':
+		{
+			baseStats: [600,-150, "RitualA"],
+			recipes:
+			{
+			}
+		},
+		'RitualB':
+		{
+			baseStats: [600,-250, "RitualB"],
+			recipes:
+			{
+			}
+		},
+		'RitualEarth':
+		{
+			baseStats: [450,350, "RitualEarth"],
+			recipes:
+			{
+				"Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Ritual", 0, 1],
+						["RitualEarth", 0, 1],
+						["Earth", 0.03, 10],
+					],
+					out: [
+						["Ritual", 0.01, 1e5],
+						["Cycle", 0, 0.8],
+					],
+					lock: ["Cycle", 0.1],
+					alwayson : true
+				},
+				"Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualEarth", 1, 1],
+						["Cycle", 0, 1]
+					],
+					out: [
+						["RitualWater", 1, 1],
+						["RitualAir", 1, 1],
+						["RitualFire", 1, 1],
+					],
+					lock: ["Cycle", 0.1],
+					alwayson : true
+				},
+				"Spark":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Ritual", 0, 1],
+					],
+					out: [
+						["RitualEarth", 1, 1],
+						["RitualWater", 0, 1],
+						["RitualAir", 0, 1],
+						["RitualFire", 0, 1],
+					],
+					lock: ["Cycle", 0.1],
+					alwayson: true,
+				},
+			}
+		},
+		'RitualWater':
+		{
+			baseStats: [750,350, "RitualWater"],
+			recipes:
+			{
+				"Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Ritual", 0, 1],
+						["RitualWater", 0, 1],
+						["Water", 0.03, 10],
+					],
+					out: [
+						["Ritual", 0.01, 1e5],
+						["Cycle", 0, 0.8],
+					],
+					lock: ["Cycle", 0.1],
+					alwayson : true
+				},
+				"Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualWater", 1, 1],
+						["Cycle", 0, 1]
+					],
+					out: [
+						["RitualEarth", 1, 1],
+						["RitualAir", 1, 1],
+						["RitualFire", 1, 1],
+					],
+					lock: ["Cycle", 0.1],
+					alwayson : true
+				},
+			}
+		},
+		'RitualAir':
+		{
+			baseStats: [400,100, "RitualAir"],
+			recipes:
+			{
+				"Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Ritual", 0, 1],
+						["RitualAir", 0, 1],
+						["Air", 0.03, 10],
+					],
+					out: [
+						["Ritual", 0.01, 1e5],
+						["Cycle", 0, 0.8],
+					],
+					lock: ["Cycle", 0.1],
+					alwayson : true
+				},
+				"Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualAir", 1, 1],
+						["Cycle", 0, 1]
+					],
+					out: [
+						["RitualEarth", 1, 1],
+						["RitualWater", 1, 1],
+						["RitualFire", 1, 1],
+					],
+					lock: ["Cycle", 0.1],
+					alwayson : true
+				},
+			}
+		},
+		'RitualFire':
+		{
+			baseStats: [800,100, "RitualFire"],
+			recipes:
+			{
+				"Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Ritual", 0, 1],
+						["RitualFire", 0, 1],
+						["Fire", 0.03, 10],
+					],
+					out: [
+						["Ritual", 0.01, 1e5],
+						["Cycle", 0, 0.8],
+					],
+					lock: ["Cycle", 0.1],
+					alwayson : true
+				},
+				"Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualFire", 1, 1],
+						["Cycle", 0, 1]
+					],
+					out: [
+						["RitualEarth", 1, 1],
+						["RitualWater", 1, 1],
+						["RitualAir", 1, 1],
+					],
+					lock: ["Cycle", 0.1],
+					alwayson : true
+				},
+			}
+		},
+		'RitualMud':
+		{
+			baseStats: [750,450, "RitualMud"],
+			recipes:
+			{
+				"Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualA", 0, 1],
+						["RitualMud", 0, 1],
+						["Mud", 0.03, 10],
+					],
+					out: [
+						["RitualA", 0.01, 1e5],
+						["Cycle", 0, 0.8]
+					],
+					lock: ["Mana Charge", 1],
+					alwayson: true,
+				},
+				"Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualMud", 1, 1],
+						["Cycle", 0, 1]
+					],
+					out: [
+						["RitualSand", 1, 1],
+						["RitualSteam", 1, 1],
+					],
+					lock: ["Mana Charge", 1],
+					alwayson: true,
+				},
+				"Spark":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualA", 0, 1],
+					],
+					out: [
+						["RitualMud", 1, 1],
+						["RitualSand", 0, 1],
+						["RitualSteam", 0, 1],
+					],
+					lock: ["Mana Charge", 1],
+					alwayson: true,
+				},
+			}
+		},
+		'RitualSand':
+		{
+			baseStats: [350,350, "RitualSand"],
+			recipes:
+			{
+				"Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualA", 0, 1],
+						["RitualSand", 0, 1],
+						["Sand", 0.03, 10],
+					],
+					out: [
+						["RitualA", 0.01, 1e5],
+						["Cycle", 0, 0.8]
+					],
+					lock: ["Mana Charge", 1],
+					alwayson: true,
+				},
+				"Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualSand", 1, 1],
+						["Cycle", 0, 1]
+					],
+					out: [
+						["RitualMud", 1, 1],
+						["RitualSteam", 1, 1],
+					],
+					lock: ["Mana Charge", 1],
+					alwayson: true,
+				},
+			}
+		},
+		'RitualSteam':
+		{
+			baseStats: [900,100, "RitualSteam"],
+			recipes:
+			{
+				"Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualA", 0, 1],
+						["RitualSteam", 0, 1],
+						["Steam", 0.03, 10],
+					],
+					out: [
+						["RitualA", 0.01, 1e5],
+						["Cycle", 0, 0.8]
+					],
+					lock: ["Mana Charge", 1],
+					alwayson: true,
+				},
+				"Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualSteam", 1, 1],
+						["Cycle", 0, 1]
+					],
+					out: [
+						["RitualSand", 1, 1],
+						["RitualMud", 1, 1],
+					],
+					lock: ["Mana Charge", 1],
+					alwayson: true,
+				},
+			}
+		},
+		'RitualMagma':
+		{
+			baseStats: [450,450, "RitualMagma"],
+			recipes:
+			{
+				"Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualB", 0, 1],
+						["RitualMagma", 0, 1],
+						["Magma", 0.03, 10],
+					],
+					out: [
+						["RitualB", 0.01, 1e5],
+						["Cycle", 0, 0.8]
+					],
+					lock: ["FKnowledge", 1],
+					alwayson: true,
+				},
+				"Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualMagma", 1, 1],
+						["Cycle", 0, 1]
+					],
+					out: [
+						["RitualIce", 1, 1],
+						["RitualVoid", 1, 1],
+					],
+					lock: ["FKnowledge", 1],
+					alwayson: true,
+				},
+				"Spark":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualB", 0, 1],
+					],
+					out: [
+						["RitualMagma", 1, 1],
+						["RitualIce", 0, 1],
+						["RitualVoid", 0, 1],
+					],
+					lock: ["Mana Charge", 1],
+					alwayson: true,
+				},
+			}
+		},
+		'RitualIce':
+		{
+			baseStats: [850,350, "RitualIce"],
+			recipes:
+			{
+				"Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualB", 0, 1],
+						["RitualIce", 0, 1],
+						["Ice", 0.03, 10],
+					],
+					out: [
+						["RitualB", 0.01, 1e5],
+						["Cycle", 0, 0.8]
+					],
+					lock: ["FKnowledge", 1],
+					alwayson: true,
+				},
+				"Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualIce", 1, 1],
+						["Cycle", 0, 1]
+					],
+					out: [
+						["RitualMagma", 1, 1],
+						["RitualVoid", 1, 1],
+					],
+					lock: ["FKnowledge", 1],
+					alwayson: true,
+				},
+			}
+		},
+		'RitualVoid':
+		{
+			baseStats: [300,100, "RitualVoid"],
+			recipes:
+			{
+				"Ritual":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualB", 0, 1],
+						["RitualVoid", 0, 1],
+						["Void", 0.03, 10],
+					],
+					out: [
+						["RitualB", 0.01, 1e5],
+						["Cycle", 0, 0.8]
+					],
+					lock: ["FKnowledge", 1],
+					alwayson: true,
+				},
+				"Cycle":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualVoid", 1, 1],
+						["Cycle", 0, 1]
+					],
+					out: [
+						["RitualIce", 1, 1],
+						["RitualMagma", 1, 1],
+					],
+					lock: ["FKnowledge", 1],
+					alwayson: true,
+				},
+			}
+		},
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+	cooldown : 0,
+	rituals: ['RitualEarth','RitualWater','RitualAir','RitualFire','RitualVoid','RitualMud','RitualSteam','RitualSand','RitualIce','RitualMagma'],
+	postprocess: function ()
+	{
+		for(var j=0;j<this.rituals.length;j++)
+			machineData[this.rituals[j]].region.customDraw = machines.displayRegionStumpedDraw;
+	},
+	decay: function ()
+	{
+		if(ritualCircle.cooldown-->0) return;
+		ritualCircle.cooldown = 60;
+		
+		for(var j=0;j<this.rituals.length;j++)
+		{
+			var temp = machineData[this.rituals[j]].recipes[1].outputs;
+			for (var i = 0; i < temp.length; i++)
+			{
+				temp[i].ratio = 0;
+			}
+			var r = Math.trunc(Math.random() * temp.length);
+			temp[r].ratio = 1;
+		}
+	},
+};
+
+var commerceCircle = {
+	elements: ["Mana Crystal","Empty Crystal","Rice Cooker"],
+	machines:
+	{
 		'Magic Crystal Shop':
 		{
-			baseStats: [500, 500,["Mana Crystal","Empty Crystal"]],
+			baseStats: [-300, 200,["Mana Crystal","Empty Crystal"]],
 			recipes:
 			{
 				'Buy Stone':
@@ -1146,27 +1479,9 @@ var researchCircle = {
 				},
 			}
 		},
-		'Mana Charge Storage':
-		{
-			baseStats: [-400, 0, "Mana Charge"],
-			recipes:
-			{
-				'Absorb Charge':
-				{
-					baseStats: [1, 1, true, true],
-					in: [
-						["Mana Charge", 1, 0.1],
-					],
-					out: [
-						["Mana", 1, 200],
-					],
-					lock: ["Mana Charge", 0.001],
-				},
-			}
-		},
 		'Elemental Apparatus Shop':
 		{
-			baseStats: [500, 400,["Rice Cooker"]],
+			baseStats: [-300, 300,["Rice Cooker"]],
 			recipes:
 			{
 				'Sell Rice Cooker':
@@ -1182,9 +1497,29 @@ var researchCircle = {
 				},
 			}
 		},
+		
+	},
+	preprocess: function ()
+	{
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+	postprocess: function ()
+	{
+		machineData['Magic Crystal Shop'].recipes[2].activated = true;
+	},
+}
+
+var researchCircle = {
+	elements: ["Knowledge","FKnowledge","Power", "Mana Charge"],
+	machines:
+	{
 		'Vigor':
 		{
-			baseStats: [-400, -200],
+			baseStats: [-400,-400],
 			recipes:
 			{
 				"Invigorate":
@@ -1201,6 +1536,83 @@ var researchCircle = {
 				},
 			}
 		},
+		'Research':
+		{
+			baseStats: [-100,-600, "Knowledge"],
+			recipes:
+			{
+				"Research":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mind", 1, 1],
+					],
+					out: [
+						["Mind", 1, 1e4],
+						["Knowledge", 0.001, 1],
+					],
+					lock: ["Mind", 1],
+				},
+			}
+		},
+		'Forbidden Research':
+		{
+			baseStats: [100,-600, "FKnowledge"],
+			recipes:
+			{
+				"Forbidden Research":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Revelation", 0, 0.001],
+						["Mind", 100, 1],
+					],
+					out: [
+						["Mind", 100, 1e4],
+						["FKnowledge", 0.001, 1],
+					],
+					lock: ["Revelation", 0.001],
+				},
+			}
+		},
+		'Soul Power':
+		{
+			baseStats: [400,-400, "Power"],
+			recipes:
+			{
+				"Focus":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Soul", 10, 1],
+					],
+					out: [
+						["Soul", 10, 1e4],
+						["Power", 0.001, 2e3],
+					],
+					lock: ["Soul", 1],
+				},
+			}
+		},
+		
+		'Mana Charge Storage':
+		{
+			baseStats: [400, -200, "Mana Charge"],
+			recipes:
+			{
+				'Absorb Charge':
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mana Charge", 1, 0.1],
+					],
+					out: [
+						["Mana", 1, 200],
+					],
+					lock: ["Mana Charge", 0.001],
+				},
+			}
+		},
 	},
 	preprocess: function ()
 	{
@@ -1214,7 +1626,7 @@ var researchCircle = {
 	decay: function ()
 	{
 		machineData['Research'].recipes[0].outputs[1].max = 1 + 4 * data.oElements.Knowledge.amount;
-		machineData['Research'].recipes[1].outputs[1].max = 1 + 4 * data.oElements.FKnowledge.amount;
+		machineData['Forbidden Research'].recipes[0].outputs[1].max = 1 + 4 * data.oElements.FKnowledge.amount;
 	},
 }
 
@@ -1225,7 +1637,7 @@ var madnessCircle = {
 	{
 		'Revelation':
 		{
-			baseStats: [-1300, 100, "Revelation"],
+			baseStats: [0, -700, "Revelation"],
 			recipes:
 			{
 				
@@ -1233,7 +1645,7 @@ var madnessCircle = {
 		},
 		'Corruption':
 		{
-			baseStats: [-1300, 0, "Corruption"],
+			baseStats: [0, 400, "Corruption"],
 			recipes:
 			{
 				
@@ -1241,7 +1653,7 @@ var madnessCircle = {
 		},
 		'Doom':
 		{
-			baseStats: [-1300, -100, "Doom"],
+			baseStats: [0, 500, "Doom"],
 			recipes:
 			{
 				
@@ -1254,7 +1666,7 @@ var madnessCircle = {
 		{
 			this.elements.push("Madness"+i);
 			this.machines["Madness: Step "+i] = {
-				baseStats: [-1200, i*100-200, "Madness"+i],
+				baseStats: [-100, 200+i*100, "Madness"+i],
 				recipes:
 				{
 					"Madness Looms":
@@ -1298,7 +1710,7 @@ var madnessCircle = {
 		}
 		this.elements.push("Madness"+i);
 		this.machines["Madness: Step "+i] = {
-			baseStats: [-1200, i*100-200, "Madness"+i],
+			baseStats: [-100, 200+i*100, "Madness"+i],
 			recipes:
 			{
 				"Madness Looms":
@@ -1339,7 +1751,7 @@ var madnessCircle = {
 	{
 		for (var i=1;i<=this.stepsOfMadness;i++)
 		{
-			machineData["Madness: Step "+i].recipes[0].inputs[0].effectReference.maxR*=10;
+			machineData["Madness: Step "+i].recipes[0].inputs[0].effectReference.maxR*=3;
 		}
 	},
 	cooldown : 5,
@@ -1382,6 +1794,72 @@ var madnessCircle = {
 	}
 };
 
+var spireCircle = {
+	spireLevels: 5,
+	elements: [],
+	machines:
+	{
+
+	},
+	preprocess: function ()
+	{
+		this.elements.push("Spire1");
+		this.machines["Spire: Level 1"] = {
+			baseStats: [100, 300, "Spire1"],
+			recipes:
+			{
+				"Spire Grows":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Power", 1, 100],
+					],
+					out: [
+						["Spire1", 1, 1e100],
+					],
+					lock: ["Power",100],
+				},
+			}
+		};
+		for (var i=2;i<=this.spireLevels;i++)
+		{
+			this.elements.push("Spire"+i);
+			this.machines["Spire: Level "+i] = {
+				baseStats: [100, 200+i*100, "Spire"+i],
+				recipes:
+				{
+					"Spire Extends":
+					{
+						baseStats: [1, 1, true, true],
+						in: [
+							["Spire"+(i-1), 1e10, 1e10],
+						],
+						out: [
+							["Spire"+i, 1, 1e100],
+						],
+						lock: ["Spire"+(i-1),1e10],
+						alwayson: true,
+					},
+				}
+			};
+		}
+		
+		
+		addCircleElements(this.elements);
+		for (var machine in this.machines)
+		{
+			simplifiedMachineData[machine] = this.machines[machine];
+		}
+	},
+	postprocess: function ()
+	{
+		for (var i=1;i<=this.spireLevels;i++)
+		{
+			machineData["Spire: Level "+i].recipes[0].outputs[0].effectReference.maxR*=2;
+		}
+	},
+};
+
 
 var preprocessed = false;
 var postprocessed = false;
@@ -1414,8 +1892,16 @@ function preprocessAdditionalCircles() {
 	basicHouses.preprocess();
 	constructedWorkplaces.preprocess();
 	ritualCircle.preprocess();
+	commerceCircle.preprocess();
 	researchCircle.preprocess();
 	madnessCircle.preprocess();
+	spireCircle.preprocess();
+	
+	// var tempX =0;
+	// for(var mach in simplifiedMachineData) {
+	 // simplifiedMachineData[mach].baseStats[0] = ++tempX*100;
+	 // simplifiedMachineData[mach].baseStats[1] = 0;
+	// }
 	preprocessed = true;
 }
 function postprocessAdditionalCircles() {
@@ -1424,7 +1910,10 @@ function postprocessAdditionalCircles() {
 		return;
 	}
 	reachCircle.postprocess();
+	ritualCircle.postprocess();
 	madnessCircle.postprocess();
+	spireCircle.postprocess();
+	commerceCircle.postprocess();
 	postprocessed = true;
 }
 function decayAdditionalCircles() {
@@ -1438,12 +1927,12 @@ function decayAdditionalCircles() {
 
 var drain = 16.667;
 var reachCircle = {
-	elements: ["Game Ticks", "Time", "NormalLimit", "TurboLimit"],
+	elements: ["Game Ticks", "Game Hours", "Game Minutes", "Game Seconds", "Time", "NormalLimit", "TurboLimit"],
 	machines:
 	{
 		machineTime:
 		{
-			baseStats: [0, 0, ["Time", "NormalLimit", "TurboLimit","Game Ticks"]],
+			baseStats: [0, -100, ["Time", "NormalLimit", "TurboLimit"]],
 			recipes:
 			{
 				timeSlow1:
@@ -1476,6 +1965,42 @@ var reachCircle = {
 					lock: [],
 					alwayson: true,
 				},
+				"Processing Seconds":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Game Ticks", 60, 60]
+					],
+					out: [
+						["Game Seconds", 1, 1e100]
+					],
+					lock: [],
+					alwayson: true,
+				},
+				"Processing Minutes":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Game Seconds", 60, 60]
+					],
+					out: [
+						["Game Minutes", 1, 1e100]
+					],
+					lock: [],
+					alwayson: true,
+				},
+				"Processing Hours":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Game Minutes", 60, 60]
+					],
+					out: [
+						["Game Hours", 1, 1e100]
+					],
+					lock: [],
+					alwayson: true,
+				},
 			}
 		},
 	},
@@ -1485,6 +2010,10 @@ var reachCircle = {
 		elementalDisplayType["Time"] = "";
 		elementalDisplayType["NormalLimit"] = "fixed";
 		elementalDisplayType["TurboLimit"] = "fixed";
+		elementalDisplayType["Game Ticks"] = "";
+		elementalDisplayType["Game Seconds"] = "";
+		elementalDisplayType["Game Minutes"] = "";
+		elementalDisplayType["Game Hours"] = "";
 		for (var machine in this.machines)
 		{
 			simplifiedMachineData[machine] = this.machines[machine];
@@ -1493,25 +2022,15 @@ var reachCircle = {
 	postprocess: function ()
 	{
 		machineData.machineTime.region.customDraw = machines.displayRegionStumpedDraw;
-		var dec1 = machineData["machineTime"].recipes[0];
-		if (!dec1.unlocked)
-		{
-			dec1.region.paymentSuccess();
+		for(var i in machineData["machineTime"].recipes) {
+			var dec1 = machineData["machineTime"].recipes[i];
+			if (!dec1.unlocked)
+			{
+				dec1.region.paymentSuccess();
+			}
+			dec1.activated = true;
 		}
-		dec1.activated = true;
-		var dec1 = machineData["machineTime"].recipes[1];
-		if (!dec1.unlocked)
-		{
-			dec1.region.paymentSuccess();
-		}
-		dec1.activated = true;
-		var dec1 = machineData["machineTime"].recipes[2];
-		if (!dec1.unlocked)
-		{
-			dec1.region.paymentSuccess();
-		}
-		dec1.enabled = true;
-		//dec1.activated = true;
+		machineData["machineTime"].recipes[2].activated = false;
 	}
 };
 

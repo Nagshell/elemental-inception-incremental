@@ -538,6 +538,11 @@ function preprocessPaneData()
 		ctx.fillText("TPF:" + tpf, trackerPane.savingX - 50, 33);
 		ctx.fillText("FPS:" + fps, trackerPane.savingX - 50, 50);
 		ctx.fillText("TPS:" + tps, trackerPane.savingX - 50, 67);
+		ctx.fillText("In-game timer: " + 
+			data.oElements["Game Hours"].amount + ":" +
+			("0"+data.oElements["Game Minutes"].amount).slice(-2) + ":" + 
+			("0"+data.oElements["Game Seconds"].amount).slice(-2),
+			trackerPane.savingX - 250, 16);
 		if (lim)
 		{
 			ctx.fillText("Capped", trackerPane.savingX - 50, 84);
