@@ -65,15 +65,6 @@ var baseCircle = {
 					],
 					lock: ["Resolve", 0.1],
 				},
-				"Clear Body":
-				{
-					baseStats: [100, 1, true, true],
-					in: [
-						["Body", 1, 0.01]
-					],
-					out: [],
-					lock: ["Body", 0.1],
-				},
 			}
 		},
 		'Mind':
@@ -92,15 +83,6 @@ var baseCircle = {
 					],
 					lock: ["Resolve", 0.1],
 				},
-				"Clear Mind":
-				{
-					baseStats: [100, 1, true, true],
-					in: [
-						["Mind", 1, 0.01]
-					],
-					out: [],
-					lock: ["Mind", 0.1],
-				},
 			}
 		},
 		'Soul':
@@ -118,15 +100,6 @@ var baseCircle = {
 						["Soul", 0.01, 1e4]
 					],
 					lock: ["Resolve", 0.1],
-				},
-				"Clear Soul":
-				{
-					baseStats: [100, 1, true, true],
-					in: [
-						["Soul", 1, 0.01]
-					],
-					out: [],
-					lock: ["Soul", 0.1],
 				},
 			}
 		},
@@ -409,7 +382,7 @@ var basicWorkplaces = {
 					out: [
 						["Wood", 0.1, 1000],
 					],
-					lock: ["Currency", 0.01],
+					lock: ["Home", 0.01],
 				},
 				'Collect Wood':
 				{
@@ -439,7 +412,7 @@ var basicWorkplaces = {
 					out: [
 						["Clay", 0.02, 50],
 					],
-					lock: ["Home", 0.01],
+					lock: ["Wood", 5],
 				},
 			}
 		},
@@ -502,7 +475,7 @@ var basicWorkplaces = {
 					in: [
 					],
 					out: [
-						["Steam", 0.001, 1e2],
+						["Steam", 0.002, 1e2],
 					],
 					lock: ["Knowledge", 50],
 					alwayson: true,
@@ -538,7 +511,7 @@ var basicHouses = {
 					out: [
 						["Home Progress", 0.01, 1]
 					],
-					lock: ["Air", 0.01],
+					lock: ["Stamina", 2],
 					upgrade: ["Procure Permit", "Home Progress", 1],
 				},
 				"Procure Permit":
@@ -565,21 +538,21 @@ var basicHouses = {
 				},
 				"Lay out wooden floor":
 				{
-					baseStats: [1, 1, false, true],
+					baseStats: [1, 1, false, false],
 					in: [
-						["Wood", 0.5, 5]
+						["Wood", 1, 5]
 					],
 					out: [
-						["Home", 0.01, 3],
+						["Home", 0.02, 3],
 						["Home Progress", 0.03, 3]
 					],
 					upgrade: ["Lay brick walls", "Home Progress", 3],
 				},
 				"Lay brick walls":
 				{
-					baseStats: [1, 1, false, true],
+					baseStats: [1, 1, false, false],
 					in: [
-						["Brick", 1, 0.1]
+						["Brick", 1, 2]
 					],
 					out: [
 						["Home", 0.05, 3],
@@ -656,34 +629,18 @@ var basicHouses = {
 			baseStats: [100,-300, "PlaceOfPower"],
 			recipes:
 			{
-				// "Ritual":
-				// {
-					// baseStats: [1, 1, true, false],
-					// in: [
-						// ["Ritual", 0, 1],
-						// ["RitualFire", 0, 1],
-						// ["Fire", 0.03, 10],
-					// ],
-					// out: [
-						// ["Ritual", 0.01, 1e5],
-						// ["Cycle", 0.003, 1],
-					// ],
-					// lock: ["Soul", 1],
-				// },
-				// "Cycle":
-				// {
-					// baseStats: [1, 1, true, false],
-					// in: [
-						// ["RitualFire", 1, 1],
-						// ["Cycle", 1, 1]
-					// ],
-					// out: [
-						// ["RitualEarth", 1, 1],
-						// ["RitualWater", 1, 1],
-						// ["RitualAir", 1, 1],
-					// ],
-					// lock: ["Soul", 1],
-				// },
+				"Absorb":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["PlaceOfPower", 1, 0.01],
+					],
+					out: [
+						["PlaceOfPower", 1, 10],
+						["Resolve", 0.1, 1],
+					],
+					lock: ["PlaceOfPower", 0.001],
+				},
 			}
 		},
 	
@@ -716,7 +673,7 @@ var constructedWorkplaces = {
 					out: [
 						["Campfire", 1, 1]
 					],
-					lock: ["Wood", 1, "Impure Mud", 4],
+					lock: ["Fire", 2, "Wood", 1, "Impure Mud", 4],
 				},
 				"Burn":
 				{
@@ -792,6 +749,19 @@ var constructedWorkplaces = {
 					],
 					lock: ["Boiling Water", 1],
 				},
+				"Prepare infusing mixture":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Boiling Water", 0.05, 0.5],
+						["Ash", 0.2, 50]
+					],
+					out: [
+						["Mana", 0.50, 50],
+						["Currency", 0.01, -6]
+					],
+					lock: ["Ash", 1, "Boiling Water", 1],
+				},
 			}
 		},
 		'Purifier':
@@ -848,7 +818,7 @@ var constructedWorkplaces = {
 					in: [
 						["Empty Crystal", 1, 1],
 						["Steam", 5, 80],
-						["Wood", 1, 80],
+						["Wood", 1, 5],
 					],
 					out: [
 						["Rice Cooker", 1, 10],
@@ -904,17 +874,6 @@ var ritualCircle = {
 					lock: ["Soul", 1],
 					alwayson: true,
 				},
-				"Ritual Cycle":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-					],
-					out: [
-						["Cycle",0.003,1]
-					],
-					lock: ["Soul", 1],
-					alwayson: true,
-				},
 				"Common Ritual":
 				{
 					baseStats: [1, 1, true, false],
@@ -925,7 +884,7 @@ var ritualCircle = {
 						["Ritual", 1, -1],
 					],
 					lock: ["Cycle", 0.1],
-					upgrade: ["Advanced Ritual", "Mana Charge", 100],
+					upgrade: ["Advanced Ritual", "Ritual", 100, "Mana Charge", 100],
 				},
 				"Advanced Ritual":
 				{
@@ -951,30 +910,15 @@ var ritualCircle = {
 						["RitualB", 1, -1],
 					],
 				},
-				"Ritual of Knowledge":
-				{
-					baseStats: [1, 1, true, false],
-					in: [
-						["Ritual", 0, 100],
-					],
-					out: [
-						["Revelation", 1, -1],
-						["Madness1", 1, 1],
-					],
-					lock: ["Ritual", 100],
-					alwayson: true,
-				},
 				"Ritual of Gate":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Ritual", 0, 100],
+						["Ritual", 1, 100],
 					],
 					out: [
-						["Revelation", 1, -1],
-						["Madness1", 1, 1],
 					],
-					lock: ["Ritual", 1000],
+					lock: ["Ritual", 1e99],
 					alwayson: true,
 				},
 			}
@@ -984,6 +928,19 @@ var ritualCircle = {
 			baseStats: [600,-150, "RitualA"],
 			recipes:
 			{
+				"Ritual of Knowledge":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["RitualA", 0, 10],
+					],
+					out: [
+						["Revelation", 1, -1],
+						["Madness1", 1, 1],
+					],
+					lock: ["RitualA", 10],
+					alwayson: true,
+				},
 			}
 		},
 		'RitualB':
@@ -1167,10 +1124,10 @@ var ritualCircle = {
 					in: [
 						["RitualA", 0, 1],
 						["RitualMud", 0, 1],
-						["Mud", 0.03, 10],
+						["Mud", 0.002, 10],
 					],
 					out: [
-						["RitualA", 0.01, 1e5],
+						["RitualA", 0.001, 1e5],
 						["Cycle", 0, 0.8]
 					],
 					lock: ["Mana Charge", 1],
@@ -1217,10 +1174,10 @@ var ritualCircle = {
 					in: [
 						["RitualA", 0, 1],
 						["RitualSand", 0, 1],
-						["Sand", 0.03, 10],
+						["Sand", 0.002, 10],
 					],
 					out: [
-						["RitualA", 0.01, 1e5],
+						["RitualA", 0.001, 1e5],
 						["Cycle", 0, 0.8]
 					],
 					lock: ["Mana Charge", 1],
@@ -1253,10 +1210,10 @@ var ritualCircle = {
 					in: [
 						["RitualA", 0, 1],
 						["RitualSteam", 0, 1],
-						["Steam", 0.03, 10],
+						["Steam", 0.002, 10],
 					],
 					out: [
-						["RitualA", 0.01, 1e5],
+						["RitualA", 0.001, 1e5],
 						["Cycle", 0, 0.8]
 					],
 					lock: ["Mana Charge", 1],
@@ -1509,6 +1466,7 @@ var commerceCircle = {
 	},
 	postprocess: function ()
 	{
+		machineData['Magic Crystal Shop'].recipes[1].activated = true;
 		machineData['Magic Crystal Shop'].recipes[2].activated = true;
 	},
 }
@@ -1526,13 +1484,14 @@ var researchCircle = {
 				{
 					baseStats: [1, 1, true, true],
 					in: [
-						["Body", 2, 1],
+						["Body", 1, 1],
 					],
 					out: [
-						["Body", 2, 1e4],
-						["Stamina", 0.001, 2e3],
+						["Body", 1, 1e4],
+						["Stamina", 0.005, 2e3],
 					],
 					lock: ["Body", 1],
+					alwayson: true,
 				},
 			}
 		},
@@ -1817,7 +1776,7 @@ var spireCircle = {
 					out: [
 						["Spire1", 1, 1e100],
 					],
-					lock: ["Power",100],
+					lock: ["Spire1",100],
 				},
 			}
 		};
