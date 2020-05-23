@@ -32,7 +32,7 @@ var baseCircle = {
 					out: [
 						["Mana", 0.001, 1000],
 					],
-					lock: ["House", 0.5],
+					lock: ["Home", 0.5],
 					alwayson: true,
 				},
 			}
@@ -1018,7 +1018,7 @@ var ritualCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["RitualEarth", 1, 1],
-						["Cycle", 0, 1]
+						["Cycle", 0.15, 1]
 					],
 					out: [
 						["RitualWater", 1, 1],
@@ -1070,7 +1070,7 @@ var ritualCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["RitualWater", 1, 1],
-						["Cycle", 0, 1]
+						["Cycle", 0.15, 1]
 					],
 					out: [
 						["RitualEarth", 1, 1],
@@ -1107,7 +1107,7 @@ var ritualCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["RitualAir", 1, 1],
-						["Cycle", 0, 1]
+						["Cycle", 0.15, 1]
 					],
 					out: [
 						["RitualEarth", 1, 1],
@@ -1144,7 +1144,7 @@ var ritualCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["RitualFire", 1, 1],
-						["Cycle", 0, 1]
+						["Cycle", 0.15, 1]
 					],
 					out: [
 						["RitualEarth", 1, 1],
@@ -1323,7 +1323,7 @@ var ritualCircle = {
 						["RitualIce", 0, 1],
 						["RitualVoid", 0, 1],
 					],
-					lock: ["Mana Charge", 1],
+					lock: ["FKnowledge", 1],
 					alwayson: true,
 				},
 			}
