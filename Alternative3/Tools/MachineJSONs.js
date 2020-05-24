@@ -178,12 +178,12 @@ var materialCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Mana", 0.001, 0.1],
-						["Water", 0.01, 0.2],
+						["Mana", 0.002, 0.1],
+						["Water", 0.02, 0.2],
 						["Earth", 0.01, 0.1],
 					],
 					out: [
-						["Earth", 0.02, 20]
+						["Earth", 0.03, 20]
 					],
 					lock: ["Earth", 1],
 				},
@@ -209,12 +209,12 @@ var materialCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Mana", 0.001, 0.1],
-						["Fire", 0.01, 0.2],
+						["Mana", 0.003, 0.1],
+						["Fire", 0.03, 0.2],
 						["Water", 0.01, 0.1],
 					],
 					out: [
-						["Water", 0.02, 20]
+						["Water", 0.04, 20]
 					],
 					lock: ["Water", 1],
 				},
@@ -637,7 +637,7 @@ var basicHouses = {
 					],
 					out: [
 						["PlaceOfPower", 1, 10],
-						["Resolve", 0.1, 1],
+						["Mana Charge", 1, 1e5],
 					],
 					lock: ["PlaceOfPower", 0.001],
 				},
@@ -757,7 +757,7 @@ var constructedWorkplaces = {
 						["Ash", 0.2, 50]
 					],
 					out: [
-						["Mana", 0.50, 50],
+						["Mana", 0.20, 50],
 						["Currency", 0.01, -6]
 					],
 					lock: ["Ash", 1, "Boiling Water", 1],
@@ -914,11 +914,12 @@ var ritualCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Ritual", 1, 100],
+						["Ritual", 0, 200],
 					],
 					out: [
+						["Shattered Glass", 0.001, 200],
 					],
-					lock: ["Ritual", 1e99],
+					lock: ["Ritual", 200],
 					alwayson: true,
 				},
 			}
@@ -1488,7 +1489,7 @@ var researchCircle = {
 					],
 					out: [
 						["Body", 1, 1e4],
-						["Stamina", 0.005, 2e3],
+						["Stamina", 0.005, 1e3],
 					],
 					lock: ["Body", 1],
 					alwayson: true,
@@ -1591,7 +1592,7 @@ var researchCircle = {
 
 var madnessCircle = {
 	stepsOfMadness: 5,
-	elements: ["Revelation", "Corruption", "Doom"],
+	elements: ["Revelation", "Corruption", "Doom", "Madness1", "Madness2", "Madness3", "Madness4", "Madness5"],
 	machines:
 	{
 		'Revelation':
@@ -1604,102 +1605,263 @@ var madnessCircle = {
 		},
 		'Corruption':
 		{
-			baseStats: [0, 400, "Corruption"],
+			baseStats: [0, 500, "Corruption"],
 			recipes:
 			{
-				
+				"Corruption Burns":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Corruption", 1, 100],
+						["Mana", 0, -100],
+					],
+					out: [
+						["Corruption", 1, -1e4],
+						["Mana", -0.01, 1e3],
+					],
+					lock: ["Corruption",1e99],
+					alwayson: true,
+				},
+				"Cleanse Corruption":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Power", 2, 100],
+						["Corruption", 3, 0.001],
+					],
+					out: [
+					],
+					lock: ["Corruption",1000],
+				},
 			}
 		},
 		'Doom':
 		{
-			baseStats: [0, 500, "Doom"],
+			baseStats: [0, 600, "Doom"],
 			recipes:
 			{
-				
+				"Doom Breaks":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Doom", 1, 1],
+						["Home", 0, 0.2],
+					],
+					out: [
+						["Doom", 1, -1e4],
+						["Home", -0.021, 1e3],
+					],
+					lock: ["Doom",1e99],
+					alwayson: true,
+				},
 			}
 		},
-	},
-	preprocess: function ()
-	{
-		for (var i=1;i<this.stepsOfMadness;i++)
-		{
-			this.elements.push("Madness"+i);
-			this.machines["Madness: Step "+i] = {
-				baseStats: [-100, 200+i*100, "Madness"+i],
-				recipes:
-				{
-					"Madness Looms":
-					{
-						baseStats: [1, 1, true, true],
-						in: [
-							["Madness"+i, 1, 0.001],
-						],
-						out: [
-							["Madness"+i, 1 + 0.1/i, 1e10],
-						],
-						lock: ["Madness"+i,1e99],
-						alwayson: true,
-					},
-					"Madness Dwells":
-					{
-						baseStats: [1, 1, true, false],
-						in: [
-							["Madness"+i, 0, 2e10],
-						],
-						out: [
-							["Madness"+(i+1), 0, 0.1],
-						],
-						lock: ["Madness"+i,1e99],
-						alwayson: true,
-					},
-					"Madness Corrupts":
-					{
-						baseStats: [1, 1, true, false],
-						in: [
-							["Madness"+i, 0, 2e10],
-						],
-						out: [
-							["Corruption", 0, 1e4],
-						],
-						lock: ["Madness"+i,1e99],
-						alwayson: true,
-					},
-				}
-			};
-		}
-		this.elements.push("Madness"+i);
-		this.machines["Madness: Step "+i] = {
-			baseStats: [-100, 200+i*100, "Madness"+i],
+		'Madness: Step 1' : {
+			baseStats: [-100, 300, "Madness1"],
 			recipes:
 			{
 				"Madness Looms":
 				{
-					baseStats: [1, 1, true, true],
+					baseStats: [1, 1, true, false],
 					in: [
-						["Madness"+i, 1, 0.001],
+						["Madness1", 1, 0.001],
 					],
 					out: [
-						["Madness"+i, 1 + 0.01, 1e100],
+						["Madness1", 1.1, 2000],
 					],
-					lock: ["Madness"+i,1e99],
+					lock: ["Madness1",1e99],
+					alwayson: true,
+				},
+				"Madness Dwells":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness1", 1999, 2000],
+					],
+					out: [
+						["Madness2", 1, 0.9],
+					],
+					lock: ["Madness1",1e99],
+					alwayson: true,
+				},
+				"Madness Corrupts":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness1", 99, 100],
+						["Madness2", 0, 1],
+					],
+					out: [
+						["Corruption", 1, 1e4],
+					],
+					lock: ["Madness1",1e99],
+					alwayson: true,
+				},
+			}
+		},
+		'Madness: Step 2' : {
+			baseStats: [-150, 400, "Madness2"],
+			recipes:
+			{
+				"Madness Looms":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness2", 1, 0.001],
+					],
+					out: [
+						["Madness2", 1.05, 2000],
+					],
+					lock: ["Madness2",1e99],
+					alwayson: true,
+				},
+				"Madness Dwells":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness2", 1999, 2000],
+					],
+					out: [
+						["Madness3", 1, 0.9],
+					],
+					lock: ["Madness2",1e99],
+					alwayson: true,
+				},
+				"Madness Corrupts":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness2", 99, 100],
+						["Madness3", 0, 1],
+					],
+					out: [
+						["Corruption", 3, 1e4],
+					],
+					lock: ["Madness2",1e99],
+					alwayson: true,
+				},
+			}
+		},
+		'Madness: Step 3' : {
+			baseStats: [-100, 500, "Madness3"],
+			recipes:
+			{
+				"Madness Looms":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness3", 1, 0.001],
+					],
+					out: [
+						["Madness3", 1.025, 2000],
+					],
+					lock: ["Madness3",1e99],
+					alwayson: true,
+				},
+				"Madness Dwells":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness3", 1999, 2000],
+					],
+					out: [
+						["Madness4", 1, 0.9],
+					],
+					lock: ["Madness3",1e99],
+					alwayson: true,
+				},
+				"Madness Corrupts":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness3", 99, 100],
+						["Madness4", 0, 1],
+					],
+					out: [
+						["Corruption", 8, 1e4],
+					],
+					lock: ["Madness3",1e99],
+					alwayson: true,
+				},
+			}
+		},
+		'Madness: Step 4' : {
+			baseStats: [-150, 600, "Madness4"],
+			recipes:
+			{
+				"Madness Looms":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness4", 1, 0.001],
+					],
+					out: [
+						["Madness4", 1.0125, 2000],
+					],
+					lock: ["Madness4",1e99],
+					alwayson: true,
+				},
+				"Madness Dwells":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness4", 1999, 2000],
+					],
+					out: [
+						["Madness5", 1, 0.9],
+					],
+					lock: ["Madness4",1e99],
+					alwayson: true,
+				},
+				"Madness Corrupts":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness4", 99, 100],
+						["Madness5", 0, 1],
+					],
+					out: [
+						["Corruption", 24, 1e4],
+					],
+					lock: ["Madness4",1e99],
+					alwayson: true,
+				},
+			}
+		},
+		'Madness: Step 5' : {
+			baseStats: [-100, 700, "Madness5"],
+			recipes:
+			{
+				"Madness Looms":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Madness5", 1, 0.001],
+					],
+					out: [
+						["Madness5", 1.0004, 100],
+					],
+					lock: ["Madness5",1e99],
 					alwayson: true,
 				},
 				"Madness Enlightens":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness"+i, 0, 2e100],
+						["Madness5", 99, 100],
 					],
 					out: [
 						["Revelation", 1, -5],
-						["Doom", 1, 5],
+						["Doom", 0.5, -5],
 					],
-					lock: ["Madness"+i,1e99],
+					lock: ["Madness5",1e99],
 					alwayson: true,
 				},
 			}
-		};
-		
+		},
+	},
+	preprocess: function ()
+	{		
 		addCircleElements(this.elements);
 		for (var machine in this.machines)
 		{
@@ -1720,90 +1882,313 @@ var madnessCircle = {
 		this.cooldown = 60;
 		for (var i=1;i<=this.stepsOfMadness;i++)
 		{
-			var mach = machineData["Madness: Step "+i];
-			var res = data.oElements["Madness"+i];
-			if(mach.recipes[0].unlocked) {
-				if(res.amount < 1e10) continue;
-				res.amount = 1;
-				
-				var rec = mach.recipes[1];
-				
-				if(i<5 && data.oElements[rec.outputs[0].type].amount > 0.1) {
-					rec = mach.recipes[2];
-				}
-				
-				for(var id in rec.outputs)
-				{
-					var output = rec.outputs[id];
-					data.oElementsFlow[output.type] += 1;
-					if(output.effectReference)
-							output.effectReference.volume += 1;
-				}
-			} 
-			else
+			var recs = machineData["Madness: Step "+i].recipes;
+			if(!recs[0].unlocked)
 			{
-				if(res.amount < 0.1) continue;
-				for (var recIndex in mach.recipes)
+				if(data.oElements["Madness"+i].amount < 0.1) continue;
+				for (var recIndex in recs)
 				{
-					var recipe = mach.recipes[recIndex];
-					recipe.region.paymentSuccess();
+					recs[recIndex].region.paymentSuccess();
 				}
 			}
+		}
+		var rec = machineData['Corruption'].recipes[0];
+		if(!rec.unlocked)
+		{
+			if(data.oElements["Corruption"].amount > 0.1)
+				rec.region.paymentSuccess();
+		}
+		var rec = machineData['Doom'].recipes[0];
+		if(!rec.unlocked)
+		{
+			if(data.oElements["Doom"].amount > 0.1)
+				rec.region.paymentSuccess();
 		}
 	}
 };
 
 var spireCircle = {
 	spireLevels: 5,
-	elements: [],
+	elements: ["Spire Foundation","Shattered Glass","Portal Frame","Influence","Portal","PortalEarth","PortalAir","PortalWater","PortalFire","Spirits"],
 	machines:
 	{
-
-	},
-	preprocess: function ()
-	{
-		this.elements.push("Spire1");
-		this.machines["Spire: Level 1"] = {
-			baseStats: [100, 300, "Spire1"],
+		'Shattered Glass' : {
+			baseStats: [0, 1000, "Shattered Glass"],
 			recipes:
 			{
-				"Spire Grows":
+				
+			}
+		},
+		'Spire Foundation' : {
+			baseStats: [0, 1200, "Spire Foundation"],
+			recipes:
+			{
+				"Lay down foundation":
 				{
 					baseStats: [1, 1, true, true],
 					in: [
-						["Power", 1, 100],
+						["Shattered Glass", 1, 1],
 					],
 					out: [
-						["Spire1", 1, 1e100],
+						["Spire Foundation", 0.1, 100],
 					],
-					lock: ["Spire1",100],
+					lock: ["FKnowledge",0.01],
 				},
 			}
-		};
-		for (var i=2;i<=this.spireLevels;i++)
-		{
-			this.elements.push("Spire"+i);
-			this.machines["Spire: Level "+i] = {
-				baseStats: [100, 200+i*100, "Spire"+i],
-				recipes:
+		},
+		'Portal Frame' : {
+			baseStats: [200, 1200, "Portal Frame"],
+			recipes:
+			{
+				"Build Portal":
 				{
-					"Spire Extends":
-					{
-						baseStats: [1, 1, true, true],
-						in: [
-							["Spire"+(i-1), 1e10, 1e10],
-						],
-						out: [
-							["Spire"+i, 1, 1e100],
-						],
-						lock: ["Spire"+(i-1),1e10],
-						alwayson: true,
-					},
-				}
-			};
-		}
-		
-		
+					baseStats: [1, 1, true, false],
+					in: [
+						["Spire Foundation", 0, 10],
+						["Shattered Glass", 0.2, 1],
+						["Brick", 5, 8],
+						["Wood", 25, 50],
+						["Body", 1, 1],
+					],
+					out: [
+						["Portal Frame", 0.001, 1],
+					],
+					lock: ["Spire Foundation",0.01],
+				},
+			}
+		},
+		'Influence' : {
+			baseStats: [100, 1000, "Influence"],
+			recipes:
+			{
+				"Gather Influence":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Portal", 0, 1],
+						["Power", 1, 10],
+					],
+					out: [
+						["Influence", 0.01, 1e4],
+					],
+					lock: ["Portal Frame",0.001],
+				},
+			}
+		},
+		'Portal' : {
+			baseStats: [200, 1300, "Portal"],
+			recipes:
+			{
+			}
+		},
+		'PortalEarth' : {
+			baseStats: [50, 1400, "PortalEarth"],
+			recipes:
+			{
+				"Open Portal":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Portal Frame", 0, 1],
+						["Power", 50, 80],
+					],
+					out: [
+						["Portal", 1, 1],
+						["PortalEarth", 1, 1],
+					],
+					lock: ["Portal Frame",0.001],
+				},
+				"Close Portal":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Portal", 1, 1],
+						["PortalEarth", 1, 1],
+						["Earth", 2e4, 2e4],
+					],
+					out: [
+					],
+					lock: ["Earth",1e4],
+				},
+				"Absorb Element":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["PortalEarth", 1, 0.1],
+					],
+					out: [
+						["PortalEarth", 1, -5],
+						["Earth", 2e3, 4e4],
+					],
+					lock: ["Influence",1],
+					alwayson: true
+				},
+			}
+		},
+		'PortalWater' : {
+			baseStats: [-50, 1400, "PortalWater"],
+			recipes:
+			{
+				"Open Portal":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Portal Frame", 0, 1],
+						["Power", 50, 80],
+					],
+					out: [
+						["Portal", 1, 1],
+						["PortalWater", 1, 1],
+					],
+					lock: ["Portal Frame",0.001],
+				},
+				"Close Portal":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Portal", 1, 1],
+						["PortalWater", 1, 1],
+						["Water", 2e4, 2e4],
+					],
+					out: [
+					],
+					lock: ["Water",1e4],
+				},
+				"Absorb Element":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["PortalWater", 1, 0.1],
+					],
+					out: [
+						["PortalWater", 1, -5],
+						["Water", 2e3, 4e4],
+					],
+					lock: ["Influence",1],
+					alwayson: true
+				},
+			}
+		},
+		'PortalAir' : {
+			baseStats: [150, 1400, "PortalAir"],
+			recipes:
+			{
+				"Open Portal":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Portal Frame", 0, 1],
+						["Power", 50, 80],
+					],
+					out: [
+						["Portal", 1, 1],
+						["PortalAir", 1, 1],
+					],
+					lock: ["Portal Frame",0.001],
+				},
+				"Close Portal":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Portal", 1, 1],
+						["PortalAir", 1, 1],
+						["Air", 2e4, 2e4],
+					],
+					out: [
+					],
+					lock: ["Air",1e4],
+				},
+				"Absorb Element":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["PortalAir", 1, 0.1],
+					],
+					out: [
+						["PortalAir", 1, -5],
+						["Air", 2e3, 4e4],
+					],
+					lock: ["Influence",1],
+					alwayson: true
+				},
+			}
+		},
+		'PortalFire' : {
+			baseStats: [-150, 1400, "PortalFire"],
+			recipes:
+			{
+				"Open Portal":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Portal Frame", 0, 1],
+						["Power", 50, 80],
+					],
+					out: [
+						["Portal", 1, 1],
+						["PortalFire", 1, 1],
+					],
+					lock: ["Portal Frame",0.001],
+				},
+				"Close Portal":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Portal", 1, 1],
+						["PortalFire", 1, 1],
+						["Fire", 2e4, 2e4],
+					],
+					out: [
+					],
+					lock: ["Fire",1e4],
+				},
+				"Absorb Element":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["PortalFire", 1, 0.1],
+					],
+					out: [
+						["PortalFire", 1, -5],
+						["Fire", 2e3, 4e4],
+					],
+					lock: ["Influence",1],
+					alwayson: true
+				},
+			}
+		},
+		'Spirits' : {
+			baseStats: [-100, 1000, "Spirits"],
+			recipes:
+			{
+				"Bind Spirit":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Influence", 10, 20],
+					],
+					out: [
+						["Spirits", 1, 1e3],
+					],
+					lock: ["Influence",1],
+				},
+				"Spiritual Influence":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spirits", 1, 1],
+					],
+					out: [
+						["Spirits", 1, -1e4],
+						["Influence", 0.1, 1e100],
+					],
+					lock: ["Spirits",1],
+				},
+			}
+		},
+	},
+	preprocess: function ()
+	{
 		addCircleElements(this.elements);
 		for (var machine in this.machines)
 		{
@@ -1812,10 +2197,87 @@ var spireCircle = {
 	},
 	postprocess: function ()
 	{
-		for (var i=1;i<=this.spireLevels;i++)
+		machineData.PortalEarth.recipes[1].activated = true;
+		machineData.PortalWater.recipes[1].activated = true;
+		machineData.PortalAir.recipes[1].activated = true;
+		machineData.PortalFire.recipes[1].activated = true;
+		
+		machineData.PortalEarth.recipes[0].region.mouseHandler = this.exclusivePortalRecipeMouseHandler;
+		machineData.PortalEarth.recipes[1].region.mouseHandler = this.exclusivePortalRecipeMouseHandler;
+		machineData.PortalWater.recipes[0].region.mouseHandler = this.exclusivePortalRecipeMouseHandler;
+		machineData.PortalWater.recipes[1].region.mouseHandler = this.exclusivePortalRecipeMouseHandler;
+		machineData.PortalAir.recipes[0].region.mouseHandler = this.exclusivePortalRecipeMouseHandler;
+		machineData.PortalAir.recipes[1].region.mouseHandler = this.exclusivePortalRecipeMouseHandler;
+		machineData.PortalFire.recipes[0].region.mouseHandler = this.exclusivePortalRecipeMouseHandler;
+		machineData.PortalFire.recipes[1].region.mouseHandler = this.exclusivePortalRecipeMouseHandler;
+		
+	},
+	exclusivePortalRecipeMouseHandler: function (pane, x, y, type)
+	{
+		if (type == "mousemove")
 		{
-			machineData["Spire: Level "+i].recipes[0].outputs[0].effectReference.maxR*=2;
+			if (x < optionData.iconSize + 1)
+			{
+				tooltipPane.showText("Enabling this recipe will disable all other portal recipes.");
+			}
 		}
+		else if (type == "mouseup")
+		{
+			if (this.recipe.unlocked)
+			{
+				if (x < optionData.iconSize + 1)
+				{
+					var state = this.recipe.enabled;
+					machineData.PortalEarth.recipes[0].enabled = false;
+					machineData.PortalEarth.recipes[1].enabled = false;
+					machineData.PortalWater.recipes[0].enabled = false;
+					machineData.PortalWater.recipes[1].enabled = false;
+					machineData.PortalAir.recipes[0].enabled = false;
+					machineData.PortalAir.recipes[1].enabled = false;
+					machineData.PortalFire.recipes[0].enabled = false;
+					machineData.PortalFire.recipes[1].enabled = false;
+					this.recipe.enabled = !state;
+				}
+				else if (x < optionData.iconSize * 2 + 2)
+				{
+					if (this.pane.boundaryPath)
+					{
+						regionData.hideRegion.action(this.pane);
+					}
+					else
+					{
+						regionData.showRegion.action(this.pane);
+					}
+				}
+				else if (x < optionData.iconSize * 3 + 3)
+				{
+					if (this.recipe.upgradeTo)
+					{
+						panes.lastClickedPane = this;
+						paymentPane.preparePayment(this.recipe.upgradeCosts, x, y, pane, this);
+					}
+				}
+			}
+			else
+			{
+				if (this.recipe.unlockCosts && this.recipe.unlockCosts.length > 0)
+				{
+					panes.lastClickedPane = this;
+					paymentPane.preparePayment(this.recipe.unlockCosts, x, y, pane, this);
+				}
+				else
+				{
+					this.paymentSuccess();
+				}
+			}
+		}
+	},
+	decay: function ()
+	{
+		var amount = 1+data.oElements.Spirits.amount;
+		var input = machineData["Spirits"].recipes[0].inputs[0];
+		input.ratio = 10 + amount * amount;
+		input.min = 2*input.ratio;
 	},
 };
 
@@ -1871,8 +2333,8 @@ function postprocessAdditionalCircles() {
 	reachCircle.postprocess();
 	ritualCircle.postprocess();
 	madnessCircle.postprocess();
-	spireCircle.postprocess();
 	commerceCircle.postprocess();
+	spireCircle.postprocess();
 	postprocessed = true;
 }
 function decayAdditionalCircles() {
@@ -1880,6 +2342,7 @@ function decayAdditionalCircles() {
 	ritualCircle.decay();
 	researchCircle.decay();
 	madnessCircle.decay();
+	spireCircle.decay();
 }
 
 
@@ -1891,7 +2354,7 @@ var reachCircle = {
 	{
 		machineTime:
 		{
-			baseStats: [0, -100, ["Time", "NormalLimit", "TurboLimit"]],
+			baseStats: [0, -100, ["Game Ticks", "Time", "NormalLimit", "TurboLimit"]],
 			recipes:
 			{
 				timeSlow1:
