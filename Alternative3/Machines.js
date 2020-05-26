@@ -959,6 +959,10 @@ var machines = {
 		else
 		{
 			ctx.drawImage(images.iconLock, optionData.iconSize * 2 + 2, 0);
+			
+			ctx.textAlign = "left";
+			ctx.fillStyle = ctx.strokeStyle;
+			ctx.fillText(this.recipe.title, optionData.iconSize * 3 + 6, optionData.iconSize / 2);
 		}
 		ctx.restore();
 	},

@@ -348,6 +348,19 @@ var basicWorkplaces = {
 					],
 					lock: ["Stamina", 10],
 				},
+				"Influential Work":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Influence", 0, 100],
+						["Stamina", 0.1, 20]
+					],
+					out: [
+						["Currency", 0.002, 20],
+						["Repute", 0.001, 100]
+					],
+					lock: ["Influence", 10],
+				},
 			}
 		},
 		'River - Mud Spot':
@@ -365,6 +378,17 @@ var basicWorkplaces = {
 						["Impure Mud", 0.1, 200],
 					],
 					lock: ["Home Progress", 0.1, "Currency", 0.1],
+				},
+				'Pour Mud':
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Earth", 1e4, 1e4],
+					],
+					out: [
+						["Mud", 1, 1e3],
+					],
+					lock: ["Earth", 3e4],
 				},
 			}
 		},
@@ -462,6 +486,17 @@ var basicWorkplaces = {
 					],
 					lock: ["Knowledge", 5],
 				},
+				'Sweep Sand':
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Air", 1e4, 1e4],
+					],
+					out: [
+						["Sand", 1, 1e3],
+					],
+					lock: ["Air", 3e4],
+				},
 			}
 		},
 		'Hotspring - Steam Spot':
@@ -478,7 +513,29 @@ var basicWorkplaces = {
 						["Steam", 0.002, 1e2],
 					],
 					lock: ["Knowledge", 50],
+					upgrade: ["Funnel Steam", "FKnowledge", 50],
 					alwayson: true,
+				},
+				'Funnel Steam':
+				{
+					baseStats: [1, 1, false, false],
+					in: [
+					],
+					out: [
+						["Steam", 0.004, 1e2],
+					],
+					alwayson: true,
+				},
+				'Charge Steam':
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Water", 1e4, 1e4],
+					],
+					out: [
+						["Steam", 1, 1e3],
+					],
+					lock: ["Water", 3e4],
 				},
 			}
 		},
@@ -949,6 +1006,19 @@ var ritualCircle = {
 			baseStats: [600,-250, "RitualB"],
 			recipes:
 			{
+				"Ritual of Blood":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["RitualB", 0, 200],
+						["Soul", 1, 1],
+					],
+					out: [
+						["Body", 1, 5e3],
+					],
+					lock: ["RitualB", 10],
+					alwayson: true,
+				}
 			}
 		},
 		'RitualEarth':
@@ -1909,7 +1979,7 @@ var madnessCircle = {
 
 var spireCircle = {
 	spireLevels: 5,
-	elements: ["Spire Foundation","Shattered Glass","Portal Frame","Influence","Portal","PortalEarth","PortalAir","PortalWater","PortalFire","Spirits"],
+	elements: ["Spire Foundation","Shattered Glass","Portal Frame","Influence","Portal","PortalEarth","PortalAir","PortalWater","PortalFire","Spirits","Repute"],
 	machines:
 	{
 		'Shattered Glass' : {
@@ -1945,9 +2015,9 @@ var spireCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["Spire Foundation", 0, 10],
-						["Shattered Glass", 0.2, 1],
-						["Brick", 5, 8],
-						["Wood", 25, 50],
+						["Shattered Glass", 0.1, 1],
+						["Brick", 3, 8],
+						["Wood", 35, 50],
 						["Body", 1, 1],
 					],
 					out: [
@@ -2276,8 +2346,8 @@ var spireCircle = {
 	{
 		var amount = 1+data.oElements.Spirits.amount;
 		var input = machineData["Spirits"].recipes[0].inputs[0];
-		input.ratio = 10 + amount * amount;
-		input.min = 2*input.ratio;
+		input.ratio = 4 + amount * amount;
+		input.min = -4 + 2*input.ratio;
 	},
 };
 
