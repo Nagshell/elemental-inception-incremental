@@ -1014,54 +1014,54 @@ function preprocessPaneData()
 
 	preprocessOptions();
 
-	changelogPane = new cPane(mainPane, 200, 200);
-	path = new Path2D();
-	path.rect(0, 0, 300, 230);
-	changelogPane.boundaryPath = path;
-	changelogPane.subRegions.push(regionData.dragRegion);
-	changelogPane.subRegions.push(regionData.pinRegion);
-	changelogPane.subRegions.push(regionData.hideRegion);
-	changelogPane.subRegions.push(regionData.nextPageRegion);
-	changelogPane.subRegions.push(regionData.prevPageRegion);
-	changelogPane.subRegions.push(regionData.draggableTitleRegion);
-	changelogPane.maxPages = 4;
-	changelogPane.currentPage = changelogPane.maxPages;
-	changelogPane.customDraw = function (ctx)
-	{
-		ctx.save();
-		ctx.fillStyle = ctx.strokeStyle;
-		this.title = locale.page + " " + (this.currentPage + 1) + " " + locale.outOf + " " + (this.maxPages + 1);
-		if (images["changelogPage" + this.currentPage])
-		{
-			ctx.drawImage(images["changelogPage" + this.currentPage], 0, 50);
-		}
-		switch (this.currentPage)
-		{
-			case 0:
-				break;
-		}
-		ctx.restore();
-	}
-	changelogPane.region = tabRegions[10];
-	changelogPane.region.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (this.pane.boundaryPath)
-			{
-				regionData.hideRegion.mouseHandler(this.pane, x, y, type);
-			}
-			else
-			{
-				regionData.showRegion.mouseHandler(this.pane, x, y, type);
-				this.pane.x = 50 - this.pane.top.centerX;
-				this.pane.y = 50 - this.pane.top.centerY;
-			}
-		}
-	};
-	changelogPane.region.pane = changelogPane;
-	regionData.pinRegion.action(changelogPane);
-	regionData.hideRegion.action(changelogPane);
+	// changelogPane = new cPane(mainPane, 200, 200);
+	// path = new Path2D();
+	// path.rect(0, 0, 300, 230);
+	// changelogPane.boundaryPath = path;
+	// changelogPane.subRegions.push(regionData.dragRegion);
+	// changelogPane.subRegions.push(regionData.pinRegion);
+	// changelogPane.subRegions.push(regionData.hideRegion);
+	// changelogPane.subRegions.push(regionData.nextPageRegion);
+	// changelogPane.subRegions.push(regionData.prevPageRegion);
+	// changelogPane.subRegions.push(regionData.draggableTitleRegion);
+	// changelogPane.maxPages = 4;
+	// changelogPane.currentPage = changelogPane.maxPages;
+	// changelogPane.customDraw = function (ctx)
+	// {
+		// ctx.save();
+		// ctx.fillStyle = ctx.strokeStyle;
+		// this.title = locale.page + " " + (this.currentPage + 1) + " " + locale.outOf + " " + (this.maxPages + 1);
+		// if (images["changelogPage" + this.currentPage])
+		// {
+			// ctx.drawImage(images["changelogPage" + this.currentPage], 0, 50);
+		// }
+		// switch (this.currentPage)
+		// {
+			// case 0:
+				// break;
+		// }
+		// ctx.restore();
+	// }
+	// changelogPane.region = tabRegions[10];
+	// changelogPane.region.mouseHandler = function (pane, x, y, type)
+	// {
+		// if (type == "mouseup")
+		// {
+			// if (this.pane.boundaryPath)
+			// {
+				// regionData.hideRegion.mouseHandler(this.pane, x, y, type);
+			// }
+			// else
+			// {
+				// regionData.showRegion.mouseHandler(this.pane, x, y, type);
+				// this.pane.x = 50 - this.pane.top.centerX;
+				// this.pane.y = 50 - this.pane.top.centerY;
+			// }
+		// }
+	// };
+	// changelogPane.region.pane = changelogPane;
+	// regionData.pinRegion.action(changelogPane);
+	// regionData.hideRegion.action(changelogPane);
 
 	donatePage = new cPane(mainPane, 300, 100);
 	var path = new Path2D();

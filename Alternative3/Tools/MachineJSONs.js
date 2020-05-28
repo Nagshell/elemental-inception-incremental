@@ -1979,7 +1979,15 @@ var madnessCircle = {
 
 var spireCircle = {
 	spireLevels: 5,
-	elements: ["Spire Foundation","Shattered Glass","Portal Frame","Influence","Portal","PortalEarth","PortalAir","PortalWater","PortalFire","Spirits","Repute"],
+	elements: ["Spire Foundation","Shattered Glass","Portal Frame","Influence","Portal","PortalEarth","PortalAir","PortalWater","PortalFire","Spirits","Repute",
+		"Spire Pebble","Spire Nugget","Spire Chip",
+		"Spire Cube","Spire Lump","Spire Slice",
+		"Spire Block","Spire Knob","Spire Tile",
+		"Spire Slab","Spire Mass","Spire Surface",
+		"Spire Step", "Spire Floor",
+		"Spire Doorman","Spire Steward","Spire Caretaker","Spire Warden","Spire Overseer","Spire Orb",
+		"Storage"
+		],
 	machines:
 	{
 		'Shattered Glass' : {
@@ -2074,7 +2082,7 @@ var spireCircle = {
 					in: [
 						["Portal", 1, 1],
 						["PortalEarth", 1, 1],
-						["Earth", 2e4, 2e4],
+						["Earth", 1e4, 1e4],
 					],
 					out: [
 					],
@@ -2118,7 +2126,7 @@ var spireCircle = {
 					in: [
 						["Portal", 1, 1],
 						["PortalWater", 1, 1],
-						["Water", 2e4, 2e4],
+						["Water", 1e4, 1e4],
 					],
 					out: [
 					],
@@ -2162,7 +2170,7 @@ var spireCircle = {
 					in: [
 						["Portal", 1, 1],
 						["PortalAir", 1, 1],
-						["Air", 2e4, 2e4],
+						["Air", 1e4, 1e4],
 					],
 					out: [
 					],
@@ -2206,7 +2214,7 @@ var spireCircle = {
 					in: [
 						["Portal", 1, 1],
 						["PortalFire", 1, 1],
-						["Fire", 2e4, 2e4],
+						["Fire", 1e4, 1e4],
 					],
 					out: [
 					],
@@ -2253,6 +2261,390 @@ var spireCircle = {
 						["Influence", 0.1, 1e100],
 					],
 					lock: ["Spirits",1],
+				},
+			}
+		},
+		'Monumental Work : Spire Pebble' : {
+			baseStats: [0, 1500, "Spire Pebble"],
+			recipes:
+			{
+				"Make Spire Pebble":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mud", 10, 20],
+						["Spirits", 1, 5],
+					],
+					out: [
+						["Spirits", 1, -2e3],
+						["Spire Pebble", 5, 1e3],
+					],
+					lock: ["Influence", 100, "Mud", 1e3],
+				},
+			}
+		},
+		'Monumental Work : Spire Nugget' : {
+			baseStats: [-100, 1500, "Spire Nugget"],
+			recipes:
+			{
+				"Make Spire Nugget":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Steam", 10, 20],
+						["Spirits", 1, 5],
+					],
+					out: [
+						["Spirits", 1, -2e3],
+						["Spire Nugget", 5, 1e3],
+					],
+					lock: ["Influence", 100, "Steam",1e3],
+				},
+			}
+		},
+		'Monumental Work : Spire Chip' : {
+			baseStats: [100, 1500, "Spire Chip"],
+			recipes:
+			{
+				"Make Spire Chip":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Sand", 10, 20],
+						["Spirits", 1, 5],
+					],
+					out: [
+						["Spirits", 1, -2e3],
+						["Spire Chip", 5, 1e3],
+					],
+					lock: ["Influence", 100, "Sand",1e3],
+				},
+			}
+		},
+		
+		'Monumental Work : Spire Cube' : {
+			baseStats: [0, 1700, "Spire Cube"],
+			recipes:
+			{
+				"Make Spire Cube":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Pebble", 8, 20],
+						["Spire Nugget", 1, 20],
+						["Spire Chip", 1, 20],
+						
+						["Spirits", 2, 5],
+					],
+					out: [
+						["Spirits", 2, -2e3],
+						["Spire Cube", 5, 1e3],
+					],
+					lock: ["Spire Pebble", 10, "Spire Doorman", 1],
+				},
+			}
+		},
+		'Monumental Work : Spire Lump' : {
+			baseStats: [-100, 1700, "Spire Lump"],
+			recipes:
+			{
+				"Make Spire Lump":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Pebble", 1, 20],
+						["Spire Nugget", 8, 20],
+						["Spire Chip", 1, 20],
+						["Spirits", 2, 5],
+					],
+					out: [
+						["Spirits", 2, -2e3],
+						["Spire Lump", 5, 1e3],
+					],
+					lock: ["Spire Nugget", 10, "Spire Doorman", 1],
+				},
+			}
+		},
+		'Monumental Work : Spire Slice' : {
+			baseStats: [100, 1700, "Spire Slice"],
+			recipes:
+			{
+				"Make Spire Slice":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Pebble", 1, 20],
+						["Spire Nugget", 1, 20],
+						["Spire Chip", 8, 20],
+						["Spirits", 2, 5],
+					],
+					out: [
+						["Spirits", 2, -2e3],
+						["Spire Slice", 5, 1e3],
+					],
+					lock: ["Spire Chip", 10, "Spire Doorman", 1],
+				},
+			}
+		},
+		
+		'Monumental Work : Spire Block' : {
+			baseStats: [0, 1900, "Spire Block"],
+			recipes:
+			{
+				"Make Spire Block":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Cube", 8, 20],
+						["Spire Lump", 1, 20],
+						["Spire Slice", 1, 20],
+						
+						["Spirits", 4, 5],
+					],
+					out: [
+						["Spirits", 4, -2e3],
+						["Spire Block", 5, 1e3],
+					],
+					lock: ["Spire Cube", 10, "Spire Steward",1],
+				},
+			}
+		},
+		'Monumental Work : Spire Knob' : {
+			baseStats: [-100, 1900, "Spire Knob"],
+			recipes:
+			{
+				"Make Spire Knob":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Cube", 1, 20],
+						["Spire Lump", 8, 20],
+						["Spire Slice", 1, 20],
+						["Spirits", 4, 5],
+					],
+					out: [
+						["Spirits", 4, -2e3],
+						["Spire Knob", 5, 1e3],
+					],
+					lock: ["Spire Lump", 10, "Spire Steward",1],
+				},
+			}
+		},
+		'Monumental Work : Spire Tile' : {
+			baseStats: [100, 1900, "Spire Tile"],
+			recipes:
+			{
+				"Make Spire Tile":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Cube", 1, 20],
+						["Spire Lump", 1, 20],
+						["Spire Slice", 8, 20],
+						["Spirits", 4, 5],
+					],
+					out: [
+						["Spirits", 4, -2e3],
+						["Spire Tile", 5, 1e3],
+					],
+					lock: ["Spire Slice", 10, "Spire Steward",1],
+				},
+			}
+		},
+		
+		'Monumental Work : Spire Slab' : {
+			baseStats: [0, 2100, "Spire Slab"],
+			recipes:
+			{
+				"Make Spire Slab":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Block", 8, 20],
+						["Spire Knob", 1, 20],
+						["Spire Tile", 1, 20],
+						
+						["Spirits", 8, 5],
+					],
+					out: [
+						["Spirits", 8, -2e3],
+						["Spire Slab", 5, 1e3],
+					],
+					lock: ["Spire Block", 10, "Spire Caretaker",1],
+				},
+			}
+		},
+		'Monumental Work : Spire Mass' : {
+			baseStats: [-100, 2100, "Spire Mass"],
+			recipes:
+			{
+				"Make Spire Mass":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Block", 1, 20],
+						["Spire Knob", 8, 20],
+						["Spire Tile", 1, 20],
+						["Spirits", 8, 5],
+					],
+					out: [
+						["Spirits", 8, -2e3],
+						["Spire Mass", 5, 1e3],
+					],
+					lock: ["Spire Knob", 10, "Spire Caretaker",1],
+				},
+			}
+		},
+		'Monumental Work : Spire Surface' : {
+			baseStats: [100, 2100, "Spire Surface"],
+			recipes:
+			{
+				"Make Spire Surface":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Block", 1, 20],
+						["Spire Knob", 1, 20],
+						["Spire Tile", 8, 20],
+						["Spirits", 8, 5],
+					],
+					out: [
+						["Spirits", 8, -2e3],
+						["Spire Surface", 5, 1e3],
+					],
+					lock: ["Spire Tile", 10, "Spire Caretaker",1],
+				},
+			}
+		},
+	
+		'Monumental Work : Spire Step' : {
+			baseStats: [-300, 1600, "Spire Step"],
+			recipes:
+			{
+				"Craft Spire Step":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Pebble", 10, 20],
+						["Spire Nugget", 10, 20],
+						["Spire Chip", 10, 20],
+						["Stamina", 20, 10],
+					],
+					out: [
+						["Spire Step", 1, 100],
+					],
+					lock: ["Spire Pebble", 10, "Spire Nugget", 10, "Spire Chip", 10],
+				},
+				"Transform Spire Step":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Cube", 10, 20],
+						["Spire Lump", 10, 20],
+						["Spire Slice", 10, 20],
+						["Mana", 20, 10],
+					],
+					out: [
+						["Spire Step", 6400, 320000],
+					],
+					lock: ["Spire Cube", 10, "Spire Lump", 10, "Spire Slice", 10],
+				},
+				"Conjure Spire Step":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Block", 10, 20],
+						["Spire Knob", 10, 20],
+						["Spire Tile", 10, 20],
+						["Mana", 40, 10],
+					],
+					out: [
+						["Spire Step", 12000000, 600000000],
+					],
+					lock: ["Spire Block", 10, "Spire Knob", 10, "Spire Tile", 10],
+				},
+			}
+		},
+		'Monumental Work : Spire Floor' : {
+			baseStats: [300, 1600, "Spire Floor"],
+			recipes:
+			{
+				"Proceed to the next Spire Floor":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Spire Step", 1, 20],
+					],
+					out: [
+						["Spire Floor", 1, 100],
+					],
+					lock: ["Spire Step", 0.1],
+				},
+				"Secret of the Spire : The Door":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Spire Floor", 0, 5],
+					],
+					out: [
+						["Spire Doorman", 0.001, 1],
+					],
+					lock: ["Spire Step", 1],
+				},
+				"Secret of the Spire : The Room":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Spire Floor", 0, 16],
+					],
+					out: [
+						["Spire Steward", 0.001, 1],
+					],
+					lock: ["Spire Doorman", 1, "Spire Step", 1],
+				},
+				"Secret of the Spire : The Infirmary":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Spire Floor", 0, 27],
+					],
+					out: [
+						["Spire Caretaker", 0.001, 1],
+					],
+					lock: ["Spire Steward", 1,"Spire Step", 1],
+				},
+				"Secret of the Spire : The Jail":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Spire Floor", 0, 38],
+					],
+					out: [
+						["Spire Warden", 0.001, 1],
+					],
+					lock: ["Spire Caretaker", 1,"Spire Step", 1],
+				},
+				"Secret of the Spire : The Tower":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Spire Floor", 0, 49],
+					],
+					out: [
+						["Spire Overseer", 0.001, 1],
+					],
+					lock: ["Spire Warden", 1,"Spire Step", 1],
+				},
+				"Secret of the Spire : The Chamber":
+				{
+					baseStats: [1, 1, true, false],
+					in: [
+						["Spire Floor", 0, 60],
+					],
+					out: [
+						["Spire Orb", 0.001, 1],
+					],
+					lock: ["Spire Overseer", 1,"Spire Step", 1],
 				},
 			}
 		},
@@ -2348,6 +2740,13 @@ var spireCircle = {
 		var input = machineData["Spirits"].recipes[0].inputs[0];
 		input.ratio = 4 + amount * amount;
 		input.min = -4 + 2*input.ratio;
+		
+		amount = data.oElements["Spire Floor"].amount;
+		input = machineData['Monumental Work : Spire Floor'].recipes[0].inputs[0];
+		input.ratio = 4 * Math.pow(2,amount);
+		input.min = input.ratio;
+		
+		
 	},
 };
 

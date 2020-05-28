@@ -31,7 +31,7 @@ var locale = {
 		"Discord",
 		null,
 		"Option(s)",
-		"Changelog",
+		null,
 		"Donate",
 	],
 	oMachines:
