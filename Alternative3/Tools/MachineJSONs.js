@@ -1819,14 +1819,6 @@ var lustCircle = {
 						["Void", 1, 20]
 					],
 				},
-				"???2":
-				{
-					baseStats: [1, 1, true, false],
-					in: [ ],
-					out: [
-						["Revelation", 0.001, 1] ],
-					lock: [],
-				},
 			}
 		},
 		'Corruption':
