@@ -426,7 +426,7 @@ var basicWorkplaces = {
 					out: [
 						["Currency", 0.001, 20]
 					],
-					lock: ["Stamina", 10],
+					lock: ["Stamina", 11],
 				},
 				"Influential Work":
 				{
@@ -1803,7 +1803,9 @@ var lustCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [ ],
-					out: [ ],
+					out: [ 
+						["Revelation", 0.001, 1]
+					],
 					lock: ["Revelation",2],
 					upgrade: ["Mystery unravels", "Revelation", 1],
 				},
@@ -1816,6 +1818,14 @@ var lustCircle = {
 					out: [
 						["Void", 1, 20]
 					],
+				},
+				"???2":
+				{
+					baseStats: [1, 1, true, false],
+					in: [ ],
+					out: [
+						["Revelation", 0.001, 1] ],
+					lock: [],
 				},
 			}
 		},
