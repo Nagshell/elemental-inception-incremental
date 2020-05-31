@@ -1,5 +1,5 @@
 var loopId = null;
-var gameVersion = 304;
+var gameVersion = 305;
 var elapsed = 0;
 var formattedElapsed = 0;
 savingSystem = {
@@ -515,11 +515,19 @@ function tick()
 	// }
 	// splosions.tick();
 
-	// if (winCheck && data.oElements.PureGolemEarth.amount + data.oElements.PureGolemWater.amount + data.oElements.PureGolemAir.amount + data.oElements.PureGolemFire.amount > 3)
-	// {
-	// 	alert("You win. I hope you liked the stage 3 of The First Alkahistorian!\n\nBig thanks to my supporters and helpers:\nPhantomLemon\nVoid\nAeras Alum\nnaltronix\nranger10700\nNevahlif06\n\nAdditional art provided by:\nnononick\nDimava\nRubikium\n\nMy entire family\nEssi & Baster\n\n\\\\('_' )\nMade by Nagshell");
-	// 	winCheck = false;
-	// }
+	if (winCheck && data.oElements["Spire Warden"].amount > 0.5)
+	{
+		victoryPane.showText("                 Victory achieved?\n                 I hope you liked the side stage 3.3 of The First Alkahistorian!\n\n"+
+		"Big thanks to my supporters and helpers:\nPhantomLemon aka Milk | Blake Chapman | ME! | Kesseleth | Len923 | The Troubled Twin\n"+
+		"Alexander Clatworthy | Vasily Shiyan | Levi King | Jesse Clark | Bryan | William Mitchell\nGrant Kowalewski | Ivan Ivanov | Ryan Beeman | Marlyn | Liran Biber | Toksyuryel\nMojken | Baxil | Summercat | charlyfu | Cullen Langford | Mattia Murador"+
+		"\n\nAs well as Essi, who was there to hug whenever he felt like it."+
+		"\n\nHonourable mentions: Hevipelle and lerpinglemur"+
+		"\n\n\\\\('_' )\n Made by Nagshell");
+		regionData.showRegion.action(victoryPane);
+		victoryPane.x = 200;
+		victoryPane.y = 200;
+		winCheck = false;
+	}
 }
 
 var lastTimestamp = null;
