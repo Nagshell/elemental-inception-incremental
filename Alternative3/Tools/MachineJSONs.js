@@ -1852,7 +1852,7 @@ var lustCircle = {
 				{
 					baseStats: [1, 1, true, true],
 					in: [
-						["Craving", 1, 100],
+						["Craving", 1, 500],
 						["Mana", 0, -100],
 					],
 					out: [
@@ -3203,7 +3203,7 @@ var greedCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Wood", 1, -100],
-						["Avarice", 10, 100],
+						["Avarice", 10, 500],
 					],
 					out: [
 						["Wood", -1, -1e5],
@@ -3218,7 +3218,7 @@ var greedCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Impure Mud", 1, -100],
-						["Avarice", 10, 100],
+						["Avarice", 10, 500],
 					],
 					out: [
 						["Impure Mud", -1, -1e5],
@@ -3233,7 +3233,7 @@ var greedCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Wet Sand", 1, -100],
-						["Avarice", 10, 100],
+						["Avarice", 10, 500],
 					],
 					out: [
 						["Wet Sand", -1, -1e5],
@@ -3248,7 +3248,7 @@ var greedCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Clay", 1, -100],
-						["Avarice", 10, 100],
+						["Avarice", 10, 500],
 					],
 					out: [
 						["Clay", -1, -1e5],
@@ -3263,7 +3263,7 @@ var greedCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Muddy Water", 1, -100],
-						["Avarice", 10, 100],
+						["Avarice", 10, 500],
 					],
 					out: [
 						["Muddy Water", -1, -1e5],
@@ -3583,7 +3583,7 @@ var slothCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Body", 1, -100],
-						["Lethargy", 1, 100],
+						["Lethargy", 1, 500],
 					],
 					out: [
 						["Body", 1, -1e5],

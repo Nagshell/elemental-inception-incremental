@@ -518,8 +518,8 @@ function tick()
 	if (winCheck && data.oElements["Spire Warden"].amount > 0.5)
 	{
 		victoryPane.showText("                 Victory achieved?\n                 I hope you liked the side stage 3.3 of The First Alkahistorian!\n\n"+
-		"Big thanks to my supporters and helpers:\nPhantomLemon aka Milk | Blake Chapman | ME! | Kesseleth | Len923 | The Troubled Twin\n"+
-		"Alexander Clatworthy | Vasily Shiyan | Levi King | Jesse Clark | Bryan | William Mitchell\nGrant Kowalewski | Ivan Ivanov | Ryan Beeman | Marlyn | Liran Biber | Toksyuryel\nMojken | Baxil | Summercat | charlyfu | Cullen Langford | Mattia Murador"+
+		"Big thanks to my supporters and helpers:\nPhantomLemon aka Milk | Blake Chapman | WaitingIdly | Kesseleth | Len923 | The Troubled Twin\n"+
+		"Alexander Clatworthy | xicmiah | Levi King | Jesse Clark | Dranacos  | William Mitchell\nGrant Kowalewski | Ivan Ivanov | Ryan Beeman | Marlyn | Liran Biber | Toksyuryel\nMojken | Baxil | Summercat | charlyfu | Cullen Langford | Mattia Murador"+
 		"\n\nAs well as Essi, who was there to hug whenever he felt like it."+
 		"\n\nHonourable mentions: Hevipelle and lerpinglemur"+
 		"\n\n\\\\('_' )\n Made by Nagshell");
