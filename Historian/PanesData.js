@@ -1049,7 +1049,7 @@ function preprocessPaneData()
 
 	preprocessOptions();
 
-	changelogPane = new cPane(mainPane, 200, 200);
+	/* changelogPane = new cPane(mainPane, 200, 200);
 	path = new Path2D();
 	path.rect(0, 0, 300, 230);
 	changelogPane.boundaryPath = path;
@@ -1096,7 +1096,7 @@ function preprocessPaneData()
 	};
 	changelogPane.region.pane = changelogPane;
 	regionData.pinRegion.action(changelogPane);
-	regionData.hideRegion.action(changelogPane);
+	regionData.hideRegion.action(changelogPane); */
 
 	donatePage = new cPane(mainPane, 300, 100);
 	var path = new Path2D();

@@ -143,6 +143,17 @@ var materialCircle = {
 						["Air", 0.001, 1e3]
 					],
 					lock: ["Mana", 1],
+					upgrade: ["Skilled Conjure", "Knowledge", 400],
+				},
+				"Skilled Conjure":
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Mana", 0.001, 1],
+					],
+					out: [
+						["Air", 0.003, 1e3]
+					],
 				},
 				"Transmute":
 				{
@@ -173,6 +184,17 @@ var materialCircle = {
 						["Earth", 0.001, 1e3]
 					],
 					lock: ["Mana", 2],
+					upgrade: ["Skilled Conjure", "Knowledge", 400],
+				},
+				"Skilled Conjure":
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Mana", 0.001, 1],
+					],
+					out: [
+						["Earth", 0.003, 1e3]
+					],
 				},
 				"Transmute":
 				{
@@ -204,6 +226,17 @@ var materialCircle = {
 						["Water", 0.001, 1e3]
 					],
 					lock: ["Mana", 3],
+					upgrade: ["Skilled Conjure", "Knowledge", 400],
+				},
+				"Skilled Conjure":
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Mana", 0.001, 1],
+					],
+					out: [
+						["Water", 0.003, 1e3]
+					],
 				},
 				"Transmute":
 				{
@@ -235,6 +268,17 @@ var materialCircle = {
 						["Fire", 0.001, 1e3]
 					],
 					lock: ["Mana", 4],
+					upgrade: ["Skilled Conjure", "Knowledge", 400],
+				},
+				"Skilled Conjure":
+				{
+					baseStats: [1, 1, false, true],
+					in: [
+						["Mana", 0.001, 1],
+					],
+					out: [
+						["Air", 0.003, 1e3]
+					],
 				},
 			}
 		},
@@ -260,19 +304,55 @@ var materialCircle = {
 		{
 			baseStats: [-50, 170, "Magma"],
 			recipes:
-			{}
+			{
+				"Forbidden Chant":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mana", 1, 100],
+					],
+					out: [
+						["Magma", 0.003, 20]
+					],
+					lock: ["FKnowledge", 5],
+				},
+			}
 		},
 		'Ice':
 		{
 			baseStats: [50, 170, "Ice"],
 			recipes:
-			{}
+			{
+				"Forbidden Chant":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mana", 1, 100],
+					],
+					out: [
+						["Ice", 0.003, 20]
+					],
+					lock: ["FKnowledge", 3],
+				},
+			}
 		},
 		'Void':
 		{
 			baseStats: [0, 255, "Void"],
 			recipes:
-			{}
+			{
+				"Forbidden Chant":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Mana", 1, 100],
+					],
+					out: [
+						["Void", 0.003, 20]
+					],
+					lock: ["FKnowledge", 8],
+				},
+			}
 		},
 		
 		'Impure Mud':
@@ -357,7 +437,7 @@ var basicWorkplaces = {
 					],
 					out: [
 						["Currency", 0.002, 20],
-						["Repute", 0.001, 100]
+						//["Repute", 0.001, 100]
 					],
 					lock: ["Influence", 10],
 				},
@@ -666,7 +746,7 @@ var basicHouses = {
 						["TerraProgress", 0.01, 1],
 					],
 					lock: ["Mind", 1],
-					upgrade:["Terraform land", "TerraProgress", 1]
+					upgrade:["Terraform land", "TerraProgress", 1, "Mana Charge", 1]
 				},
 				"Terraform land":
 				{
@@ -675,8 +755,8 @@ var basicHouses = {
 						["Ritual", 1, 5],
 					],
 					out: [
-						["TerraProgress", 0.001, 1],
-						["PlaceOfPower", 0.001, 1],
+						["TerraProgress", 0.005, 1],
+						["PlaceOfPower", 0.005, 1],
 					],
 				},
 			}
@@ -694,7 +774,7 @@ var basicHouses = {
 					],
 					out: [
 						["PlaceOfPower", 1, 10],
-						["Mana Charge", 1, 1e5],
+						["Mana Charge", 40, 1e5],
 					],
 					lock: ["PlaceOfPower", 0.001],
 				},
@@ -755,6 +835,18 @@ var constructedWorkplaces = {
 						["Ash", 100, -1000]
 					],
 					lock: ["Campfire", 100],
+				},
+				"Burnout":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Wood", 100, 100],
+						["Fire", 100, 100]
+					],
+					out: [
+						["Ash", 10, 1000]
+					],
+					lock: ["Fire", 1e4],
 				}
 			}
 		},
@@ -901,7 +993,7 @@ var ritualCircle = {
 	{
 		'Cycle':
 		{
-			baseStats: [600,175],
+			baseStats: [600,175,"Cycle"],
 			recipes:
 			{
 				"Continue Cycle":
@@ -935,7 +1027,7 @@ var ritualCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Soul", 0, 200],
+						["Soul", 0, 100],
 					],
 					out: [
 						["Ritual", 1, -1],
@@ -969,15 +1061,26 @@ var ritualCircle = {
 				},
 				"Ritual of Gate":
 				{
-					baseStats: [1, 1, true, false],
+					baseStats: [1, 1, true, true],
 					in: [
-						["Ritual", 0, 200],
+						["Ritual", 2, 200],
 					],
 					out: [
-						["Shattered Glass", 0.001, 200],
+						["Shattered Glass", 1, 200],
 					],
 					lock: ["Ritual", 200],
 					alwayson: true,
+				},
+				"Ritual of Power":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Ritual", 20, 200],
+					],
+					out: [
+						["Power", 1, 100],
+					],
+					lock: ["Influence", 1, "Ritual", 200],
 				},
 			}
 		},
@@ -994,7 +1097,7 @@ var ritualCircle = {
 					],
 					out: [
 						["Revelation", 1, -1],
-						["Madness1", 1, 1],
+						["Lust1", 1, 1],
 					],
 					lock: ["RitualA", 10],
 					alwayson: true,
@@ -1006,18 +1109,44 @@ var ritualCircle = {
 			baseStats: [600,-250, "RitualB"],
 			recipes:
 			{
+				"Ritual of Amnesia":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["RitualB", 0, 100],
+						["Mind", 1, 1e3],
+					],
+					out: [
+						["Body", 0.501, -6e3],
+						["Soul", 0.501, -6e3],
+					],
+					lock: ["RitualB", 10],
+				},
 				"Ritual of Blood":
 				{
 					baseStats: [1, 1, true, true],
 					in: [
-						["RitualB", 0, 200],
-						["Soul", 1, 1],
+						["RitualB", 0, 100],
+						["Body", 1, 600],
 					],
 					out: [
-						["Body", 1, 5e3],
+						["Mind", 0.501, -6e3],
+						["Soul", 0.501, -6e3],
 					],
-					lock: ["RitualB", 10],
-					alwayson: true,
+					lock: ["RitualB", 15],
+				},
+				"Ritual of Fear":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["RitualB", 0, 100],
+						["Soul", 1, 600],
+					],
+					out: [
+						["Body", 0.501, -6e3],
+						["Mind", 0.501, -6e3],
+					],
+					lock: ["RitualB", 20],
 				}
 			}
 		},
@@ -1323,7 +1452,7 @@ var ritualCircle = {
 						["RitualB", 0.01, 1e5],
 						["Cycle", 0, 0.8]
 					],
-					lock: ["FKnowledge", 1],
+					lock: ["FKnowledge", 0.1],
 					alwayson: true,
 				},
 				"Cycle":
@@ -1337,7 +1466,7 @@ var ritualCircle = {
 						["RitualIce", 1, 1],
 						["RitualVoid", 1, 1],
 					],
-					lock: ["FKnowledge", 1],
+					lock: ["FKnowledge", 0.1],
 					alwayson: true,
 				},
 				"Spark":
@@ -1351,7 +1480,7 @@ var ritualCircle = {
 						["RitualIce", 0, 1],
 						["RitualVoid", 0, 1],
 					],
-					lock: ["FKnowledge", 1],
+					lock: ["FKnowledge", 0.5],
 					alwayson: true,
 				},
 			}
@@ -1373,7 +1502,7 @@ var ritualCircle = {
 						["RitualB", 0.01, 1e5],
 						["Cycle", 0, 0.8]
 					],
-					lock: ["FKnowledge", 1],
+					lock: ["FKnowledge", 0.1],
 					alwayson: true,
 				},
 				"Cycle":
@@ -1387,7 +1516,7 @@ var ritualCircle = {
 						["RitualMagma", 1, 1],
 						["RitualVoid", 1, 1],
 					],
-					lock: ["FKnowledge", 1],
+					lock: ["FKnowledge", 0.1],
 					alwayson: true,
 				},
 			}
@@ -1409,7 +1538,7 @@ var ritualCircle = {
 						["RitualB", 0.01, 1e5],
 						["Cycle", 0, 0.8]
 					],
-					lock: ["FKnowledge", 1],
+					lock: ["FKnowledge", 0.1],
 					alwayson: true,
 				},
 				"Cycle":
@@ -1423,7 +1552,7 @@ var ritualCircle = {
 						["RitualIce", 1, 1],
 						["RitualMagma", 1, 1],
 					],
-					lock: ["FKnowledge", 1],
+					lock: ["FKnowledge", 0.1],
 					alwayson: true,
 				},
 			}
@@ -1660,9 +1789,9 @@ var researchCircle = {
 	},
 }
 
-var madnessCircle = {
-	stepsOfMadness: 5,
-	elements: ["Revelation", "Corruption", "Doom", "Madness1", "Madness2", "Madness3", "Madness4", "Madness5"],
+var lustCircle = {
+	stepsOfLust: 5,
+	elements: ["Revelation", "Corruption", "Doom", "Lust1", "Lust2", "Lust3", "Lust4", "Lust5"],
 	machines:
 	{
 		'Revelation':
@@ -1670,12 +1799,29 @@ var madnessCircle = {
 			baseStats: [0, -700, "Revelation"],
 			recipes:
 			{
-				
+				"???":
+				{
+					baseStats: [1, 1, true, false],
+					in: [ ],
+					out: [ ],
+					lock: ["Revelation",2],
+					upgrade: ["Mystery unravels", "Revelation", 1],
+				},
+				"Mystery unravels":
+				{
+					baseStats: [1, 1, false, false],
+					in: [
+						["Revelation", 0, 3]
+					],
+					out: [
+						["Void", 1, 20]
+					],
+				},
 			}
 		},
 		'Corruption':
 		{
-			baseStats: [0, 500, "Corruption"],
+			baseStats: [300, 700, "Corruption"],
 			recipes:
 			{
 				"Corruption Burns":
@@ -1707,7 +1853,7 @@ var madnessCircle = {
 		},
 		'Doom':
 		{
-			baseStats: [0, 600, "Doom"],
+			baseStats: [400, 700, "Doom"],
 			recipes:
 			{
 				"Doom Breaks":
@@ -1726,205 +1872,205 @@ var madnessCircle = {
 				},
 			}
 		},
-		'Madness: Step 1' : {
-			baseStats: [-100, 300, "Madness1"],
+		'Lust: Step 1' : {
+			baseStats: [250, 550, "Lust1"],
 			recipes:
 			{
-				"Madness Looms":
+				"Lust Yearns":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness1", 1, 0.001],
+						["Lust1", 1, 0.001],
 					],
 					out: [
-						["Madness1", 1.1, 2000],
+						["Lust1", 1.1, 2000],
 					],
-					lock: ["Madness1",1e99],
+					lock: ["Lust1",1e99],
 					alwayson: true,
 				},
-				"Madness Dwells":
+				"Lust Dwells":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness1", 1999, 2000],
+						["Lust1", 1999, 2000],
 					],
 					out: [
-						["Madness2", 1, 0.9],
+						["Lust2", 1, 0.9],
 					],
-					lock: ["Madness1",1e99],
+					lock: ["Lust1",1e99],
 					alwayson: true,
 				},
-				"Madness Corrupts":
+				"Lust Corrupts":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness1", 99, 100],
-						["Madness2", 0, 1],
+						["Lust1", 99, 100],
+						["Lust2", 0, 1],
 					],
 					out: [
 						["Corruption", 1, 1e4],
 					],
-					lock: ["Madness1",1e99],
+					lock: ["Lust1",1e99],
 					alwayson: true,
 				},
 			}
 		},
-		'Madness: Step 2' : {
-			baseStats: [-150, 400, "Madness2"],
+		'Lust: Step 2' : {
+			baseStats: [350, 550, "Lust2"],
 			recipes:
 			{
-				"Madness Looms":
+				"Lust Yearns":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness2", 1, 0.001],
+						["Lust2", 1, 0.001],
 					],
 					out: [
-						["Madness2", 1.05, 2000],
+						["Lust2", 1.05, 2000],
 					],
-					lock: ["Madness2",1e99],
+					lock: ["Lust2",1e99],
 					alwayson: true,
 				},
-				"Madness Dwells":
+				"Lust Dwells":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness2", 1999, 2000],
+						["Lust2", 1999, 2000],
 					],
 					out: [
-						["Madness3", 1, 0.9],
+						["Lust3", 1, 0.9],
 					],
-					lock: ["Madness2",1e99],
+					lock: ["Lust2",1e99],
 					alwayson: true,
 				},
-				"Madness Corrupts":
+				"Lust Corrupts":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness2", 99, 100],
-						["Madness3", 0, 1],
+						["Lust2", 99, 100],
+						["Lust3", 0, 1],
 					],
 					out: [
 						["Corruption", 3, 1e4],
 					],
-					lock: ["Madness2",1e99],
+					lock: ["Lust2",1e99],
 					alwayson: true,
 				},
 			}
 		},
-		'Madness: Step 3' : {
-			baseStats: [-100, 500, "Madness3"],
+		'Lust: Step 3' : {
+			baseStats: [450, 550, "Lust3"],
 			recipes:
 			{
-				"Madness Looms":
+				"Lust Yearns":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness3", 1, 0.001],
+						["Lust3", 1, 0.001],
 					],
 					out: [
-						["Madness3", 1.025, 2000],
+						["Lust3", 1.025, 2000],
 					],
-					lock: ["Madness3",1e99],
+					lock: ["Lust3",1e99],
 					alwayson: true,
 				},
-				"Madness Dwells":
+				"Lust Dwells":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness3", 1999, 2000],
+						["Lust3", 1999, 2000],
 					],
 					out: [
-						["Madness4", 1, 0.9],
+						["Lust4", 1, 0.9],
 					],
-					lock: ["Madness3",1e99],
+					lock: ["Lust3",1e99],
 					alwayson: true,
 				},
-				"Madness Corrupts":
+				"Lust Corrupts":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness3", 99, 100],
-						["Madness4", 0, 1],
+						["Lust3", 99, 100],
+						["Lust4", 0, 1],
 					],
 					out: [
 						["Corruption", 8, 1e4],
 					],
-					lock: ["Madness3",1e99],
+					lock: ["Lust3",1e99],
 					alwayson: true,
 				},
 			}
 		},
-		'Madness: Step 4' : {
-			baseStats: [-150, 600, "Madness4"],
+		'Lust: Step 4' : {
+			baseStats: [550, 550, "Lust4"],
 			recipes:
 			{
-				"Madness Looms":
+				"Lust Yearns":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness4", 1, 0.001],
+						["Lust4", 1, 0.001],
 					],
 					out: [
-						["Madness4", 1.0125, 2000],
+						["Lust4", 1.0125, 2000],
 					],
-					lock: ["Madness4",1e99],
+					lock: ["Lust4",1e99],
 					alwayson: true,
 				},
-				"Madness Dwells":
+				"Lust Dwells":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness4", 1999, 2000],
+						["Lust4", 1999, 2000],
 					],
 					out: [
-						["Madness5", 1, 0.9],
+						["Lust5", 1, 0.9],
 					],
-					lock: ["Madness4",1e99],
+					lock: ["Lust4",1e99],
 					alwayson: true,
 				},
-				"Madness Corrupts":
+				"Lust Corrupts":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness4", 99, 100],
-						["Madness5", 0, 1],
+						["Lust4", 99, 100],
+						["Lust5", 0, 1],
 					],
 					out: [
 						["Corruption", 24, 1e4],
 					],
-					lock: ["Madness4",1e99],
+					lock: ["Lust4",1e99],
 					alwayson: true,
 				},
 			}
 		},
-		'Madness: Step 5' : {
-			baseStats: [-100, 700, "Madness5"],
+		'Lust: Step 5' : {
+			baseStats: [650, 550, "Lust5"],
 			recipes:
 			{
-				"Madness Looms":
+				"Lust Yearns":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness5", 1, 0.001],
+						["Lust5", 1, 0.001],
 					],
 					out: [
-						["Madness5", 1.0004, 100],
+						["Lust5", 1.0004, 100],
 					],
-					lock: ["Madness5",1e99],
+					lock: ["Lust5",1e99],
 					alwayson: true,
 				},
-				"Madness Enlightens":
+				"Lust Blessing":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Madness5", 99, 100],
+						["Lust5", 99, 100],
 					],
 					out: [
 						["Revelation", 1, -5],
 						["Doom", 0.5, -5],
 					],
-					lock: ["Madness5",1e99],
+					lock: ["Lust5",1e99],
 					alwayson: true,
 				},
 			}
@@ -1940,9 +2086,9 @@ var madnessCircle = {
 	},
 	postprocess: function ()
 	{
-		for (var i=1;i<=this.stepsOfMadness;i++)
+		for (var i=1;i<=this.stepsOfLust;i++)
 		{
-			machineData["Madness: Step "+i].recipes[0].inputs[0].effectReference.maxR*=3;
+			machineData["Lust: Step "+i].recipes[0].inputs[0].effectReference.maxR*=3;
 		}
 	},
 	cooldown : 5,
@@ -1950,12 +2096,12 @@ var madnessCircle = {
 	{	
 		if(this.cooldown-->0) return;
 		this.cooldown = 60;
-		for (var i=1;i<=this.stepsOfMadness;i++)
+		for (var i=1;i<=this.stepsOfLust;i++)
 		{
-			var recs = machineData["Madness: Step "+i].recipes;
+			var recs = machineData["Lust: Step "+i].recipes;
 			if(!recs[0].unlocked)
 			{
-				if(data.oElements["Madness"+i].amount < 0.1) continue;
+				if(data.oElements["Lust"+i].amount < 0.1) continue;
 				for (var recIndex in recs)
 				{
 					recs[recIndex].region.paymentSuccess();
@@ -1986,19 +2132,21 @@ var spireCircle = {
 		"Spire Slab","Spire Mass","Spire Surface",
 		"Spire Step", "Spire Floor",
 		"Spire Doorman","Spire Steward","Spire Caretaker","Spire Warden","Spire Overseer","Spire Orb",
-		"Storage"
+		"Spire Day", "Spire Night",
+		"Warehouse","Gate","Guest Room","Workshop",
+		"Stable","Academy",
 		],
 	machines:
 	{
 		'Shattered Glass' : {
-			baseStats: [0, 1000, "Shattered Glass"],
+			baseStats: [0, 400, "Shattered Glass"],
 			recipes:
 			{
 				
 			}
 		},
 		'Spire Foundation' : {
-			baseStats: [0, 1200, "Spire Foundation"],
+			baseStats: [0, 500, "Spire Foundation"],
 			recipes:
 			{
 				"Lay down foundation":
@@ -2008,14 +2156,14 @@ var spireCircle = {
 						["Shattered Glass", 1, 1],
 					],
 					out: [
-						["Spire Foundation", 0.1, 100],
+						["Spire Foundation", 0.1, 10],
 					],
 					lock: ["FKnowledge",0.01],
 				},
 			}
 		},
 		'Portal Frame' : {
-			baseStats: [200, 1200, "Portal Frame"],
+			baseStats: [-100, 450, "Portal Frame"],
 			recipes:
 			{
 				"Build Portal":
@@ -2024,8 +2172,8 @@ var spireCircle = {
 					in: [
 						["Spire Foundation", 0, 10],
 						["Shattered Glass", 0.1, 1],
-						["Brick", 3, 8],
-						["Wood", 35, 50],
+						["Brick", 0.1, 8],
+						["Wood", 10, 50],
 						["Body", 1, 1],
 					],
 					out: [
@@ -2036,7 +2184,7 @@ var spireCircle = {
 			}
 		},
 		'Influence' : {
-			baseStats: [100, 1000, "Influence"],
+			baseStats: [100, 450, "Influence"],
 			recipes:
 			{
 				"Gather Influence":
@@ -2047,20 +2195,20 @@ var spireCircle = {
 						["Power", 1, 10],
 					],
 					out: [
-						["Influence", 0.01, 1e4],
+						["Influence", 0.5, 1e4],
 					],
 					lock: ["Portal Frame",0.001],
 				},
 			}
 		},
 		'Portal' : {
-			baseStats: [200, 1300, "Portal"],
+			baseStats: [-100, 550, "Portal"],
 			recipes:
 			{
 			}
 		},
 		'PortalEarth' : {
-			baseStats: [50, 1400, "PortalEarth"],
+			baseStats: [50, 600, "PortalEarth"],
 			recipes:
 			{
 				"Open Portal":
@@ -2068,7 +2216,7 @@ var spireCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["Portal Frame", 0, 1],
-						["Power", 50, 80],
+						["Power", 20, 80],
 					],
 					out: [
 						["Portal", 1, 1],
@@ -2090,7 +2238,7 @@ var spireCircle = {
 				},
 				"Absorb Element":
 				{
-					baseStats: [1, 1, true, true],
+					baseStats: [10, 1, true, true],
 					in: [
 						["PortalEarth", 1, 0.1],
 					],
@@ -2098,13 +2246,27 @@ var spireCircle = {
 						["PortalEarth", 1, -5],
 						["Earth", 2e3, 4e4],
 					],
-					lock: ["Influence",1],
+					lock: ["Influence",0.01],
+					alwayson: true
+				},
+				"Open the flood gate":
+				{
+					baseStats: [10, 1, true, true],
+					in: [
+						["PortalEarth", 0, 0.1],
+						["Gate", 10, 0.1],
+					],
+					out: [
+						["Gate", 10, -1e10],
+						["Earth", 2e3, 4e4],
+					],
+					lock: ["Gate",1],
 					alwayson: true
 				},
 			}
 		},
 		'PortalWater' : {
-			baseStats: [-50, 1400, "PortalWater"],
+			baseStats: [-50, 600, "PortalWater"],
 			recipes:
 			{
 				"Open Portal":
@@ -2112,7 +2274,7 @@ var spireCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["Portal Frame", 0, 1],
-						["Power", 50, 80],
+						["Power", 20, 80],
 					],
 					out: [
 						["Portal", 1, 1],
@@ -2134,7 +2296,7 @@ var spireCircle = {
 				},
 				"Absorb Element":
 				{
-					baseStats: [1, 1, true, true],
+					baseStats: [10, 1, true, true],
 					in: [
 						["PortalWater", 1, 0.1],
 					],
@@ -2142,13 +2304,27 @@ var spireCircle = {
 						["PortalWater", 1, -5],
 						["Water", 2e3, 4e4],
 					],
-					lock: ["Influence",1],
+					lock: ["Influence",0.01],
+					alwayson: true
+				},
+				"Open the flood gate":
+				{
+					baseStats: [10, 1, true, true],
+					in: [
+						["PortalWater", 0, 0.1],
+						["Gate", 10, 0.1],
+					],
+					out: [
+						["Gate", 10, -1e10],
+						["Water", 2e3, 4e4],
+					],
+					lock: ["Gate",1],
 					alwayson: true
 				},
 			}
 		},
 		'PortalAir' : {
-			baseStats: [150, 1400, "PortalAir"],
+			baseStats: [150, 600, "PortalAir"],
 			recipes:
 			{
 				"Open Portal":
@@ -2156,7 +2332,7 @@ var spireCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["Portal Frame", 0, 1],
-						["Power", 50, 80],
+						["Power", 20, 80],
 					],
 					out: [
 						["Portal", 1, 1],
@@ -2178,7 +2354,7 @@ var spireCircle = {
 				},
 				"Absorb Element":
 				{
-					baseStats: [1, 1, true, true],
+					baseStats: [10, 1, true, true],
 					in: [
 						["PortalAir", 1, 0.1],
 					],
@@ -2186,13 +2362,27 @@ var spireCircle = {
 						["PortalAir", 1, -5],
 						["Air", 2e3, 4e4],
 					],
-					lock: ["Influence",1],
+					lock: ["Influence",0.01],
+					alwayson: true
+				},
+				"Open the flood gate":
+				{
+					baseStats: [10, 1, true, true],
+					in: [
+						["PortalAir", 0, 0.1],
+						["Gate", 10, 0.1],
+					],
+					out: [
+						["Gate", 10, -1e10],
+						["Air", 2e3, 4e4],
+					],
+					lock: ["Gate",1],
 					alwayson: true
 				},
 			}
 		},
 		'PortalFire' : {
-			baseStats: [-150, 1400, "PortalFire"],
+			baseStats: [-150, 600, "PortalFire"],
 			recipes:
 			{
 				"Open Portal":
@@ -2200,7 +2390,7 @@ var spireCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["Portal Frame", 0, 1],
-						["Power", 50, 80],
+						["Power", 20, 80],
 					],
 					out: [
 						["Portal", 1, 1],
@@ -2230,13 +2420,27 @@ var spireCircle = {
 						["PortalFire", 1, -5],
 						["Fire", 2e3, 4e4],
 					],
-					lock: ["Influence",1],
+					lock: ["Influence",0.01],
+					alwayson: true
+				},
+				"Open the flood gate":
+				{
+					baseStats: [10, 1, true, true],
+					in: [
+						["PortalFire", 0, 0.1],
+						["Gate", 10, 0.1],
+					],
+					out: [
+						["Gate", 10, -1e10],
+						["Fire", 2e3, 4e4],
+					],
+					lock: ["Gate",1],
 					alwayson: true
 				},
 			}
 		},
 		'Spirits' : {
-			baseStats: [-100, 1000, "Spirits"],
+			baseStats: [100, 550, "Spirits"],
 			recipes:
 			{
 				"Bind Spirit":
@@ -2265,7 +2469,7 @@ var spireCircle = {
 			}
 		},
 		'Monumental Work : Spire Pebble' : {
-			baseStats: [0, 1500, "Spire Pebble"],
+			baseStats: [0, 700, "Spire Pebble"],
 			recipes:
 			{
 				"Make Spire Pebble":
@@ -2279,12 +2483,12 @@ var spireCircle = {
 						["Spirits", 1, -2e3],
 						["Spire Pebble", 5, 1e3],
 					],
-					lock: ["Influence", 100, "Mud", 1e3],
+					lock: ["Influence", 100, "Mud", 200],
 				},
 			}
 		},
 		'Monumental Work : Spire Nugget' : {
-			baseStats: [-100, 1500, "Spire Nugget"],
+			baseStats: [-100, 700, "Spire Nugget"],
 			recipes:
 			{
 				"Make Spire Nugget":
@@ -2298,12 +2502,12 @@ var spireCircle = {
 						["Spirits", 1, -2e3],
 						["Spire Nugget", 5, 1e3],
 					],
-					lock: ["Influence", 100, "Steam",1e3],
+					lock: ["Influence", 100, "Steam",200],
 				},
 			}
 		},
 		'Monumental Work : Spire Chip' : {
-			baseStats: [100, 1500, "Spire Chip"],
+			baseStats: [100, 700, "Spire Chip"],
 			recipes:
 			{
 				"Make Spire Chip":
@@ -2317,13 +2521,13 @@ var spireCircle = {
 						["Spirits", 1, -2e3],
 						["Spire Chip", 5, 1e3],
 					],
-					lock: ["Influence", 100, "Sand",1e3],
+					lock: ["Influence", 100, "Sand",200],
 				},
 			}
 		},
 		
 		'Monumental Work : Spire Cube' : {
-			baseStats: [0, 1700, "Spire Cube"],
+			baseStats: [0, 900, "Spire Cube"],
 			recipes:
 			{
 				"Make Spire Cube":
@@ -2345,7 +2549,7 @@ var spireCircle = {
 			}
 		},
 		'Monumental Work : Spire Lump' : {
-			baseStats: [-100, 1700, "Spire Lump"],
+			baseStats: [-100, 900, "Spire Lump"],
 			recipes:
 			{
 				"Make Spire Lump":
@@ -2366,7 +2570,7 @@ var spireCircle = {
 			}
 		},
 		'Monumental Work : Spire Slice' : {
-			baseStats: [100, 1700, "Spire Slice"],
+			baseStats: [100, 900, "Spire Slice"],
 			recipes:
 			{
 				"Make Spire Slice":
@@ -2388,7 +2592,7 @@ var spireCircle = {
 		},
 		
 		'Monumental Work : Spire Block' : {
-			baseStats: [0, 1900, "Spire Block"],
+			baseStats: [0, 1100, "Spire Block"],
 			recipes:
 			{
 				"Make Spire Block":
@@ -2410,7 +2614,7 @@ var spireCircle = {
 			}
 		},
 		'Monumental Work : Spire Knob' : {
-			baseStats: [-100, 1900, "Spire Knob"],
+			baseStats: [-100, 1100, "Spire Knob"],
 			recipes:
 			{
 				"Make Spire Knob":
@@ -2431,7 +2635,7 @@ var spireCircle = {
 			}
 		},
 		'Monumental Work : Spire Tile' : {
-			baseStats: [100, 1900, "Spire Tile"],
+			baseStats: [100, 1100, "Spire Tile"],
 			recipes:
 			{
 				"Make Spire Tile":
@@ -2453,7 +2657,7 @@ var spireCircle = {
 		},
 		
 		'Monumental Work : Spire Slab' : {
-			baseStats: [0, 2100, "Spire Slab"],
+			baseStats: [0, 1300, "Spire Slab"],
 			recipes:
 			{
 				"Make Spire Slab":
@@ -2475,7 +2679,7 @@ var spireCircle = {
 			}
 		},
 		'Monumental Work : Spire Mass' : {
-			baseStats: [-100, 2100, "Spire Mass"],
+			baseStats: [-100, 1300, "Spire Mass"],
 			recipes:
 			{
 				"Make Spire Mass":
@@ -2496,7 +2700,7 @@ var spireCircle = {
 			}
 		},
 		'Monumental Work : Spire Surface' : {
-			baseStats: [100, 2100, "Spire Surface"],
+			baseStats: [100, 1300, "Spire Surface"],
 			recipes:
 			{
 				"Make Spire Surface":
@@ -2518,7 +2722,7 @@ var spireCircle = {
 		},
 	
 		'Monumental Work : Spire Step' : {
-			baseStats: [-300, 1600, "Spire Step"],
+			baseStats: [200, 800, "Spire Step"],
 			recipes:
 			{
 				"Craft Spire Step":
@@ -2542,7 +2746,7 @@ var spireCircle = {
 						["Spire Cube", 10, 20],
 						["Spire Lump", 10, 20],
 						["Spire Slice", 10, 20],
-						["Mana", 20, 10],
+						["Mana Charge", 20, 10],
 					],
 					out: [
 						["Spire Step", 6400, 320000],
@@ -2556,7 +2760,7 @@ var spireCircle = {
 						["Spire Block", 10, 20],
 						["Spire Knob", 10, 20],
 						["Spire Tile", 10, 20],
-						["Mana", 40, 10],
+						["Mana Charge", 40, 10],
 					],
 					out: [
 						["Spire Step", 12000000, 600000000],
@@ -2566,7 +2770,7 @@ var spireCircle = {
 			}
 		},
 		'Monumental Work : Spire Floor' : {
-			baseStats: [300, 1600, "Spire Floor"],
+			baseStats: [-200, 800, "Spire Floor"],
 			recipes:
 			{
 				"Proceed to the next Spire Floor":
@@ -2580,7 +2784,7 @@ var spireCircle = {
 					],
 					lock: ["Spire Step", 0.1],
 				},
-				"Secret of the Spire : The Door":
+				"Secret of the Spire : Door":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -2591,7 +2795,7 @@ var spireCircle = {
 					],
 					lock: ["Spire Step", 1],
 				},
-				"Secret of the Spire : The Room":
+				"Secret of the Spire : Room":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -2602,7 +2806,7 @@ var spireCircle = {
 					],
 					lock: ["Spire Doorman", 1, "Spire Step", 1],
 				},
-				"Secret of the Spire : The Infirmary":
+				"Secret of the Spire : Infirmary":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -2613,7 +2817,7 @@ var spireCircle = {
 					],
 					lock: ["Spire Steward", 1,"Spire Step", 1],
 				},
-				"Secret of the Spire : The Jail":
+				"Secret of the Spire : Jail":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -2624,7 +2828,7 @@ var spireCircle = {
 					],
 					lock: ["Spire Caretaker", 1,"Spire Step", 1],
 				},
-				"Secret of the Spire : The Tower":
+				"Secret of the Spire : Tower":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -2635,7 +2839,7 @@ var spireCircle = {
 					],
 					lock: ["Spire Warden", 1,"Spire Step", 1],
 				},
-				"Secret of the Spire : The Chamber":
+				"Secret of the Spire : Chamber":
 				{
 					baseStats: [1, 1, true, false],
 					in: [
@@ -2645,6 +2849,133 @@ var spireCircle = {
 						["Spire Orb", 0.001, 1],
 					],
 					lock: ["Spire Overseer", 1,"Spire Step", 1],
+				},
+			}
+		},
+	
+		'Elemental Doorman' : {
+			baseStats: [-400, 800, "Spire Doorman"],
+			recipes: {}
+		},
+		'Elemental Gate' : {
+			baseStats: [-500, 800, "Gate"],
+			recipes:
+			{
+				"Improve Portal output rate":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Doorman", 1, 0.5],
+					],
+					out: [
+						["Gate", 1, 1e10],
+					],
+					lock: ["Spire Doorman", 1],
+				},
+			}
+		},
+		'Elemental Warehouse' : {
+			baseStats: [-600, 800, "Warehouse"],
+			recipes:
+			{
+				"Improve Portal output capacity":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Doorman", 1, 0.5],
+					],
+					out: [
+						["Warehouse", 1, 1e10],
+					],
+					lock: ["Spire Doorman", 1],
+				},
+			}
+		},
+		'Elemental Steward' : {
+			baseStats: [-400, 900, "Spire Steward"],
+			recipes: {}
+		},	
+		'Elemental Caretaker' : {
+			baseStats: [-400, 1000, "Spire Caretaker"],
+			recipes: {}
+		},
+		'Elemental Warden' : {
+			baseStats: [-400, 1100, "Spire Warden"],
+			recipes: {}
+		},
+		'Elemental Overseer' : {
+			baseStats: [-400, 1200, "Spire Overseer"],
+			recipes: {}
+		},	
+		'Elemental Orb' : {
+			baseStats: [-400, 1300, "Spire Orb"],
+			recipes: {}
+		},	
+		'Elemental Guest Room' : {
+			baseStats: [-500, 900, "Guest Room"],
+			recipes:
+			{
+				"Improve Spirits output":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Steward", 1, 0.5],
+					],
+					out: [
+						["Guest Room", 1, 1e10],
+					],
+					lock: ["Spire Steward", 1],
+				},
+			}
+		},
+		'Monumental Workshop' : {
+			baseStats: [-600, 900, "Workshop"],
+			recipes:
+			{
+				"Decrease Floor cost scaling":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Steward", 1, 0.5],
+					],
+					out: [
+						["Workshop", 1, 1e10],
+					],
+					lock: ["Spire Steward", 1],
+				},
+			}
+		},	
+		'Elemental Stable' : {
+			baseStats: [-500, 1000, "Stable"],
+			recipes:
+			{
+				"Multiple portals at 9,99,999":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Caretaker", 1, 0.5],
+					],
+					out: [
+						["Stable", 1, 1e3],
+					],
+					lock: ["Spire Caretaker", 1],
+				},
+			}
+		},
+		'Hallucination Academy' : {
+			baseStats: [-600, 1000, "Academy"],
+			recipes:
+			{
+				"Floor helpers training speed+":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Caretaker", 1, 0.5],
+					],
+					out: [
+						["Academy", 1, 1e10],
+					],
+					lock: ["Spire Caretaker", 1],
 				},
 			}
 		},
@@ -2734,19 +3065,36 @@ var spireCircle = {
 			}
 		}
 	},
+	
+	portalMachines: ["PortalEarth","PortalWater","PortalAir","PortalFire"],
+	
 	decay: function ()
 	{
 		var amount = 1+data.oElements.Spirits.amount;
 		var input = machineData["Spirits"].recipes[0].inputs[0];
-		input.ratio = 4 + amount * amount;
-		input.min = -4 + 2*input.ratio;
+		input.ratio = 2 + amount * amount;
+		input.min = -2 + 2*input.ratio;
 		
 		amount = data.oElements["Spire Floor"].amount;
-		input = machineData['Monumental Work : Spire Floor'].recipes[0].inputs[0];
-		input.ratio = 4 * Math.pow(2,amount);
+		var floorMachineRecipes = machineData['Monumental Work : Spire Floor'].recipes;
+		input = floorMachineRecipes[0].inputs[0];
+		input.ratio = Math.pow(2 - Math.log10(1+data.oElements.Workshop.amount)*0.08,amount);
 		input.min = input.ratio;
 		
+		var warehouseMult = 4e4 * (1 + data.oElements.Warehouse.amount/10);
+		var stableMult = Math.floor(1+Math.log10(1+data.oElements.Stable.amount));
+		for(var machId of this.portalMachines) {
+			machineData[machId].recipes[0].outputs[0].max = stableMult;
+			machineData[machId].recipes[3].outputs[1].max = warehouseMult;
+		}
+		machineData.Spirits.recipes[1].outputs[1].ratio = 0.1 * (1 + data.oElements["Guest Room"].amount/20);
 		
+		var academyMultiplier = 1 + data.oElements.Academy.amount/60;
+		for(var i=1;i<floorMachineRecipes.length;i++) 
+		{
+			floorMachineRecipes[i].outputs[0].ratio = 0.001 * academyMultiplier;
+			floorMachineRecipes[i].outputs[0].max = academyMultiplier;
+		}
 	},
 };
 
@@ -2784,7 +3132,7 @@ function preprocessAdditionalCircles() {
 	ritualCircle.preprocess();
 	commerceCircle.preprocess();
 	researchCircle.preprocess();
-	madnessCircle.preprocess();
+	lustCircle.preprocess();
 	spireCircle.preprocess();
 	
 	// var tempX =0;
@@ -2801,7 +3149,7 @@ function postprocessAdditionalCircles() {
 	}
 	reachCircle.postprocess();
 	ritualCircle.postprocess();
-	madnessCircle.postprocess();
+	lustCircle.postprocess();
 	commerceCircle.postprocess();
 	spireCircle.postprocess();
 	postprocessed = true;
@@ -2810,7 +3158,7 @@ function decayAdditionalCircles() {
 	baseCircle.decay();
 	ritualCircle.decay();
 	researchCircle.decay();
-	madnessCircle.decay();
+	lustCircle.decay();
 	spireCircle.decay();
 }
 
