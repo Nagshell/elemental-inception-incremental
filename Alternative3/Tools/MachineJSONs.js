@@ -840,11 +840,11 @@ var constructedWorkplaces = {
 				{
 					baseStats: [1, 1, true, true],
 					in: [
-						["Wood", 100, 100],
+						["Wood", 1, 1],
 						["Fire", 100, 100]
 					],
 					out: [
-						["Ash", 10, 1000]
+						["Ash", 0.1, 20]
 					],
 					lock: ["Fire", 1e4],
 				}
@@ -1101,6 +1101,17 @@ var ritualCircle = {
 					],
 					lock: ["RitualA", 10],
 					alwayson: true,
+				},
+				"Ritual of Purpose":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["RitualA", 1, 20],
+					],
+					out: [
+						["Resolve", 2, -1],
+					],
+					lock: ["RitualA", 40],
 				},
 			}
 		},
@@ -1916,7 +1927,7 @@ var lustCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Lust1", 3999, 4000],
+						["Lust1", 1499, 1500],
 					],
 					out: [
 						["Lust2", 1, 0.9],
@@ -1959,7 +1970,7 @@ var lustCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Lust2", 3999, 4000],
+						["Lust2", 1499, 1500],
 					],
 					out: [
 						["Lust3", 1, 0.9],
@@ -2002,7 +2013,7 @@ var lustCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Lust3", 3999, 4000],
+						["Lust3", 1499, 1500],
 					],
 					out: [
 						["Lust4", 1, 0.9],
@@ -2045,7 +2056,7 @@ var lustCircle = {
 				{
 					baseStats: [1, 1, true, false],
 					in: [
-						["Lust4", 3999, 4000],
+						["Lust4", 1499, 1500],
 					],
 					out: [
 						["Lust5", 1, 0.9],
@@ -2294,7 +2305,7 @@ var spireCircle = {
 						["Gate", 10, 0.1],
 					],
 					out: [
-						["Gate", 10, -1e10],
+						["Gate", 10, -2e10],
 						["Earth", 2e3, 4e4],
 					],
 					lock: ["Gate",1],
@@ -2352,7 +2363,7 @@ var spireCircle = {
 						["Gate", 10, 0.1],
 					],
 					out: [
-						["Gate", 10, -1e10],
+						["Gate", 10, -2e10],
 						["Water", 2e3, 4e4],
 					],
 					lock: ["Gate",1],
@@ -2410,7 +2421,7 @@ var spireCircle = {
 						["Gate", 10, 0.1],
 					],
 					out: [
-						["Gate", 10, -1e10],
+						["Gate", 10, -2e10],
 						["Air", 2e3, 4e4],
 					],
 					lock: ["Gate",1],
@@ -2468,7 +2479,7 @@ var spireCircle = {
 						["Gate", 10, 0.1],
 					],
 					out: [
-						["Gate", 10, -1e10],
+						["Gate", 10, -2e10],
 						["Fire", 2e3, 4e4],
 					],
 					lock: ["Gate",1],
@@ -2574,11 +2585,10 @@ var spireCircle = {
 						["Spire Pebble", 8, 20],
 						["Spire Nugget", 1, 20],
 						["Spire Chip", 1, 20],
-						
-						["Spirits", 2, 5],
+						["Spirits", 10, 5],
 					],
 					out: [
-						["Spirits", 2, -2e3],
+						["Spirits", 10, -2e3],
 						["Spire Cube", 5, 1e3],
 					],
 					lock: ["Spire Pebble", 10, "Spire Doorman", 1],
@@ -2596,10 +2606,11 @@ var spireCircle = {
 						["Spire Pebble", 1, 20],
 						["Spire Nugget", 8, 20],
 						["Spire Chip", 1, 20],
-						["Spirits", 2, 5],
+						["Fire", 1200, 1e3],
+						["Spirits", 10, 5],
 					],
 					out: [
-						["Spirits", 2, -2e3],
+						["Spirits", 10, -2e3],
 						["Spire Lump", 5, 1e3],
 					],
 					lock: ["Spire Nugget", 10, "Spire Doorman", 1],
@@ -2617,10 +2628,10 @@ var spireCircle = {
 						["Spire Pebble", 1, 20],
 						["Spire Nugget", 1, 20],
 						["Spire Chip", 8, 20],
-						["Spirits", 2, 5],
+						["Spirits", 10, 5],
 					],
 					out: [
-						["Spirits", 2, -2e3],
+						["Spirits", 10, -2e3],
 						["Spire Slice", 5, 1e3],
 					],
 					lock: ["Spire Chip", 10, "Spire Doorman", 1],
@@ -2639,11 +2650,11 @@ var spireCircle = {
 						["Spire Cube", 8, 20],
 						["Spire Lump", 1, 20],
 						["Spire Slice", 1, 20],
-						
-						["Spirits", 4, 5],
+						["Fire", 15e3, 1e4],
+						["Spirits", 40, 5],
 					],
 					out: [
-						["Spirits", 4, -2e3],
+						["Spirits", 40, -2e3],
 						["Spire Block", 5, 1e3],
 					],
 					lock: ["Spire Cube", 10, "Spire Steward",1],
@@ -2661,10 +2672,10 @@ var spireCircle = {
 						["Spire Cube", 1, 20],
 						["Spire Lump", 8, 20],
 						["Spire Slice", 1, 20],
-						["Spirits", 4, 5],
+						["Spirits", 40, 5],
 					],
 					out: [
-						["Spirits", 4, -2e3],
+						["Spirits", 40, -2e3],
 						["Spire Knob", 5, 1e3],
 					],
 					lock: ["Spire Lump", 10, "Spire Steward",1],
@@ -2682,10 +2693,10 @@ var spireCircle = {
 						["Spire Cube", 1, 20],
 						["Spire Lump", 1, 20],
 						["Spire Slice", 8, 20],
-						["Spirits", 4, 5],
+						["Spirits", 40, 5],
 					],
 					out: [
-						["Spirits", 4, -2e3],
+						["Spirits", 40, -2e3],
 						["Spire Tile", 5, 1e3],
 					],
 					lock: ["Spire Slice", 10, "Spire Steward",1],
@@ -2704,11 +2715,11 @@ var spireCircle = {
 						["Spire Block", 8, 20],
 						["Spire Knob", 1, 20],
 						["Spire Tile", 1, 20],
-						
-						["Spirits", 8, 5],
+						["Wood", 1, 1],
+						["Spirits", 300, 5],
 					],
 					out: [
-						["Spirits", 8, -2e3],
+						["Spirits", 300, -2e3],
 						["Spire Slab", 5, 1e3],
 					],
 					lock: ["Spire Block", 10, "Spire Caretaker",1],
@@ -2726,10 +2737,11 @@ var spireCircle = {
 						["Spire Block", 1, 20],
 						["Spire Knob", 8, 20],
 						["Spire Tile", 1, 20],
-						["Spirits", 8, 5],
+						["Muddy Water", 2, 1],
+						["Spirits", 300, 5],
 					],
 					out: [
-						["Spirits", 8, -2e3],
+						["Spirits", 300, -2e3],
 						["Spire Mass", 5, 1e3],
 					],
 					lock: ["Spire Knob", 10, "Spire Caretaker",1],
@@ -2747,10 +2759,12 @@ var spireCircle = {
 						["Spire Block", 1, 20],
 						["Spire Knob", 1, 20],
 						["Spire Tile", 8, 20],
-						["Spirits", 8, 5],
+						["Fire", 21e4, 1e5],
+						["Impure Mud", 0.2, 0.1],
+						["Spirits", 300, 5],
 					],
 					out: [
-						["Spirits", 8, -2e3],
+						["Spirits", 300, -2e3],
 						["Spire Surface", 5, 1e3],
 					],
 					lock: ["Spire Tile", 10, "Spire Caretaker",1],
@@ -2786,7 +2800,7 @@ var spireCircle = {
 						["Mana Charge", 20, 10],
 					],
 					out: [
-						["Spire Step", 6400, 320000],
+						["Spire Step", 40, 10000],
 					],
 					lock: ["Spire Cube", 10, "Spire Lump", 10, "Spire Slice", 10],
 				},
@@ -2800,9 +2814,23 @@ var spireCircle = {
 						["Mana Charge", 40, 10],
 					],
 					out: [
-						["Spire Step", 12000000, 600000000],
+						["Spire Step", 2000, 1000000],
 					],
 					lock: ["Spire Block", 10, "Spire Knob", 10, "Spire Tile", 10],
+				},
+				"Imagine Spire Step":
+				{
+					baseStats: [1, 1, true, true],
+					in: [
+						["Spire Slab", 20, 20],
+						["Spire Mass", 20, 20],
+						["Spire Surface", 20, 20],
+						["Ash", 0.5, 10],
+					],
+					out: [
+						["Spire Step", 120000, 100000000],
+					],
+					lock: ["Spire Slab", 10, "Spire Mass", 10, "Spire Surface", 10],
 				},
 			}
 		},
@@ -2817,7 +2845,7 @@ var spireCircle = {
 						["Spire Step", 1, 20],
 					],
 					out: [
-						["Spire Floor", 1, 100],
+						["Spire Floor", 1, 195],
 					],
 					lock: ["Spire Step", 0.1],
 				},
@@ -2826,9 +2854,10 @@ var spireCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["Spire Floor", 0, 5],
+						["Influence", 0.013, 200],
 					],
 					out: [
-						["Spire Doorman", 0.001, 1],
+						["Spire Doorman", 0.002, 1],
 					],
 					lock: ["Spire Step", 1],
 				},
@@ -2837,6 +2866,7 @@ var spireCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["Spire Floor", 0, 16],
+						["Influence", 0.02, 210],
 					],
 					out: [
 						["Spire Steward", 0.001, 1],
@@ -2848,6 +2878,7 @@ var spireCircle = {
 					baseStats: [1, 1, true, false],
 					in: [
 						["Spire Floor", 0, 27],
+						["Influence", 0.04, 220],
 					],
 					out: [
 						["Spire Caretaker", 0.001, 1],
@@ -3157,7 +3188,7 @@ var spireCircle = {
 		amount = data.oElements["Spire Floor"].amount;
 		var floorMachineRecipes = machineData['Monumental Work : Spire Floor'].recipes;
 		input = floorMachineRecipes[0].inputs[0];
-		input.ratio = Math.pow(2 - Math.log10(1+data.oElements.Workshop.amount)*0.08,amount);
+		input.ratio = Math.pow(1.5 - Math.log10(1+data.oElements.Workshop.amount)*0.04,amount);
 		input.min = input.ratio;
 		
 		var warehouseMult = 4e4 * (1 + data.oElements.Warehouse.amount/10);
@@ -3203,11 +3234,12 @@ var greedCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Wood", 1, -100],
-						["Avarice", 10, 500],
+						["Avarice", 2000, 500],
+						["Cycle", 0, 0.8]
 					],
 					out: [
 						["Wood", -1, -1e5],
-						["Avarice", 10, -2e4],
+						["Avarice", 2000, -2e4],
 						["Currency", 1, 1e10],
 					],
 					lock: ["Avarice",1e99],
@@ -3218,11 +3250,12 @@ var greedCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Impure Mud", 1, -100],
-						["Avarice", 10, 500],
+						["Avarice", 2000, 500],
+						["Cycle", 0, 0.8]
 					],
 					out: [
 						["Impure Mud", -1, -1e5],
-						["Avarice", 10, -2e4],
+						["Avarice", 2000, -2e4],
 						["Currency", 1, 1e10],
 					],
 					lock: ["Avarice",1e99],
@@ -3233,11 +3266,12 @@ var greedCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Wet Sand", 1, -100],
-						["Avarice", 10, 500],
+						["Avarice", 2000, 500],
+						["Cycle", 0, 0.8]
 					],
 					out: [
 						["Wet Sand", -1, -1e5],
-						["Avarice", 10, -2e4],
+						["Avarice", 2000, -2e4],
 						["Currency", 1, 1e10],
 					],
 					lock: ["Avarice",1e99],
@@ -3248,11 +3282,12 @@ var greedCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Clay", 1, -100],
-						["Avarice", 10, 500],
+						["Avarice", 2000, 500],
+						["Cycle", 0, 0.8]
 					],
 					out: [
 						["Clay", -1, -1e5],
-						["Avarice", 10, -2e4],
+						["Avarice", 2000, -2e4],
 						["Currency", 1, 1e10],
 					],
 					lock: ["Avarice",1e99],
@@ -3263,11 +3298,12 @@ var greedCircle = {
 					baseStats: [10, 1, true, true],
 					in: [
 						["Muddy Water", 1, -100],
-						["Avarice", 10, 500],
+						["Avarice", 2000, 500],
+						["Cycle", 0, 0.8]
 					],
 					out: [
 						["Muddy Water", -1, -1e5],
-						["Avarice", 10, -2e4],
+						["Avarice", 2000, -2e4],
 						["Currency", 1, 1e10],
 					],
 					lock: ["Avarice",1e99],
