@@ -3001,7 +3001,7 @@ var spireCircle = {
 					],
 					lock: ["Spire Warden", 1],
 				},
-				"Join game's discord \\('_' )/":
+				"Join the game's discord \\('_' )/":
 				{
 					baseStats: [1, 1, true, false],
 					in: [	
