@@ -1,8 +1,8 @@
 var locale = {
-	exchangeStringLoad: "Loading from exchange string is experimental feature. Providing incorrect string can break the game. Use savingSystem.hardReset() in case of troubles.",
+	exchangeStringLoad: "Loading from exchange string is an experimental feature. Providing incorrect strings can break the game. Use savingSystem.hardReset() in case of troubles.",
 	exchangeStringInvalid: "Pasted string was not a proper exchange string.\nOr you just accidentially pressed Ctrl+V.",
 	exchangeStringCopyed: "Save exchange string was copied to your clipboard. You can save it elsewhere and paste back when you need it.",
-	exchangeStringPasted: "You pasted something that looks like exchange string. Do you want to load it?",
+	exchangeStringPasted: "You pasted something that looks like an exchange string. Do you want to load it?",
 	hardReset: "This will erase all of your progress. Proceed?",
 	reset: "Hard Reset",
 	efficiency: "Efficiency",
@@ -109,7 +109,7 @@ var locale = {
 		machineAluminum: "Industrial Storage",
 		machineIron: "Industrial Container",
 		machineSteel: "Blast Furnace",
-		machineClay: "Potter's heel",
+		machineClay: "Potter's Wheel",
 		machinePlastic: "Printing Press",
 		machineSilicon: "Arc Furnace",
 		machineAcid: "Glassy Shaker",
@@ -211,7 +211,7 @@ var locale = {
 		mergeSand1: "Merge : Traces of Sand",
 
 		mudConversion1: "Forceful Mud Conversion",
-		mudConversion2: "Gainfull Mud Conversion",
+		mudConversion2: "Gainful Mud Conversion",
 		mudConversion3: "Catalyzed Mud Conversion",
 		mudAssimilation1: "Mud Assimilation",
 		mudRift1: "Mud Rift",
@@ -250,7 +250,7 @@ var locale = {
 
 		knowledgeProduction1: "Researching Revelation",
 		knowledgeProduction2: "Understanding Revelation",
-		knowledgeProduction3: "Unraveling Revelation",
+		knowledgeProduction3: "Unravelling Revelation",
 		revelationGain1: "Power of the Wallet",
 		revelationGain2: "Overloading Imagination",
 
@@ -283,7 +283,7 @@ var locale = {
 		goldMerge8: "Gold Auto Sieve",
 
 		forceMerge1: "Tiered Force Merge",
-		forceMerge2: "Hitting Unbreakable Wall",
+		forceMerge2: "Hitting Unbreakable Walls",
 
 		oilMerge1: "Tiered Oil Merge",
 		oilPump1: "Pocket Pump",
@@ -491,7 +491,7 @@ var locale = {
 		gemGrow13: "I",
 		gemGrow14: "P",
 		gemGrow15: "I",
-		gemGrow16: "N",
+		gemGrow16: "T",
 		gemGrow17: "A",
 		gemGrow18: "T",
 		gemGrow19: "O",
@@ -650,7 +650,7 @@ var locale = {
 		cold: "Freezing Point",
 		hot: "Burning Point",
 		power: "Power Point",
-		life: "Vigorious Point",
+		life: "Vigorous Point",
 		gem: "Pressure Point",
 		pure: "Purest of Points",
 	},
