@@ -1417,14 +1417,14 @@ function drawStatsActive(ctx) {
 			ctx.font = "14px Arial";
 			if(achievementId==='speed') {
 				if(!dynamicData.startTime) {
-					ctx.fillText("Finish stage under 90 min. Your timer will start on next Soft Reset.",400,y+55);
+					ctx.fillText("Finish stage under 90 min. Your timer will start on the next Soft Reset.",400,y+55);
 				} else {
 					var shownTime = Math.floor(achievement.time/60000)+achievement.time%60000/100000;
 					shownTime = Math.floor(shownTime*100)/100;
 					if(achievement.unlocked) {
 						ctx.fillText("Your best time: "+shownTime.toFixed(2)+" min - Developer's time 66.38 min.",400,y+45);
 					} else {
-						ctx.fillText("Finish stage under 90 min. Your current best time : "+shownTime.toFixed(2)+" min.",400,y+45);
+						ctx.fillText("Finish stage in under 90 min. Your current best time : "+shownTime.toFixed(2)+" min.",400,y+45);
 					}
 					var time = ((new Date()) - dynamicData.startTime);
 					shownTime = Math.floor(time/60000)+time%60000/100000;
@@ -1532,22 +1532,22 @@ function drawFAQ(ctx) {
 	ctx.textAlign = "center";
 	ctx.fillText("Frequently asked questions",400,160);
 	ctx.textAlign = "left";
-	ctx.fillText("Q1 : Why can't I see capacity of the machines?",160,200);
+	ctx.fillText("Q1 : Why can't I see the capacity of the machines?",160,200);
 	ctx.fillText("A1 : With new crystals machines have near infinite capacity. (1e300)",160,220);
-	ctx.fillText("Q2 : When gauge on machine looks full, why Element still flows into it?",160,260);
+	ctx.fillText("Q2 : When the gauge on machine looks full, why does Element still flow into it?",160,260);
 	ctx.fillText("A2 : With new capacity gauges behave differently. They show",160,280);
 	ctx.fillText(     "ratio of Elements inside machine. This helps you visualise",190,300);
-	ctx.fillText(     "which part of conversion recipe would need improvement.",190,320);
-	ctx.fillText("Q3 : I have both valves open on machine, but I don't produce anything. Help?",160,360);
-	ctx.fillText("A3 : 1. Secondary value on tank shows absolute change of amount per second.",160,380);
-	ctx.fillText(     "2. Before you get specific upgrade there are no limits in amount",190,400);
-	ctx.fillText(     "Element that can flow into machine, which sometimes can lead to",190,420);
-	ctx.fillText(     "situation where everything you produce just flows into machines.",190,440);
-	ctx.fillText(     "Try disabling valve with dominant Element and enable valve with lesser one.",190,460);
+	ctx.fillText(     "which part of a conversion recipe would need improvement.",190,320);
+	ctx.fillText("Q3 : I have both valves open on a machine, but I don't produce anything. Help?",160,360);
+	ctx.fillText("A3 : 1. Secondary values on tanks shows absolute change of amount per second.",160,380);
+	ctx.fillText(     "2. Before you get specific upgrades there are no limits in amounts of",190,400);
+	ctx.fillText(     "Element that can flow into a machine, which sometimes can lead to",190,420);
+	ctx.fillText(     "a situation where everything you produce just flows into machines.",190,440);
+	ctx.fillText(     "Try disabling valves with a dominant Element and enable valves with lesser ones.",190,460);
 	ctx.fillText(     "This will empty out the machine over time.",190,480);
 	ctx.fillText("Q4 : How does Stash work exactly?",160,520);
 	ctx.fillText("A4 : Whenever you make a golem or buy an upgrade stash activates,",160,540);
-	ctx.fillText(     "letting out nth root of stored Elements. At first it's 4th root,",190,560);
+	ctx.fillText(     "letting out the nth root of stored Elements. At first it's 4th root,",190,560);
 	ctx.fillText(     "but with futher upgrades it can get up to square root.",190,580);
 	ctx.fillText("Q5 : Is Mayonnaisse an Element?",160,620);
 	ctx.fillText("A5 : No. I don't know what are you talking about.",160,640);
@@ -1576,7 +1576,7 @@ function drawDonate(ctx) {
 	ctx.fillText("Paypal",500,370);
 	ctx.fillText("Go back",400,470);
 	
-	ctx.fillText("This it the place if you really enjoyed my game",400,230);
+	ctx.fillText("This is the place if you really enjoyed my game",400,230);
 	ctx.fillText("and want to support me financially.",400,252);
 	ctx.fillText("Here are the links which you can use to do so.",400,274);
 }
