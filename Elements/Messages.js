@@ -1,24 +1,24 @@
 var jsonMessages = {
 	"tutorialMessage" : {
-		"flush" : "if flush is set to true message will clear chatbox before adding it's content and reset chatTrimmer delays",
+		"flush" : "If flush is set to true message will clear chatbox before adding its content and reset chatTrimmer delays",
 		
-		"loreText" : "what will be added to current content of respective chatbox (after flushing)",
-		"loreFreezeDuration": "period of time in ms during which chatTrimmer won't touch respective chatbox. negative values are permament disable (until next message)",
-		"gameplayText" : "same as above",
-		"gameplayFreezeDuration": "same as above",
+		"loreText" : "What will be added to current content of respective chatbox (after flushing)",
+		"loreFreezeDuration": "Period of time in ms during which chatTrimmer won't touch respective chatbox. negative values are permament disable (until next message)",
+		"gameplayText" : "Same as above",
+		"gameplayFreezeDuration": "Same as above",
 		
-		"activeElements" : "gameplay and chatTrimmer are frozen until all active elements are completed",
+		"activeElements" : "Gameplay and chatTrimmer are frozen until all active elements are completed",
 		"firstActiveElement" : "button/progressBar/none - which element is activated first",
 		"progressBar" : {
 			"barText": "text appearing on bar",
 			"duration": "duration in ms of progress bar",
 		},
-		"buttonAvailable": "if set to true will make button visible and clickable once",
+		"buttonAvailable": "If set to true will make button visible and clickable once",
 		
-		"chainedMessage": "if this exists then after this msg is complete next message will fire instead of resuming gameplay",
-		"chainedMessageDelay": "delay between finish of this msg and firing of the next - gameplay is still frozen, but chatTrimmer is not",
+		"chainedMessage": "If this exists then after this msg is complete next message will fire instead of resuming gameplay",
+		"chainedMessageDelay": "Delay between finish of this msg and firing of the next - gameplay is still frozen, but chatTrimmer is not",
 		
-		"eventId": "id of an event that will fire as soon as this message appears"
+		"eventId": "Id of an event that will fire as soon as this message appears"
 	},
 	"outro0" : {
 		"flush" : true,
@@ -35,7 +35,7 @@ var jsonMessages = {
 	},
 	"outro1" : {
 		"flush" : true,
-		"loreText" : "So my plan at first was to touch every Orb at the same time. Technically Glove can only hold one element, but this way I connect to all elements at the same time. I tried it before. Complete failure, the interactions between elements caused all Orbs to empty themselves.",
+		"loreText" : "So my plan at first was to touch every Orb at the same time. Technically the Glove can only hold one element, but this way I can connect to all elements at the same time. I've tried it before. Complete failure - the interactions between elements caused all Orbs to empty themselves.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -48,7 +48,7 @@ var jsonMessages = {
 	},
 	"outro2" : {
 		"flush" : true,
-		"loreText" : "But now they aren't really Orbs anymore. I removed all four Golems from their pedestals and put them in small circle.",
+		"loreText" : "But now they aren't really Orbs any more. I removed all four Golems from their pedestals and put them in small circle.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -78,7 +78,7 @@ var jsonMessages = {
 	},
 	"outro4" : {
 		"flush" : true,
-		"loreText" : "Blinding light. Vision. Old person running towards me. Loud shout, piercing every cell of my existence.",
+		"loreText" : "Blinding light. Visions. Old person running towards me. A loud shout, piercing every cell of my existence.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -121,7 +121,7 @@ var jsonMessages = {
 	},
 	"outro7" : {
 		"flush" : true,
-		"loreText" : "I woke up slowly. I was still in attic of my old family house. At least the walls look similar. Every single movable piece in room disappeared. What happened? What happened?!",
+		"loreText" : "I woke up slowly. I was still in attic of my old family house. At least the walls look similar. Every single movable piece in the room has disappeared. What happened? What happened?!",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -177,7 +177,7 @@ var jsonMessages = {
 	},
 	"outro11" : {
 		"flush" : true,
-		"loreText" : "Thank you for playing intro stage of my game. \\('_' ) <br><br> You can always refresh page to reset.",
+		"loreText" : "Thank you for playing intro stage of my game. \\('_' ) <br><br> You can always refresh the page to reset.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -188,7 +188,7 @@ var jsonMessages = {
 	},
 	"intro0" : {
 		"flush" : true,
-		"loreText" : "Welcome to prototype of \"I didn't decide on the name yet Elements\".<br><br>Currently only stage 1 is available, which is just and something bigger than just tutorial and something smaller than what in incremental would be called \"road to first reset\".<br><br>I'd love to hear any feedback from you, either as a comment in game's post, direct message or email.<br><br>If you leave game in inactive window it'll accumulate time, which will then be used up to 3x the speed of gameplay.",
+		"loreText" : "Welcome to the prototype of \"The First Alkahistorian\" or, \"I didn't decide on the name yet - Elements\".<br><br>Currently only stages 1 to 3 are available. Stage 1 is something bigger than just a tutorial and something smaller than what would be called an incremental \"road to first reset\".<br><br>I'd love to hear any feedback from you, either as a comment in game's post, direct message or email.<br><br>If you leave the game in an inactive window it'll accumulate time, which will then be used to speed gameplay up to 3x.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Press Proceed to continue",
 		"gameplayFreezeDuration": -1,
@@ -237,7 +237,7 @@ var jsonMessages = {
 		"flush" : true,
 		"loreText" : "My mentor told me a story about Elements.<br><br>Legend tells that there was a wise Alchemist that mastered all the fundamentals of the world as we know it.",
 		"loreFreezeDuration": -1,
-		"gameplayText" : "Text can also dissapear in almost animated way.",
+		"gameplayText" : "Text can also dissapear in an almost animated way.",
 		"gameplayFreezeDuration": 500,
 		
 		"firstActiveElement" : "button",
@@ -287,7 +287,7 @@ var jsonMessages = {
 	},
 	"intro7" : {
 		"flush" : true,
-		"loreText" : "Scholars give him no more than a month.<br><br>So I don't have too much time. Armed with a lot of motivation I made my way towards the * Library.",
+		"loreText" : "Scholars give him no more than a month.<br><br>So I don't have much time. Armed with a lot of motivation I made my way towards the * Library.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -300,7 +300,7 @@ var jsonMessages = {
 	},
 	"intro8" : {
 		"flush" : true,
-		"loreText" : "Legend tells that knowledge possessed by Alchemist came from combining four Elements together.<br><br>So I'm going to learn Elemental manipulation. For most it's just like a hobby. Most \"Elementalists\", as they like to call themselves, just sit in their little playgrounds and create floating lamps, or other decorative baubles",
+		"loreText" : "Legend tells that knowledge possessed by Alchemists came from combining four Elements together.<br><br>So I'm going to learn Elemental manipulation. For most it's just like a hobby. Most \"Elementalists\", as they like to call themselves, just sit in their little playgrounds and create floating lamps, or other decorative baubles.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -313,7 +313,7 @@ var jsonMessages = {
 	},
 	"intro9" : {
 		"flush" : true,
-		"loreText" : "After few days of reading about it in library, I began to understand the basics. All you need to do begin experimenting is an Elemental Glove.",
+		"loreText" : "After few days of reading about it in the library, I began to understand the basics. All you need to begin experimenting is an Elemental Glove.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Begin your search",
 		"gameplayFreezeDuration": -1,
@@ -330,7 +330,7 @@ var jsonMessages = {
 	},
 	"intro10" : {
 		"flush" : true,
-		"loreText" : "I found Glove at affordable price in toy store. People don't think highly of them. I hope that I'll be able to use it better than most.<br><br>By itself the Glove is quite limited though.",
+		"loreText" : "I found the Glove at an affordable price in a toy store. People don't think highly of them. I hope that I'll be able to use it better than most.<br><br>By itself the Glove is quite limited though.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -343,9 +343,9 @@ var jsonMessages = {
 	},
 	"intro11" : {
 		"flush" : true,
-		"loreText" : "So I'll need other components. They are called Elemental Orbs. Elements can't hold their form without dedicated containers. An additional benefit of Orbs are their safety. Thanks to small crystal inside Orb it can compress Element into much denser form and redirect any potential overflow into the void.<br><br>Luckily my grandmother used to play with one set of those. And so I found them in attic of our old house.",
+		"loreText" : "So I'll need other components. They are called Elemental Orbs. Elements can't hold their form without dedicated containers. An additional benefit of Orbs are their safety. Thanks to a small crystal inside the Orb it can compress Elements into a much denser form and redirect any potential overflow into the void.<br><br>Luckily my grandmother used to play with one set of those. And so I found them in attic of our old house.",
 		"loreFreezeDuration": -1,
-		"gameplayText" : "Place Orbs on pedestals and make some space around.",
+		"gameplayText" : "Place Orbs on pedestals and make some space around them.",
 		"gameplayFreezeDuration": -1,
 		
 		"firstActiveElement" : "button",
@@ -360,7 +360,7 @@ var jsonMessages = {
 	},
 	"intro12" : {
 		"flush" : true,
-		"loreText" : "How can I describe it? Rusted pedestals, broken pipes, it's a mess on top of a bigger mess. At least the compression crystals seem to be in working condition. This should suffice for learning experience. <br><br>And so my study began within this littered room. Quickly I met my biggest obstacle. Elemental Glove can only handle 1 Element at the time.",
+		"loreText" : "How can I describe it? Rusted pedestals, broken pipes - it's a mess on top of a bigger mess. At least the compression crystals seem to be in working condition. This should suffice for a learning experience. <br><br>And so my study began within this littered room. Quickly I met my biggest obstacle. Elemental Gloves can only handle 1 Element at a time.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -386,7 +386,7 @@ var jsonMessages = {
 	},
 	"intro14" : {
 		"flush" : true,
-		"loreText" : "Usually when two Elements happen to be in one container, they will interfere and dissapear in small flash of light. Well, I should start to investigate different possibilities first. Maybe if I'll try this at bigger concentration it'll behave differently?<br>Well, it's time to start experimenting. Book theory is one thing, real world is the other. I need to activate those Orbs.",
+		"loreText" : "Usually when two Elements happen to be in one container, they will interfere and dissapear in small flash of light. Well, I should start to investigate different possibilities first. Maybe if I'll try this at bigger concentration it'll behave differently?<br>Well, it's time to start experimenting. Book theories are one thing, the real world is another. I need to activate those Orbs.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Begin your experiment.",
 		"gameplayFreezeDuration": -1,
@@ -399,9 +399,9 @@ var jsonMessages = {
 	},
 	"intro15" : {
 		"flush" : true,
-		"loreText" : "Well, using random debris littering the floor I should be able to fill one Orb with Earth. Lets go.<br><br>Right, one more thing before actually doing anything.<br><br>I decided to make all my interactions with Orbs slow and steady. I don't want to destroy them by clicking too fast.",
+		"loreText" : "Well, using random debris littering the floor I should be able to fill one Orb with Earth. Lets go.<br><br>Right, one more thing before actually doing anything.<br><br>I decided to make all my interactions with Orbs slow and steady. I don't want to destroy them by tapping too fast.",
 		"loreFreezeDuration": -1,
-		"gameplayText" : "Below all Orbs is indicator. You can only click on Orb while it's fully green.",
+		"gameplayText" : "Below all Orbs is an indicator. You can only click on an Orb while it's fully green.",
 		"gameplayFreezeDuration": -1,
 		
 		"firstActiveElement" : "button",
@@ -423,7 +423,7 @@ var jsonMessages = {
 	},
 	"reset0" : {
 		"flush" : true,
-		"loreText" : "I-I... I think I messed up. Nothing said that there was a capacity limit of Elemental Orb. It was supposed to condense Element and transfer excess to another plane of existence in case of overflow.<br><br>But something else happened. There was a big implosion inside Elemental Orb and soon after huge wave of unleashed Elements sent me flying across the room.",
+		"loreText" : "I-I... I think I messed up. Nothing said that there was a capacity limit of Elemental Orb. It was supposed to condense Element and transfer excess to another plane of existence in case of overflow.<br><br>But something else happened. There was a big implosion inside the Elemental Orb and soon after, a huge wave of unleashed Elements sent me flying across the room.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -440,7 +440,7 @@ var jsonMessages = {
 	},
 	"reset1" : {
 		"flush" : true,
-		"loreText" : "Aftermath of the situation: My body has all it's pieces. At least I think so.<br>Every Element inside the Orbs disappeared. That's bad, I worked hard to collect so much of them.<br>Machines seem to be fine, but my crystals inside exploded, slightly damaging tanks. I guess I'll need to upgrade machine tanks again.",
+		"loreText" : "Aftermath of the situation: My body has all its pieces. At least I think so.<br>Element inside every Orb disappeared. That's bad, I worked hard to collect so much of them.<br>Machines seem to be fine, but my crystals imploded, slightly damaging my tanks. I guess I'll need to upgrade the machine's tanks again.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Repair damaged components and get everything back in place.",
 		"gameplayFreezeDuration": -1,
@@ -453,7 +453,7 @@ var jsonMessages = {
 	},
 	"reset1.1" : {
 		"flush" : true,
-		"loreText" : "Now, for the Crystals inside Orbs themselves. Hm... Strange. Crystal bases are left intact, but the compression crystals inside orb that caused implosion is vibrating at high rate. I need to repair my machinery and test this crystal out.",
+		"loreText" : "Now, for the Crystals inside Orbs themselves. Hm... Strange. Crystal bases are left intact, but the compression crystals inside orb that caused implosion are vibrating at high rates. I need to repair my machinery and test this crystal out.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Repair damaged components and get everything back in place.",
 		"gameplayFreezeDuration": -1,
@@ -470,7 +470,7 @@ var jsonMessages = {
 	},
 	"reset2" : {
 		"flush" : true,
-		"loreText" : "Alright, whole setup is back in working order. Lets start filling Orbs again. Certainly there is more to them than I thought.",
+		"loreText" : "Alright, my whole setup is back in working order. Lets start filling Orbs again. Certainly there is more to them than I thought.",
 		"loreFreezeDuration": 2000,
 		"gameplayText" : "Start filling Orbs again.",
 		"gameplayFreezeDuration": -1,
@@ -482,7 +482,7 @@ var jsonMessages = {
 	},
 	"reset3" : {
 		"flush" : true,
-		"loreText" : "Another implosion. Surprised I walk back into the room and check on the Orbs again.<br><br>Vibrating crystal transformed. I never saw anything like that in books about Elemental manipulation. Orb still holds Element like before, but compression crystal expanded ten-fold. I wonder what will happen when I fill it again. I need to do few adjustments and I'll let machines run again.",
+		"loreText" : "Another implosion. Surprised I walk back into the room and check on the Orbs again.<br><br>The vibrating crystal transformed. I never saw anything like this in books about Elemental manipulation. The Orb still holds Element like before, but its compression crystal expanded ten-fold. I wonder what will happen when I fill it again? I need to do few adjustments and I'll let machines run once more.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Put transformed Orb back on pedestal and fill it with a bit of its Element.",
 		"gameplayFreezeDuration": -1,
@@ -499,9 +499,9 @@ var jsonMessages = {
 	},
 	"reset4" : {
 		"flush" : true,
-		"loreText" : "Expanded Crystal lighted up for a second, then started generating it's Element by itself. Did I just reverse overflow process!? Well, I still wonder what will happen if I fill it to the point of the implosion again...",
+		"loreText" : "The Expanded Crystal lit up for a second, then started generating its Element by itself. Did I just reverse the overflow process!? Well, I still wonder what will happen if I fill it to the point of imploding again...",
 		"loreFreezeDuration": 2000,
-		"gameplayText" : "Try to fill Orb with expanded crystal.",
+		"gameplayText" : "Try to fill the Orb with the expanded crystal.",
 		"gameplayFreezeDuration": -1,
 		
 		"firstActiveElement" : "button",
@@ -528,7 +528,7 @@ var jsonMessages = {
 	},
 	"reset6" : {
 		"flush" : true,
-		"loreText" : "Few small adjustments and few big impact walls around Orbs made out of debris let me dissipate most of the implosion aftershock. Thanks to that repairs took me way less time.",
+		"loreText" : "A few small adjustments and few big impact walls around each Orb made out of debris let me dissipate most of the implosion aftershock. Thanks to that repairs took me way less time.",
 		"loreFreezeDuration": 2000,
 		"gameplayText" : "Fill Orb with expanded crystal.",
 		"gameplayFreezeDuration": -1,
@@ -540,7 +540,7 @@ var jsonMessages = {
 	},
 	"reset7" : {
 		"flush" : true,
-		"loreText" : "I thought I only began to scratch capacity of new Orb, but it seems expanding crystal had reverse effect on Orb's capacity threshold. This time overflow did not cause implosion, but compression crystal fully merged with Orb itself.<br>I need to test my newest accidental creation",
+		"loreText" : "I thought I only began to scratch capacity of new Orb, but it seems an expanding crystal had the reverse effect on a Orb's capacity threshold. This time overflow did not cause implosion, but the compression crystal fully merged with the Orb itself.<br>I need to test my newest accidental creation.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Test transformed Orb in safe environment.",
 		"gameplayFreezeDuration": -1,
@@ -557,7 +557,7 @@ var jsonMessages = {
 	},
 	"reset8" : {
 		"flush" : true,
-		"loreText" : "Are those... eyes? Orb started to have gradual changes in its shape. Now it looks more like a tear, and Element inside swirls in two small orbs.<br>I feel like they looking at me. I feel... strange about it. Anyway it seems that insides of Orb are fully connected to another plane and is able to channel insane amounts of Element both ways. Input pipes coming out of it instantly fill and containers I provide to it. Well, that's certainly helpful.",
+		"loreText" : "Are those... eyes? This Orb has started to have gradual changes in its shape. Now it looks more like a tear, and Element inside swirls in two small orbs.<br>I feel like they looking at me. I feel... strange about it. Anyway it seems inside the Orb it is fully connected to another plane and is able to channel insane amounts of Element both ways. Input pipes coming out of it instantly fill and also containers I provide it. Well, that's certainly helpful.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -574,7 +574,7 @@ var jsonMessages = {
 	},
 	"reset9" : {
 		"flush" : true,
-		"loreText" : "Tests complete. I guess I should try to turn rest of the Orbs into this new entity. I decided to name it \"Golem\". Time to enable machines once again.",
+		"loreText" : "Tests complete. I guess I should try to turn rest of the Orbs into this new entity. I decided to name it \"Golem\". Time to enable my machines once again.",
 		"loreFreezeDuration": 2000,
 		"gameplayText" : "Overflow one of the remaining Orbs",
 		"gameplayFreezeDuration": -1,
@@ -584,7 +584,7 @@ var jsonMessages = {
 	},
 	"reset10" : {
 		"flush" : true,
-		"loreText" : "Another Orb transformed into Golem. I need to continue doing the same with remaining Orbs.",
+		"loreText" : "Another Orb transformed into a Golem. I need to continue doing the same with remaining Orbs.",
 		"loreFreezeDuration": 2000,
 		"gameplayText" : "Overflow one of the remaining Orbs",
 		"gameplayFreezeDuration": -1,
@@ -634,7 +634,7 @@ var jsonMessages = {
 	},
 	"base0" : {
 		"flush" : true,
-		"loreText" : "Base of Earth Orb has been filled. Now I can truly start filling it with Earth.",
+		"loreText" : "The base of Earth Orb has been filled. Now I can truly start filling it with Earth.",
 		"loreFreezeDuration": 1000,
 		"gameplayText" : "Also first upgrade appeared at the bottom of the page.",
 		"gameplayFreezeDuration": 1000,
@@ -644,7 +644,7 @@ var jsonMessages = {
 	},
 	"base1" : {
 		"flush" : true,
-		"loreText" : "Water Orb's base is complete. Finally I should be able to use full potential of Liquefier.",
+		"loreText" : "The Water Orb's base is complete. Finally I should be able to use full potential of Liquefier.",
 		"loreFreezeDuration": 4000,
 		"gameplayText" : "Fully fill Liquefier reagent tank",
 		"gameplayFreezeDuration": -1,
@@ -653,7 +653,7 @@ var jsonMessages = {
 	},
 	"base2" : {
 		"flush" : true,
-		"loreText" : "Air Orb's online.",
+		"loreText" : "The Air Orb is online.",
 		"loreFreezeDuration": 2000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -662,7 +662,7 @@ var jsonMessages = {
 	},
 	"base3" : {
 		"flush" : true,
-		"loreText" : "Fire Orb activated. With power of Fire all machines should be able to work automatically at long last.",
+		"loreText" : "Fire Orb activated. With the power of Fire all machines should be able to work automatically at long last.",
 		"loreFreezeDuration": 4000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -671,7 +671,7 @@ var jsonMessages = {
 	},
 	"elementGathered0" : {
 		"flush" : true,
-		"loreText" : "With increasing supply of Earth I should start thinking about activating another Orb. <br><br>Under rusted sheets near Orbs I found Liquefier. It's slightly damaged, but should work nonetheless.",
+		"loreText" : "With increasing supplies of Earth I should start thinking about activating another Orb. <br><br>Under rusted sheets near the Orbs I found a Liquefier. It's slightly damaged, but should work nonetheless.",
 		"loreFreezeDuration": 5000,
 		"gameplayText" : "Setup machine on docking station.",
 		"gameplayFreezeDuration": -1,
@@ -688,7 +688,7 @@ var jsonMessages = {
 	},
 	"elementGathered0.2" : {
 		"flush" : true,
-		"loreText" : "Machine's ready.<br>I should open input valve and hopefully Earth should start flowing into it.",
+		"loreText" : "Machine's ready.<br>I should open the input valve and hopefully Earth should start flowing into it.",
 		"loreFreezeDuration": 4000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -699,7 +699,7 @@ var jsonMessages = {
 	},
 	"elementGathered2" : {
 		"flush" : true,
-		"loreText" : "With slow, but steady way of getting of Air few other upgrades became available.<br><br>I also found parts of another machine. While over half of it is missing, I think I should be able to find replacements for them.",
+		"loreText" : "With a slow, but steady way of getting of Air a few other upgrades have become available.<br><br>I also found parts of another machine. While over half of it is missing, I think I should be able to find replacements for them.",
 		"loreFreezeDuration": 5000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -716,7 +716,7 @@ var jsonMessages = {
 	},
 	"elementGathered2.2" : {
 		"flush" : true,
-		"loreText" : "And another machine's ready. I found replacement parts that are good enough in workshop of my father.<br><br> With Combustor I should be able to produce Fire. Soon I'll have missing reagent for my machines.",
+		"loreText" : "And another machine's ready. I found replacement parts that are good enough in the workshop of my father.<br><br> With a Combustor I should be able to produce Fire. Soon I'll have the missing reagent for my machines.",
 		"loreFreezeDuration": 8000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -727,7 +727,7 @@ var jsonMessages = {
 	},
 	"elementGathered3" : {
 		"flush" : true,
-		"loreText" : "In the center of the room new piece activated - Reaction Catalyst. It seems that fire inside it increases efficiency of reactions in machines.",
+		"loreText" : "In the center of the room a new piece activated - a Reaction Catalyst. It seems that fire inside it increases efficiency of reactions in machines.",
 		"loreFreezeDuration": 5000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -744,7 +744,7 @@ var jsonMessages = {
 	},
 	"upgradeBought2" : {
 		"flush" : true,
-		"loreText" : "While I was tinkering with reaction regulators I noticed two halves of another machine laying in the corner.I think with a bit of spare parts lying around I could assemble it myself.",
+		"loreText" : "While I was tinkering with reaction regulators I noticed two halves of another machine laying in the corner. I think with a bit of spare parts lying around I could assemble it myself.",
 		"loreFreezeDuration": 5000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -758,9 +758,9 @@ var jsonMessages = {
 	},
 	"upgradeBought2.2" : {
 		"flush" : true,
-		"loreText" : "Boiler is ready. It will help me with creating Air. Sadly to automate reaction I'll need Fire, so for the time being only manual method will be available.",
+		"loreText" : "The Boiler is ready. It will help me with creating Air. Sadly to automate reaction I'll need Fire, so for the time being only a manual method will be available.",
 		"loreFreezeDuration": 9000,
-		"gameplayText" : "Fill Boiler with some Water.",
+		"gameplayText" : "Fill the Boiler with some Water.",
 		"gameplayFreezeDuration": 16000,
 		
 		"firstActiveElement" : "none",
@@ -769,9 +769,9 @@ var jsonMessages = {
 	},
 	"upgradeBought13" : {
 		"flush" : true,
-		"loreText" : "For the longest time I thought it was a decoration. Small volcano made with brass alloys. Apparently it's machine.<br>If I upgrade Reaction Catalyst once more I should be able to make positive feedback loop to multiply my Earth supply.",
+		"loreText" : "For the longest time I thought it was a decoration. A small volcano made with brass alloys. Apparently it's machine.<br>If I upgrade the Reaction Catalyst once more I should be able to make a positive feedback loop to multiply my Earth supply.",
 		"loreFreezeDuration": 5000,
-		"gameplayText" : "I suggest pushing for next reaction catalyst upgrade before using volcano.",
+		"gameplayText" : "I suggest pushing for the next reaction catalyst upgrade before using volcano.",
 		"gameplayFreezeDuration": 15000,
 		
 		"firstActiveElement" : "button",
@@ -779,7 +779,7 @@ var jsonMessages = {
 	},
 	"upgradeBought24" : {
 		"flush" : true,
-		"loreText" : "After sub-space breakthrough my supply of elements will increase drastically. With sheer amount of Elements I can use I might try creating my own compression crystals. <br><br>It gave me interesting new idea...",
+		"loreText" : "After sub-space breakthroughs my supply of elements will increase drastically. With sheer amount of Elements I can use I might try creating my own compression crystals. <br><br>It gave me interesting new idea...",
 		"loreFreezeDuration": 25000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -789,7 +789,7 @@ var jsonMessages = {
 	},
 	"machineThresholdAmount-0" : {
 		"flush" : true,
-		"loreText" : "I realized few things about Liquefier. Once Earth flowed into its internal tank, whole machine started rotating on track that goes around whole room.<br><br> While it's moving it can gather required Element from the pipes. Of course its valve need to be open too. And when it reached dock it stops there for a while. It seems that it reaction can only occur when docked.<br><br>Sadly it seems that without reagent it not going to do anything anyway.",
+		"loreText" : "I realized few things about Liquefier. Once Earth flowed into its internal tank, the whole machine started rotating on a track that goes around the whole room.<br><br> While it's moving it can gather required Element from the pipes. Of course its valve need to be open too. And when it reached a dock it stops there for a while. It seems that the reaction can only occur when docked.<br><br>Sadly it seems that without reagent it is not going to do anything anyway.",
 		"loreFreezeDuration": -1,
 		"gameplayText" : "Proceed only after reading lore above. Machines are quite complicated.",
 		"gameplayFreezeDuration": -1,
@@ -806,7 +806,7 @@ var jsonMessages = {
 	},
 	"machineThresholdAmount-0.2" : {
 		"flush" : true,
-		"loreText" : "I think I came up with a way of manually forcing reaction using my glove without the use of reagent.<br><br>It's going to be inefficient, but I can turn 4 Earth inside Liquefier into some Water by clicking Water Orb.",
+		"loreText" : "I think I came up with a way of manually forcing a reaction using my Glove without the use of reagent.<br><br>It's going to be inefficient, but I can turn 4 Earth inside the Liquefier into some Water by tapping the Water Orb.",
 		"loreFreezeDuration": 16000,
 		"gameplayText" : "Try to fill Water Orb after Liquefier fills up.",
 		"gameplayFreezeDuration": 16000,
@@ -816,7 +816,7 @@ var jsonMessages = {
 		"eventId": "unlockElement1"
 	},
 	"machineThresholdAmount-1" : {
-		"loreText" : "<br>Boiler requires Fire to run, but my manual method should still be viable. 4 Water in Boiler will turn into some Air.",
+		"loreText" : "<br>The Boiler requires Fire to run, but my manual method should still be viable. 4 Water in the Boiler will turn into some Air.",
 		"loreFreezeDuration": 10000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -824,7 +824,7 @@ var jsonMessages = {
 		"firstActiveElement" : "none"
 	},
 	"machineThresholdAmount-2" : {
-		"loreText" : "<br>It seems that the end of manual grind is near. 4 Air in Combustor will turn into some Fire.",
+		"loreText" : "<br>It seems that the end of manual grinding is near. 4 Air in the Combustor will turn into some Fire.",
 		"loreFreezeDuration": 10000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": -1,
@@ -832,7 +832,7 @@ var jsonMessages = {
 		"firstActiveElement" : "none"
 	},
 	"machineActivated0" : {
-		"loreText" : "<br>Yes! It works! Now I can accumulate Water with 100% machine's efficiency. 4 Earth and 1 Water => 4 Water means that overall I lose some quantity.<br>But with increased supply of Water I can start thinking about upgrading Liquefier and working towards next Orb",
+		"loreText" : "<br>Yes! It works! Now I can accumulate Water with 100% efficiency. 4 Earth and 1 Water => 4 Water means that overall I still lose some.<br>But with increased supplies of Water I can start thinking about upgrading the Liquefier and working towards my next Orb",
 		"loreFreezeDuration": 10000,
 		"gameplayText" : "",
 		"gameplayFreezeDuration": 1,
