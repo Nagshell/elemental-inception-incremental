@@ -207,7 +207,7 @@ savingSystem = {
 				}
 				else
 				{
-					alert("Save system has beed updated. Save was migrated, but there is a chance it could not work properly. If that's the case, please consider hard resetting.");
+					alert("Save system has been updated. Save was migrated, but there is a chance it could not work properly. If that's the case, please consider hard resetting.");
 				}
 			}
 			else
@@ -218,7 +218,7 @@ savingSystem = {
 				}
 				else
 				{
-					alert("Save system has beed updated. There is 99.5% chance previous save wouldn't load properly. Game did hard reset, but you have recieved a lot of turbo time as an apology.");
+					alert("Save system has been updated. There was a 99.5% chance previous save wouldn't load properly. Game performed a hard reset, but you have received a lot of turbo time as an apology.");
 				}
 				data.oElements.Time.amount += dataToLoad;
 				dataToLoad = null;
@@ -413,7 +413,7 @@ savingSystem = {
 
 	toString: function ()
 	{
-		// add some extra info to save. Date is probably more or less helpfull.
+		// Add some extra info to save. Date is probably more or less helpful.
 		var extraInfo = "(" + new Date().toLocaleString().replace(/[^\w.,\-:;]/g, "") + ")";
 		return "TFA3save" + extraInfo + "<<" + btoa(JSON.stringify(this.saveData())) + ">>";
 	},
@@ -421,9 +421,9 @@ savingSystem = {
 	{
 		// if (typeof str !== "string") {
 		//	 return false;
-		// } // just convert instead
+		// } // Just convert instead.
 		str += "";
-		// whitespace and quotes may remain from copying from somewhere else
+		// Whitespace and quotes may remain from copying from somewhere else.
 		str = str.replace(/[\s"]/g, "");
 		if (str.match(/TFA3save/))
 		{
@@ -453,8 +453,8 @@ savingSystem = {
 			localStorage.setItem("saveData", atob(data));
 			this.loadData();
 			location.reload();
-			// loading save does not handle closing some of windows properly
-			// it wont be bad to reload page anyway
+			// Loading save does not handle closing some of windows properly.
+			// It won't be bad to reload page anyway.
 		}
 	},
 	globalCopyHandler: function (event)
