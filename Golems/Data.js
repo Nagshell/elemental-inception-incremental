@@ -561,10 +561,10 @@ var staticData = {
 					return "Steam Golem < Water + Fire";
 				},
 				"middleRow" : function() {
-					return "Conversion machine speed is increased according to current Air (currently: "+(100*dynamicData.stats.machineGolemSpeed-100).toFixed(1)+"%)";
+					return "Machine conversion speed is increased according to current Air (currently: "+(100*dynamicData.stats.machineGolemSpeed-100).toFixed(1)+"%)";
 				},
 				"bottomRow" : function() {
-					return "Golem also did upgrade pipes two additional times";
+					return "Golem also upgraded pipes two additional times";
 				}
 			}
 		},
@@ -627,7 +627,7 @@ var staticData = {
 					return "Infernal Golem < Air + Fire";
 				},
 				"middleRow" : function() {
-					return "Produces decreasing amounts of Elements based on their current volume.";
+					return "Produces decreasing amounts of Elements based on their current amount.";
 				},
 				"bottomRow" : function() {
 					return "It'll drain Elements above 1e90... I wonder what will happen if I let him drain enough of all Elements?";
@@ -835,7 +835,7 @@ var staticData = {
 				},
 				"middleRow" : function() {
 					var oCM = dynamicData.utilityMachines[0];
-					return "Returns root of stored Elements after buying an upgrade / creating Golem.";
+					return "Returns nth root of stored Elements after buying an upgrade / creating Golems.";
 				},
 				"bottomRow" : function() {
 					return "";
@@ -866,7 +866,7 @@ var staticData = {
 					return "";
 				},
 				"middleRow" : function() {
-					return "Open rift to elemental plane inside Earth's tank.";
+					return "Open a rift to an elemental plane inside Earth's tank.";
 				},
 				"bottomRow" : function() {
 					return "Rift will constantly produce respective element.";
@@ -895,7 +895,7 @@ var staticData = {
 					return "";
 				},
 				"middleRow" : function() {
-					return "Open rift to elemental plane inside Water's tank.";
+					return "Open a rift to an elemental plane inside Water's tank.";
 				},
 				"bottomRow" : function() {
 					return "Rift will constantly produce respective element.";
@@ -924,7 +924,7 @@ var staticData = {
 					return "";
 				},
 				"middleRow" : function() {
-					return "Open rift to elemental plane inside Air's tank.";
+					return "Open a rift to an elemental plane inside Air's tank.";
 				},
 				"bottomRow" : function() {
 					return "Rift will constantly produce respective element.";
@@ -955,7 +955,7 @@ var staticData = {
 					return "";
 				},
 				"middleRow" : function() {
-					return "Open rift to elemental plane inside Fire's tank.";
+					return "Open a rift to an elemental plane inside Fire's tank.";
 				},
 				"bottomRow" : function() {
 					return "Rift will constantly produce respective element.";
@@ -999,7 +999,7 @@ var staticData = {
 					return "Widen space available for rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce 2x more elements.";
+					return "Rift will produce 2x more Element.";
 				},
 				"additions" : [
 					{
@@ -1028,7 +1028,7 @@ var staticData = {
 					return "Widen space available for rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce 2x more elements.";
+					return "Rift will produce 2x more Element.";
 				},
 				"additions" : [
 					{
@@ -1060,7 +1060,7 @@ var staticData = {
 					return "Widen space available for rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce 2x more elements.";
+					return "Rift will produce 2x more Element.";
 				},
 				"additions" : [
 					{
@@ -1092,7 +1092,7 @@ var staticData = {
 					return "Widen space available for rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce 2x more elements.";
+					return "Rift will produce 2x more Element.";
 				},
 				"additions" : [
 					{
@@ -1124,7 +1124,7 @@ var staticData = {
 					return "Widen space available for rifts.";
 				},
 				"bottomRow" : function() {
-					return "Rift will produce 2x more elements.";
+					return "Rift will produce 2x more Element.";
 				},
 				"additions" : [
 					{
@@ -1424,7 +1424,7 @@ var staticData = {
 			},
 			"tooltipBought" : {
 				"topRow" : function() {
-					return "Maximum amount of pipes you can fit was reached.";
+					return "Maximum amount of pipes you can fit is reached.";
 				},
 				"middleRow" : function() {
 					return "Increases number of input pipes leading into the system.";
@@ -1458,10 +1458,10 @@ var staticData = {
 					return "Install Reaction Catalyst into the central spot.";
 				},
 				"middleRow" : function() {
-					return "I tried to copy main component of my grandma's setup.";
+					return "I tried to copy the main component of my grandma's setup.";
 				},
 				"bottomRow" : function() {
-					return "With Catalyst I should be able to initiate positive conversion loop. I also devised a way to use Air with it.";
+					return "With a Catalyst I should be able to initiate positive conversion loop. I also devised a way to use Air with it.";
 				},
 				"additions" : [
 					{
@@ -1499,13 +1499,13 @@ var staticData = {
 			},
 			"tooltip" : {
 				"topRow" : function() {
-					return "Curse tried to stop me again.";
+					return "The Curse tried to stop me again.";
 				},
 				"middleRow" : function() {
-					return "I need to change how Catalyst is constructed to stop this from happening again.";
+					return "I need to change how the Catalyst is constructed to stop this from happening again.";
 				},
 				"bottomRow" : function() {
-					return "Changing Catalyst into rotating ring will make it weaker, but it's my only option to proceed.";
+					return "Changing the Catalyst into a rotating ring will make it weaker, but it's my only option to proceed.";
 				},
 				"additions" : [
 					{
@@ -1542,10 +1542,10 @@ var staticData = {
 					return "Build Orb Infuser";
 				},
 				"middleRow" : function() {
-					return "I designed machine that will help with creation of golems I discovered in attic.";
+					return "I designed a machine that will help with creation of golems I discovered in attic.";
 				},
 				"bottomRow" : function() {
-					return "Filling it's tank to brim will create enough density of elements to convert Orbs I gathered into Golems.";
+					return "Filling its tank to the brim will create enough density of elements to convert Orbs I have gathered into Golems.";
 				},
 				"additions" : [
 					{
@@ -1558,7 +1558,7 @@ var staticData = {
 					return "Orb Infuser unlocked.";
 				},
 				"middleRow" : function() {
-					return "Once one of its tanks fills up Golem will be created.";
+					return "Once one of its tanks fills up a Golem will be created.";
 				},
 				"bottomRow" : function() {
 					return "";
@@ -1583,10 +1583,10 @@ var staticData = {
 			"chained" : "stash1",
 			"tooltip" : {
 				"topRow" : function() {
-					return "Create isolated machine for storing elements.";
+					return "Create an isolated machine for storing elements.";
 				},
 				"middleRow" : function() {
-					return "Stash lets you get root of stored elements back after creating golem or buying upgrade.";
+					return "Stash lets you get the nth root of stored elements back after creating Golems or buying upgrade.";
 				},
 				"bottomRow" : function() {
 					return "";
@@ -1618,7 +1618,7 @@ var staticData = {
 					return "Make Stash much better!";
 				},
 				"middleRow" : function() {
-					return "Stash lets you get root of stored elements back after creating golem or buying upgrade.";
+					return "Stash lets you get the nth root of stored elements back after creating Golems or buying upgrade.";
 				},
 				"bottomRow" : function() {
 					return "Improve design of valves attached to Stash.";
@@ -1650,7 +1650,7 @@ var staticData = {
 					return "Make Stash great again!";
 				},
 				"middleRow" : function() {
-					return "Stash lets you get root of stored elements back after creating golem or buying upgrade.";
+					return "Stash lets you get the nth root of stored elements back after creating Golems or buying upgrade.";
 				},
 				"bottomRow" : function() {
 					return "Isolate vital parts of pipes leading in and out of stash.";
@@ -1666,7 +1666,7 @@ var staticData = {
 					return "Perfected Stash.";
 				},
 				"middleRow" : function() {
-					return "Stash lets you get some elements back after creating golem.";
+					return "Stash lets you get some elements back after creating Golems.";
 				},
 				"bottomRow" : function() {
 					return "It's not possible to improve it further.";
@@ -1691,7 +1691,7 @@ var staticData = {
 					return "Conversion machine overflow system.";
 				},
 				"middleRow" : function() {
-					return "Reverses flow of element with amount ratio over 3 times higher than the other.";
+					return "Reverses the flow of elements when over 3 times higher than the other.";
 				},
 				"bottomRow" : function() {
 					return "With this upgrade you will be able to turn on all valves without severe machine fill issues.";
@@ -1707,7 +1707,7 @@ var staticData = {
 					return "Conversion machine reverse flow system.";
 				},
 				"middleRow" : function() {
-					return "Reverses flow of element with amount ratio over 3 times higher than the other.";
+					return "Reverses flow of element when over 3 times higher than the other.";
 				},
 				"bottomRow" : function() {
 					return "Ratio is based on amount needed in conversion formula.";
