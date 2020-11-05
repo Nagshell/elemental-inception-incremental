@@ -268,7 +268,7 @@ var lore = {
 		},
 		"pun9" : {
 			"text" : "You cannot catch Golems by throwing Orbs at them. I've tried.."
-		}
+		},
 		"pun10" : {
 			"text" : "The First Alkahistorian has a discord!"
 		}
