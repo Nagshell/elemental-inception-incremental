@@ -491,7 +491,7 @@ var locale = {
 		gemGrow13: "I",
 		gemGrow14: "P",
 		gemGrow15: "I",
-		gemGrow16: "T",
+		gemGrow16: "N",
 		gemGrow17: "A",
 		gemGrow18: "T",
 		gemGrow19: "O",
