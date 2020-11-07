@@ -303,41 +303,6 @@ var machines = {
 	machineTick: function ()
 	{
 		this.upgradeTick();
-		if (this.displayElement)
-		{
-			if (data.oElements[this.displayElement].amount > 1e255)
-			{
-				this.displayStep = Math.min(0.03, this.displayStep);
-			}
-			else if (data.oElements[this.displayElement].amount > 1e127)
-			{
-				this.displayStep = Math.min(0.06, this.displayStep);
-			}
-			else if (data.oElements[this.displayElement].amount > 1e63)
-			{
-				this.displayStep = Math.min(0.125, this.displayStep);
-			}
-			else if (data.oElements[this.displayElement].amount > 1e31)
-			{
-				this.displayStep = Math.min(0.25, this.displayStep);
-			}
-			else if (data.oElements[this.displayElement].amount > 1e15)
-			{
-				this.displayStep = Math.min(0.5, this.displayStep);
-			}
-			else if (data.oElements[this.displayElement].amount > 1e7)
-			{
-				this.displayStep = Math.min(1, this.displayStep);
-			}
-			else if (data.oElements[this.displayElement].amount > 1e3)
-			{
-				this.displayStep = Math.min(2, this.displayStep);
-			}
-			else if (data.oElements[this.displayElement].amount > 1e1)
-			{
-				this.displayStep = Math.min(4, this.displayStep);
-			}
-		}
 		for (var i = 0; i < this.recipes.length; i++)
 		{
 			var temp = this.recipes[i];
@@ -348,20 +313,23 @@ var machines = {
 			if (temp.enabled)
 			{
 				var state = "working";
-				for (var j = 0; j < temp.inputs.length; j++)
-				{
-					if (data.oElements[temp.inputs[j].type].amount < temp.inputs[j].min)
-					{
-						state = "empty";
-						break;
-					}
-				}
 				for (var j = 0; j < temp.outputs.length; j++)
 				{
 					if (data.oElements[temp.outputs[j].type].amount >= temp.outputs[j].max && !temp.outputs[j].noLimit && temp.outputs[j].ratio)
 					{
 						state = "full";
 						break;
+					}
+				}
+				if (state == "working")
+				{
+					for (var j = 0; j < temp.inputs.length; j++)
+					{
+						if (data.oElements[temp.inputs[j].type].amount < temp.inputs[j].min)
+						{
+							state = "empty";
+							break;
+						}
 					}
 				}
 				temp.pieChart.push(state);
@@ -395,7 +363,7 @@ var machines = {
 					var mul = machines.lagbenderMultiplier % 4;
 					for (var j = 0; j < temp.inputs.length; j++)
 					{
-						data.oElementsFlow[temp.inputs[j].type] -= amount * temp.inputs[j].ratio;
+						data.oElements[temp.inputs[j].type].flow -= amount * temp.inputs[j].ratio;
 						if (temp.inputs[j].ratio == 0)
 						{
 							temp.inputs[j].effectReference.volume -= 0.001;
@@ -410,7 +378,7 @@ var machines = {
 						var flow = Math.min(amount * temp.outputs[j].ratio * temp.efficiency + data.oElements[temp.outputs[j].type].amount, temp.outputs[j].max * 1.2 * mul) - data.oElements[temp.outputs[j].type].amount;
 						if (data.oElements[temp.outputs[j].type].amount < temp.outputs[j].max)
 						{
-							data.oElementsFlow[temp.outputs[j].type] += flow;
+							data.oElements[temp.outputs[j].type].flow += flow;
 						}
 						temp.outputs[j].effectReference.volume += flow;
 					}
@@ -487,6 +455,42 @@ var machines = {
 		}
 		ctx.restore();
 	},
+	calculateDisplayStep: function(amount, step)
+	{
+		if (amount > 1e255)
+		{
+			return Math.min(0.03, step);
+		}
+		else if (amount > 1e127)
+		{
+			return Math.min(0.06, step);
+		}
+		else if (amount > 1e63)
+		{
+			return Math.min(0.125, step);
+		}
+		else if (amount > 1e31)
+		{
+			return Math.min(0.25, step);
+		}
+		else if (amount > 1e15)
+		{
+			return Math.min(0.5, step);
+		}
+		else if (amount > 1e7)
+		{
+			return Math.min(1, step);
+		}
+		else if (amount > 1e3)
+		{
+			return Math.min(2, step);
+		}
+		else if (amount > 1e1)
+		{
+			return Math.min(4, step);
+		}
+		return step;
+	},
 	displayRegionRegularDraw: function (ctx, pane)
 	{
 		ctx.save();
@@ -503,6 +507,8 @@ var machines = {
 			var amount = data.oElements[this.machine.displayElement].amount;
 			if (amount > 0.0)
 			{
+				
+				this.machine.displayStep = machines.calculateDisplayStep(data.oElements[this.machine.displayElement].reachedAmount, this.machine.displayStep);
 				var radius = 0;
 				while (amount > 1.03)
 				{
