@@ -1,185 +1,159 @@
 var regionData = {};
 
-function preprocessRegionData()
-{
+function preprocessRegionData() {
 	regionData.iconPath = new Path2D();
 	regionData.iconPath.rect(0, 0, optionData.iconSize, optionData.iconSize);
 	regionData.dragRegion = new cRegion(optionData.iconSize + 1, 0);
 	regionData.dragRegion.img = "iconDrag";
 	regionData.dragRegion.boundaryPath = regionData.iconPath;
-	regionData.dragRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mousemove" && pane.title)
-		{
+	regionData.dragRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mousemove" && pane.title) {
 			tooltipPane.showText(pane.title);
 		}
-		if (type == "mousedown")
-		{
+		if (type == "mousedown") {
 			panes.dragndrop = pane;
 			panes.highlightDragged(pane);
 		}
-	}
+	};
 
 	regionData.hideRegion = new cRegion(0, 0);
 	regionData.hideRegion.img = "iconHide";
 	regionData.hideRegion.boundaryPath = regionData.iconPath;
-	regionData.hideRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (pane.boundaryPath)
-			{
+	regionData.hideRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			if (pane.boundaryPath) {
 				pane.hiddenPath = pane.boundaryPath;
 				pane.boundaryPath = null;
 				pane.blockShow = true;
 				pane.postShow = false;
 			}
 		}
-	}
+	};
 
 	regionData.showRegion = new cRegion(0, 0);
 	regionData.showRegion.img = "iconShow";
 	regionData.showRegion.boundaryPath = regionData.iconPath;
-	regionData.showRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (pane.hiddenPath)
-			{
+	regionData.showRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			if (pane.hiddenPath) {
 				pane.boundaryPath = pane.hiddenPath;
 				pane.hiddenPath = null;
 				pane.blockShow = false;
 			}
-			if (pane.top)
-			{
+			if (pane.top) {
 				var i = 0;
-				while (pane.top.subPanes[i] !== pane)
-				{
+				while (pane.top.subPanes[i] !== pane) {
 					i++;
 				}
-				while (i > 0)
-				{
+				while (i > 0) {
 					i--;
 					pane.top.subPanes[i + 1] = pane.top.subPanes[i];
 				}
 				pane.top.subPanes[i] = pane;
 
-				var mx = optionData.iconSize * 3 / 2 + pane.top.x + pane.x;
+				var mx = (optionData.iconSize * 3) / 2 + pane.top.x + pane.x;
 				var my = optionData.iconSize / 2 + pane.top.y + pane.y;
-				if (pane.top.centerX)
-				{
+				if (pane.top.centerX) {
 					mx += pane.top.centerX;
 					my += pane.top.centerY;
 				}
-				if (!pane.top.checkBoundary(mx, my, "mousemove"))
-				{
+				if (!pane.top.checkBoundary(mx, my, "mousemove")) {
 					pane.x = pane.defaultX;
 					pane.y = pane.defaultY;
 					return;
 				}
-			}
-			else
-			{
+			} else {
 				var i = 0;
-				while (panes.list[i] !== pane)
-				{
+				while (panes.list[i] !== pane) {
 					i++;
 				}
-				while (i > 0)
-				{
+				while (i > 0) {
 					i--;
 					panes.list[i + 1] = panes.list[i];
 				}
 				panes.list[i] = pane;
 			}
 		}
-	}
+	};
 
 	regionData.minRegion = new cRegion(optionData.iconSize * 2 + 2, 0);
 	regionData.minRegion.img = "iconMin";
 	regionData.minRegion.boundaryPath = regionData.iconPath;
-	regionData.minRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
+	regionData.minRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
 			pane.subPanesMax = pane.subPanes;
 			pane.subPanes = pane.subPanesMin;
 
 			pane.subRegionsMax = pane.subRegions;
 			pane.subRegions = pane.subRegionsMin;
 
-			if (pane.boundaryPath)
-			{
+			if (pane.boundaryPath) {
 				pane.boundaryPathMax = pane.boundaryPath;
 				pane.boundaryPath = pane.boundaryPathMin;
-			}
-			else
-			{
+			} else {
 				pane.boundaryPathMax = pane.hiddenPath;
 				pane.hiddenPath = pane.boundaryPathMin;
 			}
 		}
-	}
+	};
 
 	regionData.maxRegion = new cRegion(optionData.iconSize * 2 + 2, 0);
 	regionData.maxRegion.img = "iconMax";
 	regionData.maxRegion.boundaryPath = regionData.iconPath;
-	regionData.maxRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
+	regionData.maxRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
 			pane.subPanesMin = pane.subPanes;
 			pane.subPanes = pane.subPanesMax;
 
 			pane.subRegionsMin = pane.subRegions;
 			pane.subRegions = pane.subRegionsMax;
 
-			if (pane.boundaryPath)
-			{
+			if (pane.boundaryPath) {
 				pane.boundaryPathMin = pane.boundaryPath;
 				pane.boundaryPath = pane.boundaryPathMax;
-			}
-			else
-			{
+			} else {
 				pane.boundaryPathMin = pane.hiddenPath;
 				pane.hiddenPath = pane.boundaryPathMax;
 			}
 			pane.boundaryPathMax = null;
 		}
-	}
+	};
 
 	regionData.draggableTitleRegion = new cRegion(optionData.iconSize * 2 + 2, 0);
 	var path = new Path2D();
 	path.rect(0, 0, optionData.iconSize * 7 + 350, optionData.iconSize);
 	regionData.draggableTitleRegion.boundaryPath = path;
-	regionData.draggableTitleRegion.mouseHandler = regionData.dragRegion.mouseHandler;
-	regionData.draggableTitleRegion.customDraw = function (ctx, pane)
-	{
+	regionData.draggableTitleRegion.mouseHandler =
+		regionData.dragRegion.mouseHandler;
+	regionData.draggableTitleRegion.customDraw = function (ctx, pane) {
 		ctx.save();
 		ctx.fillStyle = ctx.strokeStyle;
 		ctx.textAlign = "left";
 		ctx.fillText(pane.title, 5, optionData.iconSize / 2);
 		ctx.restore();
-	}
-	regionData.draggableTitleRegionShifted = new cRegion(optionData.iconSize * 3 + 3, 0);
+	};
+	regionData.draggableTitleRegionShifted = new cRegion(
+		optionData.iconSize * 3 + 3,
+		0
+	);
 	regionData.draggableTitleRegionShifted.boundaryPath = path;
-	regionData.draggableTitleRegionShifted.mouseHandler = regionData.dragRegion.mouseHandler;
-	regionData.draggableTitleRegionShifted.customDraw = regionData.draggableTitleRegion.customDraw;
+	regionData.draggableTitleRegionShifted.mouseHandler =
+		regionData.dragRegion.mouseHandler;
+	regionData.draggableTitleRegionShifted.customDraw =
+		regionData.draggableTitleRegion.customDraw;
 
-	regionData.confirmRegion = new cRegion(optionData.iconSize + 5, optionData.iconSize + 14);
+	regionData.confirmRegion = new cRegion(
+		optionData.iconSize + 5,
+		optionData.iconSize + 14
+	);
 	path = new Path2D();
 	path.rect(0, 0, 55, 16);
 	regionData.confirmRegion.boundaryPath = path;
-	regionData.confirmRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (pane.costs)
-			{
-				if (paymentPane.isAffordable(pane.costs))
-				{
-					for (var i = 0; i < pane.costs.length; i++)
-					{
+	regionData.confirmRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			if (pane.costs) {
+				if (paymentPane.isAffordable(pane.costs)) {
+					for (var i = 0; i < pane.costs.length; i++) {
 						data.oElements[pane.costs[i].type].amount -= pane.costs[i].amount;
 					}
 					pane.target.paymentSuccess(true);
@@ -189,43 +163,38 @@ function preprocessRegionData()
 				}
 			}
 		}
-	}
-	regionData.confirmRegion.customDraw = function (ctx, pane)
-	{
-		if (pane.costs)
-		{
+	};
+	regionData.confirmRegion.customDraw = function (ctx, pane) {
+		if (pane.costs) {
 			var possible = true;
-			for (var i = 0; i < pane.costs.length; i++)
-			{
-				possible = possible && (data.oElements[pane.costs[i].type].amount >= pane.costs[i].amount);
+			for (var i = 0; i < pane.costs.length; i++) {
+				possible =
+					possible &&
+					data.oElements[pane.costs[i].type].amount >= pane.costs[i].amount;
 			}
-			if (possible)
-			{
+			if (possible) {
 				ctx.drawImage(images.buttonConfirm, 0, 0);
-			}
-			else
-			{
+			} else {
 				ctx.drawImage(images.buttonConfirmCrossed, 0, 0);
 			}
 		}
+	};
 
-	}
-
-	regionData.cancelRegion = new cRegion(optionData.iconSize + 8, optionData.iconSize + 38);
+	regionData.cancelRegion = new cRegion(
+		optionData.iconSize + 8,
+		optionData.iconSize + 38
+	);
 	path = new Path2D();
 	path.rect(0, 0, 49, 16);
 	regionData.cancelRegion.img = "buttonCancel";
 	regionData.cancelRegion.boundaryPath = path;
-	regionData.cancelRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (pane.costs)
-			{
+	regionData.cancelRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			if (pane.costs) {
 				pane.costs = null;
 			}
 		}
-	}
+	};
 
 	regionData.saveRegion = new cRegion(20, 58);
 	path = new Path2D();
@@ -234,28 +203,23 @@ function preprocessRegionData()
 	regionData.saveRegion.textX = 30;
 	regionData.saveRegion.textY = 8;
 	regionData.saveRegion.boundaryPath = path;
-	regionData.saveRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (saveCD - s >= 60)
-			{
+	regionData.saveRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			if (saveCD - s >= 60) {
 				s = saveCD;
 				savingSystem.saveData();
 			}
 		}
-	}
-	regionData.saveRegion.customDraw = function (ctx, pane)
-	{
-		if (saveCD - s <= 60)
-		{
+	};
+	regionData.saveRegion.customDraw = function (ctx, pane) {
+		if (saveCD - s <= 60) {
 			ctx.save();
 			ctx.globalAlpha = 1 - (saveCD - s) / 60;
 			ctx.fillStyle = "#646464";
 			ctx.fill(this.boundaryPath);
 			ctx.restore();
 		}
-	}
+	};
 
 	regionData.resetRegion = new cRegion(20, 25);
 	path = new Path2D();
@@ -264,90 +228,74 @@ function preprocessRegionData()
 	regionData.resetRegion.textX = 40;
 	regionData.resetRegion.textY = 8;
 	regionData.resetRegion.boundaryPath = path;
-	regionData.resetRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
+	regionData.resetRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
 			savingSystem.hardReset();
 		}
-	}
+	};
 
 	regionData.pinRegion = new cRegion(0, optionData.iconSize + 1);
 	regionData.pinRegion.boundaryPath = regionData.iconPath;
-	regionData.pinRegion.customDraw = function (ctx, pane)
-	{
-		if (pane.pinned)
-		{
+	regionData.pinRegion.customDraw = function (ctx, pane) {
+		if (pane.pinned) {
 			ctx.drawImage(images.iconPinNot, 0, 0);
-		}
-		else
-		{
+		} else {
 			ctx.drawImage(images.iconPin, 0, 0);
 		}
-	}
-	regionData.pinRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
+	};
+	regionData.pinRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
 			var list = pane.top.centerPanes;
-			if (list)
-			{
-				if (pane.pinned)
-				{
+			if (list) {
+				if (pane.pinned) {
 					list[pane.pinID] = list[list.length - 1];
 					list[pane.pinID].pinID = pane.pinID;
 					list.length--;
 					pane.pinned = false;
-				}
-				else
-				{
+				} else {
 					pane.pinID = list.length;
 					pane.pinned = true;
 					list.push(pane);
 				}
 			}
 		}
-	}
+	};
 
-	regionData.nextPageRegion = new cRegion(optionData.iconSize * 2 + 2, optionData.iconSize + 1);
+	regionData.nextPageRegion = new cRegion(
+		optionData.iconSize * 2 + 2,
+		optionData.iconSize + 1
+	);
 	regionData.nextPageRegion.boundaryPath = regionData.iconPath;
-	regionData.nextPageRegion.customDraw = function (ctx, pane)
-	{
-		if (pane.currentPage < pane.maxPages)
-		{
+	regionData.nextPageRegion.customDraw = function (ctx, pane) {
+		if (pane.currentPage < pane.maxPages) {
 			ctx.drawImage(images.iconNext, 0, 0);
 		}
-	}
-	regionData.nextPageRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (pane.currentPage < pane.maxPages)
-			{
+	};
+	regionData.nextPageRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			if (pane.currentPage < pane.maxPages) {
 				pane.currentPage++;
 			}
 		}
-	}
+	};
 
-	regionData.prevPageRegion = new cRegion(optionData.iconSize + 1, optionData.iconSize + 1);
+	regionData.prevPageRegion = new cRegion(
+		optionData.iconSize + 1,
+		optionData.iconSize + 1
+	);
 	regionData.prevPageRegion.boundaryPath = regionData.iconPath;
-	regionData.prevPageRegion.customDraw = function (ctx, pane)
-	{
-		if (pane.currentPage > 0)
-		{
+	regionData.prevPageRegion.customDraw = function (ctx, pane) {
+		if (pane.currentPage > 0) {
 			ctx.drawImage(images.iconPrev, 0, 0);
 		}
-	}
-	regionData.prevPageRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (pane.currentPage > 0)
-			{
+	};
+	regionData.prevPageRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			if (pane.currentPage > 0) {
 				pane.currentPage--;
 			}
 		}
-	}
+	};
 }
 
 var trackerPane;
@@ -358,56 +306,57 @@ var optionsPane;
 var waypointPane;
 var minimapPane;
 var mapControlPane;
+var stuckHelperPane;
 var donatePage;
 var waypointsBase = [
-{
-	name: locale.waypoints.center,
-	x: 0,
-	y: 0,
-},
-{
-	name: locale.waypoints.reach,
-	x: 0,
-	y: -800,
-},
-{
-	name: locale.waypoints.rarity,
-	x: -500,
-	y: -500,
-},
-{
-	name: locale.waypoints.cold,
-	x: -750,
-	y: 0,
-},
-{
-	name: locale.waypoints.hot,
-	x: 750,
-	y: 0,
-},
-{
-	name: locale.waypoints.power,
-	x: 575,
-	y: -575,
-},
-{
-	name: locale.waypoints.life,
-	x: 0,
-	y: 900,
-},
-{
-	name: locale.waypoints.gem,
-	x: 775,
-	y: 600,
-},
-{
-	name: locale.waypoints.pure,
-	x: -600,
-	y: 600,
-}, ];
+	{
+		name: locale.waypoints.center,
+		x: 0,
+		y: 0,
+	},
+	{
+		name: locale.waypoints.reach,
+		x: 0,
+		y: -800,
+	},
+	{
+		name: locale.waypoints.rarity,
+		x: -500,
+		y: -500,
+	},
+	{
+		name: locale.waypoints.cold,
+		x: -750,
+		y: 0,
+	},
+	{
+		name: locale.waypoints.hot,
+		x: 750,
+		y: 0,
+	},
+	{
+		name: locale.waypoints.power,
+		x: 575,
+		y: -575,
+	},
+	{
+		name: locale.waypoints.life,
+		x: 0,
+		y: 900,
+	},
+	{
+		name: locale.waypoints.gem,
+		x: 775,
+		y: 600,
+	},
+	{
+		name: locale.waypoints.pure,
+		x: -600,
+		y: 600,
+	},
+];
 
-function preprocessPaneData()
-{
+function preprocessPaneData() {
 	panes.list = [];
 	panes.postMouseHandlerShow = [];
 	panes.dragndrop = null;
@@ -418,8 +367,7 @@ function preprocessPaneData()
 	path.rect(0, 0, 800, 700);
 	mainPane.boundaryPath = path;
 	mainPane.centerPanes = [];
-	mainPane.customDraw = function (ctx)
-	{
+	mainPane.customDraw = function (ctx) {
 		var tempBackground;
 		backgrounds.draw(ctx);
 		effectSystem.draw(ctx);
@@ -438,25 +386,27 @@ function preprocessPaneData()
 		ctx.beginPath();
 		ctx.moveTo(x, y);
 		var noGlow = true;
-		for (var i = 0; i < this.subRegions.length; i++)
-		{
-			if (this.subRegions[i].markedToReadyGlow && this.subRegions[i].glowColor == "purple")
-			{
+		for (var i = 0; i < this.subRegions.length; i++) {
+			if (
+				this.subRegions[i].markedToReadyGlow &&
+				this.subRegions[i].glowColor == "purple"
+			) {
 				ctx.lineTo(this.subRegions[i].x, this.subRegions[i].y);
 				ctx.moveTo(x, y);
 				noGlow = false;
 			}
 		}
-		if (noGlow && x * x + y * y > 10000 * (1 + data.elementsKnown * data.elementsKnown))
-		{
+		if (
+			noGlow &&
+			x * x + y * y > 10000 * (1 + data.elementsKnown * data.elementsKnown)
+		) {
 			ctx.lineTo(0, 0);
 			ctx.moveTo(x, y);
 			ctx.shadowColor = borderGlow.colors.blue;
 			ctx.strokeStyle = borderGlow.colors.blue;
 			noGlow = false;
 		}
-		if (!noGlow)
-		{
+		if (!noGlow) {
 			ctx.moveTo(x + 5, y);
 			ctx.arc(x, y, 5, 0, Math.PI * 2);
 			ctx.moveTo(x + 10, y);
@@ -467,13 +417,11 @@ function preprocessPaneData()
 		}
 		ctx.restore();
 	};
-	mainPane.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mousedown")
-		{
+	mainPane.mouseHandler = function (pane, x, y, type) {
+		if (type == "mousedown") {
 			panes.dragndropcenter = this;
 		}
-	}
+	};
 
 	paymentPane = new cPane(mainPane, 300, 0);
 	path = new Path2D();
@@ -484,47 +432,46 @@ function preprocessPaneData()
 	paymentPane.subRegions.push(regionData.cancelRegion);
 	paymentPane.subRegions.push(regionData.dragRegion);
 	paymentPane.subRegions.push(regionData.pinRegion);
-	paymentPane.customDraw = function (ctx)
-	{
+	paymentPane.customDraw = function (ctx) {
 		ctx.save();
 		ctx.fillStyle = ctx.strokeStyle;
-		if (this.costs)
-		{
-			for (var i = 0; i < this.costs.length; i++)
-			{
-				if (data.oElements[this.costs[i].type].known)
-				{
+		if (this.costs) {
+			for (var i = 0; i < this.costs.length; i++) {
+				if (data.oElements[this.costs[i].type].known) {
 					ctx.fillText(this.costs[i].type, 120, 8);
-					drawNumber(ctx, data.oElements[this.costs[i].type].amount, 220, 8, elementalDisplayType[this.costs[i].type], "right");
+					drawNumber(
+						ctx,
+						data.oElements[this.costs[i].type].amount,
+						220,
+						8,
+						elementalDisplayType[this.costs[i].type],
+						"right"
+					);
 					ctx.fillText("/", 230, 8);
-					drawNumber(ctx, this.costs[i].amount, 236, 8, elementalDisplayType[this.costs[i].type]);
-				}
-				else
-				{
-					if (this.costs[i].amount > 0)
-					{
+					drawNumber(
+						ctx,
+						this.costs[i].amount,
+						236,
+						8,
+						elementalDisplayType[this.costs[i].type]
+					);
+				} else {
+					if (this.costs[i].amount > 0) {
 						ctx.fillText("???", 120, 8);
-					}
-					else
-					{
+					} else {
 						ctx.fillText(locale.free, 120, 8);
 					}
-
 				}
 
 				ctx.translate(0, 17);
 			}
-		}
-		else
-		{
+		} else {
 			regionData.hideRegion.action(this);
 		}
 		ctx.restore();
-	}
-	paymentPane.preparePayment = function (costs, x, y, offsetPane, target)
-	{
-		if (this.target == target && this.boundaryPath)
-		{
+	};
+	paymentPane.preparePayment = function (costs, x, y, offsetPane, target) {
+		if (this.target == target && this.boundaryPath) {
 			regionData.hideRegion.action(this);
 			return;
 		}
@@ -533,69 +480,78 @@ function preprocessPaneData()
 		panes.postMouseHandlerShow.push(this);
 		this.blockShow = false;
 
-		if (!this.pinned)
-		{
+		if (!this.pinned) {
 			this.x = x + 17;
 			this.y = y + 17;
-			while (offsetPane.top !== null)
-			{
+			while (offsetPane.top !== null) {
 				this.x += offsetPane.x;
 				this.y += offsetPane.y;
 				offsetPane = offsetPane.top;
 			}
 		}
-	}
-	paymentPane.isAffordable = function (costs)
-	{
+	};
+	paymentPane.isAffordable = function (costs) {
 		var possible = true;
-		for (var i = 0; i < costs.length; i++)
-		{
-			possible = possible && (data.oElements[costs[i].type].amount >= costs[i].amount);
+		for (var i = 0; i < costs.length; i++) {
+			possible =
+				possible && data.oElements[costs[i].type].amount >= costs[i].amount;
 		}
 		return possible;
-	}
-	paymentPane.isPotentiallyAffordable = function (costs)
-	{
+	};
+	paymentPane.isPotentiallyAffordable = function (costs) {
 		var possible = true;
-		for (var i = 0; i < costs.length; i++)
-		{
-			possible = possible && (data.oElements[costs[i].type].possibleAmount >= costs[i].amount);
+		for (var i = 0; i < costs.length; i++) {
+			possible =
+				possible &&
+				data.oElements[costs[i].type].possibleAmount >= costs[i].amount;
 		}
 		return possible;
-	}
+	};
 	regionData.hideRegion.action(paymentPane);
 
 	trackerPane = new cPane(null, 0, 0);
 	path = new Path2D();
 	path.rect(0, 0, 800, 99);
 	trackerPane.boundaryPath = path;
-	trackerPane.customDraw = function (ctx)
-	{
+	trackerPane.customDraw = function (ctx) {
 		ctx.save();
 		ctx.textAlign = "left";
 		ctx.fillStyle = ctx.strokeStyle;
-		ctx.fillText(locale.autosave + ": " + Math.trunc(s / 3600) + ":" + ("0" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60)).slice(-2), trackerPane.savingX, 50);
+		ctx.fillText(
+			locale.autosave +
+				": " +
+				Math.trunc(s / 3600) +
+				":" +
+				("0" + Math.ceil((s - Math.trunc(s / 3600) * 3600) / 60)).slice(-2),
+			trackerPane.savingX,
+			50
+		);
 		ctx.fillText("TPF:" + tpf, trackerPane.savingX - 50, 33);
 		ctx.fillText("FPS:" + fps, trackerPane.savingX - 50, 50);
 		ctx.fillText("TPS:" + tps, trackerPane.savingX - 50, 67);
-		if (lim)
-		{
+		if (lim) {
 			ctx.fillText("Capped", trackerPane.savingX - 50, 84);
 		}
-		if (elapsed)
-		{
+		if (elapsed) {
 			ctx.textAlign = "right";
-			ctx.fillText("Awarded " + Math.round(elapsed * 0.8) + " bonus Time.", trackerPane.savingX - 60, 67);
-			ctx.fillText("Time spent offline: " + formattedElapsed, trackerPane.savingX - 60, 50);
+			ctx.fillText(
+				"Awarded " + Math.round(elapsed * 0.8) + " bonus Time.",
+				trackerPane.savingX - 60,
+				67
+			);
+			ctx.fillText(
+				"Time spent offline: " + formattedElapsed,
+				trackerPane.savingX - 60,
+				50
+			);
 		}
 		ctx.restore();
-	}
-	trackerPane.resize = function ()
-	{
+	};
+	trackerPane.resize = function () {
 		trackerPane.savingX = canvas.width - 150;
 		regionData.saveRegion.x = trackerPane.savingX + 22;
 		regionData.resetRegion.x = trackerPane.savingX + 12;
-	}
+	};
 	trackerPane.subRegions.push(regionData.saveRegion);
 	trackerPane.subRegions.push(regionData.resetRegion);
 
@@ -604,15 +560,16 @@ function preprocessPaneData()
 	path = new Path2D();
 	path.rect(0, 0, tabWidth, tabHeight);
 	var tabRegions = [];
-	for (var i = 0; i < 18; i++)
-	{
-		var r = new cRegion(5 + (tabWidth + 8) * Math.floor(i / 3), 5 + (tabHeight + 8) * (i % 3));
+	for (var i = 0; i < 18; i++) {
+		var r = new cRegion(
+			5 + (tabWidth + 8) * Math.floor(i / 3),
+			5 + (tabHeight + 8) * (i % 3)
+		);
 		r.text = locale.aTabNames[i];
 		r.textX = tabWidth / 2;
 		r.textY = tabHeight / 2;
 		r.boundaryPath = locale.aTabNames[i] ? path : null;
-		if (i > 2)
-		{
+		if (i > 2) {
 			trackerPane.subRegions.push(r);
 		}
 		tabRegions.push(r);
@@ -630,33 +587,32 @@ function preprocessPaneData()
 	educationalPane.subRegions.push(regionData.draggableTitleRegion);
 	educationalPane.currentPage = 0;
 	educationalPane.maxPages = 8;
-	educationalPane.customDraw = function (ctx)
-	{
+	educationalPane.customDraw = function (ctx) {
 		ctx.save();
 		ctx.fillStyle = ctx.strokeStyle;
-		this.title = locale.page + " " + (this.currentPage + 1) + " " + locale.outOf + " " + (this.maxPages + 1);
-		if (images["tutorialPage" + this.currentPage])
-		{
+		this.title =
+			locale.page +
+			" " +
+			(this.currentPage + 1) +
+			" " +
+			locale.outOf +
+			" " +
+			(this.maxPages + 1);
+		if (images["tutorialPage" + this.currentPage]) {
 			ctx.drawImage(images["tutorialPage" + this.currentPage], 0, 50);
 		}
-		switch (this.currentPage)
-		{
+		switch (this.currentPage) {
 			case 0:
 				break;
 		}
 		ctx.restore();
-	}
+	};
 	educationalPane.region = tabRegions[4];
-	educationalPane.region.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (this.pane.boundaryPath)
-			{
+	educationalPane.region.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			if (this.pane.boundaryPath) {
 				regionData.hideRegion.mouseHandler(this.pane, x, y, type);
-			}
-			else
-			{
+			} else {
 				regionData.showRegion.mouseHandler(this.pane, x, y, type);
 				this.pane.x = 50 - this.pane.top.centerX;
 				this.pane.y = 50 - this.pane.top.centerY;
@@ -672,32 +628,26 @@ function preprocessPaneData()
 	path = new Path2D();
 	path.rect(0, 0, 60, 17);
 	tooltipPane.boundaryPath = path;
-	tooltipPane.customDraw = function (ctx)
-	{
+	tooltipPane.customDraw = function (ctx) {
 		ctx.save();
 		ctx.textAlign = "left";
 		ctx.fillStyle = ctx.strokeStyle;
 		ctx.fillText(this.text, 4, 8);
 		ctx.restore();
-	}
-	tooltipPane.showText = function (text)
-	{
+	};
+	tooltipPane.showText = function (text) {
 		this.readyToShow = true;
-		if (this.text != text)
-		{
+		if (this.text != text) {
 			this.text = text;
 			var path = new Path2D();
 			path.rect(0, 0, Math.ceil(ctxActive.measureText(text).width) + 8, 16);
-			if (this.hiddenPath)
-			{
+			if (this.hiddenPath) {
 				this.hiddenPath = path;
-			}
-			else
-			{
+			} else {
 				this.boundaryPath = path;
 			}
 		}
-	}
+	};
 	regionData.hideRegion.action(tooltipPane);
 
 	waypointPane = new cPane(trackerPane, tabRegions[0].x, tabRegions[0].y);
@@ -708,42 +658,42 @@ function preprocessPaneData()
 	waypointPane.growth = 0;
 	waypointPane.growthX = 0;
 	waypointPane.growthY = optionData.iconSize - 1;
-	waypointPane.customDraw = function (ctx)
-	{
+	waypointPane.customDraw = function (ctx) {
 		ctx.save();
 		var rePath = false;
 
-		if (this.growing && this.growth < this.maxGrowth)
-		{
+		if (this.growing && this.growth < this.maxGrowth) {
 			this.growth++;
 			regionData.showRegion.action(this.top);
 			rePath = true;
-		}
-		else if (this.growing)
-		{
+		} else if (this.growing) {
 			this.growth = 1;
 			this.maxGrowth = 1;
-		}
-		else if (!this.growing && this.growth > 0)
-		{
+		} else if (!this.growing && this.growth > 0) {
 			this.growth--;
 			rePath = true;
 		}
-		if (rePath)
-		{
+		if (rePath) {
 			path = new Path2D();
-			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			path.rect(
+				0,
+				0,
+				tabWidth + (this.growth / this.maxGrowth) * this.growthX,
+				tabHeight + (this.growth / this.maxGrowth) * this.growthY
+			);
 			this.boundaryPath = path;
 		}
 		ctx.fillStyle = ctx.strokeStyle;
-		if (this.growth > 0)
-		{
+		if (this.growth > 0) {
 			ctx.save();
 			ctx.translate(0, tabHeight);
 			ctx.textAlign = "left";
-			for (var i = 0; i < waypointsBase.length; i++)
-			{
-				ctx.fillText(waypointsBase[i].name, optionData.iconSize + 5, optionData.iconSize / 2 + 1);
+			for (var i = 0; i < waypointsBase.length; i++) {
+				ctx.fillText(
+					waypointsBase[i].name,
+					optionData.iconSize + 5,
+					optionData.iconSize / 2 + 1
+				);
 				ctx.stroke(regionData.iconPath);
 				ctx.drawImage(images.iconNext, 0, 0);
 				ctx.translate(0, optionData.iconSize);
@@ -751,30 +701,31 @@ function preprocessPaneData()
 			ctx.restore();
 		}
 
-		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+		ctx.fillText(
+			this.modelRegion.text,
+			this.modelRegion.textX,
+			this.modelRegion.textY
+		);
 		ctx.restore();
 	};
-	waypointPane.mouseHandler = function (pane, x, y, type)
-	{
-		if (this.recentlyGrowing || type == "mouseup")
-		{
+	waypointPane.mouseHandler = function (pane, x, y, type) {
+		if (this.recentlyGrowing || type == "mouseup") {
 			this.growing = true;
-			if (machineData.machineKnowledge.recipes[0].unlocked)
-			{
+			if (machineData.machineKnowledge.recipes[0].unlocked) {
 				this.growthY = optionData.iconSize * waypointsBase.length;
 			}
 		}
-		if (type == "mouseup")
-		{
-			if (x < optionData.iconSize)
-			{
+		if (type == "mouseup") {
+			if (x < optionData.iconSize) {
 				y -= tabHeight;
-				if (y > 0)
-				{
+				if (y > 0) {
 					y = Math.trunc(y / optionData.iconSize);
 					x = waypointsBase[y].x;
 					y = waypointsBase[y].y;
-					panes.moveCenterMap(-x + Math.trunc(canvas.width / 2), -y + Math.trunc(canvas.height / 2) - 100);
+					panes.moveCenterMap(
+						-x + Math.trunc(canvas.width / 2),
+						-y + Math.trunc(canvas.height / 2) - 100
+					);
 				}
 			}
 		}
@@ -792,60 +743,63 @@ function preprocessPaneData()
 	minimapPane.maxLoad = 30;
 	minimapPane.scale = 10;
 
-	minimapPane.customDraw = function (ctx)
-	{
+	minimapPane.customDraw = function (ctx) {
 		ctx.save();
 		var rePath = false;
-		if (this.growing && this.growth < this.maxGrowth)
-		{
+		if (this.growing && this.growth < this.maxGrowth) {
 			this.growth++;
 			//regionData.showRegion.action(this.top);
 			rePath = true;
-		}
-		else if (this.growing)
-		{
+		} else if (this.growing) {
 			this.growth = 1;
 			this.maxGrowth = 1;
-		}
-		else if (!this.growing && this.growth > 0)
-		{
+		} else if (!this.growing && this.growth > 0) {
 			this.growth--;
 			rePath = true;
 		}
-		if (rePath)
-		{
+		if (rePath) {
 			path = new Path2D();
-			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			path.rect(
+				0,
+				0,
+				tabWidth + (this.growth / this.maxGrowth) * this.growthX,
+				tabHeight + (this.growth / this.maxGrowth) * this.growthY
+			);
 			this.boundaryPath = path;
 		}
 
-		if (this.growth >= this.maxGrowth)
-		{
-			if (this.load < this.maxLoad)
-			{
+		if (this.growth >= this.maxGrowth) {
+			if (this.load < this.maxLoad) {
 				this.load++;
-			}
-			else
-			{
+			} else {
 				this.maxLoad = 1;
 				this.load = 1;
 			}
-			if (this.load > 0)
-			{
+			if (this.load > 0) {
 				ctx.save();
-				ctx.translate((this.growthX + tabWidth) / 2, this.growthY / 2 + tabHeight);
+				ctx.translate(
+					(this.growthX + tabWidth) / 2,
+					this.growthY / 2 + tabHeight
+				);
 
 				ctx.beginPath();
-				ctx.arc(0, 0, Math.max(0, this.load / this.maxLoad * (this.growthX + tabWidth) / 2 - 5), 0, Math.PI * 2);
+				ctx.arc(
+					0,
+					0,
+					Math.max(
+						0,
+						((this.load / this.maxLoad) * (this.growthX + tabWidth)) / 2 - 5
+					),
+					0,
+					Math.PI * 2
+				);
 				ctx.stroke();
 				ctx.fill();
 				ctx.clip();
 				ctx.scale(1 / this.scale, 1 / this.scale);
-				for (var machineTitle in machineData)
-				{
+				for (var machineTitle in machineData) {
 					var mach = machineData[machineTitle];
-					if (mach.region.boundaryPath)
-					{
+					if (mach.region.boundaryPath) {
 						ctx.save();
 						ctx.translate(mach.region.x, mach.region.y);
 						ctx.stroke(mach.region.boundaryPath);
@@ -857,134 +811,183 @@ function preprocessPaneData()
 
 				ctx.restore();
 			}
-		}
-		else
-		{
+		} else {
 			this.load = 0;
 		}
 
 		ctx.fillStyle = ctx.strokeStyle;
-		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+		ctx.fillText(
+			this.modelRegion.text,
+			this.modelRegion.textX,
+			this.modelRegion.textY
+		);
 		ctx.restore();
-	}
-	minimapPane.mouseHandler = function (pane, x, y, type)
-	{
-		if (this.recentlyGrowing || type == "mouseup")
-		{
+	};
+	minimapPane.mouseHandler = function (pane, x, y, type) {
+		if (this.recentlyGrowing || type == "mouseup") {
 			this.growing = true;
 		}
-		if (type == "mouseup")
-		{
+		if (type == "mouseup") {
 			x -= (this.growthX + tabWidth) / 2;
 			y -= this.growthY / 2 + tabHeight;
-			var r = this.load / this.maxLoad * (this.growthX + tabWidth) / 2 - 5;
-			if (x * x + y * y < r * r)
-			{
-				panes.moveCenterMap(-x * this.scale + Math.trunc(canvas.width / 2), -y * this.scale + Math.trunc(canvas.height / 2) - 100);
+			var r = ((this.load / this.maxLoad) * (this.growthX + tabWidth)) / 2 - 5;
+			if (x * x + y * y < r * r) {
+				panes.moveCenterMap(
+					-x * this.scale + Math.trunc(canvas.width / 2),
+					-y * this.scale + Math.trunc(canvas.height / 2) - 100
+				);
 			}
 		}
-	}
+	};
 
 	mapControlPane = new cPane(trackerPane, tabRegions[2].x, tabRegions[2].y);
 	mapControlPane.modelRegion = tabRegions[2];
-	mapControlPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
+	mapControlPane.boundaryPath = mapControlPane.modelRegion.boundaryPath;
 	mapControlPane.maxGrowth = 15;
 	mapControlPane.independent = true;
 	mapControlPane.growth = 0;
 	mapControlPane.growthX = 148;
 	mapControlPane.growthY = 75;
-	mapControlPane.customDraw = function (ctx)
-	{
+	mapControlPane.customDraw = function (ctx) {
 		ctx.save();
 		ctx.fillStyle = ctx.strokeStyle;
-		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+		ctx.fillText(
+			this.modelRegion.text,
+			this.modelRegion.textX,
+			this.modelRegion.textY
+		);
 
 		var rePath = false;
-		if (this.growing && this.growth < this.maxGrowth)
-		{
+		if (this.growing && this.growth < this.maxGrowth) {
 			this.growth++;
 			regionData.showRegion.action(this.top);
 			rePath = true;
-		}
-		else if (!this.growing && this.growth > 0)
-		{
+		} else if (!this.growing && this.growth > 0) {
 			this.growth--;
 			rePath = true;
-			if (this.hideAllRegion.hiddenList.length > 0)
-			{
-				for (var i = 0; i < this.hideAllRegion.hiddenList.length; i++)
-				{
-					this.hideAllRegion.hiddenList[i].boundaryPath = this.hideAllRegion.hiddenList[i].hiddenPath;
+			if (this.hideAllRegion.hiddenList.length > 0) {
+				for (var i = 0; i < this.hideAllRegion.hiddenList.length; i++) {
+					this.hideAllRegion.hiddenList[i].boundaryPath =
+						this.hideAllRegion.hiddenList[i].hiddenPath;
 					this.hideAllRegion.hiddenList[i].hiddenPath = null;
 				}
 				this.hideAllRegion.hiddenList = [];
 			}
 		}
-		if (rePath)
-		{
+		if (rePath) {
 			path = new Path2D();
-			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			path.rect(
+				0,
+				0,
+				tabWidth + (this.growth / this.maxGrowth) * this.growthX,
+				tabHeight + (this.growth / this.maxGrowth) * this.growthY
+			);
 			this.boundaryPath = path;
 		}
 
 		ctx.restore();
-	}
-	mapControlPane.mouseHandler = function (pane, x, y, type)
-	{
-		if (this.recentlyGrowing || type == "mouseup")
-		{
+	};
+	mapControlPane.mouseHandler = function (pane, x, y, type) {
+		if (this.recentlyGrowing || type == "mouseup") {
 			this.growing = true;
 		}
-	}
+	};
 	preprocessMapControl();
+
+	stuckHelperPane = new cPane(trackerPane, tabRegions[8].x, tabRegions[8].y);
+	stuckHelperPane.modelRegion = tabRegions[8];
+	stuckHelperPane.boundaryPath = stuckHelperPane.modelRegion.boundaryPath;
+	stuckHelperPane.maxGrowth = 15;
+	stuckHelperPane.independent = true;
+	stuckHelperPane.growth = 0;
+	stuckHelperPane.growthX = 298;
+	stuckHelperPane.growthY = 75;
+	stuckHelperPane.customDraw = function (ctx) {
+		ctx.save();
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.fillText(
+			this.modelRegion.text,
+			this.modelRegion.textX,
+			this.modelRegion.textY
+		);
+
+		var rePath = false;
+		if (this.growing && this.growth < this.maxGrowth) {
+			this.growth++;
+			regionData.showRegion.action(this.top);
+			rePath = true;
+		} else if (!this.growing && this.growth > 0) {
+			this.growth--;
+			rePath = true;
+		}
+		if (rePath) {
+			path = new Path2D();
+			path.rect(
+				0,
+				0,
+				tabWidth + (this.growth / this.maxGrowth) * this.growthX,
+				tabHeight + (this.growth / this.maxGrowth) * this.growthY
+			);
+			this.boundaryPath = path;
+		}
+
+		ctx.restore();
+	};
+	stuckHelperPane.mouseHandler = function (pane, x, y, type) {
+		if (this.recentlyGrowing || type == "mouseup") {
+			this.growing = true;
+		}
+	};
+	preprocessStuckHelper();
 
 	iconLegendPane = new cPane(trackerPane, tabRegions[5].x, tabRegions[5].y);
 	iconLegendPane.modelRegion = tabRegions[5];
-	iconLegendPane.boundaryPath = waypointPane.modelRegion.boundaryPath;
+	iconLegendPane.boundaryPath = iconLegendPane.modelRegion.boundaryPath;
 	iconLegendPane.maxGrowth = 15;
 	iconLegendPane.independent = true;
 	iconLegendPane.growth = 0;
 	iconLegendPane.growthX = 110;
 	iconLegendPane.growthY = 242;
-	iconLegendPane.customDraw = function (ctx)
-	{
+	iconLegendPane.customDraw = function (ctx) {
 		ctx.save();
 		ctx.fillStyle = ctx.strokeStyle;
-		ctx.fillText(this.modelRegion.text, this.modelRegion.textX, this.modelRegion.textY);
+		ctx.fillText(
+			this.modelRegion.text,
+			this.modelRegion.textX,
+			this.modelRegion.textY
+		);
 
 		var rePath = false;
-		if (this.growing && this.growth < this.maxGrowth)
-		{
+		if (this.growing && this.growth < this.maxGrowth) {
 			this.growth++;
 			regionData.showRegion.action(this.top);
 			rePath = true;
-		}
-		else if (!this.growing && this.growth > 0)
-		{
+		} else if (!this.growing && this.growth > 0) {
 			this.growth--;
 			rePath = true;
 		}
-		if (rePath)
-		{
+		if (rePath) {
 			path = new Path2D();
-			path.rect(0, 0, tabWidth + this.growth / this.maxGrowth * this.growthX, tabHeight + this.growth / this.maxGrowth * this.growthY);
+			path.rect(
+				0,
+				0,
+				tabWidth + (this.growth / this.maxGrowth) * this.growthX,
+				tabHeight + (this.growth / this.maxGrowth) * this.growthY
+			);
 			this.boundaryPath = path;
 		}
 
-		if (this.growth > 0)
-		{
+		if (this.growth > 0) {
 			ctx.drawImage(images.iconLegend, 0, 25);
 		}
 		ctx.restore();
-	}
-	iconLegendPane.mouseHandler = function (pane, x, y, type)
-	{
-		if (this.recentlyGrowing || type == "mouseup")
-		{
+	};
+	iconLegendPane.mouseHandler = function (pane, x, y, type) {
+		if (this.recentlyGrowing || type == "mouseup") {
 			this.markedToSuperGlow = false;
 			this.growing = true;
 		}
-	}
+	};
 	iconLegendPane.modelRegion.markedToSuperGlow = true;
 
 	lorePane = new cPane(mainPane, -300, -300);
@@ -993,17 +996,12 @@ function preprocessPaneData()
 
 	lorePane.region = tabRegions[3];
 	lorePane.region.pane = lorePane;
-	lorePane.region.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
+	lorePane.region.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
 			this.markedToSuperGlow = false;
-			if (this.pane.boundaryPath)
-			{
+			if (this.pane.boundaryPath) {
 				regionData.hideRegion.mouseHandler(this.pane, x, y, type);
-			}
-			else
-			{
+			} else {
 				regionData.showRegion.mouseHandler(this.pane, x, y, type);
 				this.markedToSuperGlow = false;
 				this.pane.x = 0 - mainPane.centerX;
@@ -1020,18 +1018,15 @@ function preprocessPaneData()
 	path.rect(0, 0, 400, 300);
 	optionsPane.boundaryPath = path;
 	optionsPane.title = "Options - Don't forget to apply your settings!";
-	optionsPane.customDraw = function (ctx)
-	{
-		if (!this.postShow)
-		{
+	optionsPane.customDraw = function (ctx) {
+		if (!this.postShow) {
 			panes.postMouseHandlerShow.push(this);
 			this.postShow = true;
 		}
-	}
+	};
 
 	optionsPane.maxPages = 0;
-	if (optionsPane.maxPages > 0)
-	{
+	if (optionsPane.maxPages > 0) {
 		optionsPane.currentPage = 0;
 		optionsPane.subRegions.push(regionData.nextPageRegion);
 		optionsPane.subRegions.push(regionData.prevPageRegion);
@@ -1103,10 +1098,9 @@ function preprocessPaneData()
 	path.rect(0, 0, 300, 200);
 	donatePage.boundaryPath = path;
 	donatePage.title = "Donation Page";
-	donatePage.customDraw = function (ctx)
-	{
+	donatePage.customDraw = function (ctx) {
 		ctx.drawImage(images.donationPage, 0, 30);
-	}
+	};
 	donatePage.subRegions.push(regionData.dragRegion);
 	donatePage.subRegions.push(regionData.hideRegion);
 
@@ -1120,17 +1114,14 @@ function preprocessPaneData()
 
 	preprocessDonations();
 
-	tabRegions[7].mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			window.open('https://discord.gg/CjdSuzH', '_blank');
+	tabRegions[7].mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			window.open("https://discord.gg/CjdSuzH", "_blank");
 		}
-	}
+	};
 }
 
-function preprocessMapControl()
-{
+function preprocessMapControl() {
 	var hideAllRegion = new cRegion(20, 30);
 	var path = new Path2D();
 	path.rect(0, 0, 120, 20);
@@ -1139,28 +1130,23 @@ function preprocessMapControl()
 	hideAllRegion.textX = 60;
 	hideAllRegion.textY = 10;
 	hideAllRegion.hiddenList = [];
-	hideAllRegion.mouseHandler = function (pane, x, y, type)
-	{
+	hideAllRegion.mouseHandler = function (pane, x, y, type) {
 		pane.growing = true;
-		if (type == "mouseup")
-		{
-			for (var i = 0; i < this.hiddenList.length; i++)
-			{
+		if (type == "mouseup") {
+			for (var i = 0; i < this.hiddenList.length; i++) {
 				this.hiddenList[i].boundaryPath = this.hiddenList[i].hiddenPath;
 				this.hiddenList[i].hiddenPath = null;
 			}
 			this.hiddenList = [];
-			for (var i = mainPane.subPanes.length - 1; i >= 0; i--)
-			{
-				if (mainPane.subPanes[i].boundaryPath)
-				{
+			for (var i = mainPane.subPanes.length - 1; i >= 0; i--) {
+				if (mainPane.subPanes[i].boundaryPath) {
 					mainPane.subPanes[i].hiddenPath = mainPane.subPanes[i].boundaryPath;
 					mainPane.subPanes[i].boundaryPath = null;
 					this.hiddenList.push(mainPane.subPanes[i]);
 				}
 			}
 		}
-	}
+	};
 	mapControlPane.subRegions.push(hideAllRegion);
 	mapControlPane.hideAllRegion = hideAllRegion;
 
@@ -1169,17 +1155,14 @@ function preprocessMapControl()
 	closeAllRegion.text = "Close All Panes";
 	closeAllRegion.textX = 60;
 	closeAllRegion.textY = 10;
-	closeAllRegion.mouseHandler = function (pane, x, y, type)
-	{
+	closeAllRegion.mouseHandler = function (pane, x, y, type) {
 		pane.growing = true;
-		if (type == "mouseup")
-		{
-			for (var i = mainPane.subPanes.length - 1; i >= 0; i--)
-			{
+		if (type == "mouseup") {
+			for (var i = mainPane.subPanes.length - 1; i >= 0; i--) {
 				regionData.hideRegion.action(mainPane.subPanes[i]);
 			}
 		}
-	}
+	};
 	mapControlPane.subRegions.push(closeAllRegion);
 
 	var unpinAllRegion = new cRegion(150, 30);
@@ -1187,14 +1170,12 @@ function preprocessMapControl()
 	unpinAllRegion.text = "Unpin All Panes";
 	unpinAllRegion.textX = 60;
 	unpinAllRegion.textY = 10;
-	unpinAllRegion.mouseHandler = function (pane, x, y, type)
-	{
+	unpinAllRegion.mouseHandler = function (pane, x, y, type) {
 		pane.growing = true;
-		if (type == "mouseup")
-		{
+		if (type == "mouseup") {
 			mainPane.unpinPinnable();
 		}
-	}
+	};
 	mapControlPane.subRegions.push(unpinAllRegion);
 
 	var resetAllRegion = new cRegion(150, 60);
@@ -1202,19 +1183,78 @@ function preprocessMapControl()
 	resetAllRegion.text = "Reset Pane Pos.";
 	resetAllRegion.textX = 60;
 	resetAllRegion.textY = 10;
-	resetAllRegion.mouseHandler = function (pane, x, y, type)
-	{
+	resetAllRegion.mouseHandler = function (pane, x, y, type) {
 		pane.growing = true;
-		if (type == "mouseup")
-		{
+		if (type == "mouseup") {
 			panes.resetPositions();
 		}
-	}
+	};
 	mapControlPane.subRegions.push(resetAllRegion);
 }
 
-function preprocessOptions()
-{
+function preprocessStuckHelper() {
+	var path = new Path2D();
+	path.rect(0, 0, 120, 20);
+
+	var closeAllRegion = new cRegion(20, 30);
+	closeAllRegion.boundaryPath = path;
+	closeAllRegion.text = "Reset All Sliders";
+	closeAllRegion.textX = 60;
+	closeAllRegion.textY = 10;
+	var resetSlider = function (e) {
+		console.log(e);
+		console.log(e.upped);
+		console.log(!e.upped);
+		if (!e.upped) return;
+		e.slider = e.min ? 1 : 2;
+
+		e.upData[e.upDataId] = Math.floor(e.upData[e.upDataId] / 3) * 3;
+		e.upData[e.upDataId] += e.slider;
+		var newValue =
+			Math.abs(e.sliderBase) * Math.pow(e.sliderStep, (e.slider - 1) * e.upped);
+
+		if (e.min) e.min = newValue;
+		if (e.max) e.max = newValue;
+	};
+	closeAllRegion.mouseHandler = function (pane, x, y, type) {
+		pane.growing = true;
+		if (type == "mouseup") {
+			for (var i = 0; i < machines.list.length; i++) {
+				var m = machines.list[i];
+				for (var j = 0; j < m.recipes.length; j++) {
+					var r = m.recipes[j];
+					for (var k = 0; k < r.inputs.length; k++) resetSlider(r.inputs[k]);
+					for (var k = 0; k < r.outputs.length; k++) resetSlider(r.outputs[k]);
+				}
+			}
+		}
+	};
+	stuckHelperPane.subRegions.push(closeAllRegion);
+
+	path = new Path2D();
+	path.rect(0, 0, 270, 20);
+	var unpinAllRegion = new cRegion(150, 30);
+	unpinAllRegion.boundaryPath = path;
+	unpinAllRegion.text = "Check out FAQ on Discord";
+	unpinAllRegion.textX = 135;
+	unpinAllRegion.textY = 10;
+	unpinAllRegion.mouseHandler = function (pane, x, y, type) {
+		pane.growing = true;
+	};
+	stuckHelperPane.subRegions.push(unpinAllRegion);
+
+	var resetAllRegion = new cRegion(150, 60);
+	resetAllRegion.boundaryPath = path;
+	resetAllRegion.text = "Feel free to ask for tips";
+	resetAllRegion.textX = 135;
+	resetAllRegion.textY = 10;
+	resetAllRegion.mouseHandler = function (pane, x, y, type) {
+		pane.growing = true;
+	};
+	stuckHelperPane.subRegions.push(resetAllRegion);
+}
+
+function preprocessOptions() {
 	optionsPane.optionData = JSON.parse(JSON.stringify(optionData));
 
 	var applyRegion = new cRegion(95, 270);
@@ -1225,16 +1265,18 @@ function preprocessOptions()
 	applyRegion.textX = 50;
 	applyRegion.textY = 10;
 
-	applyRegion.customDraw = function (ctx)
-	{
-		this.markedToSuperGlow = JSON.stringify(optionData) != JSON.stringify(optionsPane.optionData);
-	}
-	applyRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			if (JSON.stringify(optionData) != JSON.stringify(optionsPane.optionData) && confirm("This will require to save your game and soft-reload it. Continue?"))
-			{
+	applyRegion.customDraw = function (ctx) {
+		this.markedToSuperGlow =
+			JSON.stringify(optionData) != JSON.stringify(optionsPane.optionData);
+	};
+	applyRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			if (
+				JSON.stringify(optionData) != JSON.stringify(optionsPane.optionData) &&
+				confirm(
+					"This will require to save your game and soft-reload it. Continue?"
+				)
+			) {
 				optionData = JSON.parse(JSON.stringify(optionsPane.optionData));
 				savingSystem.saveData();
 				savingSystem.loadData();
@@ -1249,30 +1291,45 @@ function preprocessOptions()
 	revertRegion.text = "Revert changes";
 	revertRegion.textX = 50;
 	revertRegion.textY = 10;
-	revertRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
+	revertRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
 			optionsPane.optionData = JSON.parse(JSON.stringify(optionData));
-			pane.iconSizeRegion.text = "Toggle UI size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
-			pane.particleCDRegion.text = "Toggle particle limiter. x" + optionData.particleCDMultiplier + " -> x" + optionsPane.optionData.particleCDMultiplier;
+			pane.iconSizeRegion.text =
+				"Toggle UI size. " +
+				optionData.iconSize +
+				"px -> " +
+				optionsPane.optionData.iconSize +
+				"px";
+			pane.particleCDRegion.text =
+				"Toggle particle limiter. x" +
+				optionData.particleCDMultiplier +
+				" -> x" +
+				optionsPane.optionData.particleCDMultiplier;
 		}
 	};
 	optionsPane.subRegions.push(revertRegion);
 
 	var iconSizeRegion = new cRegion(25, 75);
-	iconSizeRegion.text = "Toggle icon size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
+	iconSizeRegion.text =
+		"Toggle icon size. " +
+		optionData.iconSize +
+		"px -> " +
+		optionsPane.optionData.iconSize +
+		"px";
 	iconSizeRegion.textX = 100;
 	iconSizeRegion.textY = 10;
 	var path = new Path2D();
 	path.rect(0, 0, iconSizeRegion.textX * 2, 20);
 	iconSizeRegion.boundaryPath = path;
-	iconSizeRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
+	iconSizeRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
 			pane.optionData.iconSize = 40 - pane.optionData.iconSize;
-			this.text = "Toggle UI size. " + optionData.iconSize + "px -> " + optionsPane.optionData.iconSize + "px";
+			this.text =
+				"Toggle UI size. " +
+				optionData.iconSize +
+				"px -> " +
+				optionsPane.optionData.iconSize +
+				"px";
 		}
 	};
 	optionsPane.iconSizeRegion = iconSizeRegion;
@@ -1298,8 +1355,7 @@ function preprocessOptions()
 	optionsPane.subRegions.push(particleCDRegion);*/
 }
 
-function preprocessDonations()
-{
+function preprocessDonations() {
 	var patreonRegion = new cRegion(20, 160);
 	var path = new Path2D();
 	path.rect(0, 0, 120, 20);
@@ -1307,13 +1363,11 @@ function preprocessDonations()
 	patreonRegion.text = "Link to Patreon";
 	patreonRegion.textX = 60;
 	patreonRegion.textY = 10;
-	patreonRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			window.open('https://www.patreon.com/user?u=12559765', '_blank');
+	patreonRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			window.open("https://www.patreon.com/user?u=12559765", "_blank");
 		}
-	}
+	};
 	donatePage.subRegions.push(patreonRegion);
 
 	var paypalRegion = new cRegion(150, 160);
@@ -1323,12 +1377,13 @@ function preprocessDonations()
 	paypalRegion.text = "Link to Paypal";
 	paypalRegion.textX = 60;
 	paypalRegion.textY = 10;
-	paypalRegion.mouseHandler = function (pane, x, y, type)
-	{
-		if (type == "mouseup")
-		{
-			window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TNTLB3ZN7BVUQ', '_blank');
+	paypalRegion.mouseHandler = function (pane, x, y, type) {
+		if (type == "mouseup") {
+			window.open(
+				"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TNTLB3ZN7BVUQ",
+				"_blank"
+			);
 		}
-	}
+	};
 	donatePage.subRegions.push(paypalRegion);
 }

@@ -1,8 +1,12 @@
 var locale = {
-	exchangeStringLoad: "Loading from an exchange string is experimental feature. Providing incorrect strings can break the game. Use savingSystem.hardReset() in case of troubles.",
-	exchangeStringInvalid: "Pasted string was not a proper exchange string.\nOr you just accidentially pressed Ctrl+V.",
-	exchangeStringCopyed: "Save exchange string was copied to your clipboard. You can save it elsewhere and paste back when you need it.",
-	exchangeStringPasted: "You pasted something that looks like an exchange string. Do you want to load it?",
+	exchangeStringLoad:
+		"Loading from an exchange string is experimental feature. Providing incorrect strings can break the game. Use savingSystem.hardReset() in case of troubles.",
+	exchangeStringInvalid:
+		"Pasted string was not a proper exchange string.\nOr you just accidentially pressed Ctrl+V.",
+	exchangeStringCopyed:
+		"Save exchange string was copied to your clipboard. You can save it elsewhere and paste back when you need it.",
+	exchangeStringPasted:
+		"You pasted something that looks like an exchange string. Do you want to load it?",
 	hardReset: "This will erase all of your progress. Proceed?",
 	reset: "Hard Reset",
 	efficiency: "Efficiency",
@@ -29,13 +33,12 @@ var locale = {
 		"Icon Legend",
 		null,
 		"Discord",
-		null,
+		"Stuck?",
 		"Option(s)",
 		"Changelog",
 		"Donate",
 	],
-	oMachines:
-	{
+	oMachines: {
 		machineEarth: "Crystallizer",
 		machineWater: "Aqueous Extractor",
 		machineAir: "Pressure Chamber",
@@ -135,8 +138,7 @@ var locale = {
 		machinePureGolemAir: "Floating Nest",
 		machinePureGolemFire: "Nest of White Flame",
 	},
-	oRecipes:
-	{
+	oRecipes: {
 		earthStart1: "Earth Trickle",
 		earthStart2: "Earth Slide",
 		earthStart3: "Earth Avalanche",
@@ -518,8 +520,7 @@ var locale = {
 
 		pureGolemFireStart1: "Golem Incarnation",
 	},
-	oElementsShorthand:
-	{
+	oElementsShorthand: {
 		Earth: "Earth",
 		Water: "Water",
 		Air: "Air",
@@ -642,8 +643,7 @@ var locale = {
 		PureGolemFire: "PureGolemFire",
 		Mystery: "Mystery",
 	},
-	waypoints:
-	{
+	waypoints: {
 		center: "Central Point",
 		reach: "Reaching Point",
 		rarity: "Material Point",
@@ -671,28 +671,21 @@ var locale = {
 // 	}
 // 	strangename += "\n";
 // }
-function fullunlock()
-{
-	for (var i = 0; i < machines.list.length; i++)
-	{
+function fullunlock() {
+	for (var i = 0; i < machines.list.length; i++) {
 		var mach = machines.list[i];
-		for (var j = 0; j < mach.recipes.length; j++)
-		{
+		for (var j = 0; j < mach.recipes.length; j++) {
 			var rec = mach.recipes[j];
-			if (!rec.unlocked || !(!rec.upgradeTo))
-			{
+			if (!rec.unlocked || !!rec.upgradeTo) {
 				rec.region.paymentSuccess();
 			}
 		}
 	}
 }
 
-function softReset()
-{
-	for (var i = 0; i < data.aElements.length; i++)
-	{
-		switch (data.aElements[i].type)
-		{
+function softReset() {
+	for (var i = 0; i < data.aElements.length; i++) {
+		switch (data.aElements[i].type) {
 			case "Revelation":
 				//data.aElements[i].amount = 0.1;
 				break;
@@ -711,44 +704,33 @@ function softReset()
 	location.reload();
 }
 
-function fullenable()
-{
-	for (var i = 0; i < machines.list.length; i++)
-	{
+function fullenable() {
+	for (var i = 0; i < machines.list.length; i++) {
 		var mach = machines.list[i];
-		for (var j = 0; j < mach.recipes.length; j++)
-		{
+		for (var j = 0; j < mach.recipes.length; j++) {
 			var rec = mach.recipes[j];
-			if (!rec.enabled)
-			{
+			if (!rec.enabled) {
 				rec.enabled = true;
 			}
 		}
 	}
 }
 
-function fullsliderino()
-{
-	for (var i = 0; i < machines.list.length; i++)
-	{
+function fullsliderino() {
+	for (var i = 0; i < machines.list.length; i++) {
 		var mach = machines.list[i];
-		for (var j = 0; j < mach.recipes.length; j++)
-		{
+		for (var j = 0; j < mach.recipes.length; j++) {
 			var rec = mach.recipes[j];
 
-			for (var k = 0; k < rec.inputs.length; k++)
-			{
+			for (var k = 0; k < rec.inputs.length; k++) {
 				if (rec.inputs[k].upgrades)
-					if (rec.inputs[k].upped < rec.inputs[k].upgrades.length)
-					{
+					if (rec.inputs[k].upped < rec.inputs[k].upgrades.length) {
 						rec.inputs[k].sliderRegion.paymentSuccess();
 					}
 			}
-			for (var k = 0; k < rec.outputs.length; k++)
-			{
+			for (var k = 0; k < rec.outputs.length; k++) {
 				if (rec.outputs[k].upgrades)
-					if (rec.outputs[k].upped < rec.outputs[k].upgrades.length)
-					{
+					if (rec.outputs[k].upped < rec.outputs[k].upgrades.length) {
 						rec.outputs[k].sliderRegion.paymentSuccess();
 					}
 			}
@@ -756,8 +738,7 @@ function fullsliderino()
 	}
 }
 
-function research()
-{
+function research() {
 	var output = "";
 	var elemArray;
 	var elemCategories = [
@@ -771,15 +752,13 @@ function research()
 		rarityCircle.elements,
 		pureCircle.elements,
 	];
-	for (var j = 0; j < elemCategories.length; j++)
-	{
+	for (var j = 0; j < elemCategories.length; j++) {
 		elemArray = elemCategories[j];
-		output += "\"" + j + "Circle\" : \{";
-		for (var i = 0; i < elemArray.length; i++)
-		{
+		output += '"' + j + 'Circle" : {';
+		for (var i = 0; i < elemArray.length; i++) {
 			output += `\"${elemArray[i]}\" : \{lock:[\"${elemArray[i]}\",-1e-10],text:\"\",\},`;
 		}
-		output += "\},";
+		output += "},";
 	}
 
 	return output;
