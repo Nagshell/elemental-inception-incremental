@@ -586,7 +586,7 @@ var simplifiedMachineData = {
 			mudAssimilation1: {
 				baseStats: [1, 1.03, true, true],
 				in: [
-					["Mud", 1, 0.05],
+					["Mud", 1, 0.001],
 					["Earth", 500, 900],
 					["Water", 500, 900],
 				],
@@ -650,7 +650,7 @@ var simplifiedMachineData = {
 			iceAssimilation1: {
 				baseStats: [1, 1.03, true, true],
 				in: [
-					["Ice", 1, 0.05],
+					["Ice", 1, 0.001],
 					["Air", 500, 900],
 					["Water", 500, 900],
 				],
@@ -704,7 +704,7 @@ var simplifiedMachineData = {
 			steamAssimilation1: {
 				baseStats: [1, 1.03, true, true],
 				in: [
-					["Steam", 1, 0.05],
+					["Steam", 1, 0.001],
 					["Water", 500, 900],
 					["Fire", 500, 900],
 				],
@@ -758,7 +758,7 @@ var simplifiedMachineData = {
 			magmaAssimilation1: {
 				baseStats: [1, 1.03, true, true],
 				in: [
-					["Magma", 1, 0.05],
+					["Magma", 1, 0.001],
 					["Earth", 500, 900],
 					["Fire", 500, 900],
 				],
