@@ -435,7 +435,7 @@ var locale = {
 
 		timeSlow1: "Massive Slowdown",
 		timeFast1: "Turbo Time Spender",
-		timeBend1: "Experimental Turbo Time Bend",
+		timeBend1: "Turbo Limit Breaker",
 
 		silverStart1: "Hard Way",
 		silverAlchemy1: "Delicate Way",
